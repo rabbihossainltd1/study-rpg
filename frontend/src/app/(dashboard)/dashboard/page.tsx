@@ -1,7 +1,8 @@
 "use client";
 
+import { navigate } from "@/lib/navigate";
+
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useUserStore } from "@/store/useUserStore";
 import { XpBar } from "@/components/ui/XpBar";
 import { Card, StatCard } from "@/components/ui/Card";
@@ -92,9 +93,9 @@ export default function DashboardPage() {
                   <Target className="w-5 h-5 text-secondary" />
                   <h2 className="font-bold text-white">{language === "bn" ? "দৈনিক মিশন" : "Daily Missions"}</h2>
                 </div>
-                <Link href="/missions" className="text-xs text-gray-500 hover:text-primary transition-colors flex items-center gap-1">
+                <button onClick={() => navigate("/missions")} style={{background:"none",border:"none",cursor:"pointer"}} className="text-xs text-gray-500 hover:text-primary transition-colors flex items-center gap-1">
                   View All <ChevronRight className="w-3 h-3" />
-                </Link>
+                </button>
               </div>
               <div className="divide-y divide-white/5">
                 {todayMissions.map((mission, i) => (
@@ -139,9 +140,9 @@ export default function DashboardPage() {
                 <BookOpen className="w-5 h-5 text-primary" />
                 <h2 className="font-bold text-white">{language === "bn" ? "বিষয়সমূহ" : "Subjects"}</h2>
               </div>
-              <Link href="/subjects" className="text-xs text-gray-500 hover:text-primary transition-colors flex items-center gap-1">
+              <button onClick={() => navigate("/subjects")} style={{background:"none",border:"none",cursor:"pointer"}} className="text-xs text-gray-500 hover:text-primary transition-colors flex items-center gap-1">
                 All Subjects <ChevronRight className="w-3 h-3" />
-              </Link>
+              </button>
             </div>
             <div className="grid sm:grid-cols-2 gap-3">
               {SUBJECTS.slice(0, 4).map((subject, i) => (
@@ -229,11 +230,11 @@ export default function DashboardPage() {
               <p className="text-sm font-medium text-white leading-relaxed mb-1">
                 &ldquo;{language === "bn" ? quote.bn : quote.en}&rdquo;
               </p>
-              <Link href="/ai-assistant">
+              <button onClick={() => navigate("/ai-assistant")} style={{background:"none",border:"none",cursor:"pointer"}} className="">
                 <Button variant="ghost" size="sm" className="mt-3 w-full text-xs">
                   <Bot className="w-3 h-3" /> Ask AI Tutor
                 </Button>
-              </Link>
+              </button>
             </Card>
           </motion.div>
 
@@ -245,9 +246,9 @@ export default function DashboardPage() {
                   <Trophy className="w-4 h-4 text-gold" />
                   <h3 className="font-bold text-white text-sm">Top Players</h3>
                 </div>
-                <Link href="/leaderboard" className="text-xs text-gray-500 hover:text-primary transition-colors">
+                <button onClick={() => navigate("/leaderboard")} style={{background:"none",border:"none",cursor:"pointer"}} className="text-xs text-gray-500 hover:text-primary transition-colors">
                   Full Board →
-                </Link>
+                </button>
               </div>
               <div className="space-y-3">
                 {LEADERBOARD_MOCK.map((entry) => (
@@ -286,30 +287,30 @@ export default function DashboardPage() {
           <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.35 }}>
             <h3 className="font-bold text-white text-sm mb-3">Quick Actions</h3>
             <div className="grid grid-cols-2 gap-2">
-              <Link href="/focus">
+              <button onClick={() => navigate("/focus")} style={{background:"none",border:"none",cursor:"pointer"}} className="">
                 <div className="glass-card p-4 text-center border border-secondary/15 hover:border-secondary/30 hover:bg-secondary/5 transition-all cursor-pointer group">
                   <Timer className="w-6 h-6 text-secondary mx-auto mb-1 group-hover:scale-110 transition-transform" />
                   <p className="text-xs font-semibold text-white">Focus Mode</p>
                 </div>
-              </Link>
-              <Link href="/ai-assistant">
+              </button>
+              <button onClick={() => navigate("/ai-assistant")} style={{background:"none",border:"none",cursor:"pointer"}} className="">
                 <div className="glass-card p-4 text-center border border-purple/15 hover:border-purple/30 hover:bg-purple/5 transition-all cursor-pointer group">
                   <Bot className="w-6 h-6 text-purple-400 mx-auto mb-1 group-hover:scale-110 transition-transform" />
                   <p className="text-xs font-semibold text-white">AI Tutor</p>
                 </div>
-              </Link>
-              <Link href="/subjects">
+              </button>
+              <button onClick={() => navigate("/subjects")} style={{background:"none",border:"none",cursor:"pointer"}} className="">
                 <div className="glass-card p-4 text-center border border-primary/15 hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer group">
                   <Play className="w-6 h-6 text-primary mx-auto mb-1 group-hover:scale-110 transition-transform" />
                   <p className="text-xs font-semibold text-white">Study Now</p>
                 </div>
-              </Link>
-              <Link href="/leaderboard">
+              </button>
+              <button onClick={() => navigate("/leaderboard")} style={{background:"none",border:"none",cursor:"pointer"}} className="">
                 <div className="glass-card p-4 text-center border border-gold/15 hover:border-gold/30 hover:bg-gold/5 transition-all cursor-pointer group">
                   <Flame className="w-6 h-6 text-gold mx-auto mb-1 group-hover:scale-110 transition-transform" />
                   <p className="text-xs font-semibold text-white">Challenge</p>
                 </div>
-              </Link>
+              </button>
             </div>
           </motion.div>
         </div>
