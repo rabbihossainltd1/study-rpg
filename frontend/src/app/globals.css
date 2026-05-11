@@ -1,1 +1,169 @@
-@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');\n\n:root {\n  --primary: #39FF14;\n  --secondary: #00F0FF;\n  --accent: #FF003C;\n  --purple: #BF5FFF;\n  --gold: #FFD700;\n  color-scheme: dark;\n}\n\n* { box-sizing: border-box; }\n\nhtml {\n  background: #050505 !important;\n  color-scheme: dark;\n}\n\nbody {\n  color: #fff !important;\n  background: #050505 !important;\n  font-family: 'Inter', system-ui, -apple-system, sans-serif;\n  overflow-x: hidden;\n  -webkit-font-smoothing: antialiased;\n}\n\n/* Glass panels */\n.glass {\n  background: rgba(15, 15, 15, 0.9);\n  backdrop-filter: blur(20px);\n  -webkit-backdrop-filter: blur(20px);\n  border: 1px solid rgba(255, 255, 255, 0.07);\n}\n\n.glass-card {\n  background: rgba(18, 18, 18, 0.95);\n  backdrop-filter: blur(16px);\n  -webkit-backdrop-filter: blur(16px);\n  border: 1px solid rgba(255, 255, 255, 0.06);\n  border-radius: 16px;\n}\n\n/* Text gradients */\n.text-gradient {\n  background: linear-gradient(135deg, #39FF14, #00F0FF);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n  background-clip: text;\n}\n\n.text-gradient-purple {\n  background: linear-gradient(135deg, #BF5FFF, #00F0FF);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n  background-clip: text;\n}\n\n.text-gradient-gold {\n  background: linear-gradient(135deg, #FFD700, #FF8C00);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n  background-clip: text;\n}\n\n/* Neon borders */\n.border-neon {\n  border: 1px solid rgba(57, 255, 20, 0.3);\n  box-shadow: 0 0 10px rgba(57, 255, 20, 0.1), inset 0 0 10px rgba(57, 255, 20, 0.05);\n}\n\n.border-neon-secondary {\n  border: 1px solid rgba(0, 240, 255, 0.3);\n  box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);\n}\n\n/* Scrollbar */\n::-webkit-scrollbar { width: 5px; height: 5px; }\n::-webkit-scrollbar-track { background: #050505; }\n::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }\n::-webkit-scrollbar-thumb:hover { background: #39FF14; }\n\n/* Progress bar base */\n.xp-bar-track {\n  background: rgba(255, 255, 255, 0.05);\n  border-radius: 100px;\n  overflow: hidden;\n  position: relative;\n}\n\n.xp-bar-fill {\n  background: linear-gradient(90deg, rgba(57,255,20,0.6) 0%, #39FF14 100%);\n  border-radius: 100px;\n  position: relative;\n  overflow: hidden;\n}\n\n.xp-bar-fill::after {\n  content: '';\n  position: absolute;\n  top: 0; left: -100%;\n  width: 100%; height: 100%;\n  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);\n  animation: shimmer 2s linear infinite;\n}\n\n/* Particle bg */\n.particle-bg {\n  position: fixed;\n  inset: 0;\n  background: radial-gradient(ellipse at 20% 50%, rgba(57,255,20,0.05) 0%, transparent 50%),\n              radial-gradient(ellipse at 80% 20%, rgba(0,240,255,0.05) 0%, transparent 50%),\n              radial-gradient(ellipse at 50% 80%, rgba(191,95,255,0.04) 0%, transparent 50%);\n  pointer-events: none;\n  z-index: 0;\n}\n\n/* Grid overlay */\n.grid-overlay {\n  position: fixed;\n  inset: 0;\n  background-image: \n    linear-gradient(rgba(57,255,20,0.03) 1px, transparent 1px),\n    linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px);\n  background-size: 50px 50px;\n  pointer-events: none;\n  z-index: 0;\n}\n\n/* Rank colors */\n.rank-bronze { color: #CD7F32; }\n.rank-silver { color: #C0C0C0; }\n.rank-gold { color: #FFD700; }\n.rank-platinum { color: #00F0FF; }\n.rank-diamond { color: #BF5FFF; }\n.rank-legend { color: #FF003C; }\n\n/* Selection */\n::selection { background: #39FF14; color: #000; }\n\n/* Animated gradient border */\n@keyframes border-rotate {\n  from { --angle: 0deg; }\n  to { --angle: 360deg; }\n}\n\n.animated-border {\n  position: relative;\n  border-radius: 16px;\n  padding: 1px;\n  background: linear-gradient(var(--angle, 135deg), #39FF14, #00F0FF, #BF5FFF, #39FF14);\n}\n\n/* Mobile tap highlight */\n* { -webkit-tap-highlight-color: transparent; }\n\n/* Focus ring */\n:focus-visible {\n  outline: 2px solid #39FF14;\n  outline-offset: 2px;\n}\n\n@keyframes shimmer {\n  from { left: -100%; }\n  to { left: 200%; }\n}\n
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #39FF14;
+  --secondary: #00F0FF;
+  --accent: #FF003C;
+  --purple: #BF5FFF;
+  --gold: #FFD700;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: #050505 !important;
+  color-scheme: dark;
+}
+
+body {
+  color: #fff !important;
+  background: #050505 !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glass panels */
+.glass {
+  background: rgba(15, 15, 15, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-card {
+  background: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+}
+
+/* Text gradients */
+.text-gradient {
+  background: linear-gradient(135deg, #39FF14, #00F0FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, #BF5FFF, #00F0FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #FFD700, #FF8C00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Neon borders */
+.border-neon {
+  border: 1px solid rgba(57, 255, 20, 0.3);
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.1), inset 0 0 10px rgba(57, 255, 20, 0.05);
+}
+
+.border-neon-secondary {
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #39FF14; }
+
+/* Progress bar base */
+.xp-bar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+
+.xp-bar-fill {
+  background: linear-gradient(90deg, rgba(57,255,20,0.6) 0%, #39FF14 100%);
+  border-radius: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.xp-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s linear infinite;
+}
+
+/* Particle bg */
+.particle-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(57,255,20,0.05) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(0,240,255,0.05) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, rgba(191,95,255,0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grid overlay */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(57,255,20,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Rank colors */
+.rank-bronze { color: #CD7F32; }
+.rank-silver { color: #C0C0C0; }
+.rank-gold { color: #FFD700; }
+.rank-platinum { color: #00F0FF; }
+.rank-diamond { color: #BF5FFF; }
+.rank-legend { color: #FF003C; }
+
+/* Selection */
+::selection { background: #39FF14; color: #000; }
+
+/* Animated gradient border */
+@keyframes border-rotate {
+  from { --angle: 0deg; }
+  to { --angle: 360deg; }
+}
+
+.animated-border {
+  position: relative;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(var(--angle, 135deg), #39FF14, #00F0FF, #BF5FFF, #39FF14);
+}
+
+/* Mobile tap highlight */
+* { -webkit-tap-highlight-color: transparent; }
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid #39FF14;
+  outline-offset: 2px;
+}
+
+@keyframes shimmer {
+  from { left: -100%; }
+  to { left: 200%; }
+}
