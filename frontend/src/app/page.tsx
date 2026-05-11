@@ -1,10 +1,9 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { Zap, Trophy, Target, Bot, Star, ArrowRight, Play, Users, BookOpen, Shield } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { useRef } from "react";
 
 const STATS = [
   { value: "50K+", label: "Active Students", labelBn: "সক্রিয় শিক্ষার্থী" },
@@ -91,18 +90,10 @@ const TESTIMONIALS = [
 ];
 
 export default function LandingPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden" style={{ background: "#050505" }}>
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5">
+      <nav className="sticky top-0 left-0 right-0 z-50 glass border-b border-white/5">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center shadow-neon-primary">
@@ -122,16 +113,12 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <motion.section
-        ref={heroRef}
-        className="relative min-h-screen flex items-center pt-20"
-        style={{ y: heroY, opacity: heroOpacity }}
-      >
+      <section className="relative min-h-screen flex items-center pt-8">
         {/* Background orbs */}
         <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/5 rounded-full filter blur-[100px] pointer-events-none" />
         <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-secondary/5 rounded-full filter blur-[100px] pointer-events-none" />
 
-        <div className="container mx-auto px-4 text-center relative z-10 py-20">
+        <div className="container mx-auto px-4 text-center relative z-10 py-16">
           {/* Badge */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -147,7 +134,7 @@ export default function LandingPage() {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight mb-6 leading-none"
+            className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight mb-6 leading-none text-white"
           >
             STUDY LIKE A{" "}
             <br />
@@ -167,7 +154,7 @@ export default function LandingPage() {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.25 }}
-            className="text-sm text-gray-600 mb-10"
+            className="text-sm text-gray-500 mb-10"
           >
             Turn studying into an addictive RPG adventure. Earn XP, unlock achievements, defeat your rivals.
           </motion.p>
@@ -176,16 +163,16 @@ export default function LandingPage() {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col items-center gap-3 px-4"
           >
-            <Link href="/signup">
-              <Button size="lg" className="text-base px-8">
+            <Link href="/signup" className="w-full max-w-xs">
+              <Button size="lg" className="text-base w-full justify-center">
                 <Zap className="w-5 h-5" />
                 Start Your Journey — Free
               </Button>
             </Link>
-            <Link href="/login">
-              <Button variant="ghost" size="lg" className="text-base">
+            <Link href="/login" className="w-full max-w-xs">
+              <Button variant="ghost" size="lg" className="text-base w-full justify-center">
                 <Play className="w-5 h-5" />
                 Continue as Guest
               </Button>
@@ -214,7 +201,7 @@ export default function LandingPage() {
             ))}
           </motion.div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Features */}
       <section className="py-24 relative">
@@ -399,15 +386,15 @@ export default function LandingPage() {
               <br />
               সম্পূর্ণ বিনামূল্যে!
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/signup">
-                <Button size="lg" className="text-lg px-10">
+            <div className="flex flex-col items-center gap-3 px-4">
+              <Link href="/signup" className="w-full max-w-xs">
+                <Button size="lg" className="text-lg w-full justify-center">
                   <Zap className="w-6 h-6" />
                   শুরু করো — এখনই!
                 </Button>
               </Link>
-              <Link href="/login?guest=true">
-                <Button variant="ghost" size="lg" className="text-lg px-10">
+              <Link href="/login?guest=true" className="w-full max-w-xs">
+                <Button variant="ghost" size="lg" className="text-lg w-full justify-center">
                   <Users className="w-5 h-5" />
                   Guest Mode
                 </Button>
@@ -422,7 +409,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Zap className="w-6 h-6 text-primary" />
-            <span className="font-black text-xl">Study RPG</span>
+            <span className="font-black text-xl text-white">Study RPG</span>
           </div>
           <p className="text-sm text-gray-600 mb-2">
             Built with ❤️ for Bangladeshi students · SSC · HSC · University
