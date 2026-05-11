@@ -83,26 +83,24 @@ export default function AiAssistantPage() {
         { role: "user" as const, content: userMessage },
       ];
 
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
           system: SYSTEM_PROMPT,
           messages: conversationHistory,
         }),
       });
 
       const data = await response.json();
-      const aiText = data.content?.[0]?.text || "Sorry, I couldn't process that. Please try again.";
+      const aiText = data.content?.[0]?.text || data.error || "Sorry, I couldn't process that. Please try again.";
 
       setMessages((prev) =>
         prev.map((m) =>
           m.id === loadingMsg.id ? { ...m, content: aiText, isLoading: false } : m
         )
       );
-    } catch (error) {
+    } catch {
       setMessages((prev) =>
         prev.map((m) =>
           m.id === loadingMsg.id
@@ -192,7 +190,6 @@ export default function AiAssistantPage() {
               animate={{ opacity: 1, y: 0 }}
               className={cn("flex gap-3", msg.role === "user" ? "flex-row-reverse" : "flex-row")}
             >
-              {/* Avatar */}
               <div className={cn(
                 "w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0 mt-1",
                 msg.role === "assistant"
@@ -202,7 +199,6 @@ export default function AiAssistantPage() {
                 {msg.role === "assistant" ? <Bot className="w-4 h-4" /> : <User className="w-4 h-4" />}
               </div>
 
-              {/* Bubble */}
               <div className={cn(
                 "max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
                 msg.role === "assistant"
