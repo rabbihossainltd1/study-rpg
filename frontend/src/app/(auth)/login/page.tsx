@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,8 @@ import {
   signInGuest,
   createUserProfile,
   getUserProfile,
+  getRedirectResult,
+  auth,
 } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
@@ -26,6 +28,30 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
+
+  // Handle redirect result (Android WebView Google Sign-In)
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result?.user) {
+          setGoogleLoading(true);
+          let profile = await getUserProfile(result.user.uid);
+          if (!profile) {
+            profile = await createUserProfile(result.user);
+          }
+          setUser(profile);
+          toast.success("Welcome to Study RPG! ⚡");
+          router.push("/dashboard");
+        }
+      } catch {
+        // No redirect result, normal page load
+      } finally {
+        setGoogleLoading(false);
+      }
+    };
+    handleRedirectResult();
+  }, [router, setUser]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,16 +79,17 @@ export default function LoginPage() {
     setGoogleLoading(true);
     try {
       const cred = await signInWithGoogle();
-      let profile = await getUserProfile(cred.user.uid);
+      // signInWithRedirect returns void; result handled in useEffect above
+      if (!cred) return;
+      let profile = await getUserProfile((cred as any).user.uid);
       if (!profile) {
-        profile = await createUserProfile(cred.user);
+        profile = await createUserProfile((cred as any).user);
       }
       setUser(profile);
       toast.success("Welcome to Study RPG! ⚡");
       router.push("/dashboard");
     } catch {
       toast.error("Google login failed");
-    } finally {
       setGoogleLoading(false);
     }
   };
