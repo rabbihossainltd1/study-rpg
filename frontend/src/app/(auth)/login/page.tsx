@@ -1,9 +1,10 @@
 "use client";
 
+import { navigate } from "@/lib/navigate";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+
+
 import { Zap, Mail, Lock, Eye, EyeOff, Chrome } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
@@ -19,7 +20,7 @@ import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
-  const router = useRouter();
+
   const { setUser } = useUserStore();
 
   const [email, setEmail] = useState("");
@@ -42,7 +43,7 @@ export default function LoginPage() {
           }
           setUser(profile);
           toast.success("Welcome to Study RPG! ⚡");
-          router.push("/dashboard");
+          navigate("/dashboard");
         }
       } catch {
         // No redirect result, normal page load
@@ -63,7 +64,7 @@ export default function LoginPage() {
       if (profile) {
         setUser(profile);
         toast.success("Welcome back! 🎮");
-        router.push("/dashboard");
+        navigate("/dashboard");
       } else {
         toast.error("Profile not found. Please sign up.");
       }
@@ -87,7 +88,7 @@ export default function LoginPage() {
       }
       setUser(profile);
       toast.success("Welcome to Study RPG! ⚡");
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch {
       toast.error("Google login failed");
       setGoogleLoading(false);
@@ -101,7 +102,7 @@ export default function LoginPage() {
       const profile = await createUserProfile(cred.user, { username: `Guest_${Math.floor(Math.random() * 9999)}` });
       setUser(profile);
       toast.success("Playing as Guest 👻");
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch {
       toast.error("Guest login failed");
     } finally {
@@ -118,12 +119,12 @@ export default function LoginPage() {
           animate={{ y: 0, opacity: 1 }}
           className="text-center mb-8"
         >
-          <Link href="/" className="inline-flex items-center gap-2 mb-6">
+          <button onClick={() => navigate("/")} style={{background:"none",border:"none",cursor:"pointer",display:"inline-flex",alignItems:"center",gap:8,marginBottom:24}}>
             <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center shadow-neon-primary">
               <Zap className="w-6 h-6 text-primary" />
             </div>
             <span className="font-black text-2xl text-white">Study RPG</span>
-          </Link>
+          </button>
           <h1 className="text-3xl font-black text-white mb-2">Welcome Back!</h1>
           <p className="text-gray-500">Continue your learning journey</p>
         </motion.div>
@@ -210,9 +211,7 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-primary hover:underline font-medium">
-              Sign Up Free
-            </Link>
+            <button onClick={() => navigate("/signup")} style={{background:"none",border:"none",cursor:"pointer",color:"#39FF14",fontWeight:600,fontSize:14,textDecoration:"underline"}}>Sign Up Free</button>
           </p>
         </motion.div>
       </div>
