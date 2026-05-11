@@ -1,8 +1,9 @@
 "use client";
 
+import { navigate } from "@/lib/navigate";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store/useUserStore";
 import { SUBJECTS, CHAPTERS, SAMPLE_QUIZ_QUESTIONS } from "@/lib/subjects";
 import { Button } from "@/components/ui/Button";
@@ -14,7 +15,6 @@ import { addXp, addCoins } from "@/lib/firebase";
 import toast from "react-hot-toast";
 
 export default function SubjectDetailClient({ id }: { id: string }) {
-  const router = useRouter();
   const { user, setUser, addXpPopup, triggerLevelUp, language } = useUserStore();
   const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
   const [quizActive, setQuizActive] = useState(false);
