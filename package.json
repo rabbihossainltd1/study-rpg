@@ -1,0 +1,22 @@
+{
+  "name": "study-rpg",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gamified education platform for Bangladeshi students",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "cap:add:android": "cd frontend && npx cap add android",
+    "cap:sync": "cd frontend && npx cap sync android",
+    "android:build": "cd frontend && npm run android:build",
+    "apk:debug": "cd frontend && npm run apk:debug",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:all": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "install:all": "cd frontend && npm install && cd ../backend && npm install",
+    "build:backend": "cd backend && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

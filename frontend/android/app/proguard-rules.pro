@@ -1,0 +1,4 @@
+-keep class com.getcapacitor.** { *; }
+-keep class com.rabbi.studyrpg.app.** { *; }
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable

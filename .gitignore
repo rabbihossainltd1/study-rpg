@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build outputs
+frontend/.next/
+frontend/out/
+backend/dist/
+
+# Environment
+.env
+.env.local
+.env.*.local
+frontend/.env.local
+backend/.env
+
+# Android secrets - NEVER commit these
+android/app/google-services.json
+
+# Android build
+android/app/build/
+android/.gradle/
+android/local.properties
+
+# Gradle
+.gradle/
+build/
+
+# IDE
+.idea/
+*.iml
+.DS_Store
