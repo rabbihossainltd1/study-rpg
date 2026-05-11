@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { navigate } from "@/lib/navigate";
 import { Zap, Mail, Lock, User, Eye, EyeOff, Chrome, MapPin, GraduationCap, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { signUpEmail, signInWithGoogle, createUserProfile } from "@/lib/firebase";
@@ -21,7 +20,6 @@ const EXAM_MODES = [
 const AVATARS = ["🦁", "🐯", "🦊", "🐺", "🦅", "🐉", "🦄", "⚡", "🔥", "💎"];
 
 export default function SignupPage() {
-  const router = useRouter();
   const { setUser } = useUserStore();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +46,7 @@ export default function SignupPage() {
       const profile = await createUserProfile(cred.user, { username, examMode, district });
       setUser(profile);
       toast.success("Welcome to Study RPG! Your journey begins! ⚡");
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Signup failed";
       toast.error(message.includes("email-already") ? "Email already in use" : "Signup failed");
@@ -64,7 +62,7 @@ export default function SignupPage() {
       const profile = await createUserProfile(cred.user, { examMode, district });
       setUser(profile);
       toast.success("Account created! ⚡");
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch {
       toast.error("Google signup failed");
     } finally {
@@ -83,12 +81,12 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4">
+          <button onClick={() => navigate("/")} style={{background:"none",border:"none",cursor:"pointer",display:"inline-flex",alignItems:"center",gap:8,marginBottom:16}}>
             <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
               <Zap className="w-5 h-5 text-primary" />
             </div>
             <span className="font-black text-xl text-white">Study RPG</span>
-          </Link>
+          </button>
           <h1 className="text-3xl font-black text-white mb-1">Create Account</h1>
           <p className="text-gray-500 text-sm">Join 50,000+ Bangladeshi students</p>
         </motion.div>
@@ -245,7 +243,7 @@ export default function SignupPage() {
 
           <p className="text-center text-sm text-gray-600 mt-5">
             Already have an account?{" "}
-            <Link href="/login" className="text-primary hover:underline font-medium">Sign In</Link>
+            <button onClick={() => navigate("/login")} style={{background:"none",border:"none",cursor:"pointer",color:"#39FF14",fontWeight:600,fontSize:14,textDecoration:"underline"}}>Sign In</button>
           </p>
         </motion.div>
       </div>
