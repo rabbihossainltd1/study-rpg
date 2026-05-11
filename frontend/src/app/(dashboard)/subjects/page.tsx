@@ -1,7 +1,8 @@
 "use client";
 
+import { navigate } from "@/lib/navigate";
+
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useUserStore } from "@/store/useUserStore";
 import { SUBJECTS } from "@/lib/subjects";
 import { BookOpen, ChevronRight, Zap } from "lucide-react";
