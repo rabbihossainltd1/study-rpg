@@ -52,12 +52,23 @@ jobs:
         working-directory: frontend/android/app
         run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > google-services.json
 
+      - name: Download Gradle Wrapper JAR
+        working-directory: frontend/android
+        run: |
+          mkdir -p gradle/wrapper
+          curl -L -o gradle/wrapper/gradle-wrapper.jar \
+            "https://github.com/gradle/gradle/raw/v8.4.0/gradle/wrapper/gradle-wrapper.jar"
+
       - name: Setup Gradle
         working-directory: frontend/android
-        run: chmod +x gradlew
+        run: |
+          chmod +x gradlew
+          sed -i "s/DEFAULT_JVM_OPTS='\".*\"'/DEFAULT_JVM_OPTS=''/" gradlew
 
       - name: Build APK
         working-directory: frontend/android
+        env:
+          JAVA_TOOL_OPTIONS: ""
         run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
