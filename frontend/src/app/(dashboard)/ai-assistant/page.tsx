@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
 import { Button } from "@/components/ui/Button";
 import { ChatMessage } from "@/types";
@@ -19,16 +19,13 @@ const QUICK_PROMPTS = [
 
 const SYSTEM_PROMPT = `You are StudyBot, an expert AI tutor for Bangladeshi students (SSC, HSC, and university level). 
 You help students with subjects like Math, Physics, Chemistry, Biology, English, Bangla, ICT, and General Knowledge.
-
 Rules:
 - Always respond in the same language the student uses (Bangla or English)
-- Keep responses concise and easy to understand for students
+- Keep responses concise and easy to understand
 - Use emojis to make responses engaging
 - For math/science, show step-by-step solutions
 - Motivate students and keep them positive
-- If asked to generate a quiz, provide 3-5 MCQ questions with answers
-- Format responses cleanly with bullet points or numbered lists when appropriate
-- Be encouraging and friendly like a helpful senior student or tutor`;
+- If asked to generate a quiz, provide 3-5 MCQ questions with answers`;
 
 export default function AiAssistantPage() {
   const { user, language } = useUserStore();
@@ -37,8 +34,8 @@ export default function AiAssistantPage() {
       id: "welcome",
       role: "assistant",
       content: language === "bn"
-        ? "আসসালামুয়ালাইকুম! আমি StudyBot 🤖 তোমার AI পড়াশোনার সহযোগী। আমাকে যেকোনো বিষয়ে প্রশ্ন করো — গণিত, পদার্থ, রসায়ন, জীববিজ্ঞান, ইংরেজি বা যেকোনো কিছু। আমি সাহায্য করতে রেডি! ⚡"
-        : "Hi! I'm StudyBot 🤖 your personal AI study assistant. Ask me anything — Math, Physics, Chemistry, Biology, English, or any subject. I'm here to help! ⚡",
+        ? "আসসালামুয়ালাইকুম! আমি StudyBot 🤖 তোমার AI পড়াশোনার সহযোগী। যেকোনো বিষয়ে প্রশ্ন করো! ⚡"
+        : "Hi! I'm StudyBot 🤖 your personal AI study assistant. Ask me anything! ⚡",
       timestamp: new Date(),
     }
   ]);
@@ -55,174 +52,122 @@ export default function AiAssistantPage() {
     const userMessage = text || input.trim();
     if (!userMessage || isLoading) return;
 
-    const userMsg: ChatMessage = {
-      id: `u-${Date.now()}`,
-      role: "user",
-      content: userMessage,
-      timestamp: new Date(),
-    };
-
-    const loadingMsg: ChatMessage = {
-      id: `a-${Date.now()}`,
-      role: "assistant",
-      content: "",
-      timestamp: new Date(),
-      isLoading: true,
-    };
+    const userMsg: ChatMessage = { id: `u-${Date.now()}`, role: "user", content: userMessage, timestamp: new Date() };
+    const loadingMsg: ChatMessage = { id: `a-${Date.now()}`, role: "assistant", content: "", timestamp: new Date(), isLoading: true };
 
     setMessages((prev) => [...prev, userMsg, loadingMsg]);
     setInput("");
     setIsLoading(true);
 
     try {
+      const apiKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY;
+      if (!apiKey) throw new Error("API key not configured");
+
       const conversationHistory = [
-        ...messages.filter((m) => !m.isLoading).map((m) => ({
-          role: m.role as "user" | "assistant",
-          content: m.content,
-        })),
+        ...messages.filter((m) => !m.isLoading).map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
         { role: "user" as const, content: userMessage },
       ];
 
-      const response = await fetch("/api/chat", {
+      const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` },
         body: JSON.stringify({
-          system: SYSTEM_PROMPT,
-          messages: conversationHistory,
+          model: "deepseek-chat",
+          max_tokens: 1000,
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...conversationHistory],
         }),
       });
 
       const data = await response.json();
-      const aiText = data.content?.[0]?.text || data.error || "Sorry, I couldn't process that. Please try again.";
+      const aiText = data.choices?.[0]?.message?.content || "Sorry, I couldn't process that. Please try again.";
 
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.id === loadingMsg.id ? { ...m, content: aiText, isLoading: false } : m
-        )
-      );
+      setMessages((prev) => prev.map((m) => m.id === loadingMsg.id ? { ...m, content: aiText, isLoading: false } : m));
     } catch {
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.id === loadingMsg.id
-            ? { ...m, content: "⚠️ Connection error. Please check your internet and try again.", isLoading: false }
-            : m
-        )
-      );
+      setMessages((prev) => prev.map((m) => m.id === loadingMsg.id
+        ? { ...m, content: "⚠️ Connection error. Please check your internet and try again.", isLoading: false } : m));
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   };
 
   const clearChat = () => {
-    setMessages([{
-      id: "welcome-new",
-      role: "assistant",
-      content: "Chat cleared! How can I help you? 🤖",
-      timestamp: new Date(),
-    }]);
+    setMessages([{ id: "welcome-new", role: "assistant", content: "Chat cleared! How can I help you? 🤖", timestamp: new Date() }]);
   };
 
-  const formatMessage = (content: string) => {
-    return content
-      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/`(.*?)`/g, '<code class="bg-white/10 px-1 rounded text-primary font-mono text-xs">$1</code>')
-      .replace(/\n/g, '<br>');
-  };
+  const formatMessage = (content: string) => content
+    .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#fff">$1</strong>')
+    .replace(/`(.*?)`/g, '<code style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:4px;color:#39FF14;font-size:12px">$1</code>')
+    .replace(/\n/g, '<br>');
 
   return (
-    <div className="flex flex-col h-[calc(100vh-100px)] lg:h-[calc(100vh-40px)]">
+    <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 100px)" }}>
       {/* Header */}
-      <motion.div
-        initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-        className="flex items-center justify-between pb-4 mb-4 border-b border-white/5 flex-shrink-0"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-purple/10 border border-purple/30 flex items-center justify-center shadow-neon-purple">
-            <Bot className="w-5 h-5 text-purple-400" />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: 16, marginBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.05)", flexShrink: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(191,95,255,0.1)", border: "1px solid rgba(191,95,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Bot size={20} color="#BF5FFF" />
           </div>
           <div>
-            <h1 className="text-xl font-black text-white flex items-center gap-2">
-              AI Study Tutor
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <h1 style={{ fontSize: 18, fontWeight: 900, color: "#fff", margin: 0 }}>AI Study Tutor</h1>
+              <span style={{ display: "flex", position: "relative", width: 8, height: 8 }}>
+                <span style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "#39FF14", opacity: 0.75, animation: "ping 1s cubic-bezier(0,0,0.2,1) infinite" }} />
+                <span style={{ position: "relative", width: 8, height: 8, borderRadius: "50%", background: "#39FF14", display: "inline-block" }} />
               </span>
-            </h1>
-            <p className="text-xs text-gray-500">Powered by Claude · Responds in Bangla & English</p>
+            </div>
+            <p style={{ fontSize: 11, color: "#6B7280", margin: 0 }}>Powered by DeepSeek · Bangla & English</p>
           </div>
         </div>
-        <Button variant="ghost" size="sm" onClick={clearChat} leftIcon={<RefreshCw className="w-3.5 h-3.5" />}>
-          Clear
-        </Button>
-      </motion.div>
+        <Button variant="ghost" size="sm" onClick={clearChat} leftIcon={<RefreshCw size={14} />}>Clear</Button>
+      </div>
 
       {/* Quick Prompts */}
-      <motion.div
-        initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}
-        className="flex gap-2 overflow-x-auto pb-3 flex-shrink-0 scrollbar-none"
-      >
+      <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 12, flexShrink: 0 }}>
         {QUICK_PROMPTS.map((p) => (
-          <button
-            key={p.labelEn}
-            onClick={() => sendMessage(language === "bn" ? p.label : p.labelEn)}
-            className="flex items-center gap-1.5 px-3 py-1.5 glass border border-white/10 rounded-full text-xs text-gray-400 hover:text-white hover:border-purple/30 hover:bg-purple/5 transition-all whitespace-nowrap"
-          >
+          <button key={p.labelEn} onClick={() => sendMessage(language === "bn" ? p.label : p.labelEn)} style={{
+            display: "flex", alignItems: "center", gap: 6, padding: "6px 12px",
+            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: 100, fontSize: 12, color: "#9CA3AF", whiteSpace: "nowrap", cursor: "pointer"
+          }}>
             {p.emoji} {language === "bn" ? p.label : p.labelEn}
           </button>
         ))}
-      </motion.div>
+      </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto space-y-4 pr-1 py-2">
+      <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 16, padding: "8px 0" }}>
         <AnimatePresence initial={false}>
           {messages.map((msg) => (
-            <motion.div
-              key={msg.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={cn("flex gap-3", msg.role === "user" ? "flex-row-reverse" : "flex-row")}
-            >
-              <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0 mt-1",
-                msg.role === "assistant"
-                  ? "bg-purple/10 border border-purple/30 text-purple-400"
-                  : "bg-primary/10 border border-primary/30 text-primary"
-              )}>
-                {msg.role === "assistant" ? <Bot className="w-4 h-4" /> : <User className="w-4 h-4" />}
+            <motion.div key={msg.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              style={{ display: "flex", gap: 10, flexDirection: msg.role === "user" ? "row-reverse" : "row" }}>
+              <div style={{
+                width: 32, height: 32, borderRadius: "50%", flexShrink: 0, marginTop: 4,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: msg.role === "assistant" ? "rgba(191,95,255,0.1)" : "rgba(57,255,20,0.1)",
+                border: msg.role === "assistant" ? "1px solid rgba(191,95,255,0.3)" : "1px solid rgba(57,255,20,0.3)"
+              }}>
+                {msg.role === "assistant" ? <Bot size={15} color="#BF5FFF" /> : <User size={15} color="#39FF14" />}
               </div>
-
-              <div className={cn(
-                "max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
-                msg.role === "assistant"
-                  ? "glass border border-white/8 text-gray-200 rounded-tl-sm"
-                  : "bg-primary/10 border border-primary/20 text-white rounded-tr-sm"
-              )}>
+              <div style={{
+                maxWidth: "78%", borderRadius: 16, padding: "10px 14px", fontSize: 13, lineHeight: 1.6,
+                background: msg.role === "assistant" ? "rgba(18,18,18,0.98)" : "rgba(57,255,20,0.08)",
+                border: msg.role === "assistant" ? "1px solid rgba(255,255,255,0.07)" : "1px solid rgba(57,255,20,0.2)",
+                color: "#E5E7EB",
+                borderTopLeftRadius: msg.role === "assistant" ? 4 : 16,
+                borderTopRightRadius: msg.role === "user" ? 4 : 16,
+              }}>
                 {msg.isLoading ? (
-                  <div className="flex items-center gap-1">
-                    {[0, 1, 2].map((i) => (
-                      <motion.span
-                        key={i}
-                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2 }}
-                        className="w-2 h-2 rounded-full bg-purple-400 inline-block"
-                      />
-                    ))}
+                  <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+                    {[0,1,2].map(i => <span key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: "#BF5FFF", display: "inline-block", animation: `bounce 0.8s ${i*0.2}s ease-in-out infinite` }} />)}
                   </div>
                 ) : (
-                  <div
-                    className="prose-sm"
-                    dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
-                  />
+                  <div dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
                 )}
-                <p className="text-xs mt-1.5 opacity-40">
+                <p style={{ fontSize: 10, marginTop: 6, opacity: 0.35, color: "#fff" }}>
                   {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </p>
               </div>
@@ -233,42 +178,33 @@ export default function AiAssistantPage() {
       </div>
 
       {/* Input */}
-      <motion.div
-        initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
-        className="flex-shrink-0 pt-3 border-t border-white/5"
-      >
-        <div className="flex gap-2 items-end">
-          <div className="flex-1 glass border border-white/10 rounded-2xl overflow-hidden focus-within:border-purple/30 transition-colors">
+      <div style={{ flexShrink: 0, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
+          <div style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, overflow: "hidden" }}>
             <textarea
               ref={inputRef}
               value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                e.target.style.height = "auto";
-                e.target.style.height = Math.min(e.target.scrollHeight, 120) + "px";
-              }}
+              onChange={(e) => { setInput(e.target.value); e.target.style.height = "auto"; e.target.style.height = Math.min(e.target.scrollHeight, 120) + "px"; }}
               onKeyDown={handleKeyDown}
               placeholder={language === "bn" ? "যেকোনো বিষয়ে জিজ্ঞেস করো..." : "Ask anything about your studies..."}
               disabled={isLoading}
               rows={1}
-              className="w-full bg-transparent px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none resize-none max-h-[120px]"
+              style={{ width: "100%", background: "transparent", padding: "12px 16px", fontSize: 13, color: "#fff", border: "none", outline: "none", resize: "none", maxHeight: 120, fontFamily: "inherit" }}
             />
           </div>
-          <Button
-            onClick={() => sendMessage()}
-            disabled={!input.trim() || isLoading}
-            size="md"
-            className="h-[46px] px-4"
-            leftIcon={isLoading ? undefined : <Send className="w-4 h-4" />}
-            isLoading={isLoading}
-          >
+          <Button onClick={() => sendMessage()} disabled={!input.trim() || isLoading} size="md"
+            style={{ height: 46, paddingLeft: 16, paddingRight: 16, flexShrink: 0 }}
+            leftIcon={isLoading ? undefined : <Send size={16} />} isLoading={isLoading}>
             {!isLoading && "Send"}
           </Button>
         </div>
-        <p className="text-xs text-gray-700 text-center mt-2">
-          Press Enter to send · Shift+Enter for new line · Powered by Anthropic Claude
-        </p>
-      </motion.div>
+        <p style={{ fontSize: 10, color: "#374151", textAlign: "center", marginTop: 8 }}>Enter to send · Shift+Enter for new line</p>
+      </div>
+
+      <style>{`
+        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+        @keyframes ping { 0%{transform:scale(1);opacity:1} 75%,100%{transform:scale(2);opacity:0} }
+      `}</style>
     </div>
   );
 }
