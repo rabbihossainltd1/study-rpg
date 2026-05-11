@@ -52,7 +52,7 @@ export default function LoginPage() {
       }
     };
     handleRedirectResult();
-  }, [router, setUser]);
+  }, [setUser]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
