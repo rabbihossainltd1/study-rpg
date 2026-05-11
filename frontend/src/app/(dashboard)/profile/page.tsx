@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
 import { XpBar } from "@/components/ui/XpBar";
 import { StatCard } from "@/components/ui/Card";
-import { RANK_COLORS, RANK_THRESHOLDS, type Rank, type User as UserType } from "@/types";
+import { RANK_COLORS, RANK_THRESHOLDS, type Rank, type User as UserType, type Achievement } from "@/types";
 import { getRarityColor, formatDuration } from "@/lib/utils";
 import {
   User, Edit3, Trophy, Zap, Flame, Clock, Star,
@@ -16,6 +16,89 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 const RANK_ORDER: Rank[] = ["Novice", "Apprentice", "Scholar", "Expert", "Master", "Grandmaster", "Legend"];
+
+const ACHIEVEMENTS: Achievement[] = [
+  {
+    id: "first_session",
+    title: "First Step",
+    titleBn: "প্রথম পদক্ষেপ",
+    description: "Complete your first study session",
+    icon: "🎯",
+    rarity: "common",
+    xpReward: 50,
+    isUnlocked: false,
+  },
+  {
+    id: "streak_7",
+    title: "Week Warrior",
+    titleBn: "সপ্তাহের যোদ্ধা",
+    description: "Maintain a 7-day study streak",
+    icon: "🔥",
+    rarity: "rare",
+    xpReward: 200,
+    isUnlocked: false,
+  },
+  {
+    id: "streak_30",
+    title: "Monthly Master",
+    titleBn: "মাসিক মাস্টার",
+    description: "Maintain a 30-day study streak",
+    icon: "⚡",
+    rarity: "epic",
+    xpReward: 500,
+    isUnlocked: false,
+  },
+  {
+    id: "xp_1000",
+    title: "XP Hunter",
+    titleBn: "এক্সপি শিকারী",
+    description: "Earn 1,000 total XP",
+    icon: "💫",
+    rarity: "common",
+    xpReward: 100,
+    isUnlocked: false,
+  },
+  {
+    id: "xp_10000",
+    title: "XP Legend",
+    titleBn: "এক্সপি কিংবদন্তি",
+    description: "Earn 10,000 total XP",
+    icon: "🌟",
+    rarity: "legendary",
+    xpReward: 1000,
+    isUnlocked: false,
+  },
+  {
+    id: "quiz_10",
+    title: "Quiz Enthusiast",
+    titleBn: "কুইজ উৎসাহী",
+    description: "Complete 10 quizzes",
+    icon: "📝",
+    rarity: "common",
+    xpReward: 150,
+    isUnlocked: false,
+  },
+  {
+    id: "perfect_quiz",
+    title: "Perfectionist",
+    titleBn: "নিখুঁততাবাদী",
+    description: "Score 100% on a quiz",
+    icon: "🏆",
+    rarity: "rare",
+    xpReward: 300,
+    isUnlocked: false,
+  },
+  {
+    id: "study_hour",
+    title: "Hour of Power",
+    titleBn: "শক্তির ঘণ্টা",
+    description: "Study for 1 hour in a single session",
+    icon: "⏱️",
+    rarity: "rare",
+    xpReward: 250,
+    isUnlocked: false,
+  },
+];
 
 export default function ProfilePage() {
   const router = useRouter();
