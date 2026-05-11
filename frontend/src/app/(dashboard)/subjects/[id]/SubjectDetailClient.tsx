@@ -31,7 +31,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-4">
         <p className="text-gray-400">Subject not found</p>
-        <Button onClick={() => router.back()} variant="ghost">← Go Back</Button>
+        <Button onClick={() => window.history.back()} variant="ghost">← Go Back</Button>
       </div>
     );
   }
@@ -80,7 +80,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
     <div className="space-y-5">
       {/* Header */}
       <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-        <button onClick={() => router.back()} className="flex items-center gap-1 text-sm text-gray-500 hover:text-white mb-4 transition-colors">
+        <button onClick={() => window.history.back()} className="flex items-center gap-1 text-sm text-gray-500 hover:text-white mb-4 transition-colors">
           <ChevronLeft className="w-4 h-4" /> Back to Subjects
         </button>
         <div className="glass-card p-5 border" style={{ borderColor: `${subject.color}25` }}>
