@@ -17,13 +17,19 @@ const nextConfig = {
         net: false,
         tls: false,
         crypto: false,
+        stream: false,
+        url: false,
+        zlib: false,
+        http: false,
+        https: false,
+        assert: false,
+        os: false,
+        path: false,
       };
-    }
-    config.externals = config.externals || [];
-    if (!isServer) {
-      config.externals.push({
-        'undici': 'undici',
-      });
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        undici: false,
+      };
     }
     return config;
   },
