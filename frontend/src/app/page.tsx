@@ -1,9 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
-import { Zap, Trophy, Target, Bot, Star, ArrowRight, Play, Users, BookOpen, Shield } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Zap, Trophy, Target, Bot, Star, BookOpen, Shield, Users, Play } from "lucide-react";
 
 const STATS = [
   { value: "50K+", label: "Active Students", labelBn: "সক্রিয় শিক্ষার্থী" },
@@ -13,48 +11,12 @@ const STATS = [
 ];
 
 const FEATURES = [
-  {
-    icon: <Zap className="w-7 h-7" />,
-    title: "XP & Leveling",
-    titleBn: "এক্সপি ও লেভেলিং",
-    desc: "Earn XP for every lesson, quiz, and challenge. Level up your scholar rank from Novice to Legend.",
-    color: "#39FF14",
-  },
-  {
-    icon: <Target className="w-7 h-7" />,
-    title: "Daily Missions",
-    titleBn: "দৈনিক মিশন",
-    desc: "Complete daily and weekly missions to earn bonus XP, coins, and exclusive rewards.",
-    color: "#00F0FF",
-  },
-  {
-    icon: <Trophy className="w-7 h-7" />,
-    title: "Leaderboard",
-    titleBn: "লিডারবোর্ড",
-    desc: "Compete globally, by district, and with friends. Rise to the top of the leaderboard.",
-    color: "#FFD700",
-  },
-  {
-    icon: <Bot className="w-7 h-7" />,
-    title: "AI Study Tutor",
-    titleBn: "এআই টিউটর",
-    desc: "Get instant explanations in Bangla and English. Your personal AI tutor available 24/7.",
-    color: "#BF5FFF",
-  },
-  {
-    icon: <BookOpen className="w-7 h-7" />,
-    title: "SSC/HSC Ready",
-    titleBn: "SSC/HSC প্রস্তুতি",
-    desc: "Comprehensive curriculum for SSC, HSC, and university admission with previous year questions.",
-    color: "#FF003C",
-  },
-  {
-    icon: <Shield className="w-7 h-7" />,
-    title: "Focus Mode",
-    titleBn: "ফোকাস মোড",
-    desc: "Pomodoro timer with XP bonuses. Block distractions and maximize your study sessions.",
-    color: "#FF8C00",
-  },
+  { icon: "⚡", title: "XP & Leveling", titleBn: "এক্সপি ও লেভেলিং", desc: "Earn XP for every lesson, quiz, and challenge. Level up your scholar rank from Novice to Legend.", color: "#39FF14" },
+  { icon: "🎯", title: "Daily Missions", titleBn: "দৈনিক মিশন", desc: "Complete daily and weekly missions to earn bonus XP, coins, and exclusive rewards.", color: "#00F0FF" },
+  { icon: "🏆", title: "Leaderboard", titleBn: "লিডারবোর্ড", desc: "Compete globally, by district, and with friends. Rise to the top of the leaderboard.", color: "#FFD700" },
+  { icon: "🤖", title: "AI Study Tutor", titleBn: "এআই টিউটর", desc: "Get instant explanations in Bangla and English. Your personal AI tutor available 24/7.", color: "#BF5FFF" },
+  { icon: "📚", title: "SSC/HSC Ready", titleBn: "SSC/HSC প্রস্তুতি", desc: "Comprehensive curriculum for SSC, HSC, and university admission with previous year questions.", color: "#FF003C" },
+  { icon: "⏱️", title: "Focus Mode", titleBn: "ফোকাস মোড", desc: "Pomodoro timer with XP bonuses. Block distractions and maximize your study sessions.", color: "#FF8C00" },
 ];
 
 const LEADERBOARD_PREVIEW = [
@@ -65,359 +27,201 @@ const LEADERBOARD_PREVIEW = [
   { rank: 5, name: "Fatema Khanam", district: "Khulna", xp: 35100, level: 32 },
 ];
 
-const TESTIMONIALS = [
-  {
-    name: "Rafiqul Islam",
-    exam: "SSC 2024 - GPA 5.00",
-    text: "Study RPG made learning addictive! I studied every single day because I didn't want to break my streak.",
-    avatar: "R",
-    color: "#39FF14",
-  },
-  {
-    name: "Sumaiya Akter",
-    exam: "HSC 2024 - GPA 5.00",
-    text: "The AI tutor explained hard Chemistry concepts in Bangla so clearly. Got A+ in Chemistry!",
-    avatar: "S",
-    color: "#00F0FF",
-  },
-  {
-    name: "Mehedi Hasan",
-    exam: "Dhaka University - Admitted",
-    text: "The competitive leaderboard kept me motivated to study more. Highly recommend for admission prep!",
-    avatar: "M",
-    color: "#BF5FFF",
-  },
-];
-
 export default function LandingPage() {
   return (
-    <div className="min-h-screen overflow-x-hidden" style={{ background: "#050505" }}>
+    <div style={{ background: "#050505", minHeight: "100vh", overflowX: "hidden" }}>
+
       {/* Navbar */}
-      <nav className="sticky top-0 left-0 right-0 z-50 glass border-b border-white/5">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center shadow-neon-primary">
-              <Zap className="w-5 h-5 text-primary" />
+      <nav style={{
+        position: "sticky", top: 0, left: 0, right: 0, zIndex: 50,
+        background: "rgba(5,5,5,0.95)", borderBottom: "1px solid rgba(255,255,255,0.06)",
+        backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)"
+      }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(57,255,20,0.1)", border: "1px solid rgba(57,255,20,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Zap size={18} color="#39FF14" />
             </div>
-            <span className="font-black text-xl text-white">Study RPG</span>
+            <span style={{ fontWeight: 900, fontSize: 20, color: "#fff" }}>Study RPG</span>
           </div>
-          <div className="flex items-center gap-3">
-            <Link href="/login">
-              <Button variant="ghost" size="sm">Sign In</Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">Get Started →</Button>
-            </Link>
+          <div style={{ display: "flex", gap: 8 }}>
+            <Link href="/login" style={{
+              padding: "8px 16px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.12)",
+              background: "rgba(255,255,255,0.05)", color: "#fff", fontWeight: 600, fontSize: 14,
+              textDecoration: "none", display: "inline-block"
+            }}>Sign In</Link>
+            <Link href="/signup" style={{
+              padding: "8px 16px", borderRadius: 10, background: "#39FF14",
+              color: "#000", fontWeight: 700, fontSize: 14, textDecoration: "none", display: "inline-block"
+            }}>Get Started →</Link>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center pt-8">
-        {/* Background orbs */}
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/5 rounded-full filter blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-secondary/5 rounded-full filter blur-[100px] pointer-events-none" />
+      <section style={{ padding: "60px 16px 40px", textAlign: "center" }}>
+        <div style={{
+          display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px",
+          borderRadius: 100, border: "1px solid rgba(57,255,20,0.3)", background: "rgba(57,255,20,0.05)",
+          color: "#39FF14", fontSize: 13, fontWeight: 600, marginBottom: 24
+        }}>
+          <Star size={14} fill="#39FF14" />
+          Bangladesh&apos;s #1 Gamified Study Platform
+        </div>
 
-        <div className="container mx-auto px-4 text-center relative z-10 py-16">
-          {/* Badge */}
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-sm font-medium mb-8"
-          >
-            <Star className="w-4 h-4 fill-primary" />
-            Bangladesh&apos;s #1 Gamified Study Platform
-          </motion.div>
+        <h1 style={{ fontSize: 48, fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: 16, letterSpacing: -1 }}>
+          STUDY LIKE A{" "}
+          <span style={{ background: "linear-gradient(135deg,#39FF14,#00F0FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            LEGEND
+          </span>
+        </h1>
 
-          {/* Headline */}
-          <motion.h1
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight mb-6 leading-none text-white"
-          >
-            STUDY LIKE A{" "}
-            <br />
-            <span className="text-gradient">LEGEND</span>
-          </motion.h1>
+        <p style={{ fontSize: 16, color: "#9CA3AF", maxWidth: 500, margin: "0 auto 8px", lineHeight: 1.6 }}>
+          পড়াশোনাকে গেমের মতো মজাদার করো। XP অর্জন করো, লেভেল আপ করো, বন্ধুদের সাথে প্রতিযোগিতা করো।
+        </p>
+        <p style={{ fontSize: 13, color: "#6B7280", marginBottom: 32 }}>
+          Turn studying into an addictive RPG adventure.
+        </p>
 
-          <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg text-gray-400 max-w-2xl mx-auto mb-4"
-          >
-            পড়াশোনাকে গেমের মতো মজাদার করো। XP অর্জন করো, লেভেল আপ করো,
-            বন্ধুদের সাথে প্রতিযোগিতা করো এবং SSC/HSC তে দুর্দান্ত ফলাফল করো।
-          </motion.p>
-          <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.25 }}
-            className="text-sm text-gray-500 mb-10"
-          >
-            Turn studying into an addictive RPG adventure. Earn XP, unlock achievements, defeat your rivals.
-          </motion.p>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+          <Link href="/signup" style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            width: "100%", maxWidth: 280, padding: "14px 24px", borderRadius: 14,
+            background: "#39FF14", color: "#000", fontWeight: 700, fontSize: 16,
+            textDecoration: "none", boxShadow: "0 0 30px rgba(57,255,20,0.3)"
+          }}>
+            <Zap size={20} /> Start Your Journey — Free
+          </Link>
+          <Link href="/login" style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            width: "100%", maxWidth: 280, padding: "14px 24px", borderRadius: 14,
+            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
+            color: "#fff", fontWeight: 600, fontSize: 16, textDecoration: "none"
+          }}>
+            <Play size={18} /> Continue as Guest
+          </Link>
+        </div>
 
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-col items-center gap-3 px-4"
-          >
-            <Link href="/signup" className="w-full max-w-xs">
-              <Button size="lg" className="text-base w-full justify-center">
-                <Zap className="w-5 h-5" />
-                Start Your Journey — Free
-              </Button>
-            </Link>
-            <Link href="/login" className="w-full max-w-xs">
-              <Button variant="ghost" size="lg" className="text-base w-full justify-center">
-                <Play className="w-5 h-5" />
-                Continue as Guest
-              </Button>
-            </Link>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
-          >
-            {STATS.map((stat, i) => (
-              <motion.div
-                key={stat.value}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.5 + i * 0.1 }}
-                className="glass-card p-4 text-center"
-              >
-                <p className="text-3xl font-black text-gradient">{stat.value}</p>
-                <p className="text-xs text-gray-500 mt-1">{stat.label}</p>
-                <p className="text-xs text-gray-600">{stat.labelBn}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+        {/* Stats */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, maxWidth: 400, margin: "40px auto 0" }}>
+          {STATS.map((stat) => (
+            <div key={stat.value} style={{
+              background: "rgba(18,18,18,0.98)", border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: 14, padding: "16px 12px", textAlign: "center"
+            }}>
+              <p style={{ fontSize: 28, fontWeight: 900, background: "linear-gradient(135deg,#39FF14,#00F0FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{stat.value}</p>
+              <p style={{ fontSize: 11, color: "#6B7280", marginTop: 4 }}>{stat.label}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <p className="text-sm font-mono text-primary tracking-widest uppercase mb-3">Features</p>
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-              Everything You Need to
-              <br />
-              <span className="text-gradient">Dominate Your Exams</span>
-            </h2>
-            <p className="text-gray-500 max-w-xl mx-auto">
-              Built for Bangladeshi students. Designed for results.
-            </p>
-          </motion.div>
+      <section style={{ padding: "40px 16px" }}>
+        <div style={{ textAlign: "center", marginBottom: 32 }}>
+          <p style={{ fontSize: 11, fontWeight: 600, color: "#39FF14", letterSpacing: 3, textTransform: "uppercase", marginBottom: 8 }}>Features</p>
+          <h2 style={{ fontSize: 28, fontWeight: 900, color: "#fff", lineHeight: 1.2 }}>
+            Everything You Need to{" "}
+            <span style={{ background: "linear-gradient(135deg,#39FF14,#00F0FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              Dominate Your Exams
+            </span>
+          </h2>
+        </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {FEATURES.map((feature, i) => (
-              <motion.div
-                key={feature.title}
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -4, scale: 1.01 }}
-                className="glass-card p-6 group cursor-default border transition-all duration-300"
-                style={{ borderColor: `${feature.color}15` }}
-              >
-                <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110"
-                  style={{ background: `${feature.color}15`, color: feature.color, boxShadow: `0 0 20px ${feature.color}20` }}
-                >
-                  {feature.icon}
-                </div>
-                <h3 className="text-lg font-bold text-white mb-1">{feature.title}</h3>
-                <p className="text-sm font-medium mb-2" style={{ color: feature.color }}>{feature.titleBn}</p>
-                <p className="text-sm text-gray-500 leading-relaxed">{feature.desc}</p>
-              </motion.div>
-            ))}
-          </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, maxWidth: 700, margin: "0 auto" }}>
+          {FEATURES.map((f) => (
+            <div key={f.title} style={{
+              background: "rgba(18,18,18,0.98)", border: `1px solid ${f.color}15`,
+              borderRadius: 16, padding: 16
+            }}>
+              <div style={{ fontSize: 28, marginBottom: 8 }}>{f.icon}</div>
+              <p style={{ fontWeight: 700, color: "#fff", fontSize: 13, marginBottom: 2 }}>{f.title}</p>
+              <p style={{ fontSize: 11, color: f.color, marginBottom: 6 }}>{f.titleBn}</p>
+              <p style={{ fontSize: 11, color: "#6B7280", lineHeight: 1.5 }}>{f.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Leaderboard Preview */}
-      <section className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent pointer-events-none" />
-        <div className="container mx-auto px-4 max-w-3xl">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <p className="text-sm font-mono text-secondary tracking-widest uppercase mb-3">Leaderboard</p>
-            <h2 className="text-4xl font-black text-white mb-3">
-              <span className="text-gradient-purple">Who&apos;s on Top?</span>
-            </h2>
-            <p className="text-gray-500">Real-time rankings updated every hour</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            className="glass-card overflow-hidden"
-          >
-            <div className="p-4 border-b border-white/5 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-gold" />
-              <span className="font-bold text-white">Global Leaderboard</span>
-              <span className="ml-auto text-xs text-gray-500">This week</span>
-            </div>
-            {LEADERBOARD_PREVIEW.map((entry, i) => (
-              <motion.div
-                key={entry.rank}
-                initial={{ x: -20, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="flex items-center gap-4 p-4 border-b border-white/5 last:border-0 hover:bg-white/3 transition-colors"
-              >
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-sm ${
-                  entry.rank === 1 ? "bg-gold/20 text-gold" :
-                  entry.rank === 2 ? "bg-gray-400/20 text-gray-400" :
-                  entry.rank === 3 ? "bg-amber-600/20 text-amber-600" :
-                  "bg-white/5 text-gray-500"
-                }`}>
-                  {entry.rank === 1 ? "👑" : entry.rank}
-                </div>
-                <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary">
-                  {entry.name.charAt(0)}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-white text-sm">{entry.name}</p>
-                  <p className="text-xs text-gray-500">{entry.district} · LV.{entry.level}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-primary">{entry.xp.toLocaleString()} XP</p>
-                </div>
-              </motion.div>
-            ))}
-            <div className="p-4 text-center">
-              <Link href="/signup">
-                <Button variant="ghost" size="sm" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                  Join & Compete
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
+      <section style={{ padding: "40px 16px" }}>
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <p style={{ fontSize: 11, fontWeight: 600, color: "#00F0FF", letterSpacing: 3, textTransform: "uppercase", marginBottom: 8 }}>Leaderboard</p>
+          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#fff" }}>Who&apos;s on Top?</h2>
         </div>
-      </section>
 
-      {/* Testimonials */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <p className="text-sm font-mono text-gold tracking-widest uppercase mb-3">Success Stories</p>
-            <h2 className="text-4xl font-black text-white mb-3">
-              Students Love <span className="text-gradient-gold">Study RPG</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div
-                key={t.name}
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="glass-card p-6 border"
-                style={{ borderColor: `${t.color}20` }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div
-                    className="w-11 h-11 rounded-full flex items-center justify-center font-black text-lg border-2"
-                    style={{ borderColor: t.color, background: `${t.color}15`, color: t.color }}
-                  >
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="font-bold text-white text-sm">{t.name}</p>
-                    <p className="text-xs" style={{ color: t.color }}>{t.exam}</p>
-                  </div>
-                </div>
-                <div className="flex gap-0.5 mb-3">
-                  {[...Array(5)].map((_, j) => (
-                    <Star key={j} className="w-4 h-4 fill-gold text-gold" />
-                  ))}
-                </div>
-                <p className="text-sm text-gray-400 leading-relaxed">&quot;{t.text}&quot;</p>
-              </motion.div>
-            ))}
+        <div style={{ maxWidth: 500, margin: "0 auto", background: "rgba(18,18,18,0.98)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 16, overflow: "hidden" }}>
+          <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", alignItems: "center", gap: 8 }}>
+            <Trophy size={16} color="#FFD700" />
+            <span style={{ fontWeight: 700, color: "#fff", fontSize: 14 }}>Global Leaderboard</span>
+          </div>
+          {LEADERBOARD_PREVIEW.map((e) => (
+            <div key={e.rank} style={{
+              display: "flex", alignItems: "center", gap: 12, padding: "12px 16px",
+              borderBottom: "1px solid rgba(255,255,255,0.04)"
+            }}>
+              <div style={{
+                width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                fontWeight: 700, fontSize: 12,
+                background: e.rank === 1 ? "rgba(255,215,0,0.15)" : e.rank === 2 ? "rgba(192,192,192,0.15)" : e.rank === 3 ? "rgba(205,127,50,0.15)" : "rgba(255,255,255,0.05)",
+                color: e.rank === 1 ? "#FFD700" : e.rank === 2 ? "#C0C0C0" : e.rank === 3 ? "#CD7F32" : "#6B7280"
+              }}>
+                {e.rank === 1 ? "👑" : e.rank}
+              </div>
+              <div style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(57,255,20,0.1)", border: "1px solid rgba(57,255,20,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "#39FF14", fontSize: 14 }}>
+                {e.name.charAt(0)}
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontWeight: 600, color: "#fff", fontSize: 13 }}>{e.name}</p>
+                <p style={{ fontSize: 11, color: "#6B7280" }}>{e.district} · LV.{e.level}</p>
+              </div>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#39FF14" }}>{e.xp.toLocaleString()} XP</span>
+            </div>
+          ))}
+          <div style={{ padding: 14, textAlign: "center" }}>
+            <Link href="/signup" style={{
+              padding: "8px 20px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.12)",
+              background: "rgba(255,255,255,0.05)", color: "#fff", fontWeight: 600, fontSize: 13,
+              textDecoration: "none", display: "inline-block"
+            }}>Join & Compete →</Link>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <div className="text-6xl mb-6">⚡</div>
-            <h2 className="text-4xl md:text-6xl font-black text-white mb-4">
-              Ready to Level Up?
-            </h2>
-            <p className="text-xl text-gray-400 mb-10 max-w-lg mx-auto">
-              তোমার পড়াশোনার যাত্রা শুরু করো আজই।
-              <br />
-              সম্পূর্ণ বিনামূল্যে!
-            </p>
-            <div className="flex flex-col items-center gap-3 px-4">
-              <Link href="/signup" className="w-full max-w-xs">
-                <Button size="lg" className="text-lg w-full justify-center">
-                  <Zap className="w-6 h-6" />
-                  শুরু করো — এখনই!
-                </Button>
-              </Link>
-              <Link href="/login?guest=true" className="w-full max-w-xs">
-                <Button variant="ghost" size="lg" className="text-lg w-full justify-center">
-                  <Users className="w-5 h-5" />
-                  Guest Mode
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
+      <section style={{ padding: "40px 16px 60px", textAlign: "center" }}>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>⚡</div>
+        <h2 style={{ fontSize: 32, fontWeight: 900, color: "#fff", marginBottom: 12 }}>Ready to Level Up?</h2>
+        <p style={{ fontSize: 16, color: "#9CA3AF", marginBottom: 32 }}>
+          তোমার পড়াশোনার যাত্রা শুরু করো আজই।<br />সম্পূর্ণ বিনামূল্যে!
+        </p>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+          <Link href="/signup" style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            width: "100%", maxWidth: 280, padding: "16px 24px", borderRadius: 14,
+            background: "#39FF14", color: "#000", fontWeight: 700, fontSize: 17,
+            textDecoration: "none", boxShadow: "0 0 40px rgba(57,255,20,0.35)"
+          }}>
+            <Zap size={22} /> শুরু করো — এখনই!
+          </Link>
+          <Link href="/login" style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            width: "100%", maxWidth: 280, padding: "16px 24px", borderRadius: 14,
+            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
+            color: "#fff", fontWeight: 600, fontSize: 17, textDecoration: "none"
+          }}>
+            <Users size={18} /> Guest Mode
+          </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-10 glass">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Zap className="w-6 h-6 text-primary" />
-            <span className="font-black text-xl text-white">Study RPG</span>
-          </div>
-          <p className="text-sm text-gray-600 mb-2">
-            Built with ❤️ for Bangladeshi students · SSC · HSC · University
-          </p>
-          <p className="text-xs text-gray-700">
-            © {new Date().getFullYear()} Study RPG. All rights reserved.
-          </p>
+      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "24px 16px", textAlign: "center", background: "rgba(5,5,5,0.95)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
+          <Zap size={18} color="#39FF14" />
+          <span style={{ fontWeight: 900, fontSize: 18, color: "#fff" }}>Study RPG</span>
         </div>
+        <p style={{ fontSize: 12, color: "#374151" }}>© {new Date().getFullYear()} Study RPG. Built for Bangladeshi students.</p>
       </footer>
     </div>
   );
