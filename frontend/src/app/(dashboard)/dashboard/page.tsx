@@ -153,7 +153,7 @@ export default function DashboardPage() {
                   transition={{ delay: 0.35 + i * 0.05 }}
                   whileHover={{ scale: 1.02 }}
                 >
-                  <Link href={`/subjects/${subject.id}`}>
+                  <button onClick={() => navigate(`/subjects/${subject.id}`)} style={{background:"none",border:"none",cursor:"pointer",display:"block",width:"100%",textAlign:"left",padding:0}}>
                     <div
                       className="glass-card p-4 border cursor-pointer hover:shadow-lg transition-all duration-300"
                       style={{ borderColor: `${subject.color}20` }}
@@ -181,7 +181,7 @@ export default function DashboardPage() {
                       </div>
                       <p className="text-xs text-gray-600 mt-1">{subject.progress}% complete</p>
                     </div>
-                  </Link>
+                  </button>
                 </motion.div>
               ))}
             </div>
