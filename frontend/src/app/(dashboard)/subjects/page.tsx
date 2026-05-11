@@ -63,7 +63,7 @@ export default function SubjectsPage() {
             transition={{ delay: i * 0.06 }}
             whileHover={{ y: -4, scale: 1.02 }}
           >
-            <Link href={`/subjects/${subject.id}`}>
+            <button onClick={() => navigate(`/subjects/${subject.id}`)} style={{background:"none",border:"none",cursor:"pointer",display:"block",width:"100%",textAlign:"left",padding:0}}>
               <div
                 className="glass-card p-5 border cursor-pointer transition-all duration-300 hover:shadow-lg group"
                 style={{ borderColor: `${subject.color}25` }}
@@ -126,7 +126,7 @@ export default function SubjectsPage() {
                   ))}
                 </div>
               </div>
-            </Link>
+            </button>
           </motion.div>
         ))}
       </div>
