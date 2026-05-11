@@ -54,9 +54,7 @@ jobs:
 
       - name: Setup Gradle
         working-directory: frontend/android
-        run: |
-          gradle wrapper --gradle-version 8.4 || true
-          chmod +x gradlew
+        run: chmod +x gradlew
 
       - name: Build APK
         working-directory: frontend/android
