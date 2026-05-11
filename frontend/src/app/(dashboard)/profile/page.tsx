@@ -1,5 +1,7 @@
 "use client";
 
+import { navigate } from "@/lib/navigate";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
@@ -12,7 +14,6 @@ import {
   Shield, Globe, LogOut, Settings, ChevronRight, Copy, Check,
 } from "lucide-react";
 import { logOut } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 const RANK_ORDER: Rank[] = ["Novice", "Apprentice", "Scholar", "Expert", "Master", "Grandmaster", "Legend"];
@@ -101,7 +102,6 @@ const ACHIEVEMENTS: Achievement[] = [
 ];
 
 export default function ProfilePage() {
-  const router = useRouter();
   const { user, language, setUser } = useUserStore();
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState("stats");
@@ -116,7 +116,7 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     await logOut();
-    router.push("/");
+    navigate("/");
     toast.success("Logged out successfully");
   };
 
