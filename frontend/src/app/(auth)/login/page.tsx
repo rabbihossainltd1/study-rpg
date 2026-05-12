@@ -1,8 +1,8 @@
 "use client";
 
 import { navigate } from "@/lib/navigate";
-import { useState, useEffect } from "react";
-import { Zap, Mail, Lock, Eye, EyeOff, Chrome, AlertCircle } from "lucide-react";
+import { useState } from "react";
+import { Zap, Mail, Lock, Eye, EyeOff, Chrome } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
   signInWithGoogle,
@@ -10,8 +10,6 @@ import {
   signInGuest,
   createUserProfile,
   getUserProfile,
-  auth,
-  isNativeApp,
 } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
@@ -24,28 +22,14 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
-  const [debugLog, setDebugLog] = useState<string[]>([]);
-
-  const log = (msg: string) => {
-    console.log("[StudyRPG]", msg);
-    setDebugLog(prev => [...prev.slice(-4), msg]);
-  };
-
-  useEffect(() => {
-    log("App loaded. Native: " + isNativeApp());
-    log("Auth domain: " + (process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "hardcoded"));
-  }, []);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
     setIsLoading(true);
-    log("Trying email login...");
     try {
       const cred = await signInEmail(email, password);
-      log("Auth OK: " + cred.user.uid);
       const profile = await getUserProfile(cred.user.uid);
-      log("Profile: " + (profile ? "found" : "not found"));
       if (profile) {
         setUser(profile);
         toast.success("Welcome back! 🎮");
@@ -55,8 +39,9 @@ export default function LoginPage() {
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      log("ERROR: " + message);
-      toast.error(message.slice(0, 80));
+      toast.error(message.includes("invalid-credential") || message.includes("wrong-password")
+        ? "Invalid email or password"
+        : message.slice(0, 80));
     } finally {
       setIsLoading(false);
     }
@@ -64,11 +49,9 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
-    log("Trying Google login...");
     try {
       const cred = await signInWithGoogle();
-      if (!cred) { log("No cred returned"); return; }
-      log("Google auth OK");
+      if (!cred) return;
       let profile = await getUserProfile((cred as any).user.uid);
       if (!profile) profile = await createUserProfile((cred as any).user);
       setUser(profile);
@@ -76,8 +59,9 @@ export default function LoginPage() {
       navigate("/dashboard");
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      log("Google ERROR: " + message);
-      toast.error(message.slice(0, 80));
+      if (!message.includes("cancelled") && !message.includes("cancel")) {
+        toast.error("Google sign-in failed. Try email login.");
+      }
     } finally {
       setGoogleLoading(false);
     }
@@ -85,20 +69,16 @@ export default function LoginPage() {
 
   const handleGuestLogin = async () => {
     setGuestLoading(true);
-    log("Trying guest login...");
     try {
       const cred = await signInGuest();
-      log("Guest auth OK: " + cred.user.uid);
       const profile = await createUserProfile(cred.user, {
         username: `Guest_${Math.floor(Math.random() * 9999)}`,
       });
-      log("Guest profile created");
       setUser(profile);
       toast.success("Playing as Guest 👻");
       navigate("/dashboard");
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      log("Guest ERROR: " + message);
       toast.error(message.slice(0, 80));
     } finally {
       setGuestLoading(false);
@@ -121,19 +101,6 @@ export default function LoginPage() {
           <h1 className="text-3xl font-black text-white mb-2">Welcome Back!</h1>
           <p className="text-gray-500">Continue your learning journey</p>
         </div>
-
-        {/* Debug Panel */}
-        {debugLog.length > 0 && (
-          <div style={{ background: "#0a0a0a", border: "1px solid #333", borderRadius: 10, padding: 10, marginBottom: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
-              <AlertCircle size={12} color="#f59e0b" />
-              <span style={{ fontSize: 11, color: "#f59e0b", fontWeight: 600 }}>Debug Log</span>
-            </div>
-            {debugLog.map((msg, i) => (
-              <p key={i} style={{ fontSize: 10, color: "#6b7280", fontFamily: "monospace", margin: "2px 0" }}>{msg}</p>
-            ))}
-          </div>
-        )}
 
         <div className="glass-card p-7 space-y-5">
           <Button variant="ghost" className="w-full" size="lg" onClick={handleGoogleLogin} isLoading={googleLoading} leftIcon={<Chrome className="w-5 h-5 text-blue-400" />}>
