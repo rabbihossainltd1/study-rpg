@@ -1,7 +1,11 @@
 "use client";
 
 import { navigate } from "@/lib/navigate";
-import { Zap, Trophy, Target, Bot, Star, BookOpen, Shield, Users, Play } from "lucide-react";
+import { useState } from "react";
+import { Zap, Trophy, Users, Star, Play } from "lucide-react";
+import { signInGuest, createUserProfile } from "@/lib/firebase";
+import { useUserStore } from "@/store/useUserStore";
+import toast from "react-hot-toast";
 
 const STATS = [
   { value: "50K+", label: "Active Students", labelBn: "সক্রিয় শিক্ষার্থী" },
@@ -28,6 +32,27 @@ const LEADERBOARD_PREVIEW = [
 ];
 
 export default function LandingPage() {
+  const { setUser } = useUserStore();
+  const [guestLoading, setGuestLoading] = useState(false);
+
+  const handleGuestLogin = async () => {
+    setGuestLoading(true);
+    try {
+      const cred = await signInGuest();
+      const profile = await createUserProfile(cred.user, {
+        username: `Guest_${Math.floor(Math.random() * 9999)}`,
+      });
+      setUser(profile);
+      toast.success("Playing as Guest 👻");
+      navigate("/dashboard");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message.slice(0, 80));
+    } finally {
+      setGuestLoading(false);
+    }
+  };
+
   return (
     <div style={{ background: "#050505", minHeight: "100vh", overflowX: "hidden" }}>
 
@@ -45,15 +70,19 @@ export default function LandingPage() {
             <span style={{ fontWeight: 900, fontSize: 20, color: "#fff" }}>Study RPG</span>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <a href="/login/" onClick={(e)=>{e.preventDefault();navigate("/login");}}  style={{
-              padding: "8px 16px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.12)",
-              background: "rgba(255,255,255,0.05)", color: "#fff", fontWeight: 600, fontSize: 14,
-              textDecoration: "none", display: "inline-block"
-            }}>Sign In</a>
-            <a href="/signup/" onClick={(e)=>{e.preventDefault();navigate("/signup");}}  style={{
-              padding: "8px 16px", borderRadius: 10, background: "#39FF14",
-              color: "#000", fontWeight: 700, fontSize: 14, textDecoration: "none", display: "inline-block"
-            }}>Get Started →</a>
+            <button
+              onClick={() => navigate("/login")}
+              style={{
+                padding: "8px 16px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.12)",
+                background: "rgba(255,255,255,0.05)", color: "#fff", fontWeight: 600, fontSize: 14,
+                cursor: "pointer"
+              }}>Sign In</button>
+            <button
+              onClick={() => navigate("/signup")}
+              style={{
+                padding: "8px 16px", borderRadius: 10, background: "#39FF14",
+                color: "#000", fontWeight: 700, fontSize: 14, border: "none", cursor: "pointer"
+              }}>Get Started →</button>
           </div>
         </div>
       </nav>
@@ -84,22 +113,28 @@ export default function LandingPage() {
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-          <a href="/signup/" onClick={(e)=>{e.preventDefault();navigate("/signup");}}  style={{
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-            width: "100%", maxWidth: 280, padding: "14px 24px", borderRadius: 14,
-            background: "#39FF14", color: "#000", fontWeight: 700, fontSize: 16,
-            textDecoration: "none", boxShadow: "0 0 30px rgba(57,255,20,0.3)"
-          }}>
+          <button
+            onClick={() => navigate("/signup")}
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              width: "100%", maxWidth: 280, padding: "14px 24px", borderRadius: 14,
+              background: "#39FF14", color: "#000", fontWeight: 700, fontSize: 16,
+              border: "none", cursor: "pointer", boxShadow: "0 0 30px rgba(57,255,20,0.3)"
+            }}>
             <Zap size={20} /> Start Your Journey — Free
-          </a>
-          <a href="/login/" onClick={(e)=>{e.preventDefault();navigate("/login");}}  style={{
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-            width: "100%", maxWidth: 280, padding: "14px 24px", borderRadius: 14,
-            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
-            color: "#fff", fontWeight: 600, fontSize: 16, textDecoration: "none"
-          }}>
-            <Play size={18} /> Continue as Guest
-          </a>
+          </button>
+          <button
+            onClick={handleGuestLogin}
+            disabled={guestLoading}
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              width: "100%", maxWidth: 280, padding: "14px 24px", borderRadius: 14,
+              background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
+              color: guestLoading ? "#6B7280" : "#fff", fontWeight: 600, fontSize: 16,
+              cursor: guestLoading ? "not-allowed" : "pointer"
+            }}>
+            <Play size={18} /> {guestLoading ? "Loading..." : "Continue as Guest"}
+          </button>
         </div>
 
         {/* Stats */}
@@ -179,11 +214,13 @@ export default function LandingPage() {
             </div>
           ))}
           <div style={{ padding: 14, textAlign: "center" }}>
-            <a href="/signup/" onClick={(e)=>{e.preventDefault();navigate("/signup");}}  style={{
-              padding: "8px 20px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.12)",
-              background: "rgba(255,255,255,0.05)", color: "#fff", fontWeight: 600, fontSize: 13,
-              textDecoration: "none", display: "inline-block"
-            }}>Join & Compete →</a>
+            <button
+              onClick={() => navigate("/signup")}
+              style={{
+                padding: "8px 20px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.12)",
+                background: "rgba(255,255,255,0.05)", color: "#fff", fontWeight: 600, fontSize: 13,
+                cursor: "pointer"
+              }}>Join & Compete →</button>
           </div>
         </div>
       </section>
@@ -196,22 +233,28 @@ export default function LandingPage() {
           তোমার পড়াশোনার যাত্রা শুরু করো আজই।<br />সম্পূর্ণ বিনামূল্যে!
         </p>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-          <a href="/signup/" onClick={(e)=>{e.preventDefault();navigate("/signup");}}  style={{
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-            width: "100%", maxWidth: 280, padding: "16px 24px", borderRadius: 14,
-            background: "#39FF14", color: "#000", fontWeight: 700, fontSize: 17,
-            textDecoration: "none", boxShadow: "0 0 40px rgba(57,255,20,0.35)"
-          }}>
+          <button
+            onClick={() => navigate("/signup")}
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              width: "100%", maxWidth: 280, padding: "16px 24px", borderRadius: 14,
+              background: "#39FF14", color: "#000", fontWeight: 700, fontSize: 17,
+              border: "none", cursor: "pointer", boxShadow: "0 0 40px rgba(57,255,20,0.35)"
+            }}>
             <Zap size={22} /> শুরু করো — এখনই!
-          </a>
-          <a href="/login/" onClick={(e)=>{e.preventDefault();navigate("/login");}}  style={{
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-            width: "100%", maxWidth: 280, padding: "16px 24px", borderRadius: 14,
-            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
-            color: "#fff", fontWeight: 600, fontSize: 17, textDecoration: "none"
-          }}>
-            <Users size={18} /> Guest Mode
-          </a>
+          </button>
+          <button
+            onClick={handleGuestLogin}
+            disabled={guestLoading}
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              width: "100%", maxWidth: 280, padding: "16px 24px", borderRadius: 14,
+              background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
+              color: guestLoading ? "#6B7280" : "#fff", fontWeight: 600, fontSize: 17,
+              cursor: guestLoading ? "not-allowed" : "pointer"
+            }}>
+            <Users size={18} /> {guestLoading ? "Loading..." : "Guest Mode"}
+          </button>
         </div>
       </section>
 
