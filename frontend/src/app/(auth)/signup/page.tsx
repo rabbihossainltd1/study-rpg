@@ -40,7 +40,7 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       const cred = await signUpEmail(email, password);
-      const profile = await createUserProfile(cred.user, { username, examMode, district });
+      const profile = await createUserProfile(cred?.user, { username, examMode, district });
       setUser(profile);
       toast.success("Welcome to Study RPG! Your journey begins! ⚡");
       navigate("/dashboard");
@@ -60,7 +60,7 @@ export default function SignupPage() {
         toast.error("Google signup was cancelled");
         return;
       }
-      const profile = await createUserProfile(cred.user, { examMode, district });
+      const profile = await createUserProfile(cred?.user, { examMode, district });
       setUser(profile);
       toast.success("Account created! ⚡");
       navigate("/dashboard");
