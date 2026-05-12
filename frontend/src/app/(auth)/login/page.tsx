@@ -10,16 +10,11 @@ import {
   signInGuest,
   createUserProfile,
   getUserProfile,
-  getRedirectResult,
   auth,
+  isNativeApp,
 } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
-
-const isNativeApp = () =>
-  typeof window !== "undefined" &&
-  ((window as any).Capacitor?.isNativePlatform?.() === true ||
-    window.navigator.userAgent.includes("wv"));
 
 export default function LoginPage() {
   const { setUser } = useUserStore();
@@ -33,26 +28,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     setNative(isNativeApp());
-
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result?.user) {
-          setGoogleLoading(true);
-          let profile = await getUserProfile(result.user.uid);
-          if (!profile) profile = await createUserProfile(result.user);
-          setUser(profile);
-          toast.success("Welcome to Study RPG! ⚡");
-          navigate("/dashboard");
-        }
-      } catch {
-        // No redirect result
-      } finally {
-        setGoogleLoading(false);
-      }
-    };
-    handleRedirectResult();
-  }, [setUser]);
+  }, []);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,16 +57,10 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = async () => {
-    if (native) {
-      toast("Google Sign-In is opening... please wait.", { icon: "🔄" });
-    }
     setGoogleLoading(true);
     try {
       const cred = await signInWithGoogle();
-      if (!cred) {
-        // Redirect flow — result handled in useEffect on return
-        return;
-      }
+      if (!cred) return;
       let profile = await getUserProfile((cred as any).user.uid);
       if (!profile) profile = await createUserProfile((cred as any).user);
       setUser(profile);
@@ -98,13 +68,14 @@ export default function LoginPage() {
       navigate("/dashboard");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "";
-      if (msg.includes("popup-closed") || msg.includes("cancelled")) {
+      if (msg.includes("popup-closed") || msg.includes("cancelled") || msg.includes("cancel")) {
         toast.error("Sign-in cancelled");
       } else if (msg.includes("network") || msg.includes("fetch")) {
         toast.error("Network error. Check your connection.");
       } else {
         toast.error("Google login failed. Try Email or Guest.");
       }
+    } finally {
       setGoogleLoading(false);
     }
   };
@@ -121,11 +92,9 @@ export default function LoginPage() {
       navigate("/dashboard");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "";
-      if (msg.includes("network") || msg.includes("fetch")) {
-        toast.error("Network error. Check your connection.");
-      } else {
-        toast.error("Guest login failed");
-      }
+      toast.error(
+        msg.includes("network") ? "Network error. Check your connection." : "Guest login failed"
+      );
     } finally {
       setGuestLoading(false);
     }
@@ -168,12 +137,6 @@ export default function LoginPage() {
             Continue with Google
           </Button>
 
-          {native && (
-            <p style={{ textAlign: "center", fontSize: 11, color: "#6B7280", marginTop: -8 }}>
-              Google Sign-In may open a browser. Use Email below for best experience.
-            </p>
-          )}
-
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-white/10" />
             <span className="text-xs text-gray-600">OR</span>
@@ -182,9 +145,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1.5">
-                Email
-              </label>
+              <label className="block text-sm font-medium text-gray-400 mb-1.5">Email</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
                 <input
@@ -199,9 +160,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1.5">
-                Password
-              </label>
+              <label className="block text-sm font-medium text-gray-400 mb-1.5">Password</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
                 <input
@@ -217,21 +176,12 @@ export default function LoginPage() {
                   onClick={() => setShowPass(!showPass)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400 transition-colors"
                 >
-                  {showPass ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            <Button
-              type="submit"
-              className="w-full"
-              size="lg"
-              isLoading={isLoading}
-            >
+            <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
               <Zap className="w-4 h-4" />
               Sign In
             </Button>
