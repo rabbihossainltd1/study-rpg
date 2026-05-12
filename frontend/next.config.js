@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
-const isStaticBuild = process.env.STATIC_EXPORT === "true";
-
 const nextConfig = {
-  ...(isStaticBuild && { output: "export", trailingSlash: true }),
+  output: "export",
+  trailingSlash: true,
   images: {
     unoptimized: true,
     remotePatterns: [
