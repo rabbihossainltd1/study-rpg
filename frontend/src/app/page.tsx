@@ -44,12 +44,12 @@ export default function LandingPage() {
             <span style={{ fontWeight: 900, fontSize: 20, color: "#fff" }}>Study RPG</span>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <a href="/login" style={{
+            <a href="/login/" onClick={(e)=>{e.preventDefault();window.location.href="/login/";}} style={{
               padding: "8px 16px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.12)",
               background: "rgba(255,255,255,0.05)", color: "#fff", fontWeight: 600, fontSize: 14,
               textDecoration: "none", display: "inline-block"
             }}>Sign In</a>
-            <a href="/signup" style={{
+            <a href="/signup/" onClick={(e)=>{e.preventDefault();window.location.href="/signup/";}} style={{
               padding: "8px 16px", borderRadius: 10, background: "#39FF14",
               color: "#000", fontWeight: 700, fontSize: 14, textDecoration: "none", display: "inline-block"
             }}>Get Started →</a>
@@ -83,7 +83,7 @@ export default function LandingPage() {
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-          <a href="/signup" style={{
+          <a href="/signup/" onClick={(e)=>{e.preventDefault();window.location.href="/signup/";}} style={{
             display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
             width: "100%", maxWidth: 280, padding: "14px 24px", borderRadius: 14,
             background: "#39FF14", color: "#000", fontWeight: 700, fontSize: 16,
@@ -91,7 +91,7 @@ export default function LandingPage() {
           }}>
             <Zap size={20} /> Start Your Journey — Free
           </a>
-          <a href="/login" style={{
+          <a href="/login/" onClick={(e)=>{e.preventDefault();window.location.href="/login/";}} style={{
             display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
             width: "100%", maxWidth: 280, padding: "14px 24px", borderRadius: 14,
             background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
@@ -178,7 +178,7 @@ export default function LandingPage() {
             </div>
           ))}
           <div style={{ padding: 14, textAlign: "center" }}>
-            <a href="/signup" style={{
+            <a href="/signup/" onClick={(e)=>{e.preventDefault();window.location.href="/signup/";}} style={{
               padding: "8px 20px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.12)",
               background: "rgba(255,255,255,0.05)", color: "#fff", fontWeight: 600, fontSize: 13,
               textDecoration: "none", display: "inline-block"
@@ -195,7 +195,7 @@ export default function LandingPage() {
           তোমার পড়াশোনার যাত্রা শুরু করো আজই।<br />সম্পূর্ণ বিনামূল্যে!
         </p>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-          <a href="/signup" style={{
+          <a href="/signup/" onClick={(e)=>{e.preventDefault();window.location.href="/signup/";}} style={{
             display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
             width: "100%", maxWidth: 280, padding: "16px 24px", borderRadius: 14,
             background: "#39FF14", color: "#000", fontWeight: 700, fontSize: 17,
@@ -203,7 +203,7 @@ export default function LandingPage() {
           }}>
             <Zap size={22} /> শুরু করো — এখনই!
           </a>
-          <a href="/login" style={{
+          <a href="/login/" onClick={(e)=>{e.preventDefault();window.location.href="/login/";}} style={{
             display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
             width: "100%", maxWidth: 280, padding: "16px 24px", borderRadius: 14,
             background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
