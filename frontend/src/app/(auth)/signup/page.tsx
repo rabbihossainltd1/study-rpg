@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { navigate } from "@/lib/navigate";
 import { Zap, Mail, Lock, User, Eye, EyeOff, Chrome, MapPin, GraduationCap, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { signUpEmail, signInWithGoogle, createUserProfile } from "@/lib/firebase";
+import { signUpEmail, signInWithGoogle, createUserProfile, handleGoogleRedirectResult, isNativeApp } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
 
@@ -21,6 +21,7 @@ export default function SignupPage() {
   const { setUser } = useUserStore();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -28,6 +29,23 @@ export default function SignupPage() {
   const [examMode, setExamMode] = useState("SSC");
   const [district, setDistrict] = useState("Dhaka");
   const [avatar, setAvatar] = useState("⚡");
+
+  // Handle Google redirect result on mount (for native app)
+  useEffect(() => {
+    if (!isNativeApp()) return;
+    setGoogleLoading(true);
+    handleGoogleRedirectResult()
+      .then(async (cred) => {
+        if (!cred || !cred.user) return;
+        const profile = await createUserProfile(cred.user, { examMode, district });
+        setUser(profile);
+        toast.success("Account created! ⚡");
+        navigate("/dashboard");
+      })
+      .catch(() => {})
+      .finally(() => setGoogleLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleStep1 = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,21 +71,18 @@ export default function SignupPage() {
   };
 
   const handleGoogleSignup = async () => {
-    setIsLoading(true);
+    setGoogleLoading(true);
     try {
       const cred = await signInWithGoogle();
-      if (!cred) {
-        toast.error("Google signup was cancelled");
-        return;
-      }
+      // Native app: redirect in progress, page will reload
+      if (!cred) return;
       const profile = await createUserProfile(cred?.user, { examMode, district });
       setUser(profile);
       toast.success("Account created! ⚡");
       navigate("/dashboard");
     } catch {
       toast.error("Google signup failed");
-    } finally {
-      setIsLoading(false);
+      setGoogleLoading(false);
     }
   };
 
@@ -112,7 +127,7 @@ export default function SignupPage() {
             <div>
               <Button
                 variant="ghost" className="w-full mb-5" size="lg"
-                onClick={handleGoogleSignup} isLoading={isLoading}
+                onClick={handleGoogleSignup} isLoading={googleLoading}
                 leftIcon={<Chrome className="w-5 h-5 text-blue-400" />}
               >
                 Sign up with Google
