@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { RANK_COLORS, type Rank } from "@/types";
 
@@ -54,11 +53,9 @@ export function XpBar({ currentXp, totalXp, level, rank, compact = false, classN
           <span className="text-xs text-gray-500">{progressXp}/{neededXp} XP</span>
         </div>
         <div className="xp-bar-track h-2">
-          <motion.div
-            className="xp-bar-fill h-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${percentage}%` }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+          <div
+            className="xp-bar-fill h-full transition-all duration-1000 ease-out"
+            style={{ width: `${percentage}%` }}
           />
         </div>
       </div>
@@ -91,16 +88,12 @@ export function XpBar({ currentXp, totalXp, level, rank, compact = false, classN
       </div>
 
       <div className="xp-bar-track h-4 relative">
-        <motion.div
-          className="xp-bar-fill h-full relative"
-          initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+        <div
+          className="xp-bar-fill h-full relative transition-all duration-1000 ease-out"
+          style={{ width: `${percentage}%` }}
         >
           <div className="absolute right-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white opacity-80" />
-        </motion.div>
-
-        {/* Milestone markers */}
+        </div>
         {[25, 50, 75].map((mark) => (
           <div
             key={mark}

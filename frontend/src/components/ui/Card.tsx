@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, type HTMLMotionProps } from "framer-motion";
+import type { HTMLAttributes } from "react";
 
-interface CardProps extends HTMLMotionProps<"div"> {
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
   glow?: "green" | "cyan" | "purple" | "red" | "gold" | "none";
   hover?: boolean;
 }
@@ -19,18 +19,17 @@ const glowMap = {
 
 export function Card({ glow = "none", hover = false, className, children, ...props }: CardProps) {
   return (
-    <motion.div
+    <div
       className={cn(
         "glass-card p-5 transition-all duration-300",
         hover && "cursor-pointer",
         glow !== "none" && glowMap[glow],
         className
       )}
-      whileHover={hover ? { y: -2 } : undefined}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -49,7 +48,7 @@ export function StatCard({
 }) {
   return (
     <div
-      className="glass-card p-4 flex items-center gap-4 border transition-all duration-300 hover:scale-[1.02]"
+      className="glass-card p-4 flex items-center gap-4 border transition-all duration-300"
       style={{ borderColor: `${color}20` }}
     >
       <div

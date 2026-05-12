@@ -1,11 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, type HTMLMotionProps } from "framer-motion";
 import { Loader2 } from "lucide-react";
-import type { ReactNode } from "react";
+import type { ReactNode, ButtonHTMLAttributes } from "react";
 
-interface ButtonProps extends Omit<HTMLMotionProps<"button">, "children"> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost" | "danger" | "gold";
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
@@ -40,12 +39,10 @@ export function Button({
   ...props
 }: ButtonProps) {
   return (
-    <motion.button
-      whileTap={{ scale: 0.97 }}
-      whileHover={{ scale: 1.02 }}
+    <button
       disabled={disabled || isLoading}
       className={cn(
-        "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+        "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-95",
         variants[variant],
         sizes[size],
         className
@@ -59,6 +56,6 @@ export function Button({
       )}
       {children}
       {!isLoading && rightIcon}
-    </motion.button>
+    </button>
   );
 }
