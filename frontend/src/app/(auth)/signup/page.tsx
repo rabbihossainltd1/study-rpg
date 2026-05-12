@@ -56,6 +56,10 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       const cred = await signInWithGoogle();
+      if (!cred) {
+        toast.error("Google signup was cancelled");
+        return;
+      }
       const profile = await createUserProfile(cred.user, { examMode, district });
       setUser(profile);
       toast.success("Account created! ⚡");
