@@ -1,9 +1,7 @@
 "use client";
 
 import { navigate } from "@/lib/navigate";
-
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
 import { SUBJECTS, CHAPTERS, SAMPLE_QUIZ_QUESTIONS } from "@/lib/subjects";
 import { Button } from "@/components/ui/Button";
@@ -79,7 +77,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
   return (
     <div className="space-y-5">
       {/* Header */}
-      <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+      <div>
         <button onClick={() => window.history.back()} className="flex items-center gap-1 text-sm text-gray-500 hover:text-white mb-4 transition-colors">
           <ChevronLeft className="w-4 h-4" /> Back to Subjects
         </button>
@@ -111,77 +109,70 @@ export default function SubjectDetailClient({ id }: { id: string }) {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Chapters */}
-      <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
+      <div>
         <div className="flex items-center gap-2 mb-3">
           <BookOpen className="w-5 h-5" style={{ color: subject.color }} />
           <h2 className="font-bold text-white">Chapters</h2>
         </div>
         <div className="space-y-2">
           {chapters.map((chapter, i) => (
-            <motion.div key={chapter.id} initial={{ x: -10, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.07 }}>
-              <div className={`glass-card border overflow-hidden transition-all ${chapter.isLocked ? "opacity-60" : ""}`} style={{ borderColor: expandedChapter === chapter.id ? `${subject.color}30` : "transparent" }}>
-                <button
-                  className="w-full flex items-center gap-4 p-4 text-left"
-                  onClick={() => !chapter.isLocked && setExpandedChapter(expandedChapter === chapter.id ? null : chapter.id)}
-                  disabled={chapter.isLocked}
-                >
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0 ${
-                    chapter.isCompleted ? "bg-primary/20 text-primary" :
-                    chapter.isLocked ? "bg-white/5 text-gray-600" :
-                    "bg-white/5 text-gray-400"
-                  }`} style={!chapter.isLocked && !chapter.isCompleted ? { borderColor: `${subject.color}30`, background: `${subject.color}10`, color: subject.color } : {}}>
-                    {chapter.isLocked ? <Lock className="w-4 h-4" /> : chapter.isCompleted ? <CheckCircle2 className="w-4 h-4" /> : i + 1}
+            <div key={chapter.id} className={`glass-card border overflow-hidden transition-all ${chapter.isLocked ? "opacity-60" : ""}`} style={{ borderColor: expandedChapter === chapter.id ? `${subject.color}30` : "transparent" }}>
+              <button
+                className="w-full flex items-center gap-4 p-4 text-left"
+                onClick={() => !chapter.isLocked && setExpandedChapter(expandedChapter === chapter.id ? null : chapter.id)}
+                disabled={chapter.isLocked}
+              >
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                  chapter.isCompleted ? "bg-primary/20 text-primary" :
+                  chapter.isLocked ? "bg-white/5 text-gray-600" : ""
+                }`} style={!chapter.isLocked && !chapter.isCompleted ? { borderColor: `${subject.color}30`, background: `${subject.color}10`, color: subject.color } : {}}>
+                  {chapter.isLocked ? <Lock className="w-4 h-4" /> : chapter.isCompleted ? <CheckCircle2 className="w-4 h-4" /> : i + 1}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-white text-sm">{language === "bn" ? chapter.titleBn : chapter.title}</p>
+                  <p className="text-xs text-gray-500">{chapter.description}</p>
+                  <div className="flex gap-2 mt-1">
+                    <span className="text-xs text-gray-600">{chapter.lessons.length} lessons</span>
+                    <span className="text-xs font-bold" style={{ color: subject.color }}>+{chapter.xpReward} XP</span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-white text-sm">{language === "bn" ? chapter.titleBn : chapter.title}</p>
-                    <p className="text-xs text-gray-500">{chapter.description}</p>
-                    <div className="flex gap-2 mt-1">
-                      <span className="text-xs text-gray-600">{chapter.lessons.length} lessons</span>
-                      <span className="text-xs font-bold" style={{ color: subject.color }}>+{chapter.xpReward} XP</span>
-                    </div>
-                  </div>
-                  {!chapter.isLocked && (
-                    expandedChapter === chapter.id ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />
-                  )}
-                </button>
+                </div>
+                {!chapter.isLocked && (
+                  expandedChapter === chapter.id ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />
+                )}
+              </button>
 
-                <AnimatePresence>
-                  {expandedChapter === chapter.id && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                      <div className="border-t border-white/5 divide-y divide-white/5">
-                        {chapter.lessons.map((lesson) => (
-                          <div key={lesson.id} className="flex items-center gap-3 px-4 py-3 hover:bg-white/3 transition-colors">
-                            <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                              lesson.type === "quiz" ? "bg-secondary/10 text-secondary" :
-                              lesson.type === "practice" ? "bg-gold/10 text-gold" :
-                              "bg-white/5 text-gray-400"
-                            }`}>
-                              {lesson.type === "quiz" ? <HelpCircle className="w-3.5 h-3.5" /> :
-                               lesson.type === "practice" ? <Zap className="w-3.5 h-3.5" /> :
-                               <BookOpen className="w-3.5 h-3.5" />}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm text-white">{language === "bn" ? lesson.titleBn : lesson.title}</p>
-                              <div className="flex items-center gap-2 mt-0.5">
-                                <Clock className="w-3 h-3 text-gray-600" />
-                                <span className="text-xs text-gray-600">{lesson.duration} min</span>
-                                <span className="text-xs font-semibold text-primary">+{lesson.xpReward} XP</span>
-                              </div>
-                            </div>
-                            <Button size="sm" variant="ghost" leftIcon={<Play className="w-3 h-3" />} className="text-xs py-1 px-2">
-                              Start
-                            </Button>
-                          </div>
-                        ))}
+              {expandedChapter === chapter.id && (
+                <div className="border-t border-white/5 divide-y divide-white/5">
+                  {chapter.lessons.map((lesson) => (
+                    <div key={lesson.id} className="flex items-center gap-3 px-4 py-3 hover:bg-white/3 transition-colors">
+                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                        lesson.type === "quiz" ? "bg-secondary/10 text-secondary" :
+                        lesson.type === "practice" ? "bg-gold/10 text-gold" :
+                        "bg-white/5 text-gray-400"
+                      }`}>
+                        {lesson.type === "quiz" ? <HelpCircle className="w-3.5 h-3.5" /> :
+                         lesson.type === "practice" ? <Zap className="w-3.5 h-3.5" /> :
+                         <BookOpen className="w-3.5 h-3.5" />}
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-white">{language === "bn" ? lesson.titleBn : lesson.title}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <Clock className="w-3 h-3 text-gray-600" />
+                          <span className="text-xs text-gray-600">{lesson.duration} min</span>
+                          <span className="text-xs font-semibold text-primary">+{lesson.xpReward} XP</span>
+                        </div>
+                      </div>
+                      <Button size="sm" variant="ghost" leftIcon={<Play className="w-3 h-3" />} className="text-xs py-1 px-2">
+                        Start
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
 
           {chapters.length === 0 && (
@@ -192,103 +183,90 @@ export default function SubjectDetailClient({ id }: { id: string }) {
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* Quiz Modal */}
-      <AnimatePresence>
-        {quizActive && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0 }}
-              className="glass-card w-full max-w-lg p-6 border border-secondary/20"
-            >
-              {!quizDone ? (
-                <>
-                  <div className="flex items-center justify-between mb-5">
-                    <div>
-                      <p className="text-xs text-gray-500 uppercase font-mono tracking-wider">Quiz · {subject.name}</p>
-                      <p className="text-lg font-bold text-white">Question {quizIndex + 1}/{SAMPLE_QUIZ_QUESTIONS.length}</p>
-                    </div>
-                    <button onClick={() => setQuizActive(false)} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white transition-colors">
-                      <X className="w-5 h-5" />
-                    </button>
+      {quizActive && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="glass-card w-full max-w-lg p-6 border border-secondary/20">
+            {!quizDone ? (
+              <>
+                <div className="flex items-center justify-between mb-5">
+                  <div>
+                    <p className="text-xs text-gray-500 uppercase font-mono tracking-wider">Quiz · {subject.name}</p>
+                    <p className="text-lg font-bold text-white">Question {quizIndex + 1}/{SAMPLE_QUIZ_QUESTIONS.length}</p>
                   </div>
-
-                  <div className="h-1.5 bg-white/5 rounded-full mb-5 overflow-hidden">
-                    <div className="h-full bg-secondary rounded-full transition-all" style={{ width: `${((quizIndex) / SAMPLE_QUIZ_QUESTIONS.length) * 100}%` }} />
-                  </div>
-
-                  <p className="text-base font-semibold text-white mb-5 leading-relaxed">{currentQ.question}</p>
-                  {language === "bn" && currentQ.questionBn && (
-                    <p className="text-sm text-gray-400 mb-4">{currentQ.questionBn}</p>
-                  )}
-
-                  <div className="space-y-2 mb-5">
-                    {currentQ.options.map((opt, idx) => {
-                      const isCorrect = currentQ.correctAnswer === idx;
-                      const isSelected = selected === idx;
-                      return (
-                        <button
-                          key={idx}
-                          onClick={() => handleAnswer(idx)}
-                          disabled={answered}
-                          className={`w-full text-left p-3.5 rounded-xl border text-sm transition-all font-medium ${
-                            !answered ? "border-white/10 hover:border-white/30 hover:bg-white/5 text-gray-300" :
-                            isCorrect ? "border-primary bg-primary/15 text-primary" :
-                            isSelected && !isCorrect ? "border-accent bg-accent/15 text-accent" :
-                            "border-white/5 text-gray-600"
-                          }`}
-                        >
-                          <span className="flex items-center gap-3">
-                            <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold flex-shrink-0">
-                              {answered && isCorrect ? <Check className="w-3 h-3" /> : answered && isSelected && !isCorrect ? <X className="w-3 h-3" /> : String.fromCharCode(65 + idx)}
-                            </span>
-                            {opt}
+                  <button onClick={() => setQuizActive(false)} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white transition-colors">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="h-1.5 bg-white/5 rounded-full mb-5 overflow-hidden">
+                  <div className="h-full bg-secondary rounded-full transition-all" style={{ width: `${(quizIndex / SAMPLE_QUIZ_QUESTIONS.length) * 100}%` }} />
+                </div>
+                <p className="text-base font-semibold text-white mb-5 leading-relaxed">{currentQ.question}</p>
+                {language === "bn" && currentQ.questionBn && (
+                  <p className="text-sm text-gray-400 mb-4">{currentQ.questionBn}</p>
+                )}
+                <div className="space-y-2 mb-5">
+                  {currentQ.options.map((opt, idx) => {
+                    const isCorrect = currentQ.correctAnswer === idx;
+                    const isSelected = selected === idx;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => handleAnswer(idx)}
+                        disabled={answered}
+                        className={`w-full text-left p-3.5 rounded-xl border text-sm transition-all font-medium ${
+                          !answered ? "border-white/10 hover:border-white/30 hover:bg-white/5 text-gray-300" :
+                          isCorrect ? "border-primary bg-primary/15 text-primary" :
+                          isSelected && !isCorrect ? "border-accent bg-accent/15 text-accent" :
+                          "border-white/5 text-gray-600"
+                        }`}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold flex-shrink-0">
+                            {answered && isCorrect ? <Check className="w-3 h-3" /> : answered && isSelected && !isCorrect ? <X className="w-3 h-3" /> : String.fromCharCode(65 + idx)}
                           </span>
-                        </button>
-                      );
-                    })}
+                          {opt}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {answered && (
+                  <div className="mb-4">
+                    <div className={`p-3 rounded-xl text-sm ${selected === currentQ.correctAnswer ? "bg-primary/10 text-primary border border-primary/20" : "bg-accent/10 text-accent border border-accent/20"}`}>
+                      {selected === currentQ.correctAnswer ? "✅ Correct! " : "❌ Incorrect. "}
+                      {currentQ.explanation}
+                    </div>
                   </div>
-
-                  {answered && (
-                    <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mb-4">
-                      <div className={`p-3 rounded-xl text-sm ${selected === currentQ.correctAnswer ? "bg-primary/10 text-primary border border-primary/20" : "bg-accent/10 text-accent border border-accent/20"}`}>
-                        {selected === currentQ.correctAnswer ? "✅ Correct! " : "❌ Incorrect. "}
-                        {currentQ.explanation}
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {answered && (
-                    <Button onClick={handleNextQuestion} className="w-full">
-                      {quizIndex + 1 < SAMPLE_QUIZ_QUESTIONS.length ? "Next Question →" : "See Results"}
-                    </Button>
-                  )}
-                </>
-              ) : (
-                <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center">
-                  <div className="text-5xl mb-4">{score >= SAMPLE_QUIZ_QUESTIONS.length * 0.8 ? "🏆" : score >= SAMPLE_QUIZ_QUESTIONS.length * 0.5 ? "⭐" : "📚"}</div>
-                  <h3 className="text-2xl font-black text-white mb-1">Quiz Complete!</h3>
-                  <p className="text-gray-400 mb-4">
-                    You scored <span className="text-primary font-bold">{score}/{SAMPLE_QUIZ_QUESTIONS.length}</span>
-                  </p>
-                  <div className="glass rounded-xl p-4 mb-5 flex justify-around">
-                    <div><p className="text-xl font-bold text-primary">+{score * 30 + (score === SAMPLE_QUIZ_QUESTIONS.length ? 50 : 0)} XP</p><p className="text-xs text-gray-500">Earned</p></div>
-                    <div className="w-px bg-white/10" />
-                    <div><p className="text-xl font-bold text-gold">+{score * 5} 🪙</p><p className="text-xs text-gray-500">Coins</p></div>
-                    <div className="w-px bg-white/10" />
-                    <div><p className="text-xl font-bold text-secondary">{Math.round((score / SAMPLE_QUIZ_QUESTIONS.length) * 100)}%</p><p className="text-xs text-gray-500">Accuracy</p></div>
-                  </div>
-                  <Button onClick={handleFinishQuiz} className="w-full" size="lg">Claim Rewards ⚡</Button>
-                </motion.div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                )}
+                {answered && (
+                  <Button onClick={handleNextQuestion} className="w-full">
+                    {quizIndex + 1 < SAMPLE_QUIZ_QUESTIONS.length ? "Next Question →" : "See Results"}
+                  </Button>
+                )}
+              </>
+            ) : (
+              <div className="text-center">
+                <div className="text-5xl mb-4">{score >= SAMPLE_QUIZ_QUESTIONS.length * 0.8 ? "🏆" : score >= SAMPLE_QUIZ_QUESTIONS.length * 0.5 ? "⭐" : "📚"}</div>
+                <h3 className="text-2xl font-black text-white mb-1">Quiz Complete!</h3>
+                <p className="text-gray-400 mb-4">
+                  You scored <span className="text-primary font-bold">{score}/{SAMPLE_QUIZ_QUESTIONS.length}</span>
+                </p>
+                <div className="glass rounded-xl p-4 mb-5 flex justify-around">
+                  <div><p className="text-xl font-bold text-primary">+{score * 30 + (score === SAMPLE_QUIZ_QUESTIONS.length ? 50 : 0)} XP</p><p className="text-xs text-gray-500">Earned</p></div>
+                  <div className="w-px bg-white/10" />
+                  <div><p className="text-xl font-bold text-gold">+{score * 5} 🪙</p><p className="text-xs text-gray-500">Coins</p></div>
+                  <div className="w-px bg-white/10" />
+                  <div><p className="text-xl font-bold text-secondary">{Math.round((score / SAMPLE_QUIZ_QUESTIONS.length) * 100)}%</p><p className="text-xs text-gray-500">Accuracy</p></div>
+                </div>
+                <Button onClick={handleFinishQuiz} className="w-full" size="lg">Claim Rewards ⚡</Button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
