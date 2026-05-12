@@ -2,9 +2,6 @@
 
 import { navigate } from "@/lib/navigate";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-
-
 import { Zap, Mail, Lock, Eye, EyeOff, Chrome } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
@@ -20,9 +17,7 @@ import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
-
   const { setUser } = useUserStore();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
@@ -30,7 +25,6 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
 
-  // Handle redirect result (Android WebView Google Sign-In)
   useEffect(() => {
     const handleRedirectResult = async () => {
       try {
@@ -38,15 +32,13 @@ export default function LoginPage() {
         if (result?.user) {
           setGoogleLoading(true);
           let profile = await getUserProfile(result.user.uid);
-          if (!profile) {
-            profile = await createUserProfile(result.user);
-          }
+          if (!profile) profile = await createUserProfile(result.user);
           setUser(profile);
           toast.success("Welcome to Study RPG! ⚡");
           navigate("/dashboard");
         }
       } catch {
-        // No redirect result, normal page load
+        // No redirect result
       } finally {
         setGoogleLoading(false);
       }
@@ -80,12 +72,9 @@ export default function LoginPage() {
     setGoogleLoading(true);
     try {
       const cred = await signInWithGoogle();
-      // signInWithRedirect returns void; result handled in useEffect above
       if (!cred) return;
       let profile = await getUserProfile((cred as any).user.uid);
-      if (!profile) {
-        profile = await createUserProfile((cred as any).user);
-      }
+      if (!profile) profile = await createUserProfile((cred as any).user);
       setUser(profile);
       toast.success("Welcome to Study RPG! ⚡");
       navigate("/dashboard");
@@ -113,13 +102,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo */}
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="text-center mb-8"
-        >
-          <button onClick={() => navigate("/")} style={{background:"none",border:"none",cursor:"pointer",display:"inline-flex",alignItems:"center",gap:8,marginBottom:24}}>
+        <div className="text-center mb-8">
+          <button onClick={() => navigate("/")} style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
             <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center shadow-neon-primary">
               <Zap className="w-6 h-6 text-primary" />
             </div>
@@ -127,15 +111,9 @@ export default function LoginPage() {
           </button>
           <h1 className="text-3xl font-black text-white mb-2">Welcome Back!</h1>
           <p className="text-gray-500">Continue your learning journey</p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="glass-card p-7 space-y-5"
-        >
-          {/* Google */}
+        <div className="glass-card p-7 space-y-5">
           <Button
             variant="ghost"
             className="w-full"
@@ -147,14 +125,12 @@ export default function LoginPage() {
             Continue with Google
           </Button>
 
-          {/* Divider */}
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-white/10" />
             <span className="text-xs text-gray-600">OR</span>
             <div className="flex-1 h-px bg-white/10" />
           </div>
 
-          {/* Email Form */}
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-1.5">Email</label>
@@ -199,7 +175,6 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          {/* Guest */}
           <Button
             variant="ghost"
             className="w-full text-gray-500 hover:text-white"
@@ -211,9 +186,9 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <button onClick={() => navigate("/signup")} style={{background:"none",border:"none",cursor:"pointer",color:"#39FF14",fontWeight:600,fontSize:14,textDecoration:"underline"}}>Sign Up Free</button>
+            <button onClick={() => navigate("/signup")} style={{ background: "none", border: "none", cursor: "pointer", color: "#39FF14", fontWeight: 600, fontSize: 14, textDecoration: "underline" }}>Sign Up Free</button>
           </p>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
