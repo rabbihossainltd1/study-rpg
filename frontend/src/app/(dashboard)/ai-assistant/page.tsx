@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
 import { Button } from "@/components/ui/Button";
 import { ChatMessage } from "@/types";
 import { Bot, Send, User, RefreshCw } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const QUICK_PROMPTS = [
   { label: "অধ্যায় ব্যাখ্যা", labelEn: "Explain a chapter", emoji: "📖" },
@@ -80,7 +78,6 @@ export default function AiAssistantPage() {
 
       const data = await response.json();
       const aiText = data.choices?.[0]?.message?.content || "Sorry, I couldn't process that. Please try again.";
-
       setMessages((prev) => prev.map((m) => m.id === loadingMsg.id ? { ...m, content: aiText, isLoading: false } : m));
     } catch {
       setMessages((prev) => prev.map((m) => m.id === loadingMsg.id
@@ -101,7 +98,7 @@ export default function AiAssistantPage() {
   const formatMessage = (content: string) => content
     .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#fff">$1</strong>')
     .replace(/`(.*?)`/g, '<code style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:4px;color:#39FF14;font-size:12px">$1</code>')
-    .replace(/\n/g, '<br>');
+    .replace(/\n/g, "<br>");
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 100px)" }}>
@@ -114,10 +111,7 @@ export default function AiAssistantPage() {
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <h1 style={{ fontSize: 18, fontWeight: 900, color: "#fff", margin: 0 }}>AI Study Tutor</h1>
-              <span style={{ display: "flex", position: "relative", width: 8, height: 8 }}>
-                <span style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "#39FF14", opacity: 0.75, animation: "ping 1s cubic-bezier(0,0,0.2,1) infinite" }} />
-                <span style={{ position: "relative", width: 8, height: 8, borderRadius: "50%", background: "#39FF14", display: "inline-block" }} />
-              </span>
+              <span style={{ display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: "#39FF14" }} />
             </div>
             <p style={{ fontSize: 11, color: "#6B7280", margin: 0 }}>Powered by DeepSeek · Bangla & English</p>
           </div>
@@ -140,40 +134,37 @@ export default function AiAssistantPage() {
 
       {/* Messages */}
       <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 16, padding: "8px 0" }}>
-        <AnimatePresence initial={false}>
-          {messages.map((msg) => (
-            <motion.div key={msg.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-              style={{ display: "flex", gap: 10, flexDirection: msg.role === "user" ? "row-reverse" : "row" }}>
-              <div style={{
-                width: 32, height: 32, borderRadius: "50%", flexShrink: 0, marginTop: 4,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                background: msg.role === "assistant" ? "rgba(191,95,255,0.1)" : "rgba(57,255,20,0.1)",
-                border: msg.role === "assistant" ? "1px solid rgba(191,95,255,0.3)" : "1px solid rgba(57,255,20,0.3)"
-              }}>
-                {msg.role === "assistant" ? <Bot size={15} color="#BF5FFF" /> : <User size={15} color="#39FF14" />}
-              </div>
-              <div style={{
-                maxWidth: "78%", borderRadius: 16, padding: "10px 14px", fontSize: 13, lineHeight: 1.6,
-                background: msg.role === "assistant" ? "rgba(18,18,18,0.98)" : "rgba(57,255,20,0.08)",
-                border: msg.role === "assistant" ? "1px solid rgba(255,255,255,0.07)" : "1px solid rgba(57,255,20,0.2)",
-                color: "#E5E7EB",
-                borderTopLeftRadius: msg.role === "assistant" ? 4 : 16,
-                borderTopRightRadius: msg.role === "user" ? 4 : 16,
-              }}>
-                {msg.isLoading ? (
-                  <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-                    {[0,1,2].map(i => <span key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: "#BF5FFF", display: "inline-block", animation: `bounce 0.8s ${i*0.2}s ease-in-out infinite` }} />)}
-                  </div>
-                ) : (
-                  <div dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
-                )}
-                <p style={{ fontSize: 10, marginTop: 6, opacity: 0.35, color: "#fff" }}>
-                  {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+        {messages.map((msg) => (
+          <div key={msg.id} style={{ display: "flex", gap: 10, flexDirection: msg.role === "user" ? "row-reverse" : "row" }}>
+            <div style={{
+              width: 32, height: 32, borderRadius: "50%", flexShrink: 0, marginTop: 4,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              background: msg.role === "assistant" ? "rgba(191,95,255,0.1)" : "rgba(57,255,20,0.1)",
+              border: msg.role === "assistant" ? "1px solid rgba(191,95,255,0.3)" : "1px solid rgba(57,255,20,0.3)"
+            }}>
+              {msg.role === "assistant" ? <Bot size={15} color="#BF5FFF" /> : <User size={15} color="#39FF14" />}
+            </div>
+            <div style={{
+              maxWidth: "78%", borderRadius: 16, padding: "10px 14px", fontSize: 13, lineHeight: 1.6,
+              background: msg.role === "assistant" ? "rgba(18,18,18,0.98)" : "rgba(57,255,20,0.08)",
+              border: msg.role === "assistant" ? "1px solid rgba(255,255,255,0.07)" : "1px solid rgba(57,255,20,0.2)",
+              color: "#E5E7EB",
+              borderTopLeftRadius: msg.role === "assistant" ? 4 : 16,
+              borderTopRightRadius: msg.role === "user" ? 4 : 16,
+            }}>
+              {msg.isLoading ? (
+                <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+                  {[0,1,2].map(i => <span key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: "#BF5FFF", display: "inline-block", animation: `bounce 0.8s ${i*0.2}s ease-in-out infinite` }} />)}
+                </div>
+              ) : (
+                <div dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
+              )}
+              <p style={{ fontSize: 10, marginTop: 6, opacity: 0.35, color: "#fff" }}>
+                {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              </p>
+            </div>
+          </div>
+        ))}
         <div ref={messagesEndRef} />
       </div>
 
@@ -203,7 +194,6 @@ export default function AiAssistantPage() {
 
       <style>{`
         @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-        @keyframes ping { 0%{transform:scale(1);opacity:1} 75%,100%{transform:scale(2);opacity:0} }
       `}</style>
     </div>
   );
