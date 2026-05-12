@@ -14,6 +14,13 @@ android {
         versionName "1.0.0"
     }
 
+    // Disable asset compression for JS/CSS/HTML files
+    // Android by default compresses assets but has a 1MB limit per file
+    // which silently drops large JS chunks from the APK
+    aaptOptions {
+        noCompress 'js', 'css', 'html', 'map', 'json', 'txt'
+    }
+
     buildTypes {
         debug {
             debuggable true
@@ -50,6 +57,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-analytics'
-    // Google Sign-In for Capacitor plugin
     implementation 'com.google.android.gms:play-services-auth:21.0.0'
 }
