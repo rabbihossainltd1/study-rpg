@@ -64,6 +64,13 @@ export const signInGuest = () => signInAnonymously(auth);
 export const logOut = () => signOut(auth);
 export { onAuthStateChanged };
 
+// Remove undefined values — Firestore rejects them
+function stripUndefined<T extends object>(obj: T): T {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== undefined)
+  ) as T;
+}
+
 export async function createUserProfile(
   firebaseUser: FirebaseUser,
   extra?: { username?: string; examMode?: string; district?: string }
@@ -72,12 +79,12 @@ export async function createUserProfile(
   const snap = await getDoc(ref);
   if (snap.exists()) return snap.data() as User;
 
-  const newUser: Partial<User> = {
+  const newUser = stripUndefined({
     uid: firebaseUser.uid,
     email: firebaseUser.email || "",
     username: extra?.username || firebaseUser.displayName?.split(" ")[0] || `player_${Date.now()}`,
     displayName: firebaseUser.displayName || "Student",
-    photoURL: firebaseUser.photoURL || null,
+    photoURL: firebaseUser.photoURL || "",
     level: 1,
     xp: 0,
     xpToNextLevel: 100,
@@ -87,20 +94,22 @@ export async function createUserProfile(
     streak: 0,
     maxStreak: 0,
     totalStudyTime: 0,
-    achievements: [],
-    badges: [],
-    friends: [],
+    achievements: [] as string[],
+    badges: [] as string[],
+    friends: [] as string[],
     district: extra?.district || "Dhaka",
     school: "",
-    examMode: (extra?.examMode as User["examMode"]) || "SSC",
+    examMode: (extra?.examMode || "SSC") as User["examMode"],
     avatar: "default",
     frame: "default",
     isGuest: firebaseUser.isAnonymous,
     language: "bn",
-  };
+    createdAt: serverTimestamp(),
+    lastLoginAt: serverTimestamp(),
+  });
 
-  await setDoc(ref, { ...newUser, createdAt: serverTimestamp(), lastLoginAt: serverTimestamp() });
-  return newUser as User;
+  await setDoc(ref, newUser);
+  return newUser as unknown as User;
 }
 
 export async function getUserProfile(uid: string): Promise<User | null> {
