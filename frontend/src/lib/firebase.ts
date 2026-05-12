@@ -3,7 +3,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithCredential,
+  signInWithRedirect,
   getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -30,22 +30,12 @@ import {
 import { calculateLevel, getRankFromXp, type User } from "@/types";
 
 const firebaseConfig = {
-  apiKey:
-    process.env.NEXT_PUBLIC_FIREBASE_API_KEY ||
-    "AIzaSyAkmsjwK2FQQAcHSKxTFClkwSOi-XIKKTo",
-  authDomain:
-    process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ||
-    "study-rpg-11352.firebaseapp.com",
-  projectId:
-    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "study-rpg-11352",
-  storageBucket:
-    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
-    "study-rpg-11352.firebasestorage.app",
-  messagingSenderId:
-    process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "494377620744",
-  appId:
-    process.env.NEXT_PUBLIC_FIREBASE_APP_ID ||
-    "1:494377620744:web:d5bcf7b4a6813445f308bd",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyAkmsjwK2FQQAcHSKxTFClkwSOi-XIKKTo",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "study-rpg-11352.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "study-rpg-11352",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "study-rpg-11352.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "494377620744",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:494377620744:web:d5bcf7b4a6813445f308bd",
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
@@ -60,17 +50,7 @@ export const isNativeApp = () =>
 
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
-    try {
-      // Dynamically import capacitor-google-auth only on native
-      const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth" as any);
-      await GoogleAuth.initialize();
-      const googleUser = await GoogleAuth.signIn();
-      const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
-      return signInWithCredential(auth, credential);
-    } catch {
-      // Fallback to popup if plugin not available
-      return signInWithPopup(auth, googleProvider);
-    }
+    return signInWithRedirect(auth, googleProvider);
   }
   return signInWithPopup(auth, googleProvider);
 };
@@ -95,10 +75,7 @@ export async function createUserProfile(
   const newUser: Partial<User> = {
     uid: firebaseUser.uid,
     email: firebaseUser.email || "",
-    username:
-      extra?.username ||
-      firebaseUser.displayName?.split(" ")[0] ||
-      `player_${Date.now()}`,
+    username: extra?.username || firebaseUser.displayName?.split(" ")[0] || `player_${Date.now()}`,
     displayName: firebaseUser.displayName || "Student",
     photoURL: firebaseUser.photoURL || undefined,
     level: 1,
@@ -122,11 +99,7 @@ export async function createUserProfile(
     language: "bn",
   };
 
-  await setDoc(ref, {
-    ...newUser,
-    createdAt: serverTimestamp(),
-    lastLoginAt: serverTimestamp(),
-  });
+  await setDoc(ref, { ...newUser, createdAt: serverTimestamp(), lastLoginAt: serverTimestamp() });
   return newUser as User;
 }
 
@@ -141,10 +114,7 @@ export async function getUserProfile(uid: string): Promise<User | null> {
   } as User;
 }
 
-export async function addXp(
-  uid: string,
-  xpAmount: number
-): Promise<{ leveledUp: boolean; newLevel: number }> {
+export async function addXp(uid: string, xpAmount: number): Promise<{ leveledUp: boolean; newLevel: number }> {
   const ref = doc(db, "users", uid);
   const snap = await getDoc(ref);
   if (!snap.exists()) return { leveledUp: false, newLevel: 1 };
@@ -156,14 +126,7 @@ export async function addXp(
   const newRank = getRankFromXp(newXp);
   const xpForNext = newLevel ** 2 * 100;
 
-  await updateDoc(ref, {
-    xp: increment(xpAmount),
-    level: newLevel,
-    rank: newRank,
-    xpToNextLevel: xpForNext - newXp,
-    lastLoginAt: serverTimestamp(),
-  });
-
+  await updateDoc(ref, { xp: increment(xpAmount), level: newLevel, rank: newRank, xpToNextLevel: xpForNext - newXp, lastLoginAt: serverTimestamp() });
   return { leveledUp: newLevel > oldLevel, newLevel };
 }
 
@@ -175,9 +138,7 @@ export async function updateStreak(uid: string): Promise<number> {
   const user = snap.data() as User;
   const lastLogin = (user.lastLoginAt as unknown as Timestamp)?.toDate();
   const now = new Date();
-  const diffDays = lastLogin
-    ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24))
-    : 0;
+  const diffDays = lastLogin ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)) : 0;
 
   let newStreak = user.streak;
   if (diffDays === 1) newStreak += 1;
