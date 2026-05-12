@@ -10,6 +10,8 @@ import {
   onAuthStateChanged,
   signInWithCredential,
   OAuthProvider,
+  browserLocalPersistence,
+  setPersistence,
   type User as FirebaseUser,
 } from "firebase/auth";
 import {
@@ -43,6 +45,11 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
+// Set persistence to LOCAL so auth state survives Capacitor WebView reloads
+if (typeof window !== "undefined") {
+  setPersistence(auth, browserLocalPersistence).catch(() => {});
+}
+
 export const isNativeApp = () =>
   typeof window !== "undefined" &&
   ((window as any).Capacitor?.isNativePlatform?.() === true ||
@@ -50,7 +57,6 @@ export const isNativeApp = () =>
 
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
-    // Use Capacitor Google Auth plugin for native
     try {
       const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth");
       const googleUser = await GoogleAuth.signIn();
@@ -74,7 +80,6 @@ export const signInGuest = () => signInAnonymously(auth);
 export const logOut = () => signOut(auth);
 export { onAuthStateChanged };
 
-// Remove undefined values — Firestore rejects them
 function stripUndefined<T extends object>(obj: T): T {
   return Object.fromEntries(
     Object.entries(obj).filter(([, v]) => v !== undefined)
