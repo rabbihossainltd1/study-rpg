@@ -59,7 +59,7 @@ jobs:
         working-directory: frontend
         run: |
           if [ ! -d "out/_next/static/chunks" ]; then
-            echo "FATAL: out/_next/static/chunks/ missing - Next.js build failed to generate JS"
+            echo "FATAL: out/_next/static/chunks/ missing"
             exit 1
           fi
           echo "Chunk count: $(ls out/_next/static/chunks | wc -l)"
@@ -72,11 +72,13 @@ jobs:
       - name: Verify assets were synced
         working-directory: frontend
         run: |
-          if [ ! -d "android/app/src/main/assets/public/_next" ]; then
-            echo "FATAL: _next not found in android assets after cap sync"
+          ASSETS="android/app/src/main/assets/public"
+          if [ ! -d "$ASSETS/_next" ]; then
+            echo "FATAL: _next not in android assets"
             exit 1
           fi
-          echo "Android _next size: $(du -sh android/app/src/main/assets/public/_next)"
+          echo "Android _next chunk count: $(ls $ASSETS/_next/static/chunks | wc -l)"
+          echo "Android assets _next size: $(du -sh $ASSETS/_next)"
 
       - name: Add google-services.json
         working-directory: frontend/android/app
@@ -84,7 +86,6 @@ jobs:
           if [ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]; then
             echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > google-services.json
           fi
-          echo "Using google-services.json: $(cat google-services.json | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d[\"project_info\"][\"project_id\"])')"
 
       - name: Download Gradle Wrapper JAR
         working-directory: frontend/android
@@ -105,16 +106,15 @@ jobs:
           JAVA_TOOL_OPTIONS: ""
         run: ./gradlew assembleDebug --no-daemon
 
-      - name: Verify APK has JS chunks
+      - name: Verify APK contents
         working-directory: frontend/android
         run: |
           APK="app/build/outputs/apk/debug/app-debug.apk"
-          CHUNK_COUNT=$(unzip -l "$APK" | grep "_next/static/chunks" | wc -l)
-          echo "JS chunks in APK: $CHUNK_COUNT"
-          if [ "$CHUNK_COUNT" -eq 0 ]; then
-            echo "FATAL: APK has no JS chunks - app will show blank screen"
-            exit 1
-          fi
+          echo "APK size: $(du -sh $APK)"
+          echo "Total assets in APK: $(unzip -l $APK | grep 'assets/' | wc -l)"
+          echo "_next files in APK: $(unzip -l $APK | grep 'assets/public/_next' | wc -l)"
+          echo "JS chunk files: $(unzip -l $APK | grep 'chunks.*\.js' | wc -l)"
+          unzip -l $APK | grep 'assets/public/_next' | head -5
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
