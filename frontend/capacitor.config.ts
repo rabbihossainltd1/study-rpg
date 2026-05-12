@@ -3,7 +3,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 const config: CapacitorConfig = {
   appId: "com.rabbi.studyrpg.app",
   appName: "Study RPG",
-  webDir: ".next",
+  webDir: "out",
   server: {
     androidScheme: "https",
     cleartext: false,
