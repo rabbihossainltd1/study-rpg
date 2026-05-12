@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, getUserProfile, updateStreak, createUserProfile } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
@@ -12,18 +12,35 @@ import { Loader2 } from "lucide-react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, setUser, setLoading, isLoading } = useUserStore();
+  const authChecked = useRef(false);
 
   useEffect(() => {
+    // If we already have a user from Zustand persist, show content immediately
+    // and still re-verify in background
+    if (user) {
+      setLoading(false);
+    }
+
     const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+      authChecked.current = true;
+
       if (!firebaseUser) {
-        navigate("/login");
-        setLoading(false);
+        // Only redirect if we don't have a cached user already
+        // Give a brief grace period for persistence to kick in
+        setTimeout(() => {
+          if (!useUserStore.getState().user) {
+            navigate("/login");
+          }
+          setLoading(false);
+        }, 500);
         return;
       }
+
       try {
         let profile = await getUserProfile(firebaseUser.uid);
         if (!profile) profile = await createUserProfile(firebaseUser);
-        await updateStreak(firebaseUser.uid);
+        // Fire-and-forget streak update — don't block rendering
+        updateStreak(firebaseUser.uid).catch(() => {});
         setUser(profile);
       } catch {
         navigate("/login");
@@ -31,10 +48,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         setLoading(false);
       }
     });
-    return () => unsub();
-  }, [setUser, setLoading]);
 
-  if (isLoading) {
+    // Failsafe: if onAuthStateChanged never fires (e.g. network issue in WebView),
+    // fall back to cached user or redirect after 5s
+    const failsafe = setTimeout(() => {
+      if (!authChecked.current) {
+        if (!useUserStore.getState().user) {
+          navigate("/login");
+        }
+        setLoading(false);
+      }
+    }, 5000);
+
+    return () => {
+      unsub();
+      clearTimeout(failsafe);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (isLoading && !user) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#050505" }}>
         <div style={{ textAlign: "center" }}>
