@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { RouterProvider } from "@/components/RouterProvider";
 
 export const metadata: Metadata = {
   title: "Study RPG | Level Up Your Learning",
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="dark" style={{ background: "#050505" }}>
       <body style={{ background: "#050505", color: "#ffffff", margin: 0, padding: 0, minHeight: "100vh", fontFamily: "Inter, system-ui, -apple-system, sans-serif" }}>
+        <RouterProvider />
         {children}
         <Toaster
           position="top-right"
