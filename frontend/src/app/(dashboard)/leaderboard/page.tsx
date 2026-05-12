@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
 import { RANK_COLORS, type Rank } from "@/types";
 import { Trophy, Globe, MapPin, TrendingUp } from "lucide-react";
 
-// Mock leaderboard data
 const generateMockUsers = (count: number, district?: string) =>
   Array.from({ length: count }, (_, i) => ({
     rank: i + 1,
@@ -42,78 +40,55 @@ export default function LeaderboardPage() {
     if (rank === 1) return <span className="text-xl">👑</span>;
     if (rank === 2) return <span className="text-xl">🥈</span>;
     if (rank === 3) return <span className="text-xl">🥉</span>;
-    return (
-      <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">
-        {rank}
-      </span>
-    );
+    return <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">{rank}</span>;
   };
 
   return (
     <div className="space-y-5">
-      {/* Header */}
-      <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center">
-            <Trophy className="w-5 h-5 text-gold" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-black text-white">
-              {language === "bn" ? "লিডারবোর্ড" : "Leaderboard"}
-            </h1>
-            <p className="text-sm text-gray-500">Top scholars in Bangladesh</p>
-          </div>
+      <div className="flex items-center gap-3 mb-1">
+        <div className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center">
+          <Trophy className="w-5 h-5 text-gold" />
         </div>
-      </motion.div>
+        <div>
+          <h1 className="text-2xl font-black text-white">{language === "bn" ? "লিডারবোর্ড" : "Leaderboard"}</h1>
+          <p className="text-sm text-gray-500">Top scholars in Bangladesh</p>
+        </div>
+      </div>
 
       {/* Top 3 Podium */}
-      <motion.div
-        initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}
-        className="grid grid-cols-3 gap-3"
-      >
-        {/* 2nd */}
+      <div className="grid grid-cols-3 gap-3">
         <div className="mt-6">
           <div className="glass-card p-3 text-center border border-gray-500/20">
-            <div className="w-12 h-12 rounded-full bg-gray-400/10 border-2 border-gray-400 flex items-center justify-center text-2xl mx-auto mb-2">
-              {entries[1]?.avatar}
-            </div>
+            <div className="w-12 h-12 rounded-full bg-gray-400/10 border-2 border-gray-400 flex items-center justify-center text-2xl mx-auto mb-2">{entries[1]?.avatar}</div>
             <p className="font-bold text-white text-xs truncate">{entries[1]?.username}</p>
             <p className="text-xs text-gray-400">LV.{entries[1]?.level}</p>
             <p className="text-sm font-bold text-gray-300 mt-1">🥈</p>
             <p className="text-xs text-gray-500">{((entries[1]?.xp || 0) / 1000).toFixed(1)}K XP</p>
           </div>
         </div>
-
-        {/* 1st */}
         <div>
           <div className="glass-card p-3 text-center border-2 border-gold/40 shadow-[0_0_30px_rgba(255,215,0,0.15)]">
             <div className="text-lg text-center mb-1">👑</div>
-            <div className="w-14 h-14 rounded-full bg-gold/10 border-2 border-gold flex items-center justify-center text-3xl mx-auto mb-2 shadow-[0_0_20px_rgba(255,215,0,0.3)]">
-              {entries[0]?.avatar}
-            </div>
+            <div className="w-14 h-14 rounded-full bg-gold/10 border-2 border-gold flex items-center justify-center text-3xl mx-auto mb-2 shadow-[0_0_20px_rgba(255,215,0,0.3)]">{entries[0]?.avatar}</div>
             <p className="font-bold text-white text-xs truncate">{entries[0]?.username}</p>
             <p className="text-xs text-gold">LV.{entries[0]?.level}</p>
-            <p className="text-sm font-bold text-gold mt-1">#{1}</p>
+            <p className="text-sm font-bold text-gold mt-1">#1</p>
             <p className="text-xs text-gray-400">{((entries[0]?.xp || 0) / 1000).toFixed(1)}K XP</p>
           </div>
         </div>
-
-        {/* 3rd */}
         <div className="mt-8">
           <div className="glass-card p-3 text-center border border-amber-700/20">
-            <div className="w-12 h-12 rounded-full bg-amber-700/10 border-2 border-amber-700 flex items-center justify-center text-2xl mx-auto mb-2">
-              {entries[2]?.avatar}
-            </div>
+            <div className="w-12 h-12 rounded-full bg-amber-700/10 border-2 border-amber-700 flex items-center justify-center text-2xl mx-auto mb-2">{entries[2]?.avatar}</div>
             <p className="font-bold text-white text-xs truncate">{entries[2]?.username}</p>
             <p className="text-xs text-amber-600">LV.{entries[2]?.level}</p>
             <p className="text-sm font-bold text-amber-600 mt-1">🥉</p>
             <p className="text-xs text-gray-500">{((entries[2]?.xp || 0) / 1000).toFixed(1)}K XP</p>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Tabs */}
-      <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="flex gap-2">
+      <div className="flex gap-2">
         {TABS.map((t) => {
           const Icon = t.icon;
           return (
@@ -129,14 +104,11 @@ export default function LeaderboardPage() {
             </button>
           );
         })}
-      </motion.div>
+      </div>
 
       {/* My Rank Banner */}
       {userRank && (
-        <motion.div
-          initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
-          className="glass-card p-4 border border-primary/20 flex items-center gap-4"
-        >
+        <div className="glass-card p-4 border border-primary/20 flex items-center gap-4">
           <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-lg">⚡</div>
           <div className="flex-1">
             <p className="text-sm font-bold text-white">Your Rank: <span className="text-primary">#{userRank}</span></p>
@@ -146,11 +118,11 @@ export default function LeaderboardPage() {
             <p className="text-sm font-bold text-primary">{user ? (user.xp / 1000).toFixed(1) : 0}K XP</p>
             <p className="text-xs text-gray-500">LV.{user?.level}</p>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* Leaderboard List */}
-      <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.25 }} className="glass-card overflow-hidden">
+      <div className="glass-card overflow-hidden">
         <div className="p-4 border-b border-white/5 flex items-center justify-between">
           <span className="text-sm font-bold text-white">
             {tab === "global" ? "🌍 Global Ranking" : tab === "district" ? `📍 ${user?.district || "Dhaka"} District` : "📈 This Week"}
@@ -158,24 +130,18 @@ export default function LeaderboardPage() {
           <span className="text-xs text-gray-500">{entries.length} players</span>
         </div>
         <div className="divide-y divide-white/5 max-h-[600px] overflow-y-auto">
-          {entries.slice(3).map((entry, i) => {
+          {entries.slice(3).map((entry) => {
             const rankColor = RANK_COLORS[entry.rank_title as Rank] || "#9CA3AF";
             const isCurrentUser = user && entry.username.includes(user.username?.substring(0, 4) || "---");
             return (
-              <motion.div
+              <div
                 key={entry.rank}
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: i * 0.02 }}
                 className={`flex items-center gap-3 px-4 py-3 transition-colors ${isCurrentUser ? "bg-primary/5 border-l-2 border-primary" : "hover:bg-white/3"}`}
               >
                 <div className="w-8 flex-shrink-0 flex items-center justify-center">
                   <RankBadge rank={entry.rank} />
                 </div>
-                <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-lg border-2 flex-shrink-0"
-                  style={{ borderColor: `${rankColor}50`, background: `${rankColor}10` }}
-                >
+                <div className="w-9 h-9 rounded-full flex items-center justify-center text-lg border-2 flex-shrink-0" style={{ borderColor: `${rankColor}50`, background: `${rankColor}10` }}>
                   {entry.avatar}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -195,11 +161,11 @@ export default function LeaderboardPage() {
                   <p className="text-sm font-bold text-primary">{(entry.xp / 1000).toFixed(1)}K</p>
                   <p className="text-xs text-gray-600">LV.{entry.level}</p>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
