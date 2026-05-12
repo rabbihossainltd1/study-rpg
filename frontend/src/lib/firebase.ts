@@ -77,7 +77,7 @@ export async function createUserProfile(
     email: firebaseUser.email || "",
     username: extra?.username || firebaseUser.displayName?.split(" ")[0] || `player_${Date.now()}`,
     displayName: firebaseUser.displayName || "Student",
-    photoURL: firebaseUser.photoURL || undefined,
+    photoURL: firebaseUser.photoURL || null,
     level: 1,
     xp: 0,
     xpToNextLevel: 100,
