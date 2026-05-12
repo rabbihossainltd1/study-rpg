@@ -54,7 +54,11 @@ export const isNativeApp = () =>
     window.navigator.userAgent.includes("wv"));
 
 export const signInWithGoogle = async () => {
-  return signInWithPopup(auth, googleProvider);
+  const result = await signInWithPopup(auth, googleProvider);
+  if (!result || !result.user) {
+    throw new Error("Google sign in failed");
+  }
+  return result;
 };
 
 export const signInEmail = (email: string, password: string) =>
