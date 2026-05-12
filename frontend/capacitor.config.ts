@@ -7,6 +7,7 @@ const config: CapacitorConfig = {
   server: {
     androidScheme: "https",
     cleartext: false,
+    hostname: "studyrpg.app",
   },
   android: {
     buildOptions: {
@@ -25,11 +26,11 @@ const config: CapacitorConfig = {
     },
     GoogleAuth: {
       scopes: ["profile", "email"],
-      serverClientId: "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com",
+      serverClientId:
+        "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com",
       forceCodeForRefreshToken: true,
     },
   },
 };
 
 export default config;
-
