@@ -2,7 +2,7 @@
 
 import { navigate } from "@/lib/navigate";
 import { useState, useEffect } from "react";
-import { Zap, Mail, Lock, Eye, EyeOff, Chrome } from "lucide-react";
+import { Zap, Mail, Lock, Eye, EyeOff, Chrome, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
   signInWithGoogle,
@@ -24,19 +24,28 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
-  const [native, setNative] = useState(false);
+  const [debugLog, setDebugLog] = useState<string[]>([]);
+
+  const log = (msg: string) => {
+    console.log("[StudyRPG]", msg);
+    setDebugLog(prev => [...prev.slice(-4), msg]);
+  };
 
   useEffect(() => {
-    setNative(isNativeApp());
+    log("App loaded. Native: " + isNativeApp());
+    log("Auth domain: " + (process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "hardcoded"));
   }, []);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
     setIsLoading(true);
+    log("Trying email login...");
     try {
       const cred = await signInEmail(email, password);
+      log("Auth OK: " + cred.user.uid);
       const profile = await getUserProfile(cred.user.uid);
+      log("Profile: " + (profile ? "found" : "not found"));
       if (profile) {
         setUser(profile);
         toast.success("Welcome back! 🎮");
@@ -45,12 +54,9 @@ export default function LoginPage() {
         toast.error("Profile not found. Please sign up.");
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Login failed";
-      toast.error(
-        message.includes("wrong-password") || message.includes("invalid-credential")
-          ? "Wrong email or password"
-          : "Login failed. Check your credentials."
-      );
+      const message = err instanceof Error ? err.message : String(err);
+      log("ERROR: " + message);
+      toast.error(message.slice(0, 80));
     } finally {
       setIsLoading(false);
     }
@@ -58,23 +64,20 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
+    log("Trying Google login...");
     try {
       const cred = await signInWithGoogle();
-      if (!cred) return;
+      if (!cred) { log("No cred returned"); return; }
+      log("Google auth OK");
       let profile = await getUserProfile((cred as any).user.uid);
       if (!profile) profile = await createUserProfile((cred as any).user);
       setUser(profile);
-      toast.success("Welcome to Study RPG! ⚡");
+      toast.success("Welcome! ⚡");
       navigate("/dashboard");
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "";
-      if (msg.includes("popup-closed") || msg.includes("cancelled") || msg.includes("cancel")) {
-        toast.error("Sign-in cancelled");
-      } else if (msg.includes("network") || msg.includes("fetch")) {
-        toast.error("Network error. Check your connection.");
-      } else {
-        toast.error("Google login failed. Try Email or Guest.");
-      }
+      const message = err instanceof Error ? err.message : String(err);
+      log("Google ERROR: " + message);
+      toast.error(message.slice(0, 80));
     } finally {
       setGoogleLoading(false);
     }
@@ -82,19 +85,21 @@ export default function LoginPage() {
 
   const handleGuestLogin = async () => {
     setGuestLoading(true);
+    log("Trying guest login...");
     try {
       const cred = await signInGuest();
+      log("Guest auth OK: " + cred.user.uid);
       const profile = await createUserProfile(cred.user, {
         username: `Guest_${Math.floor(Math.random() * 9999)}`,
       });
+      log("Guest profile created");
       setUser(profile);
       toast.success("Playing as Guest 👻");
       navigate("/dashboard");
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "";
-      toast.error(
-        msg.includes("network") ? "Network error. Check your connection." : "Guest login failed"
-      );
+      const message = err instanceof Error ? err.message : String(err);
+      log("Guest ERROR: " + message);
+      toast.error(message.slice(0, 80));
     } finally {
       setGuestLoading(false);
     }
@@ -106,17 +111,9 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <button
             onClick={() => navigate("/")}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              marginBottom: 24,
-            }}
+            style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24 }}
           >
-            <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center shadow-neon-primary">
+            <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
               <Zap className="w-6 h-6 text-primary" />
             </div>
             <span className="font-black text-2xl text-white">Study RPG</span>
@@ -125,15 +122,21 @@ export default function LoginPage() {
           <p className="text-gray-500">Continue your learning journey</p>
         </div>
 
+        {/* Debug Panel */}
+        {debugLog.length > 0 && (
+          <div style={{ background: "#0a0a0a", border: "1px solid #333", borderRadius: 10, padding: 10, marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
+              <AlertCircle size={12} color="#f59e0b" />
+              <span style={{ fontSize: 11, color: "#f59e0b", fontWeight: 600 }}>Debug Log</span>
+            </div>
+            {debugLog.map((msg, i) => (
+              <p key={i} style={{ fontSize: 10, color: "#6b7280", fontFamily: "monospace", margin: "2px 0" }}>{msg}</p>
+            ))}
+          </div>
+        )}
+
         <div className="glass-card p-7 space-y-5">
-          <Button
-            variant="ghost"
-            className="w-full"
-            size="lg"
-            onClick={handleGoogleLogin}
-            isLoading={googleLoading}
-            leftIcon={<Chrome className="w-5 h-5 text-blue-400" />}
-          >
+          <Button variant="ghost" className="w-full" size="lg" onClick={handleGoogleLogin} isLoading={googleLoading} leftIcon={<Chrome className="w-5 h-5 text-blue-400" />}>
             Continue with Google
           </Button>
 
@@ -158,7 +161,6 @@ export default function LoginPage() {
                 />
               </div>
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-1.5">Password</label>
               <div className="relative">
@@ -171,45 +173,23 @@ export default function LoginPage() {
                   required
                   className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400 transition-colors"
-                >
+                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400 transition-colors">
                   {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
-
             <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
-              <Zap className="w-4 h-4" />
-              Sign In
+              <Zap className="w-4 h-4" /> Sign In
             </Button>
           </form>
 
-          <Button
-            variant="ghost"
-            className="w-full text-gray-500 hover:text-white"
-            onClick={handleGuestLogin}
-            isLoading={guestLoading}
-          >
+          <Button variant="ghost" className="w-full text-gray-500 hover:text-white" onClick={handleGuestLogin} isLoading={guestLoading}>
             👻 Continue as Guest
           </Button>
 
           <p className="text-center text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <button
-              onClick={() => navigate("/signup")}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "#39FF14",
-                fontWeight: 600,
-                fontSize: 14,
-                textDecoration: "underline",
-              }}
-            >
+            <button onClick={() => navigate("/signup")} style={{ background: "none", border: "none", cursor: "pointer", color: "#39FF14", fontWeight: 600, fontSize: 14, textDecoration: "underline" }}>
               Sign Up Free
             </button>
           </p>
