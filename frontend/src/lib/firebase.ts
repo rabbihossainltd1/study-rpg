@@ -29,7 +29,6 @@ import {
 } from "firebase/firestore";
 import { calculateLevel, getRankFromXp, type User } from "@/types";
 
-// Hardcoded fallback — Firebase web API keys are public by design
 const firebaseConfig = {
   apiKey:
     process.env.NEXT_PUBLIC_FIREBASE_API_KEY ||
@@ -59,17 +58,19 @@ export const isNativeApp = () =>
   ((window as any).Capacitor?.isNativePlatform?.() === true ||
     window.navigator.userAgent.includes("wv"));
 
-// Google Sign-In:
-// - Native Android: uses @codetrix-studio/capacitor-google-auth (no WebView popup issues)
-// - Web: uses Firebase signInWithPopup
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
-    // Dynamically import to avoid SSR/web build issues
-    const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth");
-    await GoogleAuth.initialize();
-    const googleUser = await GoogleAuth.signIn();
-    const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
-    return signInWithCredential(auth, credential);
+    try {
+      // Dynamically import capacitor-google-auth only on native
+      const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth" as any);
+      await GoogleAuth.initialize();
+      const googleUser = await GoogleAuth.signIn();
+      const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
+      return signInWithCredential(auth, credential);
+    } catch {
+      // Fallback to popup if plugin not available
+      return signInWithPopup(auth, googleProvider);
+    }
   }
   return signInWithPopup(auth, googleProvider);
 };
@@ -175,9 +176,7 @@ export async function updateStreak(uid: string): Promise<number> {
   const lastLogin = (user.lastLoginAt as unknown as Timestamp)?.toDate();
   const now = new Date();
   const diffDays = lastLogin
-    ? Math.floor(
-        (now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)
-      )
+    ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24))
     : 0;
 
   let newStreak = user.streak;
@@ -185,23 +184,12 @@ export async function updateStreak(uid: string): Promise<number> {
   else if (diffDays > 1) newStreak = 1;
 
   const maxStreak = Math.max(newStreak, user.maxStreak || 0);
-  await updateDoc(ref, {
-    streak: newStreak,
-    maxStreak,
-    lastLoginAt: serverTimestamp(),
-  });
+  await updateDoc(ref, { streak: newStreak, maxStreak, lastLoginAt: serverTimestamp() });
   return newStreak;
 }
 
-export async function getLeaderboard(
-  _type: "global" | "weekly" = "global",
-  count = 50
-) {
-  const q = query(
-    collection(db, "users"),
-    orderBy("xp", "desc"),
-    limit(count)
-  );
+export async function getLeaderboard(_type: "global" | "weekly" = "global", count = 50) {
+  const q = query(collection(db, "users"), orderBy("xp", "desc"), limit(count));
   const snap = await getDocs(q);
   return snap.docs.map((d, i) => ({ ...d.data(), rank: i + 1, userId: d.id }));
 }
