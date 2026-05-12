@@ -1,6 +1,5 @@
 "use client";
 
-import { navigate } from "@/lib/navigate";
 import { useState, useEffect } from "react";
 import { Zap, Mail, Lock, Eye, EyeOff, Chrome } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -11,7 +10,6 @@ import {
   createUserProfile,
   getUserProfile,
   handleGoogleRedirectResult,
-  isNativeApp,
 } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
@@ -25,44 +23,40 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
 
-  // Handle Google redirect result on mount (for native app)
   useEffect(() => {
-    if (!isNativeApp()) return;
-    setGoogleLoading(true);
     handleGoogleRedirectResult()
       .then(async (cred) => {
         if (!cred || !cred.user) return;
+        toast("Google redirect result found...");
         let profile = await getUserProfile(cred.user.uid);
         if (!profile) profile = await createUserProfile(cred.user);
         setUser(profile);
         toast.success("Welcome! ⚡");
-        navigate("/dashboard");
+        window.location.href = "/dashboard/";
       })
-      .catch(() => {})
-      .finally(() => setGoogleLoading(false));
+      .catch((e) => toast.error("Redirect err: " + String(e).slice(0, 60)));
   }, [setUser]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
     setIsLoading(true);
+    toast("Signing in...");
     try {
+      toast("Calling Firebase...");
       const cred = await signInEmail(email, password);
+      toast("Firebase done, getting profile...");
       const profile = await getUserProfile(cred.user.uid);
       if (profile) {
         setUser(profile);
         toast.success("Welcome back! 🎮");
-        navigate("/dashboard");
+        window.location.href = "/dashboard/";
       } else {
         toast.error("Profile not found. Please sign up.");
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast.error(
-        message.includes("invalid-credential") || message.includes("wrong-password")
-          ? "Invalid email or password"
-          : message.slice(0, 80)
-      );
+      toast.error("Login error: " + message.slice(0, 80));
     } finally {
       setIsLoading(false);
     }
@@ -70,37 +64,43 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
+    toast("Google sign in starting...");
     try {
       const cred = await signInWithGoogle();
-      // Native app: signInWithGoogle triggers redirect, returns null
-      if (!cred) return; // redirect in progress, page will reload
+      if (!cred) {
+        toast("Redirect triggered, waiting...");
+        return;
+      }
+      toast("Google done, getting profile...");
       let profile = await getUserProfile((cred as any).user.uid);
       if (!profile) profile = await createUserProfile((cred as any).user);
       setUser(profile);
       toast.success("Welcome! ⚡");
-      navigate("/dashboard");
+      window.location.href = "/dashboard/";
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      if (!message.includes("cancelled") && !message.includes("cancel")) {
-        toast.error("Google sign-in failed. Try email login.");
-      }
+      toast.error("Google err: " + message.slice(0, 80));
       setGoogleLoading(false);
     }
   };
 
   const handleGuestLogin = async () => {
     setGuestLoading(true);
+    toast("Guest login starting...");
     try {
+      toast("Calling signInAnonymously...");
       const cred = await signInGuest();
+      toast("Guest auth done, creating profile...");
       const profile = await createUserProfile(cred.user, {
         username: `Guest_${Math.floor(Math.random() * 9999)}`,
       });
+      toast("Profile created!");
       setUser(profile);
       toast.success("Playing as Guest 👻");
-      navigate("/dashboard");
+      window.location.href = "/dashboard/";
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast.error(message.slice(0, 80));
+      toast.error("Guest err: " + message.slice(0, 80));
     } finally {
       setGuestLoading(false);
     }
@@ -111,7 +111,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => { window.location.href = "/"; }}
             style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24 }}
           >
             <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
@@ -177,7 +177,7 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <button onClick={() => navigate("/signup")} style={{ background: "none", border: "none", cursor: "pointer", color: "#39FF14", fontWeight: 600, fontSize: 14, textDecoration: "underline" }}>
+            <button onClick={() => { window.location.href = "/signup/"; }} style={{ background: "none", border: "none", cursor: "pointer", color: "#39FF14", fontWeight: 600, fontSize: 14, textDecoration: "underline" }}>
               Sign Up Free
             </button>
           </p>
