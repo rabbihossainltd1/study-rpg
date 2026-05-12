@@ -14,22 +14,24 @@ function walk(dir, results = []) {
   return results;
 }
 
-function relPrefix(file) {
-  const relativeDir = path.relative(outDir, path.dirname(file));
-  if (!relativeDir) return ".";
-  const depth = relativeDir.split(path.sep).filter(Boolean).length;
-  return Array(depth).fill("..").join("/");
+function prefixFor(file) {
+  const rel = path.relative(outDir, path.dirname(file));
+  if (!rel) return ".";
+  return rel.split(path.sep).filter(Boolean).map(() => "..").join("/");
 }
 
 for (const file of walk(outDir)) {
   if (!file.endsWith(".html")) continue;
-  const prefix = relPrefix(file);
+
+  const prefix = prefixFor(file);
   let html = fs.readFileSync(file, "utf8");
 
   html = html
     .replace(/(href|src)="\/_next\//g, `$1="${prefix}/_next/`)
     .replace(/(href|src)="\/manifest\.json"/g, `$1="${prefix}/manifest.json`)
-    .replace(/(href|src)="\/favicon\.ico"/g, `$1="${prefix}/favicon.ico`);
+    .replace(/(href|src)="\/favicon\.ico"/g, `$1="${prefix}/favicon.ico`)
+    .replace(/"\/_next\//g, `"${prefix}/_next/`)
+    .replace(/'\/_next\//g, `'${prefix}/_next/`);
 
   fs.writeFileSync(file, html);
 }
