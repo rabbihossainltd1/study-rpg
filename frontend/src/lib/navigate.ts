@@ -17,24 +17,36 @@ function normalizePath(path: string) {
   return url;
 }
 
+function isCapacitor(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    ((window as any).Capacitor?.isNativePlatform?.() === true ||
+      window.location.protocol === "capacitor:" ||
+      window.location.protocol === "ionic:" ||
+      window.navigator.userAgent.includes("wv"))
+  );
+}
+
 export function navigate(path: string) {
   if (typeof window === "undefined") return;
 
   const url = normalizePath(path);
+
+  if (isCapacitor()) {
+    window.location.href = url;
+    return;
+  }
 
   try {
     if (typeof appRouter === "function") {
       appRouter(url);
       return;
     }
-
     if (appRouter && typeof appRouter.push === "function") {
       appRouter.push(url);
       return;
     }
-  } catch (_) {
-    // Fall back below.
-  }
+  } catch (_) {}
 
   try {
     window.history.pushState({}, "", url);

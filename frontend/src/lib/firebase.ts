@@ -3,6 +3,8 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInAnonymously,
@@ -43,7 +45,6 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
-// Set persistence to LOCAL so auth state survives Capacitor WebView reloads
 if (typeof window !== "undefined") {
   setPersistence(auth, browserLocalPersistence).catch(() => {});
 }
@@ -51,14 +52,33 @@ if (typeof window !== "undefined") {
 export const isNativeApp = () =>
   typeof window !== "undefined" &&
   ((window as any).Capacitor?.isNativePlatform?.() === true ||
+    window.location.protocol === "capacitor:" ||
+    window.location.protocol === "ionic:" ||
     window.navigator.userAgent.includes("wv"));
 
+// Use redirect for native app (Capacitor WebView doesn't support popups)
+// Use popup for web browser
 export const signInWithGoogle = async () => {
+  if (isNativeApp()) {
+    await signInWithRedirect(auth, googleProvider);
+    // This won't return a result immediately - handled by getRedirectResult on app load
+    return null;
+  }
   const result = await signInWithPopup(auth, googleProvider);
   if (!result || !result.user) {
     throw new Error("Google sign in failed");
   }
   return result;
+};
+
+// Call this on app load to handle Google redirect result
+export const handleGoogleRedirectResult = async () => {
+  try {
+    const result = await getRedirectResult(auth);
+    return result;
+  } catch {
+    return null;
+  }
 };
 
 export const signInEmail = (email: string, password: string) =>
