@@ -16,12 +16,14 @@ function walk(dir) {
       let content = fs.readFileSync(fullPath, "utf8");
 
       content = content
+        .replace(/href="\/_next\//g, 'href="./_next/')
+        .replace(/src="\/_next\//g, 'src="./_next/')
         .replace(/"\/_next\//g, '"./_next/')
-        .replace(/'\/_next\//g, "'./_next/")
         .replace(/href="\/manifest\.json"/g, 'href="./manifest.json"')
         .replace(/href="\/favicon\.ico"/g, 'href="./favicon.ico"');
 
       fs.writeFileSync(fullPath, content);
+
       console.log("Fixed:", fullPath);
     }
   }
