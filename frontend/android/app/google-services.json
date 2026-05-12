@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "494377620744",
+    "project_id": "study-rpg-11352",
+    "storage_bucket": "study-rpg-11352.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494377620744:android:dd3e4da92f234780f308bd",
+        "android_client_info": {
+          "package_name": "com.rabbi.studyrpg.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcLKqxkanARVXfB307v0VdFIwMyqf61oc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
