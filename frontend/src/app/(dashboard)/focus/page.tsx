@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
 import { Button } from "@/components/ui/Button";
 import { StatCard } from "@/components/ui/Card";
@@ -45,14 +44,11 @@ export default function FocusPage() {
       toast.success("Break complete! Back to focus! 🚀");
       return;
     }
-
     const minutesStudied = Math.floor((mode.duration - timeLeft) / 60);
     const xpEarned = Math.max(10, minutesStudied * mode.xpPerMin);
     const coinsEarned = Math.floor(minutesStudied * 1.5);
-
     setSessions((s) => s + 1);
     setTotalMinutes((m) => m + minutesStudied);
-
     try {
       const result = await addXp(user.uid, xpEarned);
       await addCoins(user.uid, coinsEarned);
@@ -108,7 +104,7 @@ export default function FocusPage() {
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       {/* Header */}
-      <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-secondary/10 border border-secondary/30 flex items-center justify-center">
             <Timer className="w-5 h-5 text-secondary" />
@@ -121,10 +117,10 @@ export default function FocusPage() {
         <button onClick={() => setShowSettings(!showSettings)} className="p-2 glass rounded-xl border border-white/10 hover:border-white/20 transition-colors">
           <Settings className="w-5 h-5 text-gray-400" />
         </button>
-      </motion.div>
+      </div>
 
       {/* Mode Tabs */}
-      <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="flex gap-2 overflow-x-auto scrollbar-none">
+      <div className="flex gap-2 overflow-x-auto scrollbar-none">
         {MODES.map((m) => {
           const Icon = m.icon;
           return (
@@ -132,9 +128,7 @@ export default function FocusPage() {
               key={m.id}
               onClick={() => handleModeChange(m)}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all border ${
-                mode.id === m.id
-                  ? "text-black font-bold"
-                  : "glass border-white/10 text-gray-400 hover:text-white"
+                mode.id === m.id ? "text-black font-bold" : "glass border-white/10 text-gray-400 hover:text-white"
               }`}
               style={mode.id === m.id ? { background: m.color, borderColor: m.color, boxShadow: `0 0 20px ${m.color}40` } : {}}
             >
@@ -143,20 +137,14 @@ export default function FocusPage() {
             </button>
           );
         })}
-      </motion.div>
+      </div>
 
       {/* Timer Circle */}
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.15 }}
-        className="flex justify-center"
-      >
+      <div className="flex justify-center">
         <div className="relative w-64 h-64">
-          {/* Background circle */}
           <svg className="w-full h-full -rotate-90" viewBox="0 0 240 240">
             <circle cx="120" cy="120" r="110" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8" />
-            <motion.circle
+            <circle
               cx="120" cy="120" r="110"
               fill="none"
               stroke={progressColor}
@@ -164,60 +152,39 @@ export default function FocusPage() {
               strokeLinecap="round"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
-              style={{ filter: `drop-shadow(0 0 8px ${progressColor})` }}
-              transition={{ duration: 0.5 }}
+              style={{ filter: `drop-shadow(0 0 8px ${progressColor})`, transition: "stroke-dashoffset 0.5s ease" }}
             />
           </svg>
-
-          {/* Center content */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            {isRunning && (
-              <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="text-2xl mb-1"
-              >
-                🎯
-              </motion.div>
-            )}
-            <p
-              className="text-5xl font-black font-mono tabular-nums"
-              style={{ color: progressColor, textShadow: `0 0 30px ${progressColor}60` }}
-            >
+            {isRunning && <div className="text-2xl mb-1">🎯</div>}
+            <p className="text-5xl font-black font-mono tabular-nums" style={{ color: progressColor, textShadow: `0 0 30px ${progressColor}60` }}>
               {formatTime(timeLeft)}
             </p>
             <p className="text-sm text-gray-400 mt-1">{mode.desc}</p>
-            {mode.xpPerMin > 0 && (
-              <p className="text-xs text-primary mt-1">+{mode.xpPerMin} XP/min</p>
-            )}
+            {mode.xpPerMin > 0 && <p className="text-xs text-primary mt-1">+{mode.xpPerMin} XP/min</p>}
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Controls */}
-      <motion.div
-        initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
-        className="flex justify-center gap-3"
-      >
-        <button onClick={handleReset} className="w-12 h-12 glass rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/30 transition-all">
+      <div className="flex justify-center gap-3">
+        <button onClick={handleReset} className="w-12 h-12 glass rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/30 transition-all active:scale-95">
           <RotateCcw className="w-5 h-5" />
         </button>
-        <motion.button
-          whileTap={{ scale: 0.95 }}
-          whileHover={{ scale: 1.05 }}
+        <button
           onClick={handleToggle}
-          className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-black transition-all"
+          className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-black transition-all active:scale-95"
           style={{ background: progressColor, boxShadow: `0 0 30px ${progressColor}50` }}
         >
           {isRunning ? <Pause className="w-7 h-7" /> : <Play className="w-7 h-7 ml-0.5" />}
-        </motion.button>
+        </button>
         <div className="w-12 h-12 glass rounded-full border border-white/10 flex items-center justify-center">
           <span className="text-sm font-bold text-gray-400">{sessions}</span>
         </div>
-      </motion.div>
+      </div>
 
       {/* Ambient Sound */}
-      <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.25 }}>
+      <div>
         <p className="text-xs text-gray-600 text-center mb-2">Ambient Sound</p>
         <div className="flex gap-2 justify-center flex-wrap">
           {AMBIENT_LABELS.map((a) => (
@@ -232,17 +199,17 @@ export default function FocusPage() {
             </button>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* Stats */}
-      <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         <StatCard label="Sessions Today" value={sessions} icon={<CheckCircle2 className="w-4 h-4" />} color="#39FF14" />
         <StatCard label="Minutes Focused" value={totalMinutes} icon={<Timer className="w-4 h-4" />} color="#00F0FF" />
         <StatCard label="XP Earned" value={`${totalMinutes * mode.xpPerMin}`} icon={<Zap className="w-4 h-4" />} color="#FFD700" />
-      </motion.div>
+      </div>
 
       {/* Tips */}
-      <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.35 }} className="glass-card p-4 border border-primary/10">
+      <div className="glass-card p-4 border border-primary/10">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
             <TrendingUp className="w-4 h-4 text-primary" />
@@ -257,7 +224,7 @@ export default function FocusPage() {
             </ul>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
