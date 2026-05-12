@@ -48,6 +48,8 @@ jobs:
           echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID || '1:494377620744:web:d5bcf7b4a6813445f308bd' }}" >> .env.local
           echo "DEEPSEEK_API_KEY=${{ secrets.DEEPSEEK_API_KEY }}" >> .env.local
           echo "NEXT_PUBLIC_APP_NAME=Study RPG" >> .env.local
+          echo "NEXT_PUBLIC_APP_URL=https://project-wzy1z.vercel.app" >> .env.local
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL || '' }}" >> .env.local
 
       - name: Build Next.js
         working-directory: frontend
