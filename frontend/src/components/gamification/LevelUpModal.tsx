@@ -1,46 +1,210 @@
 "use client";
+
+import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
-import { Zap } from "lucide-react";
+import { Zap, X, Star } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { RANK_COLORS } from "@/types";
 import { useEffect } from "react";
 
+// Simple confetti without external dependency
+function fireConfetti() {
+  const colors = ["#39FF14", "#00F0FF", "#BF5FFF", "#FFD700", "#FF003C"];
+
+  function fire() {
+    const container = document.createElement("div");
+    container.style.cssText = `
+      position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden;
+    `;
+    document.body.appendChild(container);
+
+    for (let i = 0; i < 40; i++) {
+      const particle = document.createElement("div");
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const size = Math.random() * 10 + 5;
+      const x = Math.random() * 100;
+      const duration = Math.random() * 1000 + 1000;
+
+      particle.style.cssText = `
+        position: absolute;
+        width: ${size}px; height: ${size}px;
+        background: ${color};
+        border-radius: ${Math.random() > 0.5 ? "50%" : "0"};
+        left: ${x}%;
+        top: -20px;
+        animation: fall ${duration}ms ease-in forwards;
+      `;
+      container.appendChild(particle);
+    }
+
+    const style = document.createElement("style");
+    style.textContent = `
+      @keyframes fall {
+        to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+    setTimeout(() => {
+      document.body.removeChild(container);
+      document.head.removeChild(style);
+    }, 3000);
+  }
+
+  fire();
+}
+
 export function LevelUpModal() {
-  const { levelUpData, clearLevelUp } = useUserStore();
+  const { showLevelUpModal, newLevel, dismissLevelUp, user } = useUserStore();
 
   useEffect(() => {
-    if (levelUpData) {
-      const t = setTimeout(() => clearLevelUp(), 3000);
-      return () => clearTimeout(t);
+    if (showLevelUpModal) {
+      fireConfetti();
     }
-  }, [levelUpData, clearLevelUp]);
+  }, [showLevelUpModal]);
 
-  if (!levelUpData) return null;
+  const rankColor = user ? RANK_COLORS[user.rank] : "#39FF14";
 
   return (
-    <div
-      style={{
-        position: "fixed", inset: 0, zIndex: 100,
-        background: "rgba(0,0,0,0.8)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        pointerEvents: "none"
-      }}
-    >
-      <div style={{
-        background: "rgba(18,18,18,0.98)",
-        border: "2px solid #39FF14",
-        borderRadius: 24, padding: "40px 32px",
-        textAlign: "center",
-        boxShadow: "0 0 60px rgba(57,255,20,0.4)"
-      }}>
-        <div style={{ fontSize: 64, marginBottom: 16 }}>⚡</div>
-        <p style={{ fontSize: 14, color: "#39FF14", fontWeight: 700, letterSpacing: 3, marginBottom: 8 }}>LEVEL UP!</p>
-        <p style={{ fontSize: 48, fontWeight: 900, color: "#fff", marginBottom: 8 }}>
-          Level {levelUpData.newLevel}
-        </p>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-          <Zap size={16} color="#39FF14" />
-          <span style={{ color: "#39FF14", fontWeight: 700 }}>Keep it up!</span>
-        </div>
-      </div>
-    </div>
+    <AnimatePresence>
+      {showLevelUpModal && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+          onClick={dismissLevelUp}
+        >
+          <motion.div
+            initial={{ scale: 0.5, y: 50, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ type: "spring", damping: 20, stiffness: 300 }}
+            className="relative glass-card p-8 max-w-sm w-full text-center overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              border: `1px solid ${rankColor}40`,
+              boxShadow: `0 0 60px ${rankColor}30`,
+            }}
+          >
+            {/* BG Glow */}
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{ background: `radial-gradient(circle at center, ${rankColor}, transparent 70%)` }}
+            />
+
+            {/* Close */}
+            <button
+              onClick={dismissLevelUp}
+              className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Stars */}
+            <div className="flex justify-center gap-2 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ scale: 0, rotate: -30 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ delay: i * 0.1 + 0.3 }}
+                >
+                  <Star className="w-5 h-5 fill-gold text-gold" />
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Level Badge */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="relative w-28 h-28 mx-auto mb-5"
+            >
+              <div
+                className="w-full h-full rounded-full flex items-center justify-center border-4"
+                style={{
+                  borderColor: rankColor,
+                  background: `${rankColor}15`,
+                  boxShadow: `0 0 30px ${rankColor}50`,
+                }}
+              >
+                <div className="text-center">
+                  <Zap className="w-6 h-6 mx-auto mb-1" style={{ color: rankColor }} />
+                  <p className="text-3xl font-black" style={{ color: rankColor }}>{newLevel}</p>
+                </div>
+              </div>
+
+              {/* Orbit ring */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 rounded-full border-2 border-dashed opacity-30"
+                style={{ borderColor: rankColor }}
+              />
+            </motion.div>
+
+            {/* Text */}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <p className="text-xs font-mono tracking-widest text-gray-500 uppercase mb-1">
+                Level Up!
+              </p>
+              <h2 className="text-3xl font-black text-white mb-2">
+                অভিনন্দন! 🎉
+              </h2>
+              <p className="text-gray-400 text-sm mb-1">
+                You reached{" "}
+                <span className="font-bold" style={{ color: rankColor }}>
+                  Level {newLevel}
+                </span>
+              </p>
+              {user && (
+                <p className="text-xs text-gray-600">
+                  Rank: <span style={{ color: rankColor }}>{user.rank}</span>
+                </p>
+              )}
+            </motion.div>
+
+            {/* Rewards */}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-5 p-3 rounded-xl border border-white/10 bg-white/5 flex justify-around"
+            >
+              <div className="text-center">
+                <p className="text-lg font-bold text-gold">+{newLevel * 20} 🪙</p>
+                <p className="text-xs text-gray-500">Coins</p>
+              </div>
+              <div className="w-px bg-white/10" />
+              <div className="text-center">
+                <p className="text-lg font-bold text-purple-400">+{Math.floor(newLevel / 5)} 💎</p>
+                <p className="text-xs text-gray-500">Gems</p>
+              </div>
+              <div className="w-px bg-white/10" />
+              <div className="text-center">
+                <p className="text-lg font-bold text-primary">🔓 Unlocked</p>
+                <p className="text-xs text-gray-500">New content</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="mt-5"
+            >
+              <Button onClick={dismissLevelUp} className="w-full" size="lg">
+                ⚡ Continue Journey
+              </Button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
