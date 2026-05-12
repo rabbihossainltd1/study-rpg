@@ -3,8 +3,6 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInAnonymously,
@@ -56,16 +54,8 @@ export const isNativeApp = () =>
     window.navigator.userAgent.includes("wv"));
 
 export const signInWithGoogle = async () => {
-  if (isNativeApp()) {
-    await signInWithRedirect(auth, googleProvider);
-    return null;
-  }
   return signInWithPopup(auth, googleProvider);
 };
-
-
-
-export const getGoogleRedirectResult = () => getRedirectResult(auth);
 
 export const signInEmail = (email: string, password: string) =>
   signInWithEmailAndPassword(auth, email, password);
