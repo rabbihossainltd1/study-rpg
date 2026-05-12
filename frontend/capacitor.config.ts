@@ -3,7 +3,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 const config: CapacitorConfig = {
   appId: "com.rabbi.studyrpg.app",
   appName: "Study RPG",
-  webDir: "out",
+  webDir: ".next",
   server: {
     androidScheme: "https",
     cleartext: false,
@@ -24,12 +24,7 @@ const config: CapacitorConfig = {
       backgroundColor: "#050505",
       showSpinner: false,
     },
-    GoogleAuth: {
-      scopes: ["profile", "email"],
-      serverClientId:
-        "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com",
-      forceCodeForRefreshToken: true,
-    },
+    
   },
 };
 
