@@ -54,6 +54,9 @@ jobs:
       - name: Build Next.js
         working-directory: frontend
         run: npm run build
+        - name: Fix Capacitor Static Paths
+  working-directory: frontend
+  run: node scripts/fix-capacitor-static-assets.js
 
       - name: Sync Capacitor
         working-directory: frontend
