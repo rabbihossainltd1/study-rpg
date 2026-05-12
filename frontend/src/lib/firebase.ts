@@ -3,7 +3,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect,
+  signInWithCredential,
   getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -54,14 +54,22 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
-const isNativeApp = () =>
+export const isNativeApp = () =>
   typeof window !== "undefined" &&
   ((window as any).Capacitor?.isNativePlatform?.() === true ||
     window.navigator.userAgent.includes("wv"));
 
+// Google Sign-In:
+// - Native Android: uses @codetrix-studio/capacitor-google-auth (no WebView popup issues)
+// - Web: uses Firebase signInWithPopup
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
-    return signInWithRedirect(auth, googleProvider);
+    // Dynamically import to avoid SSR/web build issues
+    const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth");
+    await GoogleAuth.initialize();
+    const googleUser = await GoogleAuth.signIn();
+    const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
+    return signInWithCredential(auth, credential);
   }
   return signInWithPopup(auth, googleProvider);
 };
