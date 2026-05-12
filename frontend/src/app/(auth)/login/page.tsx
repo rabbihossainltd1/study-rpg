@@ -1,7 +1,7 @@
 "use client";
 
 import { navigate } from "@/lib/navigate";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Zap, Mail, Lock, Eye, EyeOff, Chrome } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
@@ -10,6 +10,8 @@ import {
   signInGuest,
   createUserProfile,
   getUserProfile,
+  handleGoogleRedirectResult,
+  isNativeApp,
 } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
@@ -22,6 +24,23 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
+
+  // Handle Google redirect result on mount (for native app)
+  useEffect(() => {
+    if (!isNativeApp()) return;
+    setGoogleLoading(true);
+    handleGoogleRedirectResult()
+      .then(async (cred) => {
+        if (!cred || !cred.user) return;
+        let profile = await getUserProfile(cred.user.uid);
+        if (!profile) profile = await createUserProfile(cred.user);
+        setUser(profile);
+        toast.success("Welcome! ⚡");
+        navigate("/dashboard");
+      })
+      .catch(() => {})
+      .finally(() => setGoogleLoading(false));
+  }, [setUser]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,9 +58,11 @@ export default function LoginPage() {
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast.error(message.includes("invalid-credential") || message.includes("wrong-password")
-        ? "Invalid email or password"
-        : message.slice(0, 80));
+      toast.error(
+        message.includes("invalid-credential") || message.includes("wrong-password")
+          ? "Invalid email or password"
+          : message.slice(0, 80)
+      );
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +72,8 @@ export default function LoginPage() {
     setGoogleLoading(true);
     try {
       const cred = await signInWithGoogle();
-      if (!cred) return;
+      // Native app: signInWithGoogle triggers redirect, returns null
+      if (!cred) return; // redirect in progress, page will reload
       let profile = await getUserProfile((cred as any).user.uid);
       if (!profile) profile = await createUserProfile((cred as any).user);
       setUser(profile);
@@ -62,7 +84,6 @@ export default function LoginPage() {
       if (!message.includes("cancelled") && !message.includes("cancel")) {
         toast.error("Google sign-in failed. Try email login.");
       }
-    } finally {
       setGoogleLoading(false);
     }
   };
