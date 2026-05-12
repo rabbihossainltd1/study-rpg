@@ -17,7 +17,15 @@ const PORT = process.env.PORT || 5000;
 // Security
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  origin: process.env.FRONTEND_URL
+    ? process.env.FRONTEND_URL.split(",").map((origin) => origin.trim())
+    : [
+        "https://project-wzy1z.vercel.app",
+        "https://studyrpg.app",
+        "capacitor://localhost",
+        "https://localhost",
+        "https://com.rabbi.studyrpg.app",
+      ],
   credentials: true,
 }));
 app.use(express.json({ limit: "1mb" }));
@@ -63,7 +71,7 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
 
 app.listen(PORT, () => {
   console.log(`🚀 Study RPG Engine running on port ${PORT}`);
-  console.log(`📡 Health: http://localhost:${PORT}/health`);
+  console.log(`📡 Health: http://127.0.0.1:${PORT}/health`);
 });
 
 export default app;
