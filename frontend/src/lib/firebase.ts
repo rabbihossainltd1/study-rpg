@@ -3,13 +3,13 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInAnonymously,
   signOut,
   onAuthStateChanged,
+  signInWithCredential,
+  OAuthProvider,
   type User as FirebaseUser,
 } from "firebase/auth";
 import {
@@ -50,12 +50,22 @@ export const isNativeApp = () =>
 
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
-    return signInWithRedirect(auth, googleProvider);
+    // Use Capacitor Google Auth plugin for native
+    try {
+      const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth");
+      const googleUser = await GoogleAuth.signIn();
+      const credential = GoogleAuthProvider.credential(
+        googleUser.authentication.idToken,
+        googleUser.authentication.accessToken
+      );
+      return signInWithCredential(auth, credential);
+    } catch (err) {
+      throw err;
+    }
   }
   return signInWithPopup(auth, googleProvider);
 };
 
-export { getRedirectResult };
 export const signInEmail = (email: string, password: string) =>
   signInWithEmailAndPassword(auth, email, password);
 export const signUpEmail = (email: string, password: string) =>
