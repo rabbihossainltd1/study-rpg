@@ -58,12 +58,11 @@ export const isNativeApp = () =>
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
     try {
-      const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth");
+      const { SocialLogin } = await import("@capgo/capacitor-social-login");
       const googleUser = await SocialLogin.login({ provider: "google", options: { scopes: ["email", "profile"] } });
-      const credential = GoogleAuthProvider.credential(
-        googleUser.authentication.idToken,
-        googleUser.authentication.accessToken
-      );
+      const idToken = (googleUser.result as any)?.idToken ?? (googleUser.result as any)?.authentication?.idToken;
+      const accessToken = (googleUser.result as any)?.accessToken ?? (googleUser.result as any)?.authentication?.accessToken;
+      const credential = GoogleAuthProvider.credential(idToken, accessToken);
       return signInWithCredential(auth, credential);
     } catch (err) {
       throw err;
