@@ -66,11 +66,12 @@ let socialLoginInitialized = false;
 
 async function withTimeout<T>(
   promise: Promise<T>,
-  ms = 10000
+  ms = 10000,
+  message = "Operation timeout"
 ): Promise<T> {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
-      reject(new Error("Operation timeout"));
+      reject(new Error(message));
     }, ms);
 
     promise
