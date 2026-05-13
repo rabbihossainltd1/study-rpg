@@ -58,23 +58,18 @@ jobs:
         run: |
           if [ ! -d "out/next/static/chunks" ]; then
             echo "FATAL: out/next/static/chunks not found"
-            echo "Directory listing of out/:"
             ls out/
             exit 1
           fi
-          echo "SUCCESS: out/next exists"
-          echo "Chunk count: $(ls out/next/static/chunks | wc -l)"
-          echo "out/next size: $(du -sh out/next)"
+          echo "SUCCESS: out/next exists with $(ls out/next/static/chunks | wc -l) chunks"
 
       - name: Verify HTML references are fixed
         working-directory: frontend
         run: |
-          echo "Checking login/index.html script paths:"
+          echo "login/index.html script paths:"
           grep -o 'src="[^"]*"' out/login/index.html | head -3
-          echo ""
-          echo "Checking for any remaining _next references:"
-          REMAINING=$(grep -r "_next" out/ --include="*.html" | wc -l)
-          echo "_next references remaining: $REMAINING"
+          REMAINING=$(grep -rl "_next" out/ --include="*.html" | wc -l)
+          echo "_next references remaining in HTML files: $REMAINING"
 
       - name: Sync Capacitor
         working-directory: frontend
@@ -84,13 +79,12 @@ jobs:
         working-directory: frontend
         run: |
           ASSETS="android/app/src/main/assets/public"
-          echo "Assets directory listing:"
           ls "$ASSETS/"
           if [ ! -d "$ASSETS/next" ]; then
-            echo "FATAL: $ASSETS/next not found after cap sync"
+            echo "FATAL: $ASSETS/next not found"
             exit 1
           fi
-          echo "next/ chunk count: $(ls $ASSETS/next/static/chunks | wc -l)"
+          echo "Android next/ chunks: $(ls $ASSETS/next/static/chunks | wc -l)"
 
       - name: Add google-services.json
         working-directory: frontend/android/app
@@ -98,7 +92,6 @@ jobs:
           if [ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]; then
             echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > google-services.json
           fi
-          echo "Package: $(python3 -c "import json; d=json.load(open('google-services.json')); print(d['client'][0]['client_info']['android_client_info']['package_name'])")"
 
       - name: Download Gradle Wrapper JAR
         working-directory: frontend/android
@@ -113,9 +106,11 @@ jobs:
 
       - name: Build APK
         working-directory: frontend/android
-        env:
-          JAVA_TOOL_OPTIONS: ""
-        run: ./gradlew assembleDebug --no-daemon
+        run: |
+          unset JAVA_TOOL_OPTIONS
+          unset _JAVA_OPTIONS
+          unset JDK_JAVA_OPTIONS
+          ./gradlew assembleDebug --no-daemon
 
       - name: Verify APK has JS chunks
         working-directory: frontend/android
@@ -125,12 +120,11 @@ jobs:
           CHUNK_COUNT=$(unzip -l "$APK" | grep "assets/public/next/static/chunks" | wc -l)
           echo "JS chunks in APK: $CHUNK_COUNT"
           if [ "$CHUNK_COUNT" -eq 0 ]; then
-            echo "FATAL: APK has no JS chunks!"
-            echo "Listing assets/public/ in APK:"
+            echo "FATAL: No JS chunks in APK"
             unzip -l "$APK" | grep "assets/public/" | head -20
             exit 1
           fi
-          echo "SUCCESS: APK contains JS chunks"
+          echo "SUCCESS!"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
