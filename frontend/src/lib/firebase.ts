@@ -59,7 +59,7 @@ export const signInWithGoogle = async () => {
   if (isNativeApp()) {
     try {
       const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth");
-      const googleUser = await GoogleAuth.signIn();
+      const googleUser = await SocialLogin.login({ provider: "google", options: { scopes: ["email", "profile"] } });
       const credential = GoogleAuthProvider.credential(
         googleUser.authentication.idToken,
         googleUser.authentication.accessToken
