@@ -8,7 +8,9 @@ export function RouterProvider() {
   const router = useRouter();
 
   useEffect(() => {
-    registerRouter((path: string) => router.push(path));
+    registerRouter({
+  push: (path: string) => router.push(path),
+});
   }, [router]);
 
   return null;
