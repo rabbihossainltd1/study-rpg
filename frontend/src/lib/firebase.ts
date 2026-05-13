@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInAnonymously,
+  signInWithCredential,
   signOut,
   onAuthStateChanged,
   browserLocalPersistence,
@@ -55,6 +56,25 @@ export const isNativeApp = () =>
     window.navigator.userAgent.includes("wv"));
 
 export const signInWithGoogle = async () => {
+  if (isNativeApp()) {
+    try {
+      const { SocialLogin } = await import("@capgo/capacitor-social-login");
+      await SocialLogin.initialize({
+        google: {
+          webClientId: "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com"
+        }
+      });
+      const result = await SocialLogin.login({
+        provider: "google",
+        options: { scopes: ["email", "profile"] }
+      });
+      const idToken = (result.result as any)?.idToken ?? (result.result as any)?.authentication?.idToken;
+      const credential = GoogleAuthProvider.credential(idToken);
+      return signInWithCredential(auth, credential);
+    } catch (err) {
+      throw err;
+    }
+  }
   return signInWithPopup(auth, googleProvider);
 };
 
