@@ -53,34 +53,16 @@ if (typeof window !== "undefined") {
 }
 
 export const isNativeApp = () =>
-  typeof window !== "undefined" && Capacitor.isNativePlatform();
+  typeof window !== "undefined" &&
+  ((window as any).Capacitor?.isNativePlatform?.() === true ||
+    window.location.hostname === "studyrpg.app" ||
+    window.location.protocol === "capacitor:" ||
+    window.location.protocol === "ionic:");
 
 const GOOGLE_WEB_CLIENT_ID =
   "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com";
 
 let socialLoginInitialized = false;
-
-const withTimeout = <T,>(
-  promise: Promise<T>,
-  ms = 20000
-): Promise<T> => {
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
-      reject(new Error("Request timeout"));
-    }, ms);
-
-    promise
-      .then((result) => {
-        clearTimeout(timer);
-        resolve(result);
-      })
-      .catch((err) => {
-        clearTimeout(timer);
-        reject(err);
-      });
-  });
-};
-
 
 async function ensureSocialLoginInitialized() {
   if (socialLoginInitialized) return;
@@ -88,7 +70,6 @@ async function ensureSocialLoginInitialized() {
   await SocialLogin.initialize({
     google: {
       webClientId: GOOGLE_WEB_CLIENT_ID,
-      mode: "online",
     },
   });
 
@@ -106,16 +87,13 @@ export const signInWithGoogle = async () => {
           scopes: ["email", "profile"],
         },
       }),
-      30000,
+      20000,
       "Google native sign-in timeout"
     );
 
-    const result = (response as any)?.result || response;
-
     const idToken =
-      result?.idToken ||
-      result?.id_token ||
-      result?.authentication?.idToken ||
+      (response as any)?.result?.idToken ||
+      (response as any)?.result?.id_token ||
       (response as any)?.idToken ||
       (response as any)?.authentication?.idToken;
 
@@ -127,12 +105,12 @@ export const signInWithGoogle = async () => {
     const credential = GoogleAuthProvider.credential(idToken);
     return withTimeout(
       signInWithCredential(auth, credential),
-      15000,
+      12000,
       "Firebase Google credential timeout"
     );
   }
 
-  return withTimeout(signInWithPopup(auth, googleProvider), 15000, "Google sign-in timeout");
+  return withTimeout(signInWithPopup(auth, googleProvider), 12000, "Google sign-in timeout");
 };
 
 export const signInEmail = (email: string, password: string) =>
@@ -150,22 +128,6 @@ function stripUndefined<T extends object>(obj: T): T {
 }
 
 // Build a minimal local user object without hitting Firestore
-export function createLocalGuestProfile(extra?: {
-  username?: string;
-  examMode?: string;
-  district?: string;
-}): User {
-  return buildLocalUser(
-    {
-      uid: `guest_${Date.now()}`,
-      email: "",
-      displayName: extra?.username || "Guest Student",
-      photoURL: "",
-    } as FirebaseUser,
-    extra
-  );
-}
-
 export function buildLocalUser(firebaseUser: FirebaseUser, extra?: { username?: string; examMode?: string; district?: string }): User {
   return {
     uid: firebaseUser.uid,
