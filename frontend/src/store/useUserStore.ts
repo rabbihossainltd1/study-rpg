@@ -22,14 +22,19 @@ interface UserStore {
   setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
   setLanguage: (lang: "bn" | "en") => void;
+
   triggerLevelUp: (level: number) => void;
   dismissLevelUp: () => void;
+
   addXpPopup: (amount: number, x?: number, y?: number) => void;
   removeXpPopup: (id: string) => void;
+
   setMissions: (missions: Mission[]) => void;
   completeMission: (missionId: string) => void;
+
   setAchievements: (achievements: Achievement[]) => void;
   unlockAchievement: (achievementId: string) => void;
+
   updateUserStats: (xp: number, coins: number, level: number) => void;
   reset: () => void;
 }
@@ -50,7 +55,8 @@ export const useUserStore = create<UserStore>()(
       setLoading: (isLoading) => set({ isLoading }),
       setLanguage: (language) => set({ language }),
 
-      triggerLevelUp: (level) => set({ showLevelUpModal: true, newLevel: level }),
+      triggerLevelUp: (level) =>
+        set({ showLevelUpModal: true, newLevel: level }),
       dismissLevelUp: () => set({ showLevelUpModal: false }),
 
       addXpPopup: (amount, x = 50, y = 50) => {
@@ -58,9 +64,12 @@ export const useUserStore = create<UserStore>()(
         set((s) => ({ xpPopups: [...s.xpPopups, { id, amount, x, y }] }));
         setTimeout(() => get().removeXpPopup(id), 2000);
       },
-      removeXpPopup: (id) => set((s) => ({ xpPopups: s.xpPopups.filter((p) => p.id !== id) })),
+
+      removeXpPopup: (id) =>
+        set((s) => ({ xpPopups: s.xpPopups.filter((p) => p.id !== id) })),
 
       setMissions: (missions) => set({ missions }),
+
       completeMission: (missionId) =>
         set((s) => ({
           missions: s.missions.map((m) =>
@@ -69,6 +78,7 @@ export const useUserStore = create<UserStore>()(
         })),
 
       setAchievements: (achievements) => set({ achievements }),
+
       unlockAchievement: (achievementId) =>
         set((s) => ({
           achievements: s.achievements.map((a) =>
@@ -77,17 +87,24 @@ export const useUserStore = create<UserStore>()(
         })),
 
       updateUserStats: (xp, coins, level) =>
-        set((s) => ({ user: s.user ? { ...s.user, xp, coins, level } : null })),
+        set((s) => ({
+          user: s.user
+            ? { ...s.user, xp, coins, level }
+            : null,
+        })),
 
-      reset: () => set({ user: null, showLevelUpModal: false, xpPopups: [], missions: [], achievements: [] }),
+      reset: () =>
+        set({
+          user: null,
+          showLevelUpModal: false,
+          xpPopups: [],
+          missions: [],
+          achievements: [],
+        }),
     }),
     {
       name: "study-rpg-user",
-      // Persist user so dashboard works after page reload/navigation
-      partialize: (state) => ({
-        user: state.user,
-        language: state.language,
-      }),
+      partialize: (state) => ({ user: state.user, language: state.language }),
     }
   )
 );
