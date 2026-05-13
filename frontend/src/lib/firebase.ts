@@ -48,6 +48,13 @@ export const googleProvider = new GoogleAuthProvider();
 // Set persistence to LOCAL so auth state survives Capacitor WebView reloads
 if (typeof window !== "undefined") {
   setPersistence(auth, browserLocalPersistence).catch(() => {});
+  import("@capgo/capacitor-social-login").then(({ SocialLogin }) => {
+    SocialLogin.initialize({
+      google: {
+        webClientId: "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com"
+      }
+    }).catch(() => {});
+  }).catch(() => {});
 }
 
 export const isNativeApp = () =>
