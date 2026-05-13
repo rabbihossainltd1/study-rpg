@@ -11,6 +11,7 @@ import {
   createUserProfile,
   getUserProfile,
   createLocalGuestProfile,
+  getGoogleRedirectResult,
 } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
