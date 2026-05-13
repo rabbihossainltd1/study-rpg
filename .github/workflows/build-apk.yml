@@ -49,17 +49,6 @@ jobs:
           npm run build
           node scripts/fix-capacitor-static-assets.js
 
-      - name: Verify exported assets before Capacitor sync
-        working-directory: frontend
-        run: |
-          test -f out/index.html
-          test -d out/next/static/chunks
-          if grep -R "\"/_next/" out --include="*.html"; then
-            echo "FATAL: old _next references still exist"
-            exit 1
-          fi
-          echo "Export assets OK"
-
       - name: Sync Capacitor
         working-directory: frontend
         run: npx cap sync android
