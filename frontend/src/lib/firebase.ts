@@ -181,3 +181,35 @@ export async function getLeaderboard(_type: "global" | "weekly" = "global", coun
 export async function addCoins(uid: string, amount: number) {
   await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
 }
+
+export function createLocalGuestProfile(options?: { username?: string }): import("@/types").User {
+  const username = options?.username || `Guest_${Math.floor(Math.random() * 9999)}`;
+  return {
+    uid: `guest_${Date.now()}`,
+    email: "",
+    username,
+    displayName: username,
+    photoURL: "",
+    level: 1,
+    xp: 0,
+    xpToNextLevel: 100,
+    coins: 50,
+    gems: 5,
+    rank: "Novice",
+    streak: 0,
+    maxStreak: 0,
+    totalStudyTime: 0,
+    achievements: [],
+    badges: [],
+    friends: [],
+    district: "Dhaka",
+    school: "",
+    examMode: "SSC",
+    avatar: "default",
+    frame: "default",
+    isGuest: true,
+    language: "bn",
+    createdAt: new Date(),
+    lastLoginAt: new Date(),
+  };
+}
