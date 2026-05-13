@@ -128,6 +128,22 @@ function stripUndefined<T extends object>(obj: T): T {
 }
 
 // Build a minimal local user object without hitting Firestore
+export function createLocalGuestProfile(extra?: {
+  username?: string;
+  examMode?: string;
+  district?: string;
+}): User {
+  return buildLocalUser(
+    {
+      uid: `guest_${Date.now()}`,
+      email: "",
+      displayName: extra?.username || "Guest Student",
+      photoURL: "",
+    } as FirebaseUser,
+    extra
+  );
+}
+
 export function buildLocalUser(firebaseUser: FirebaseUser, extra?: { username?: string; examMode?: string; district?: string }): User {
   return {
     uid: firebaseUser.uid,
