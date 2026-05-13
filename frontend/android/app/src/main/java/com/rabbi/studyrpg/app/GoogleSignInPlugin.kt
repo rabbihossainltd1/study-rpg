@@ -27,32 +27,26 @@ class GoogleSignInPlugin : Plugin() {
             .build()
         val client = GoogleSignIn.getClient(activity, gso)
         client.signOut().addOnCompleteListener {
-            val signInIntent = client.signInIntent
-            startActivityForResult(call, signInIntent, "handleSignInResult")
+            startActivityForResult(call, client.signInIntent, "onSignInResult")
         }
     }
 
     @ActivityCallback
-    private fun handleSignInResult(call: PluginCall, result: com.getcapacitor.plugin.util.HttpRequestHandler.HttpURLConnectionBuilder?) {
-        // unused - handled below
-    }
-
-    @ActivityCallback
-    fun handleSignInResult(call: PluginCall, result: androidx.activity.result.ActivityResult) {
-        if (result.resultCode == Activity.RESULT_OK) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                val ret = JSObject()
-                ret.put("idToken", account.idToken ?: "")
-                ret.put("email", account.email ?: "")
-                ret.put("displayName", account.displayName ?: "")
-                call.resolve(ret)
-            } catch (e: ApiException) {
-                call.reject("Sign in failed: ${e.statusCode}")
-            }
-        } else {
-            call.reject("Sign in cancelled")
+    private fun onSignInResult(call: PluginCall, result: androidx.activity.result.ActivityResult) {
+        if (result.resultCode != Activity.RESULT_OK) {
+            call.reject("Sign in cancelled or failed")
+            return
+        }
+        try {
+            val account = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                .getResult(ApiException::class.java)
+            val ret = JSObject()
+            ret.put("idToken", account.idToken ?: "")
+            ret.put("email", account.email ?: "")
+            ret.put("displayName", account.displayName ?: "")
+            call.resolve(ret)
+        } catch (e: ApiException) {
+            call.reject("Google Sign-In failed: ${e.statusCode}")
         }
     }
 }
