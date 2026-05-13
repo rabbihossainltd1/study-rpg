@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { navigate } from "@/lib/navigate";
 import { Zap, Mail, Lock, User, Eye, EyeOff, Chrome, MapPin, GraduationCap, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { signUpEmail, signInWithGoogle, createUserProfile } from "@/lib/firebase";
+import { signUpEmail, signInWithGoogle, createUserProfile, getGoogleRedirectResult } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
 
@@ -28,6 +28,15 @@ export default function SignupPage() {
   const [examMode, setExamMode] = useState("SSC");
   const [district, setDistrict] = useState("Dhaka");
   const [avatar, setAvatar] = useState("⚡");
+
+  useEffect(() => {
+    getGoogleRedirectResult().then(async (cred) => {
+      if (!cred?.user) return;
+      const profile = await createUserProfile(cred.user, { examMode, district });
+      setUser(profile);
+      navigate("/dashboard");
+    }).catch(() => {});
+  }, []);
 
   const handleStep1 = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +65,10 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       const cred = await signInWithGoogle();
+      if (!cred) {
+        // redirect flow - page will reload
+        return;
+      }
       if (!cred?.user) throw new Error("No Google user returned");
 
       const profile = await createUserProfile(cred.user, {
