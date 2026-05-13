@@ -51,7 +51,16 @@ jobs:
 
       - name: Build Next.js + fix asset paths
         working-directory: frontend
-        run: npm run build
+        run: |
+          npm run build
+          # Rename _next to next for Capacitor WebView compatibility
+          if [ -d "out/_next" ]; then
+            mv out/_next out/next
+          fi
+          # Fix all HTML files to reference /next/ instead of /_next/
+          find out -name "*.html" -exec sed -i 's|/_next/|/next/|g' {} +
+          # Fix JS files that reference /_next/
+          find out/next -name "*.js" -exec sed -i 's|/_next/|/next/|g' {} + 2>/dev/null || true
 
       - name: Verify out/next exists (renamed from _next)
         working-directory: frontend
