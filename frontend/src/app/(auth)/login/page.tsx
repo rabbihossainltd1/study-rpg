@@ -1,7 +1,7 @@
 "use client";
 
 import { navigate } from "@/lib/navigate";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Zap, Mail, Lock, Eye, EyeOff, Chrome } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
@@ -47,6 +47,15 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    getGoogleRedirectResult().then(async (cred) => {
+      if (!cred?.user) return;
+      const profile = await createUserProfile(cred.user);
+      setUser(profile);
+      navigate("/dashboard");
+    }).catch(() => {});
+  }, []);
 
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
