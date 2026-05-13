@@ -28,9 +28,7 @@ jobs:
       - name: Setup npmrc
         working-directory: frontend
         run: |
-          if [ -f "_.npmrc.txt" ]; then
-            cp _.npmrc.txt .npmrc
-          fi
+          if [ -f "_.npmrc.txt" ]; then cp _.npmrc.txt .npmrc; fi
           echo "legacy-peer-deps=true" >> .npmrc
 
       - name: Install dependencies
@@ -51,34 +49,48 @@ jobs:
           echo "NEXT_PUBLIC_APP_URL=https://project-wzy1z.vercel.app" >> .env.local
           echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL || '' }}" >> .env.local
 
-      - name: Build Next.js
+      - name: Build Next.js + fix asset paths
         working-directory: frontend
         run: npm run build
 
-      - name: Verify _next chunks were generated
+      - name: Verify out/next exists (renamed from _next)
         working-directory: frontend
         run: |
-          if [ ! -d "out/_next/static/chunks" ]; then
-            echo "FATAL: out/_next/static/chunks/ missing"
+          if [ ! -d "out/next/static/chunks" ]; then
+            echo "FATAL: out/next/static/chunks not found"
+            echo "Directory listing of out/:"
+            ls out/
             exit 1
           fi
-          echo "Chunk count: $(ls out/_next/static/chunks | wc -l)"
-          echo "out/_next size: $(du -sh out/_next)"
+          echo "SUCCESS: out/next exists"
+          echo "Chunk count: $(ls out/next/static/chunks | wc -l)"
+          echo "out/next size: $(du -sh out/next)"
+
+      - name: Verify HTML references are fixed
+        working-directory: frontend
+        run: |
+          echo "Checking login/index.html script paths:"
+          grep -o 'src="[^"]*"' out/login/index.html | head -3
+          echo ""
+          echo "Checking for any remaining _next references:"
+          REMAINING=$(grep -r "_next" out/ --include="*.html" | wc -l)
+          echo "_next references remaining: $REMAINING"
 
       - name: Sync Capacitor
         working-directory: frontend
         run: npx cap sync android
 
-      - name: Verify assets were synced
+      - name: Verify android assets
         working-directory: frontend
         run: |
           ASSETS="android/app/src/main/assets/public"
-          if [ ! -d "$ASSETS/_next" ]; then
-            echo "FATAL: _next not in android assets"
+          echo "Assets directory listing:"
+          ls "$ASSETS/"
+          if [ ! -d "$ASSETS/next" ]; then
+            echo "FATAL: $ASSETS/next not found after cap sync"
             exit 1
           fi
-          echo "Android _next chunk count: $(ls $ASSETS/_next/static/chunks | wc -l)"
-          echo "Android assets _next size: $(du -sh $ASSETS/_next)"
+          echo "next/ chunk count: $(ls $ASSETS/next/static/chunks | wc -l)"
 
       - name: Add google-services.json
         working-directory: frontend/android/app
@@ -86,6 +98,7 @@ jobs:
           if [ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]; then
             echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > google-services.json
           fi
+          echo "Package: $(python3 -c "import json; d=json.load(open('google-services.json')); print(d['client'][0]['client_info']['android_client_info']['package_name'])")"
 
       - name: Download Gradle Wrapper JAR
         working-directory: frontend/android
@@ -96,9 +109,7 @@ jobs:
 
       - name: Setup Gradle
         working-directory: frontend/android
-        run: |
-          chmod +x gradlew
-          sed -i "s/DEFAULT_JVM_OPTS='\".*\"'/DEFAULT_JVM_OPTS=''/g" gradlew
+        run: chmod +x gradlew
 
       - name: Build APK
         working-directory: frontend/android
@@ -106,15 +117,20 @@ jobs:
           JAVA_TOOL_OPTIONS: ""
         run: ./gradlew assembleDebug --no-daemon
 
-      - name: Verify APK contents
+      - name: Verify APK has JS chunks
         working-directory: frontend/android
         run: |
           APK="app/build/outputs/apk/debug/app-debug.apk"
           echo "APK size: $(du -sh $APK)"
-          echo "Total assets in APK: $(unzip -l $APK | grep 'assets/' | wc -l)"
-          echo "_next files in APK: $(unzip -l $APK | grep 'assets/public/_next' | wc -l)"
-          echo "JS chunk files: $(unzip -l $APK | grep 'chunks.*\.js' | wc -l)"
-          unzip -l $APK | grep 'assets/public/_next' | head -5
+          CHUNK_COUNT=$(unzip -l "$APK" | grep "assets/public/next/static/chunks" | wc -l)
+          echo "JS chunks in APK: $CHUNK_COUNT"
+          if [ "$CHUNK_COUNT" -eq 0 ]; then
+            echo "FATAL: APK has no JS chunks!"
+            echo "Listing assets/public/ in APK:"
+            unzip -l "$APK" | grep "assets/public/" | head -20
+            exit 1
+          fi
+          echo "SUCCESS: APK contains JS chunks"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
