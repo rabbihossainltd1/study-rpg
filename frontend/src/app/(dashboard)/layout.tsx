@@ -2,11 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, buildLocalUser, saveUserProfileInBackground } from "@/lib/firebase";
+import { auth, getUserProfile, updateStreak, createUserProfile } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { LevelUpModal } from "@/components/gamification/LevelUpModal";
 import { XpFloatingPopups } from "@/components/gamification/XpFloating";
+import { navigate } from "@/lib/navigate";
 import { Loader2 } from "lucide-react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -14,42 +15,58 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const authChecked = useRef(false);
 
   useEffect(() => {
-    // If persisted user exists, show immediately
-    if (user) setLoading(false);
+    // If we already have a user from Zustand persist, show content immediately
+    // and still re-verify in background
+    if (user) {
+      setLoading(false);
+    }
 
-    const unsub = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
       authChecked.current = true;
 
       if (!firebaseUser) {
-        // No Firebase session - check persisted user
-        if (!useUserStore.getState().user) {
-          window.location.href = "/login/";
-        }
-        setLoading(false);
+        // Only redirect if we don't have a cached user already
+        // Give a brief grace period for persistence to kick in
+        setTimeout(() => {
+          if (!useUserStore.getState().user) {
+            navigate("/login");
+          }
+          setLoading(false);
+        }, 500);
         return;
       }
 
-      // Firebase user exists - build local profile without Firestore
-      if (!useUserStore.getState().user) {
-        const profile = buildLocalUser(firebaseUser);
+      try {
+        let profile = await getUserProfile(firebaseUser.uid);
+        if (!profile) profile = await createUserProfile(firebaseUser);
+        // Fire-and-forget streak update — don't block rendering
+        updateStreak(firebaseUser.uid).catch(() => {});
         setUser(profile);
-        // Save to Firestore in background
-        saveUserProfileInBackground(firebaseUser);
+      } catch (err) {
+        console.warn("Dashboard auth/profile check failed", err);
+        if (!useUserStore.getState().user) {
+          navigate("/login");
+        }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    // Failsafe: if onAuthStateChanged never fires
+    // Failsafe: if onAuthStateChanged never fires (e.g. network issue in WebView),
+    // fall back to cached user or redirect after 5s
     const failsafe = setTimeout(() => {
       if (!authChecked.current) {
         if (!useUserStore.getState().user) {
-          window.location.href = "/login/";
+          navigate("/login");
         }
         setLoading(false);
       }
-    }, 3000);
+    }, 5000);
 
-    return () => { unsub(); clearTimeout(failsafe); };
+    return () => {
+      unsub();
+      clearTimeout(failsafe);
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading && !user) {
