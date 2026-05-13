@@ -82,7 +82,11 @@ jobs:
 
       - name: Sync Capacitor
         working-directory: frontend
-        run: npx cap sync android
+        run: |
+          npx cap sync android
+          echo "=== Checking GoogleAuth plugin ==="
+          ls android/app/src/main/java/com/codetrixstudio/ 2>/dev/null || echo "codetrix not found via cap sync"
+          find android -name "GoogleAuth*" 2>/dev/null || echo "No GoogleAuth files found"
 
       - name: Verify android assets
         working-directory: frontend
