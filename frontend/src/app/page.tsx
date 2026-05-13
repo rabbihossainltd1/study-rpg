@@ -3,7 +3,7 @@
 import { navigate } from "@/lib/navigate";
 import { useState } from "react";
 import { Zap, Trophy, Users, Star, Play } from "lucide-react";
-import { signInGuest, createUserProfile } from "@/lib/firebase";
+import { signInGuest, createUserProfile, createLocalGuestProfile } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
 
@@ -37,17 +37,19 @@ export default function LandingPage() {
 
   const handleGuestLogin = async () => {
     setGuestLoading(true);
+    const username = `Guest_${Math.floor(Math.random() * 9999)}`;
     try {
       const cred = await signInGuest();
-      const profile = await createUserProfile(cred.user, {
-        username: `Guest_${Math.floor(Math.random() * 9999)}`,
-      });
+      const profile = await createUserProfile(cred.user, { username });
       setUser(profile);
       toast.success("Playing as Guest 👻");
       navigate("/dashboard");
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      toast.error(message.slice(0, 80));
+      console.warn("Guest login failed, using offline guest", err);
+      const profile = createLocalGuestProfile({ username });
+      setUser(profile);
+      toast.success("Playing as Guest 👻");
+      navigate("/dashboard");
     } finally {
       setGuestLoading(false);
     }
