@@ -58,18 +58,14 @@ export const isNativeApp = () =>
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
     try {
-      const { SocialLogin } = await import("@capgo/capacitor-social-login");
-      await SocialLogin.initialize({
-        google: {
-          webClientId: "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com"
-        }
+      const { GoogleAuth } = await import("@capacitor-community/google-auth");
+      await GoogleAuth.initialize({
+        clientId: "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com",
+        scopes: ["profile", "email"],
+        grantOfflineAccess: true,
       });
-      const result = await SocialLogin.login({
-        provider: "google",
-        options: { scopes: ["email", "profile"] }
-      });
-      const idToken = (result.result as any)?.idToken ?? (result.result as any)?.authentication?.idToken;
-      const credential = GoogleAuthProvider.credential(idToken);
+      const googleUser = await GoogleAuth.signIn();
+      const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
       return signInWithCredential(auth, credential);
     } catch (err) {
       throw err;
