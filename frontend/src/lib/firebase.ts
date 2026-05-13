@@ -16,9 +16,6 @@ import {
 } from "firebase/auth";
 import {
   getFirestore,
-  initializeFirestore,
-  persistentLocalCache,
-  persistentMultipleTabManager,
   doc,
   getDoc,
   setDoc,
@@ -45,15 +42,7 @@ const firebaseConfig = {
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 export const auth = getAuth(app);
-
-// Use experimentalForceLongPolling for Capacitor WebView compatibility
-// Standard WebChannel (gRPC-web) doesn't work reliably in Android WebView
-export const db = getApps().length === 1 && typeof window !== "undefined"
-  ? initializeFirestore(app, {
-      experimentalForceLongPolling: true,
-    })
-  : getFirestore(app);
-
+export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
 if (typeof window !== "undefined") {
@@ -79,8 +68,7 @@ export const signInWithGoogle = async () => {
 
 export const handleGoogleRedirectResult = async () => {
   try {
-    const result = await getRedirectResult(auth);
-    return result;
+    return await getRedirectResult(auth);
   } catch {
     return null;
   }
@@ -100,14 +88,41 @@ function stripUndefined<T extends object>(obj: T): T {
   ) as T;
 }
 
-export async function createUserProfile(
-  firebaseUser: FirebaseUser,
-  extra?: { username?: string; examMode?: string; district?: string }
-) {
-  const ref = doc(db, "users", firebaseUser.uid);
-  const snap = await getDoc(ref);
-  if (snap.exists()) return snap.data() as User;
+// Build a minimal local user object without hitting Firestore
+export function buildLocalUser(firebaseUser: FirebaseUser, extra?: { username?: string; examMode?: string; district?: string }): User {
+  return {
+    uid: firebaseUser.uid,
+    email: firebaseUser.email || "",
+    username: extra?.username || firebaseUser.displayName?.split(" ")[0] || `player_${Date.now()}`,
+    displayName: firebaseUser.displayName || "Student",
+    photoURL: firebaseUser.photoURL || "",
+    level: 1,
+    xp: 0,
+    xpToNextLevel: 100,
+    coins: 50,
+    gems: 5,
+    rank: "Novice",
+    streak: 0,
+    maxStreak: 0,
+    totalStudyTime: 0,
+    achievements: [],
+    badges: [],
+    friends: [],
+    district: extra?.district || "Dhaka",
+    school: "",
+    examMode: (extra?.examMode || "SSC") as User["examMode"],
+    avatar: "default",
+    frame: "default",
+    isGuest: firebaseUser.isAnonymous,
+    language: "bn",
+    createdAt: new Date(),
+    lastLoginAt: new Date(),
+  } as User;
+}
 
+// Save to Firestore in background - don't await this on login
+export function saveUserProfileInBackground(firebaseUser: FirebaseUser, extra?: { username?: string; examMode?: string; district?: string }) {
+  const ref = doc(db, "users", firebaseUser.uid);
   const newUser = stripUndefined({
     uid: firebaseUser.uid,
     email: firebaseUser.email || "",
@@ -123,9 +138,9 @@ export async function createUserProfile(
     streak: 0,
     maxStreak: 0,
     totalStudyTime: 0,
-    achievements: [] as string[],
-    badges: [] as string[],
-    friends: [] as string[],
+    achievements: [],
+    badges: [],
+    friends: [],
     district: extra?.district || "Dhaka",
     school: "",
     examMode: (extra?.examMode || "SSC") as User["examMode"],
@@ -136,58 +151,85 @@ export async function createUserProfile(
     createdAt: serverTimestamp(),
     lastLoginAt: serverTimestamp(),
   });
+  // Fire and forget - don't block navigation
+  setDoc(ref, newUser, { merge: true }).catch(() => {});
+}
 
-  await setDoc(ref, newUser);
-  return newUser as unknown as User;
+export async function createUserProfile(
+  firebaseUser: FirebaseUser,
+  extra?: { username?: string; examMode?: string; district?: string }
+): Promise<User> {
+  // Return local user immediately, save to Firestore in background
+  const localUser = buildLocalUser(firebaseUser, extra);
+  saveUserProfileInBackground(firebaseUser, extra);
+  return localUser;
 }
 
 export async function getUserProfile(uid: string): Promise<User | null> {
-  const snap = await getDoc(doc(db, "users", uid));
-  if (!snap.exists()) return null;
-  const data = snap.data();
-  return {
-    ...data,
-    createdAt: (data.createdAt as Timestamp)?.toDate() || new Date(),
-    lastLoginAt: (data.lastLoginAt as Timestamp)?.toDate() || new Date(),
-  } as User;
+  try {
+    const snap = await getDoc(doc(db, "users", uid));
+    if (!snap.exists()) return null;
+    const data = snap.data();
+    return {
+      ...data,
+      createdAt: (data.createdAt as Timestamp)?.toDate() || new Date(),
+      lastLoginAt: (data.lastLoginAt as Timestamp)?.toDate() || new Date(),
+    } as User;
+  } catch {
+    return null;
+  }
 }
 
 export async function addXp(uid: string, xpAmount: number): Promise<{ leveledUp: boolean; newLevel: number }> {
-  const ref = doc(db, "users", uid);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) return { leveledUp: false, newLevel: 1 };
-  const user = snap.data() as User;
-  const oldLevel = user.level;
-  const newXp = user.xp + xpAmount;
-  const newLevel = calculateLevel(newXp);
-  const newRank = getRankFromXp(newXp);
-  const xpForNext = newLevel ** 2 * 100;
-  await updateDoc(ref, { xp: increment(xpAmount), level: newLevel, rank: newRank, xpToNextLevel: xpForNext - newXp, lastLoginAt: serverTimestamp() });
-  return { leveledUp: newLevel > oldLevel, newLevel };
+  try {
+    const ref = doc(db, "users", uid);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return { leveledUp: false, newLevel: 1 };
+    const user = snap.data() as User;
+    const oldLevel = user.level;
+    const newXp = user.xp + xpAmount;
+    const newLevel = calculateLevel(newXp);
+    const newRank = getRankFromXp(newXp);
+    const xpForNext = newLevel ** 2 * 100;
+    await updateDoc(ref, { xp: increment(xpAmount), level: newLevel, rank: newRank, xpToNextLevel: xpForNext - newXp, lastLoginAt: serverTimestamp() });
+    return { leveledUp: newLevel > oldLevel, newLevel };
+  } catch {
+    return { leveledUp: false, newLevel: 1 };
+  }
 }
 
 export async function updateStreak(uid: string): Promise<number> {
-  const ref = doc(db, "users", uid);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) return 0;
-  const user = snap.data() as User;
-  const lastLogin = (user.lastLoginAt as unknown as Timestamp)?.toDate();
-  const now = new Date();
-  const diffDays = lastLogin ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)) : 0;
-  let newStreak = user.streak;
-  if (diffDays === 1) newStreak += 1;
-  else if (diffDays > 1) newStreak = 1;
-  const maxStreak = Math.max(newStreak, user.maxStreak || 0);
-  await updateDoc(ref, { streak: newStreak, maxStreak, lastLoginAt: serverTimestamp() });
-  return newStreak;
+  try {
+    const ref = doc(db, "users", uid);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return 0;
+    const user = snap.data() as User;
+    const lastLogin = (user.lastLoginAt as unknown as Timestamp)?.toDate();
+    const now = new Date();
+    const diffDays = lastLogin ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+    let newStreak = user.streak;
+    if (diffDays === 1) newStreak += 1;
+    else if (diffDays > 1) newStreak = 1;
+    const maxStreak = Math.max(newStreak, user.maxStreak || 0);
+    await updateDoc(ref, { streak: newStreak, maxStreak, lastLoginAt: serverTimestamp() });
+    return newStreak;
+  } catch {
+    return 0;
+  }
 }
 
 export async function getLeaderboard(_type: "global" | "weekly" = "global", count = 50) {
-  const q = query(collection(db, "users"), orderBy("xp", "desc"), limit(count));
-  const snap = await getDocs(q);
-  return snap.docs.map((d, i) => ({ ...d.data(), rank: i + 1, userId: d.id }));
+  try {
+    const q = query(collection(db, "users"), orderBy("xp", "desc"), limit(count));
+    const snap = await getDocs(q);
+    return snap.docs.map((d, i) => ({ ...d.data(), rank: i + 1, userId: d.id }));
+  } catch {
+    return [];
+  }
 }
 
 export async function addCoins(uid: string, amount: number) {
-  await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
+  try {
+    await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
+  } catch {}
 }
