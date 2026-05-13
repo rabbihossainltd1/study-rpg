@@ -5,16 +5,12 @@ const config: CapacitorConfig = {
   appName: "Study RPG",
   webDir: "out",
   server: {
-    androidScheme: "https",
+    // Load directly from Vercel - bypasses all local asset issues
+    url: "https://project-wzy1z.vercel.app",
     cleartext: false,
-    hostname: "studyrpg.app",
   },
   android: {
     buildOptions: {
-      keystorePath: undefined,
-      keystorePassword: undefined,
-      keystoreAlias: undefined,
-      keystoreAliasPassword: undefined,
       releaseType: "APK",
     },
   },
@@ -24,7 +20,6 @@ const config: CapacitorConfig = {
       backgroundColor: "#050505",
       showSpinner: false,
     },
-    
   },
 };
 
