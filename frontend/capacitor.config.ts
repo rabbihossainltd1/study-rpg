@@ -11,10 +11,6 @@ const config: CapacitorConfig = {
   },
   android: {
     buildOptions: {
-      keystorePath: undefined,
-      keystorePassword: undefined,
-      keystoreAlias: undefined,
-      keystoreAliasPassword: undefined,
       releaseType: "APK",
     },
   },
@@ -24,7 +20,6 @@ const config: CapacitorConfig = {
       backgroundColor: "#050505",
       showSpinner: false,
     },
-    
   },
 };
 
