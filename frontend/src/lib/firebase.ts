@@ -128,6 +128,18 @@ function stripUndefined<T extends object>(obj: T): T {
 }
 
 // Build a minimal local user object without hitting Firestore
+export function createLocalGuestProfile(extra?: { username?: string; examMode?: string; district?: string }): User {
+  return buildLocalUser(
+    {
+      uid: `guest_${Date.now()}`,
+      email: "",
+      displayName: extra?.username || "Guest Student",
+      photoURL: "",
+    } as FirebaseUser,
+    extra
+  );
+}
+
 export function buildLocalUser(firebaseUser: FirebaseUser, extra?: { username?: string; examMode?: string; district?: string }): User {
   return {
     uid: firebaseUser.uid,
@@ -271,17 +283,4 @@ export async function addCoins(uid: string, amount: number) {
   try {
     await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
   } catch {}
-}
-
-
-export async function createLocalGuestProfile(uid: string) {
-  return {
-    uid,
-    xp: 0,
-    level: 1,
-    coins: 0,
-    hearts: 5,
-    streak: 0,
-    createdAt: Date.now(),
-  };
 }
