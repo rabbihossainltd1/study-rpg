@@ -1,7 +1,6 @@
 package com.rabbi.studyrpg.app
 
 import android.app.Activity
-import android.content.Intent
 import com.getcapacitor.Plugin
 import com.getcapacitor.PluginCall
 import com.getcapacitor.PluginMethod
@@ -26,17 +25,11 @@ class GoogleSignInPlugin : Plugin() {
             .requestEmail()
             .build()
         val client = GoogleSignIn.getClient(activity, gso)
-        client.signOut().addOnCompleteListener {
-            startActivityForResult(call, client.signInIntent, "onSignInResult")
-        }
+        startActivityForResult(call, client.signInIntent, "onSignInResult")
     }
 
     @ActivityCallback
     private fun onSignInResult(call: PluginCall, result: androidx.activity.result.ActivityResult) {
-        if (result.resultCode != Activity.RESULT_OK) {
-            call.reject("Sign in cancelled or failed")
-            return
-        }
         try {
             val account = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 .getResult(ApiException::class.java)
@@ -46,7 +39,7 @@ class GoogleSignInPlugin : Plugin() {
             ret.put("displayName", account.displayName ?: "")
             call.resolve(ret)
         } catch (e: ApiException) {
-            call.reject("Google Sign-In failed: ${e.statusCode}")
+            call.reject("Google Sign-In failed code: ${e.statusCode}")
         }
     }
 }
