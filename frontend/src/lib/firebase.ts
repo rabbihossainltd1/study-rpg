@@ -3,10 +3,11 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInAnonymously,
-  signInWithCredential,
   signOut,
   onAuthStateChanged,
   browserLocalPersistence,
@@ -57,22 +58,12 @@ export const isNativeApp = () =>
 
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
-    try {
-      const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth");
-      await GoogleAuth.initialize({
-        clientId: "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com",
-        scopes: ["profile", "email"],
-        grantOfflineAccess: true,
-      });
-      const googleUser = await GoogleAuth.signIn();
-      const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
-      return signInWithCredential(auth, credential);
-    } catch (err) {
-      throw err;
-    }
+    return signInWithRedirect(auth, googleProvider);
   }
   return signInWithPopup(auth, googleProvider);
 };
+
+export const getGoogleRedirectResult = () => getRedirectResult(auth);
 
 export const signInEmail = (email: string, password: string) =>
   signInWithEmailAndPassword(auth, email, password);
