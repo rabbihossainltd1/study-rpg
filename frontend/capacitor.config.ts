@@ -1,30 +1,14 @@
-import type { CapacitorConfig } from "@capacitor/cli";
+import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: "com.rabbi.studyrpg.app",
-  appName: "Study RPG",
-  webDir: "out",
+  appId: 'com.rabbi.studyrpg.app',
+  appName: 'Study RPG',
+  webDir: 'out',
+  bundledWebRuntime: false,
   server: {
-    androidScheme: "https",
-    cleartext: true,
-    hostname: "studyrpg.app",
-  },
-  android: {
-    buildOptions: {
-      keystorePath: undefined,
-      keystorePassword: undefined,
-      keystoreAlias: undefined,
-      keystoreAliasPassword: undefined,
-      releaseType: "APK",
-    },
-  },
-  plugins: {
-    SplashScreen: {
-      launchShowDuration: 2000,
-      backgroundColor: "#050505",
-      showSpinner: false,
-    },
-  },
+    androidScheme: 'https',
+    allowNavigation: ['*']
+  }
 };
 
 export default config;
