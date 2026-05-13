@@ -1,34 +1,38 @@
 /**
  * fix-capacitor-static-assets.js
  *
- * After `next build` (output:"export"), all HTML files reference /_next/... with 
- * absolute paths. Capacitor bundles them as file assets served from nested directories,
- * so /login/index.html needs ../../_next/... not /_next/...
- *
- * This script rewrites every absolute /_next/ reference to the correct
- * relative path based on the HTML file's depth in the out/ directory.
+ * TWO JOBS:
+ * 1. Rename out/_next -> out/next (Android aapt skips underscore directories)
+ * 2. Fix all HTML path references from /_next/ or ../_next/ or ./_next/ -> correct relative /next/
  */
 
 const fs = require("fs");
 const path = require("path");
 
-const outDir = path.join(__dirname, "..", "out");
+const outDir = path.join(__dirname, "out");
+const nextDirOld = path.join(outDir, "_next");
+const nextDirNew = path.join(outDir, "next");
 
+// Step 1: Rename _next -> next
+if (fs.existsSync(nextDirOld)) {
+  fs.renameSync(nextDirOld, nextDirNew);
+  console.log("Renamed: out/_next -> out/next");
+} else {
+  console.error("ERROR: out/_next not found! Next.js build may have failed.");
+  process.exit(1);
+}
+
+// Step 2: Walk HTML files and fix all references
 function walk(dir, results = []) {
   if (!fs.existsSync(dir)) return results;
   for (const entry of fs.readdirSync(dir)) {
     const full = path.join(dir, entry);
-    const stat = fs.statSync(full);
-    if (stat.isDirectory()) walk(full, results);
+    if (fs.statSync(full).isDirectory()) walk(full, results);
     else results.push(full);
   }
   return results;
 }
 
-// Calculate how many levels deep the file is relative to outDir
-// out/index.html -> depth 0 -> prefix "."
-// out/login/index.html -> depth 1 -> prefix ".."
-// out/subjects/math/index.html -> depth 2 -> prefix "../.."
 function prefixFor(file) {
   const rel = path.relative(outDir, path.dirname(file));
   if (!rel || rel === ".") return ".";
@@ -37,7 +41,6 @@ function prefixFor(file) {
 }
 
 let fixed = 0;
-
 for (const file of walk(outDir)) {
   if (!file.endsWith(".html")) continue;
 
@@ -45,22 +48,20 @@ for (const file of walk(outDir)) {
   let html = fs.readFileSync(file, "utf8");
   const original = html;
 
-  // Fix all absolute /_next/ references (href, src, JSON strings)
+  // Replace ALL variations of _next path with correct relative next/ path
   html = html
-    .replace(/(href|src)="\/_next\//g, `$1="${prefix}/_next/`)
-    .replace(/(href|src)='\/_ next\//g, `$1='${prefix}/_next/`)
-    .replace(/"\/_next\//g, `"${prefix}/_next/`)
-    .replace(/'\/_next\//g, `'${prefix}/_next/`)
-    .replace(/(href|src)="\/manifest\.json"/g, `$1="${prefix}/manifest.json"`)
-    .replace(/(href|src)="\/favicon\.ico"/g, `$1="${prefix}/favicon.ico"`);
-
-  // Also fix any leftover ./_next/ from a previous assetPrefix:"." build
-  // ./_next/ is only correct for root-level files, wrong for nested ones
-  if (prefix !== ".") {
-    html = html
-      .replace(/(href|src)="\.\/_next\//g, `$1="${prefix}/_next/`)
-      .replace(/"\.\/_next\//g, `"${prefix}/_next/`);
-  }
+    // absolute /_next/
+    .replace(/(src|href)="\/_next\//g, `$1="${prefix}/next/`)
+    // relative ./_next/ (from assetPrefix:".")
+    .replace(/(src|href)="\.\/_next\//g, `$1="${prefix}/next/`)
+    // relative ../_next/ (from nested pages with assetPrefix:".")  
+    .replace(/(src|href)="\.\.\/_next\//g, `$1="${prefix}/next/`)
+    // JSON/string references
+    .replace(/"\/_next\//g, `"${prefix}/next/`)
+    .replace(/"\.\/_next\//g, `"${prefix}/next/`)
+    // Fix manifest/favicon absolute refs
+    .replace(/(src|href)="\/manifest\.json"/g, `$1="${prefix}/manifest.json"`)
+    .replace(/(src|href)="\/favicon\.ico"/g, `$1="${prefix}/favicon.ico"`);
 
   if (html !== original) {
     fs.writeFileSync(file, html);
@@ -69,16 +70,5 @@ for (const file of walk(outDir)) {
   }
 }
 
-console.log(`\nCapacitor static asset paths fixed in ${fixed} files.`);
-
-// Verify _next directory was generated
-const nextDir = path.join(outDir, "_next");
-if (!fs.existsSync(nextDir)) {
-  console.error("\nERROR: out/_next/ directory not found!");
-  console.error("The Next.js build likely failed to generate JavaScript chunks.");
-  console.error("Check for webpack/build errors above.");
-  process.exit(1);
-} else {
-  const chunks = fs.readdirSync(path.join(nextDir, "static", "chunks")).length;
-  console.log(`\nVerified: out/_next/static/chunks/ exists with ${chunks} files.`);
-}
+console.log(`\nDone! Fixed ${fixed} HTML files. _next renamed to next.`);
+console.log(`Chunk count: ${fs.readdirSync(path.join(nextDirNew, "static", "chunks")).length}`);
