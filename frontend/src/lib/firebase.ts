@@ -100,8 +100,7 @@ export const signInWithGoogle = async () => {
           scopes: ["email", "profile"],
         },
       }),
-      20000,
-      "Google native sign-in timeout"
+      20000
     );
 
     const idToken =
