@@ -60,6 +60,28 @@ const GOOGLE_WEB_CLIENT_ID =
 
 let socialLoginInitialized = false;
 
+const withTimeout = <T,>(
+  promise: Promise<T>,
+  ms = 20000
+): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error("Request timeout"));
+    }, ms);
+
+    promise
+      .then((result) => {
+        clearTimeout(timer);
+        resolve(result);
+      })
+      .catch((err) => {
+        clearTimeout(timer);
+        reject(err);
+      });
+  });
+};
+
+
 async function ensureSocialLoginInitialized() {
   if (socialLoginInitialized) return;
 
