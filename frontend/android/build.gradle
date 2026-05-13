@@ -1,65 +1,26 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.google-services'
-
-android {
-    namespace "com.rabbi.studyrpg.app"
-    compileSdk 34
-
-    defaultConfig {
-        applicationId "com.rabbi.studyrpg.app"
-        minSdk 26
-        targetSdk 34
-        versionCode 1
-        versionName "1.0.0"
+buildscript {
+    ext {
+        kotlin_version = '1.9.10'
     }
-
-    aaptOptions {
-        // Don't compress these file types (avoids 1MB asset limit issues)
-        noCompress 'js', 'css', 'html', 'map', 'json', 'txt', 'woff', 'woff2', 'ttf'
-        // CRITICAL: Do NOT ignore assets - by default aapt ignores files/folders
-        // starting with underscore (_). We rename _next -> next in the build script
-        // so this is a safety net.
-        ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
+    repositories {
+        google()
+        mavenCentral()
     }
-
-    buildTypes {
-        debug {
-            debuggable true
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = '17'
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.4.1'
     }
 }
 
-repositories {
-    google()
-    mavenCentral()
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
 }
 
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "androidx.appcompat:appcompat:1.6.1"
-    implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
-    implementation "androidx.core:core-splashscreen:1.0.1"
-    implementation 'com.capacitorjs:core:6.0.0'
-    implementation platform('com.google.firebase:firebase-bom:32.7.4')
-    implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.firebase:firebase-firestore'
-    implementation 'com.google.firebase:firebase-storage'
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.android.gms:play-services-auth:21.0.0'
-    implementation 'com.google.android.gms:play-services-identity:18.0.1'
-    implementation 'com.github.Cap-go:capacitor-social-login:1.2.5'
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
