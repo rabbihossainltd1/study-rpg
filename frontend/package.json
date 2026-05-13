@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/fix-capacitor-static-assets.js",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "cap:add:android": "npx cap add android",
