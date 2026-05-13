@@ -14,11 +14,13 @@ android {
         versionName "1.0.0"
     }
 
-    // Disable asset compression for JS/CSS/HTML files
-    // Android by default compresses assets but has a 1MB limit per file
-    // which silently drops large JS chunks from the APK
     aaptOptions {
-        noCompress 'js', 'css', 'html', 'map', 'json', 'txt'
+        // Don't compress these file types (avoids 1MB asset limit issues)
+        noCompress 'js', 'css', 'html', 'map', 'json', 'txt', 'woff', 'woff2', 'ttf'
+        // CRITICAL: Do NOT ignore assets - by default aapt ignores files/folders
+        // starting with underscore (_). We rename _next -> next in the build script
+        // so this is a safety net.
+        ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }
 
     buildTypes {
