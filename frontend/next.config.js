@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
-  // DO NOT set assetPrefix here - we fix paths post-build via script
+  assetPrefix: ".",
   trailingSlash: true,
   images: {
     unoptimized: true,
