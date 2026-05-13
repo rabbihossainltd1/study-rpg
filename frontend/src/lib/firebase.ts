@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInAnonymously,
+  signInWithCredential,
   signOut,
   onAuthStateChanged,
   browserLocalPersistence,
@@ -58,7 +59,13 @@ export const isNativeApp = () =>
 
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
-    return signInWithRedirect(auth, googleProvider);
+    const { registerPlugin } = await import("@capacitor/core");
+    const GoogleSignIn = registerPlugin<{ signIn: (opts: { webClientId: string }) => Promise<{ idToken: string }> }>("GoogleSignIn");
+    const result = await GoogleSignIn.signIn({
+      webClientId: "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com"
+    });
+    const credential = GoogleAuthProvider.credential(result.idToken);
+    return signInWithCredential(auth, credential);
   }
   return signInWithPopup(auth, googleProvider);
 };
