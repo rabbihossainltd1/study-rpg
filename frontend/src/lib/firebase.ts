@@ -1,18 +1,15 @@
 import { initializeApp, getApps } from "firebase/app";
-import { Capacitor } from "@capacitor/core";
-import { SocialLogin } from "@capgo/capacitor-social-login";
 import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithCredential,
-  signInWithRedirect,
-  getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInAnonymously,
   signOut,
   onAuthStateChanged,
+  signInWithCredential,
+  OAuthProvider,
   browserLocalPersistence,
   setPersistence,
   type User as FirebaseUser,
@@ -34,19 +31,6 @@ import {
 } from "firebase/firestore";
 import { calculateLevel, getRankFromXp, type User } from "@/types";
 
-
-const withTimeout = <T>(
-  promise: Promise<T>,
-  timeoutMs = 30000
-): Promise<T> => {
-  return Promise.race([
-    promise,
-    new Promise<T>((_, reject) =>
-      setTimeout(() => reject(new Error("Request timeout")), timeoutMs)
-    ),
-  ]);
-};
-
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyAkmsjwK2FQQAcHSKxTFClkwSOi-XIKKTo",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "study-rpg-11352.firebaseapp.com",
@@ -61,6 +45,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
+// Set persistence to LOCAL so auth state survives Capacitor WebView reloads
 if (typeof window !== "undefined") {
   setPersistence(auth, browserLocalPersistence).catch(() => {});
 }
@@ -68,61 +53,23 @@ if (typeof window !== "undefined") {
 export const isNativeApp = () =>
   typeof window !== "undefined" &&
   ((window as any).Capacitor?.isNativePlatform?.() === true ||
-    window.location.hostname === "studyrpg.app" ||
-    window.location.protocol === "capacitor:" ||
-    window.location.protocol === "ionic:");
-
-const GOOGLE_WEB_CLIENT_ID =
-  "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com";
-
-let socialLoginInitialized = false;
-
-async function ensureSocialLoginInitialized() {
-  if (socialLoginInitialized) return;
-
-  await SocialLogin.initialize({
-    google: {
-      webClientId: GOOGLE_WEB_CLIENT_ID,
-    },
-  });
-
-  socialLoginInitialized = true;
-}
+    window.navigator.userAgent.includes("wv"));
 
 export const signInWithGoogle = async () => {
   if (isNativeApp()) {
-    await ensureSocialLoginInitialized();
-
-    const response = await withTimeout(
-      SocialLogin.login({
-        provider: "google",
-        options: {
-          scopes: ["email", "profile"],
-        },
-      }),
-      20000
-    );
-
-    const idToken =
-      (response as any)?.result?.idToken ||
-      (response as any)?.result?.id_token ||
-      (response as any)?.idToken ||
-      (response as any)?.authentication?.idToken;
-
-    if (!idToken) {
-      console.error("Google native login response missing idToken:", response);
-      throw new Error("Google login failed: missing ID token");
+    try {
+      const { GoogleAuth } = await import("@codetrix-studio/capacitor-google-auth");
+      const googleUser = await GoogleAuth.signIn();
+      const credential = GoogleAuthProvider.credential(
+        googleUser.authentication.idToken,
+        googleUser.authentication.accessToken
+      );
+      return signInWithCredential(auth, credential);
+    } catch (err) {
+      throw err;
     }
-
-    const credential = GoogleAuthProvider.credential(idToken);
-    return withTimeout(
-      signInWithCredential(auth, credential),
-      12000,
-      "Firebase Google credential timeout"
-    );
   }
-
-  return withTimeout(signInWithPopup(auth, googleProvider), 12000, "Google sign-in timeout");
+  return signInWithPopup(auth, googleProvider);
 };
 
 export const signInEmail = (email: string, password: string) =>
@@ -139,53 +86,14 @@ function stripUndefined<T extends object>(obj: T): T {
   ) as T;
 }
 
-// Build a minimal local user object without hitting Firestore
-export function createLocalGuestProfile(extra?: { username?: string; examMode?: string; district?: string }): User {
-  return buildLocalUser(
-    {
-      uid: `guest_${Date.now()}`,
-      email: "",
-      displayName: extra?.username || "Guest Student",
-      photoURL: "",
-    } as FirebaseUser,
-    extra
-  );
-}
-
-export function buildLocalUser(firebaseUser: FirebaseUser, extra?: { username?: string; examMode?: string; district?: string }): User {
-  return {
-    uid: firebaseUser.uid,
-    email: firebaseUser.email || "",
-    username: extra?.username || firebaseUser.displayName?.split(" ")[0] || `player_${Date.now()}`,
-    displayName: firebaseUser.displayName || "Student",
-    photoURL: firebaseUser.photoURL || "",
-    level: 1,
-    xp: 0,
-    xpToNextLevel: 100,
-    coins: 50,
-    gems: 5,
-    rank: "Novice",
-    streak: 0,
-    maxStreak: 0,
-    totalStudyTime: 0,
-    achievements: [],
-    badges: [],
-    friends: [],
-    district: extra?.district || "Dhaka",
-    school: "",
-    examMode: (extra?.examMode || "SSC") as User["examMode"],
-    avatar: "default",
-    frame: "default",
-    isGuest: firebaseUser.isAnonymous,
-    language: "bn",
-    createdAt: new Date(),
-    lastLoginAt: new Date(),
-  } as User;
-}
-
-// Save to Firestore in background - don't await this on login
-export function saveUserProfileInBackground(firebaseUser: FirebaseUser, extra?: { username?: string; examMode?: string; district?: string }) {
+export async function createUserProfile(
+  firebaseUser: FirebaseUser,
+  extra?: { username?: string; examMode?: string; district?: string }
+) {
   const ref = doc(db, "users", firebaseUser.uid);
+  const snap = await getDoc(ref);
+  if (snap.exists()) return snap.data() as User;
+
   const newUser = stripUndefined({
     uid: firebaseUser.uid,
     email: firebaseUser.email || "",
@@ -201,9 +109,9 @@ export function saveUserProfileInBackground(firebaseUser: FirebaseUser, extra?: 
     streak: 0,
     maxStreak: 0,
     totalStudyTime: 0,
-    achievements: [],
-    badges: [],
-    friends: [],
+    achievements: [] as string[],
+    badges: [] as string[],
+    friends: [] as string[],
     district: extra?.district || "Dhaka",
     school: "",
     examMode: (extra?.examMode || "SSC") as User["examMode"],
@@ -214,85 +122,63 @@ export function saveUserProfileInBackground(firebaseUser: FirebaseUser, extra?: 
     createdAt: serverTimestamp(),
     lastLoginAt: serverTimestamp(),
   });
-  // Fire and forget - don't block navigation
-  setDoc(ref, newUser, { merge: true }).catch(() => {});
-}
 
-export async function createUserProfile(
-  firebaseUser: FirebaseUser,
-  extra?: { username?: string; examMode?: string; district?: string }
-): Promise<User> {
-  // Return local user immediately, save to Firestore in background
-  const localUser = buildLocalUser(firebaseUser, extra);
-  saveUserProfileInBackground(firebaseUser, extra);
-  return localUser;
+  await setDoc(ref, newUser);
+  return newUser as unknown as User;
 }
 
 export async function getUserProfile(uid: string): Promise<User | null> {
-  try {
-    const snap = await getDoc(doc(db, "users", uid));
-    if (!snap.exists()) return null;
-    const data = snap.data();
-    return {
-      ...data,
-      createdAt: (data.createdAt as Timestamp)?.toDate() || new Date(),
-      lastLoginAt: (data.lastLoginAt as Timestamp)?.toDate() || new Date(),
-    } as User;
-  } catch {
-    return null;
-  }
+  const snap = await getDoc(doc(db, "users", uid));
+  if (!snap.exists()) return null;
+  const data = snap.data();
+  return {
+    ...data,
+    createdAt: (data.createdAt as Timestamp)?.toDate() || new Date(),
+    lastLoginAt: (data.lastLoginAt as Timestamp)?.toDate() || new Date(),
+  } as User;
 }
 
 export async function addXp(uid: string, xpAmount: number): Promise<{ leveledUp: boolean; newLevel: number }> {
-  try {
-    const ref = doc(db, "users", uid);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) return { leveledUp: false, newLevel: 1 };
-    const user = snap.data() as User;
-    const oldLevel = user.level;
-    const newXp = user.xp + xpAmount;
-    const newLevel = calculateLevel(newXp);
-    const newRank = getRankFromXp(newXp);
-    const xpForNext = newLevel ** 2 * 100;
-    await updateDoc(ref, { xp: increment(xpAmount), level: newLevel, rank: newRank, xpToNextLevel: xpForNext - newXp, lastLoginAt: serverTimestamp() });
-    return { leveledUp: newLevel > oldLevel, newLevel };
-  } catch {
-    return { leveledUp: false, newLevel: 1 };
-  }
+  const ref = doc(db, "users", uid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return { leveledUp: false, newLevel: 1 };
+
+  const user = snap.data() as User;
+  const oldLevel = user.level;
+  const newXp = user.xp + xpAmount;
+  const newLevel = calculateLevel(newXp);
+  const newRank = getRankFromXp(newXp);
+  const xpForNext = newLevel ** 2 * 100;
+
+  await updateDoc(ref, { xp: increment(xpAmount), level: newLevel, rank: newRank, xpToNextLevel: xpForNext - newXp, lastLoginAt: serverTimestamp() });
+  return { leveledUp: newLevel > oldLevel, newLevel };
 }
 
 export async function updateStreak(uid: string): Promise<number> {
-  try {
-    const ref = doc(db, "users", uid);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) return 0;
-    const user = snap.data() as User;
-    const lastLogin = (user.lastLoginAt as unknown as Timestamp)?.toDate();
-    const now = new Date();
-    const diffDays = lastLogin ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)) : 0;
-    let newStreak = user.streak;
-    if (diffDays === 1) newStreak += 1;
-    else if (diffDays > 1) newStreak = 1;
-    const maxStreak = Math.max(newStreak, user.maxStreak || 0);
-    await updateDoc(ref, { streak: newStreak, maxStreak, lastLoginAt: serverTimestamp() });
-    return newStreak;
-  } catch {
-    return 0;
-  }
+  const ref = doc(db, "users", uid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return 0;
+
+  const user = snap.data() as User;
+  const lastLogin = (user.lastLoginAt as unknown as Timestamp)?.toDate();
+  const now = new Date();
+  const diffDays = lastLogin ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+
+  let newStreak = user.streak;
+  if (diffDays === 1) newStreak += 1;
+  else if (diffDays > 1) newStreak = 1;
+
+  const maxStreak = Math.max(newStreak, user.maxStreak || 0);
+  await updateDoc(ref, { streak: newStreak, maxStreak, lastLoginAt: serverTimestamp() });
+  return newStreak;
 }
 
 export async function getLeaderboard(_type: "global" | "weekly" = "global", count = 50) {
-  try {
-    const q = query(collection(db, "users"), orderBy("xp", "desc"), limit(count));
-    const snap = await getDocs(q);
-    return snap.docs.map((d, i) => ({ ...d.data(), rank: i + 1, userId: d.id }));
-  } catch {
-    return [];
-  }
+  const q = query(collection(db, "users"), orderBy("xp", "desc"), limit(count));
+  const snap = await getDocs(q);
+  return snap.docs.map((d, i) => ({ ...d.data(), rank: i + 1, userId: d.id }));
 }
 
 export async function addCoins(uid: string, amount: number) {
-  try {
-    await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
-  } catch {}
+  await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
 }
