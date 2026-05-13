@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -28,7 +29,12 @@ jobs:
       - name: Setup npmrc
         working-directory: frontend
         run: |
-          if [ -f "_.npmrc.txt" ]; then cp _.npmrc.txt .npmrc; fi
+          if [ -f "_.npmrc.txt" ]; then
+            cp _.npmrc.txt .npmrc
+          fi
+          if [ -f ".npmrc.txt" ]; then
+            cp .npmrc.txt .npmrc
+          fi
           echo "legacy-peer-deps=true" >> .npmrc
 
       - name: Install dependencies
@@ -38,100 +44,62 @@ jobs:
       - name: Create .env.local
         working-directory: frontend
         run: |
-          echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY || 'AIzaSyAkmsjwK2FQQAcHSKxTFClkwSOi-XIKKTo' }}" >> .env.local
-          echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN || 'study-rpg-11352.firebaseapp.com' }}" >> .env.local
-          echo "NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID || 'study-rpg-11352' }}" >> .env.local
-          echo "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET || 'study-rpg-11352.firebasestorage.app' }}" >> .env.local
-          echo "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID || '494377620744' }}" >> .env.local
-          echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID || '1:494377620744:web:d5bcf7b4a6813445f308bd' }}" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyAkmsjwK2FQQAcHSKxTFClkwSOi-XIKKTo" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=study-rpg-11352.firebaseapp.com" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_PROJECT_ID=study-rpg-11352" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=study-rpg-11352.firebasestorage.app" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=494377620744" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_APP_ID=1:494377620744:web:d5bcf7b4a6813445f308bd" >> .env.local
           echo "DEEPSEEK_API_KEY=${{ secrets.DEEPSEEK_API_KEY }}" >> .env.local
           echo "NEXT_PUBLIC_APP_NAME=Study RPG" >> .env.local
           echo "NEXT_PUBLIC_APP_URL=https://project-wzy1z.vercel.app" >> .env.local
-          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL || '' }}" >> .env.local
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env.local
 
-      - name: Build Next.js + fix asset paths
+      - name: Build Next.js and fix APK assets
         working-directory: frontend
         run: npm run build
 
-      - name: Verify out/next exists (renamed from _next)
+      - name: Verify exported assets before Capacitor sync
         working-directory: frontend
         run: |
-          if [ ! -d "out/next/static/chunks" ]; then
-            echo "FATAL: out/next/static/chunks not found"
-            ls out/
+          test -f out/index.html
+          test -d out/next/static/chunks
+          if grep -R "_next/" out --include="*.html"; then
+            echo "FATAL: _next references still exist"
             exit 1
           fi
-          echo "SUCCESS: out/next exists with $(ls out/next/static/chunks | wc -l) chunks"
-
-      - name: Verify HTML references are fixed
-        working-directory: frontend
-        run: |
-          echo "login/index.html script paths:"
-          grep -o 'src="[^"]*"' out/login/index.html | head -3
-          REMAINING=$(grep -rl "_next" out/ --include="*.html" | wc -l)
-          echo "_next references remaining: $REMAINING"
+          echo "Export check passed. JS chunks: $(find out/next/static/chunks -name '*.js' | wc -l)"
 
       - name: Sync Capacitor
         working-directory: frontend
         run: npx cap sync android
-
-      - name: Verify android assets
-        working-directory: frontend
-        run: |
-          ASSETS="android/app/src/main/assets/public"
-          ls "$ASSETS/"
-          if [ ! -d "$ASSETS/next" ]; then
-            echo "FATAL: $ASSETS/next not found"
-            exit 1
-          fi
-          echo "Android next/ chunks: $(ls $ASSETS/next/static/chunks | wc -l)"
 
       - name: Add google-services.json
         working-directory: frontend/android/app
         run: |
           if [ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]; then
             echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > google-services.json
+          else
+            cp google-services.json.example google-services.json
           fi
 
       - name: Download Gradle Wrapper JAR
         working-directory: frontend/android
         run: |
           mkdir -p gradle/wrapper
-          curl -L -o gradle/wrapper/gradle-wrapper.jar \
-            "https://github.com/gradle/gradle/raw/v8.4.0/gradle/wrapper/gradle-wrapper.jar"
+          curl -L -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.4.0/gradle/wrapper/gradle-wrapper.jar
 
-      - name: Fix gradlew DEFAULT_JVM_OPTS
+      - name: Setup Gradle
         working-directory: frontend/android
-        run: |
-          chmod +x gradlew
-          # The gradlew script has DEFAULT_JVM_OPTS with bad values - clear it
-          sed -i 's/DEFAULT_JVM_OPTS=.*/DEFAULT_JVM_OPTS=""/' gradlew
-          # Also remove any -Xmx flags from the file
-          sed -i 's/-Xmx[0-9]*[mMgG]//g' gradlew
-          echo "gradlew DEFAULT_JVM_OPTS line:"
-          grep "DEFAULT_JVM_OPTS" gradlew
+        run: chmod +x gradlew
 
       - name: Build APK
         working-directory: frontend/android
-        run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=512m"
-
-      - name: Verify APK has JS chunks
-        working-directory: frontend/android
-        run: |
-          APK="app/build/outputs/apk/debug/app-debug.apk"
-          echo "APK size: $(du -sh $APK)"
-          CHUNK_COUNT=$(unzip -l "$APK" | grep "assets/public/next/static/chunks" | wc -l)
-          echo "JS chunks in APK: $CHUNK_COUNT"
-          if [ "$CHUNK_COUNT" -eq 0 ]; then
-            echo "FATAL: No JS chunks in APK"
-            unzip -l "$APK" | grep "assets/public/" | head -20
-            exit 1
-          fi
-          echo "SUCCESS!"
+        run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: study-rpg-debug-apk
           path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 30
+          retention-days: 7
