@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: "out",
   server: {
     androidScheme: "https",
-    cleartext: false,
+    cleartext: true,
     hostname: "studyrpg.app",
   },
   android: {
@@ -23,7 +23,7 @@ const config: CapacitorConfig = {
       launchShowDuration: 2000,
       backgroundColor: "#050505",
       showSpinner: false,
-    }
+    },
   },
 };
 
