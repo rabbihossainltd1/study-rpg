@@ -7,8 +7,8 @@ import {
   signInWithGoogle,
   signInEmail,
   signInGuest,
-  createUserProfile,
-  getUserProfile,
+  buildLocalUser,
+  saveUserProfileInBackground,
   handleGoogleRedirectResult,
 } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
@@ -24,39 +24,35 @@ export default function LoginPage() {
   const [guestLoading, setGuestLoading] = useState(false);
 
   useEffect(() => {
-    handleGoogleRedirectResult()
-      .then(async (cred) => {
-        if (!cred || !cred.user) return;
-        toast("Google redirect result found...");
-        let profile = await getUserProfile(cred.user.uid);
-        if (!profile) profile = await createUserProfile(cred.user);
-        setUser(profile);
-        toast.success("Welcome! ⚡");
-        window.location.href = "/dashboard/";
-      })
-      .catch((e) => toast.error("Redirect err: " + String(e).slice(0, 60)));
+    handleGoogleRedirectResult().then(async (cred) => {
+      if (!cred?.user) return;
+      const profile = buildLocalUser(cred.user);
+      saveUserProfileInBackground(cred.user);
+      setUser(profile);
+      toast.success("Welcome! ⚡");
+      window.location.href = "/dashboard/";
+    }).catch(() => {});
   }, [setUser]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
     setIsLoading(true);
-    toast("Signing in...");
     try {
-      toast("Calling Firebase...");
       const cred = await signInEmail(email, password);
-      toast("Firebase done, getting profile...");
-      const profile = await getUserProfile(cred.user.uid);
-      if (profile) {
-        setUser(profile);
-        toast.success("Welcome back! 🎮");
-        window.location.href = "/dashboard/";
-      } else {
-        toast.error("Profile not found. Please sign up.");
-      }
+      // Build local user immediately - don't wait for Firestore
+      const profile = buildLocalUser(cred.user);
+      saveUserProfileInBackground(cred.user);
+      setUser(profile);
+      toast.success("Welcome back! 🎮");
+      window.location.href = "/dashboard/";
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast.error("Login error: " + message.slice(0, 80));
+      toast.error(
+        message.includes("invalid-credential") || message.includes("wrong-password")
+          ? "Invalid email or password"
+          : "Login failed: " + message.slice(0, 60)
+      );
     } finally {
       setIsLoading(false);
     }
@@ -64,43 +60,35 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
-    toast("Google sign in starting...");
     try {
       const cred = await signInWithGoogle();
-      if (!cred) {
-        toast("Redirect triggered, waiting...");
-        return;
-      }
-      toast("Google done, getting profile...");
-      let profile = await getUserProfile((cred as any).user.uid);
-      if (!profile) profile = await createUserProfile((cred as any).user);
+      if (!cred) return; // redirect in progress
+      const profile = buildLocalUser(cred.user);
+      saveUserProfileInBackground(cred.user);
       setUser(profile);
       toast.success("Welcome! ⚡");
       window.location.href = "/dashboard/";
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast.error("Google err: " + message.slice(0, 80));
+      if (!message.includes("cancel")) toast.error("Google sign-in failed");
       setGoogleLoading(false);
     }
   };
 
   const handleGuestLogin = async () => {
     setGuestLoading(true);
-    toast("Guest login starting...");
     try {
-      toast("Calling signInAnonymously...");
       const cred = await signInGuest();
-      toast("Guest auth done, creating profile...");
-      const profile = await createUserProfile(cred.user, {
-        username: `Guest_${Math.floor(Math.random() * 9999)}`,
-      });
-      toast("Profile created!");
+      const username = `Guest_${Math.floor(Math.random() * 9999)}`;
+      // Build user locally immediately - no Firestore wait
+      const profile = buildLocalUser(cred.user, { username });
+      saveUserProfileInBackground(cred.user, { username });
       setUser(profile);
       toast.success("Playing as Guest 👻");
       window.location.href = "/dashboard/";
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast.error("Guest err: " + message.slice(0, 80));
+      toast.error("Guest login failed: " + message.slice(0, 60));
     } finally {
       setGuestLoading(false);
     }
@@ -110,10 +98,8 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <button
-            onClick={() => { window.location.href = "/"; }}
-            style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24 }}
-          >
+          <button onClick={() => { window.location.href = "/"; }}
+            style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
             <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
               <Zap className="w-6 h-6 text-primary" />
             </div>
@@ -139,29 +125,17 @@ export default function LoginPage() {
               <label className="block text-sm font-medium text-gray-400 mb-1.5">Email</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  required
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all"
-                />
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" required
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-all" />
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-1.5">Password</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
-                <input
-                  type={showPass ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all"
-                />
-                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400 transition-colors">
+                <input type={showPass ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-all" />
+                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400">
                   {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -177,7 +151,8 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <button onClick={() => { window.location.href = "/signup/"; }} style={{ background: "none", border: "none", cursor: "pointer", color: "#39FF14", fontWeight: 600, fontSize: 14, textDecoration: "underline" }}>
+            <button onClick={() => { window.location.href = "/signup/"; }}
+              style={{ background: "none", border: "none", cursor: "pointer", color: "#39FF14", fontWeight: 600, fontSize: 14, textDecoration: "underline" }}>
               Sign Up Free
             </button>
           </p>
