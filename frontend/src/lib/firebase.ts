@@ -272,3 +272,16 @@ export async function addCoins(uid: string, amount: number) {
     await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
   } catch {}
 }
+
+
+export async function createLocalGuestProfile(uid: string) {
+  return {
+    uid,
+    xp: 0,
+    level: 1,
+    coins: 0,
+    hearts: 5,
+    streak: 0,
+    createdAt: Date.now(),
+  };
+}
