@@ -69,7 +69,7 @@ jobs:
           echo "login/index.html script paths:"
           grep -o 'src="[^"]*"' out/login/index.html | head -3
           REMAINING=$(grep -rl "_next" out/ --include="*.html" | wc -l)
-          echo "_next references remaining in HTML files: $REMAINING"
+          echo "_next references remaining: $REMAINING"
 
       - name: Sync Capacitor
         working-directory: frontend
@@ -100,17 +100,20 @@ jobs:
           curl -L -o gradle/wrapper/gradle-wrapper.jar \
             "https://github.com/gradle/gradle/raw/v8.4.0/gradle/wrapper/gradle-wrapper.jar"
 
-      - name: Setup Gradle
+      - name: Fix gradlew DEFAULT_JVM_OPTS
         working-directory: frontend/android
-        run: chmod +x gradlew
+        run: |
+          chmod +x gradlew
+          # The gradlew script has DEFAULT_JVM_OPTS with bad values - clear it
+          sed -i 's/DEFAULT_JVM_OPTS=.*/DEFAULT_JVM_OPTS=""/' gradlew
+          # Also remove any -Xmx flags from the file
+          sed -i 's/-Xmx[0-9]*[mMgG]//g' gradlew
+          echo "gradlew DEFAULT_JVM_OPTS line:"
+          grep "DEFAULT_JVM_OPTS" gradlew
 
       - name: Build APK
         working-directory: frontend/android
-        run: |
-          unset JAVA_TOOL_OPTIONS
-          unset _JAVA_OPTIONS
-          unset JDK_JAVA_OPTIONS
-          ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=512m"
 
       - name: Verify APK has JS chunks
         working-directory: frontend/android
