@@ -1,67 +1,50 @@
 const fs = require("fs");
 const path = require("path");
 
-const outDir = path.resolve(process.cwd(), "out");
-const oldNextDir = path.join(outDir, "_next");
-const newNextDir = path.join(outDir, "next");
+const OUT_DIR = path.join(__dirname, "..", "out");
 
-if (!fs.existsSync(outDir)) {
-  console.error("FATAL: out folder not found.");
-  process.exit(1);
-}
+function walk(dir) {
+  const files = fs.readdirSync(dir);
 
-if (fs.existsSync(oldNextDir)) {
-  if (fs.existsSync(newNextDir)) fs.rmSync(newNextDir, { recursive: true, force: true });
-  fs.renameSync(oldNextDir, newNextDir);
-  console.log("Renamed out/_next to out/next");
-} else if (fs.existsSync(newNextDir)) {
-  console.log("out/next already exists");
-} else {
-  console.error("FATAL: neither out/_next nor out/next exists.");
-  process.exit(1);
-}
+  for (const file of files) {
+    const fullPath = path.join(dir, file);
+    const stat = fs.statSync(fullPath);
 
-function walk(dir, results = []) {
-  for (const entry of fs.readdirSync(dir)) {
-    const full = path.join(dir, entry);
-    const stat = fs.statSync(full);
-    if (stat.isDirectory()) walk(full, results);
-    else results.push(full);
-  }
-  return results;
-}
+    if (stat.isDirectory()) {
+      walk(fullPath);
 
-function prefixFor(file) {
-  const rel = path.relative(outDir, path.dirname(file));
-  if (!rel || rel === ".") return ".";
-  return rel.split(path.sep).filter(Boolean).map(() => "..").join("/");
-}
+      if (file === "_next") {
+        const newPath = path.join(dir, "next");
 
-let fixedHtml = 0;
-for (const file of walk(outDir)) {
-  if (!file.endsWith(".html")) continue;
-  const prefix = prefixFor(file);
-  let html = fs.readFileSync(file, "utf8");
-  const before = html;
-  html = html
-    .replace(/(src|href)="\/_next\//g, `$1="${prefix}/next/`)
-    .replace(/(src|href)="\.\/_next\//g, `$1="${prefix}/next/`)
-    .replace(/"\/_next\//g, `"${prefix}/next/`)
-    .replace(/'\/_next\//g, `'${prefix}/next/`)
-    .replace(/(src|href)="\/next\//g, `$1="${prefix}/next/`)
-    .replace(/(src|href)="\/manifest\.json"/g, `$1="${prefix}/manifest.json"`)
-    .replace(/(src|href)="\/favicon\.ico"/g, `$1="${prefix}/favicon.ico"`);
-  if (html !== before) {
-    fs.writeFileSync(file, html);
-    fixedHtml += 1;
-    console.log(`Fixed ${path.relative(outDir, file)} -> prefix ${prefix}`);
+        if (fs.existsSync(newPath)) {
+          fs.rmSync(newPath, { recursive: true, force: true });
+        }
+
+        fs.renameSync(fullPath, newPath);
+        console.log(`Renamed: ${fullPath} -> ${newPath}`);
+      }
+    } else {
+      if (
+        file.endsWith(".html") ||
+        file.endsWith(".js") ||
+        file.endsWith(".css")
+      ) {
+        let content = fs.readFileSync(fullPath, "utf8");
+
+        content = content
+          .replace(/\/_next\//g, "/next/")
+          .replace(/\._next\//g, "./next/")
+          .replace(/"_next\//g, '"next/')
+          .replace(/'_next\//g, "'next/");
+
+        fs.writeFileSync(fullPath, content, "utf8");
+
+        console.log(`Fixed refs: ${fullPath}`);
+      }
+    }
   }
 }
 
-const chunkDir = path.join(newNextDir, "static", "chunks");
-const chunkCount = fs.existsSync(chunkDir) ? walk(chunkDir).filter((f) => f.endsWith(".js")).length : 0;
-if (chunkCount === 0) {
-  console.error("FATAL: no JS chunks found in out/next/static/chunks");
-  process.exit(1);
-}
-console.log(`All Capacitor asset paths fixed. HTML files fixed: ${fixedHtml}. JS chunks: ${chunkCount}`);
+walk(OUT_DIR);
+
+console.log("Capacitor asset fix completed.");
