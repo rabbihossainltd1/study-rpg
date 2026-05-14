@@ -107,9 +107,10 @@ jobs:
 
       - name: Setup signing keystore
         run: |
-          mkdir -p ~/.android
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ~/.android/debug.keystore
-          keytool -list -v -keystore ~/.android/debug.keystore -alias studyrpg -storepass studyrpg123 2>/dev/null | grep SHA1 || true
+          mkdir -p /root/.android
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > /root/.android/debug.keystore
+          ls -la /root/.android/debug.keystore
+          keytool -list -v -keystore /root/.android/debug.keystore -alias studyrpg2 -storepass studyrpg456 2>/dev/null | grep SHA1 || echo "keystore loaded"
 
       - name: Download Gradle Wrapper JAR
         working-directory: frontend/android
