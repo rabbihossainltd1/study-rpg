@@ -127,13 +127,7 @@ export default function SignupPage() {
         <div className="glass-card p-7">
           {step === 1 && (
             <div>
-              <Button
-                variant="ghost" className="w-full mb-5" size="lg"
-                onClick={handleGoogleSignup} isLoading={isLoading}
-                leftIcon={<Chrome className="w-5 h-5 text-blue-400" />}
-              >
-                Sign up with Google
-              </Button>
+
               <div className="flex items-center gap-3 mb-5">
                 <div className="flex-1 h-px bg-white/10" />
                 <span className="text-xs text-gray-600">OR</span>
