@@ -1,5 +1,6 @@
 type AppRouter = {
   push: (path: string) => void;
+  replace?: (path: string) => void;
 } | null;
 
 let appRouter: AppRouter = null;

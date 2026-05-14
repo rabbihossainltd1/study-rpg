@@ -5,6 +5,7 @@ import { useUserStore } from "@/store/useUserStore";
 import { SUBJECTS } from "@/lib/subjects";
 import { BookOpen, ChevronRight, Zap, Star } from "lucide-react";
 import { useState } from "react";
+import { AppIcon } from "@/components/ui/AppIcon";
 
 const FILTERS = ["All", "SSC", "HSC", "Admission", "University"];
 
@@ -53,10 +54,10 @@ export default function SubjectsPage() {
             onClick={() => navigate(`/subjects/${subject.id}`)}
             style={{ background: "none", border: "none", cursor: "pointer", display: "block", width: "100%", textAlign: "left", padding: 0 }}
           >
-            <div className="glass-card p-5 border transition-all duration-300 hover:shadow-lg hover-lift" style={{ borderColor: `${subject.color}25` }}>
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl" style={{ background: `${subject.color}15`, boxShadow: `0 0 20px ${subject.color}20` }}>
-                  {subject.icon}
+            <div className="glass-card p-5 border transition-all duration-300 hover:shadow-lg hover-lift overflow-hidden min-h-[220px]" style={{ borderColor: `${subject.color}25` }}>
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${subject.color}15`, boxShadow: `0 0 20px ${subject.color}20`, color: subject.color }}>
+                  <AppIcon name={subject.icon} className="w-7 h-7" />
                 </div>
                 <div className="flex flex-col items-end gap-1">
                   <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: `${subject.color}20`, color: subject.color }}>
@@ -65,8 +66,8 @@ export default function SubjectsPage() {
                   <span className="text-xs text-gray-600">{subject.xpReward} XP/ch</span>
                 </div>
               </div>
-              <h3 className="font-black text-white text-base mb-0.5">{language === "bn" ? subject.nameBn : subject.name}</h3>
-              <p className="text-xs text-gray-500 mb-3">{subject.completedChapters}/{subject.totalChapters} chapters · 120 quizzes</p>
+              <h3 className="font-black text-white text-lg leading-tight mb-1 break-words">{language === "bn" ? subject.nameBn : subject.name}</h3>
+              <p className="text-xs text-gray-500 mb-3 leading-relaxed">{subject.completedChapters}/{subject.totalChapters} chapters · 120 quizzes</p>
               <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
                 <div className="h-full rounded-full transition-all duration-700" style={{ background: subject.color, width: `${subject.progress}%` }} />
               </div>

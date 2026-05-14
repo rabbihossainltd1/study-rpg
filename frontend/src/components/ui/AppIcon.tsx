@@ -76,9 +76,9 @@ export function IconBadge({ name, color = "#39FF14", className = "w-11 h-11 roun
 }
 
 export function CrownBadge({ rank, className = "w-6 h-6" }: { rank?: number; className?: string }) {
-  if (rank === 1) return <Crown className={className} style={{ color: "#FFD700" }} fill="rgba(255,215,0,0.22)" />;
-  if (rank === 2) return <Crown className={className} style={{ color: "#C0C0C0" }} fill="rgba(192,192,192,0.18)" />;
-  if (rank === 3) return <Crown className={className} style={{ color: "#CD7F32" }} fill="rgba(205,127,50,0.18)" />;
+  if (rank === 1) return <Crown className={className} style={{ color: "#FFD700" }} />;
+  if (rank === 2) return <Crown className={className} style={{ color: "#C0C0C0" }} />;
+  if (rank === 3) return <Crown className={className} style={{ color: "#CD7F32" }} />;
   return null;
 }
 

@@ -99,10 +99,10 @@ export default function LeaderboardPage() {
     return <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">{rank}</span>;
   };
 
-  const Avatar = ({ entry, size = "md" }: { entry: LeaderEntry; size?: "sm" | "md" | "lg" }) => {
+  const Avatar = ({ entry, size = "md", showCrown = true }: { entry: LeaderEntry; size?: "sm" | "md" | "lg"; showCrown?: boolean }) => {
     const cls = size === "lg" ? "w-16 h-16 text-3xl" : size === "sm" ? "w-9 h-9 text-lg" : "w-12 h-12 text-2xl";
     const rankColor = RANK_COLORS[(entry.rank_title || entry.userRank || "Novice") as Rank] || "#9CA3AF";
-    return <UserAvatar photoURL={entry.photoURL} avatar={entry.avatar} name={entry.displayName || entry.username} sizeClass={cls} iconClassName={size === "lg" ? "w-8 h-8" : "w-5 h-5"} borderColor={rankColor} rank={entry.rank <= 3 ? entry.rank : undefined} />;
+    return <UserAvatar photoURL={entry.photoURL} avatar={entry.avatar} name={entry.displayName || entry.username} sizeClass={cls} iconClassName={size === "lg" ? "w-8 h-8" : "w-5 h-5"} borderColor={rankColor} rank={showCrown && entry.rank <= 3 ? entry.rank : undefined} />;
   };
 
   return (
@@ -125,8 +125,7 @@ export default function LeaderboardPage() {
           return (
             <button key={entry.userId || entry.rank} onClick={() => setSelected(entry)} className={`bg-transparent border-0 p-0 cursor-pointer tap-bounce ${visualIndex === 0 ? "mt-7" : visualIndex === 2 ? "mt-9" : ""}`}>
               <div className={`glass-card p-3 text-center border hover-lift ${position === 0 ? "shadow-[0_0_34px_rgba(255,215,0,0.16)]" : ""}`} style={{ borderColor: `${rankColor}50` }}>
-                <div className="flex justify-center mb-1"><CrownBadge rank={entry.rank} className="w-5 h-5" /></div>
-                <div className="mx-auto mb-2 flex justify-center"><Avatar entry={entry} size={position === 0 ? "lg" : "md"} /></div>
+                <div className="mx-auto mb-2 mt-2 flex justify-center"><Avatar entry={entry} size={position === 0 ? "lg" : "md"} /></div>
                 <p className="font-bold text-white text-xs truncate">{entry.displayName || entry.username}</p>
                 <p className="text-xs" style={{ color: rankColor }}>LV.{entry.level}</p>
                 <p className="text-sm font-bold mt-1" style={{ color: rankColor }}>#{entry.rank}</p>
@@ -168,7 +167,7 @@ export default function LeaderboardPage() {
             return (
               <button key={`${entry.userId}-${entry.rank}`} onClick={() => setSelected(entry)} className={`w-full flex items-center gap-3 px-4 py-3 transition-colors text-left bg-transparent border-0 cursor-pointer tap-bounce animate-card-in ${isCurrentUser ? "bg-primary/5 border-l-2 border-primary" : "hover:bg-white/3"}`} style={{ animationDelay: `${index * 25}ms` }}>
                 <div className="w-8 flex-shrink-0 flex items-center justify-center"><RankBadge rank={entry.rank} /></div>
-                <Avatar entry={entry} size="sm" />
+                <Avatar entry={entry} size="sm" showCrown={false} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2"><p className={`font-semibold text-sm truncate ${isCurrentUser ? "text-primary" : "text-white"}`}>{entry.displayName || entry.username}</p>{isCurrentUser && <span className="text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded font-bold">YOU</span>}</div>
                   <div className="flex items-center gap-2 mt-0.5"><span className="text-xs" style={{ color: rankColor }}>{entry.rank_title || entry.userRank || "Novice"}</span><span className="text-xs text-gray-600">·</span><span className="text-xs text-gray-600">{entry.district}</span><span className="text-xs text-gray-600">·</span><span className="text-xs text-orange-400 inline-flex items-center gap-1"><Flame className="w-3 h-3" />{entry.streak}</span></div>
@@ -188,7 +187,7 @@ export default function LeaderboardPage() {
               <button type="button" onClick={() => setSelected(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>
             </div>
             <div className="text-center mb-5">
-              <div className="flex justify-center mb-3"><Avatar entry={selected} size="lg" /></div>{selected.rank <= 3 && <div className="flex justify-center -mt-2 mb-2"><CrownBadge rank={selected.rank} className="w-6 h-6" /></div>}
+              <div className="flex justify-center mb-3"><Avatar entry={selected} size="lg" /></div>
               <p className="text-xl font-black text-white">{selected.displayName || selected.username}</p>
               <p className="text-xs text-gray-500">@{selected.username} · ID {selected.studentId || selected.userId.slice(0, 8)}</p>
             </div>

@@ -35,12 +35,14 @@ export function RouterProvider() {
   const router = useRouter();
   const pathname = usePathname();
   const lastBackPress = useRef(0);
+  const lastBackHandled = useRef(0);
   const pathStack = useRef<string[]>([]);
   const internalBack = useRef(false);
 
   useEffect(() => {
     registerRouter({
       push: (path: string) => router.push(path),
+      replace: (path: string) => router.replace(path),
     });
   }, [router]);
 
@@ -72,6 +74,9 @@ export function RouterProvider() {
     let nativeBackHandle: { remove: () => void } | undefined;
 
     const routeBackInsideApp = () => {
+      const stamp = Date.now();
+      if (stamp - lastBackHandled.current < 280) return;
+      lastBackHandled.current = stamp;
       const current = getCurrentPath();
       const isHome = HOME_PATHS.has(current);
 
@@ -108,7 +113,10 @@ export function RouterProvider() {
       } catch {}
     };
 
+    const onNativeBack = () => routeBackInsideApp();
+
     window.addEventListener("popstate", onPopState);
+    window.addEventListener("studyRpgNativeBack", onNativeBack);
     CapacitorApp.addListener("backButton", () => {
       routeBackInsideApp();
     })
@@ -123,6 +131,7 @@ export function RouterProvider() {
 
     return () => {
       window.removeEventListener("popstate", onPopState);
+      window.removeEventListener("studyRpgNativeBack", onNativeBack);
       nativeBackHandle?.remove();
     };
   }, [router]);

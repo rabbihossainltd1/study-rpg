@@ -21,6 +21,89 @@ const DIFFICULTIES: Array<{ id: QuizDifficulty; label: string; color: string }> 
   { id: "hard", label: "Hard", color: "#FF003C" },
 ];
 
+async function analyzeStudyProofImage(file: File): Promise<{ ok: boolean; reason: string }> {
+  if (!file.type.startsWith("image/")) return { ok: false, reason: "Only image proof is allowed." };
+  if (file.size < 35000) return { ok: false, reason: "Image is too small. Upload a clear page/book/screen proof." };
+
+  const imageUrl = URL.createObjectURL(file);
+  try {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const el = new Image();
+      el.onload = () => resolve(el);
+      el.onerror = reject;
+      el.src = imageUrl;
+    });
+
+    if (img.naturalWidth < 480 || img.naturalHeight < 360) {
+      return { ok: false, reason: "Proof image resolution is too low." };
+    }
+
+    const canvas = document.createElement("canvas");
+    const width = 180;
+    const height = Math.max(120, Math.round((img.naturalHeight / img.naturalWidth) * width));
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return { ok: false, reason: "Could not analyze image." };
+    ctx.drawImage(img, 0, 0, width, height);
+    const data = ctx.getImageData(0, 0, width, height).data;
+
+    const luminance = new Float32Array(width * height);
+    let sum = 0;
+    let brightNeutral = 0;
+    let veryDark = 0;
+    let saturated = 0;
+
+    for (let i = 0, p = 0; i < data.length; i += 4, p += 1) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      const sat = max === 0 ? 0 : (max - min) / max;
+      luminance[p] = lum;
+      sum += lum;
+      if (lum > 145 && sat < 0.38) brightNeutral += 1;
+      if (lum < 35) veryDark += 1;
+      if (sat > 0.65) saturated += 1;
+    }
+
+    const pixels = width * height;
+    const avg = sum / pixels;
+    let variance = 0;
+    for (let i = 0; i < luminance.length; i++) variance += (luminance[i] - avg) ** 2;
+    variance /= pixels;
+
+    let edges = 0;
+    for (let y = 1; y < height; y++) {
+      for (let x = 1; x < width; x++) {
+        const idx = y * width + x;
+        const dx = Math.abs(luminance[idx] - luminance[idx - 1]);
+        const dy = Math.abs(luminance[idx] - luminance[idx - width]);
+        if (dx + dy > 42) edges += 1;
+      }
+    }
+
+    const edgeRatio = edges / pixels;
+    const paperRatio = brightNeutral / pixels;
+    const darkRatio = veryDark / pixels;
+    const saturatedRatio = saturated / pixels;
+
+    if (darkRatio > 0.78 || avg < 42) return { ok: false, reason: "Image is too dark. Upload clear study proof." };
+    if (variance < 520) return { ok: false, reason: "Image looks plain/blurry. Upload notes, book, or solved work." };
+    if (edgeRatio < 0.028) return { ok: false, reason: "AI could not detect enough writing/study detail." };
+    if (paperRatio < 0.045 && edgeRatio < 0.055) return { ok: false, reason: "Upload a page, notebook, textbook, or study screen proof." };
+    if (saturatedRatio > 0.45 && paperRatio < 0.06) return { ok: false, reason: "This looks like a random photo, not study proof." };
+
+    return { ok: true, reason: "Proof approved." };
+  } catch {
+    return { ok: false, reason: "Could not read image. Try another clear proof." };
+  } finally {
+    URL.revokeObjectURL(imageUrl);
+  }
+}
+
 export default function SubjectDetailClient({ id }: { id: string }) {
   const { user, setUser, addXpPopup, triggerLevelUp, language } = useUserStore();
   const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
@@ -117,13 +200,14 @@ export default function SubjectDetailClient({ id }: { id: string }) {
       toast.error("Study proof image required");
       return;
     }
-    if (!proofFile.type.startsWith("image/") || proofFile.size < 8000) {
-      toast.error("AI rejected proof. Upload a clear study image.");
-      return;
-    }
     setProofChecking(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 900));
+      const analysis = await analyzeStudyProofImage(proofFile);
+      if (!analysis.ok) {
+        toast.error(analysis.reason);
+        return;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 700));
       let firstClaim = true;
       if (!user.uid.startsWith("guest_")) {
         firstClaim = await markLessonRewardClaimed(user.uid, id, proofLesson.id, { name: proofFile.name, size: proofFile.size, type: proofFile.type });
@@ -249,7 +333,8 @@ export default function SubjectDetailClient({ id }: { id: string }) {
               {expandedChapter === chapter.id && (
                 <div className="border-t border-white/5 divide-y divide-white/5 animate-card-in">
                   {chapter.lessons.map((lesson) => {
-                    const done = completedLessons.has(lesson.id);
+                    const isQuizLesson = lesson.type === "quiz";
+                    const done = isQuizLesson ? completedQuizzes.has(quizDifficulty) : completedLessons.has(lesson.id);
                     return (
                       <div key={lesson.id} className="flex items-center gap-3 px-4 py-3 hover:bg-white/3 transition-colors">
                         <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${lesson.type === "quiz" ? "bg-secondary/10 text-secondary" : lesson.type === "practice" ? "bg-gold/10 text-gold" : "bg-white/5 text-gray-400"}`}>
@@ -264,7 +349,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                           </div>
                         </div>
                         <Button size="sm" variant={done ? "secondary" : "ghost"} leftIcon={done ? <CheckCircle2 className="w-3 h-3" /> : lesson.type === "quiz" ? <Play className="w-3 h-3" /> : <UploadCloud className="w-3 h-3" />} className="text-xs py-1 px-2" onClick={() => handleLessonStart(lesson)}>
-                          {done ? "Solved" : lesson.type === "quiz" ? "Quiz" : "Collect"}
+                          {done ? (isQuizLesson ? "Solved" : "Collected") : lesson.type === "quiz" ? "Quiz" : "Collect"}
                         </Button>
                       </div>
                     );
@@ -295,7 +380,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
             <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.03] p-5 text-center">
               <UploadCloud className="w-8 h-8 text-secondary mx-auto mb-2" />
               <p className="text-sm text-white font-bold mb-1">{language === "bn" ? proofLesson.titleBn : proofLesson.title}</p>
-              <p className="text-xs text-gray-500 mb-4">Clear image dile AI verify kore reward unlock korbe.</p>
+              <p className="text-xs text-gray-500 mb-4">Notebook, textbook, solved work, or study screen upload korle AI-style check approve korbe.</p>
               <label className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-white cursor-pointer hover:border-primary/40">
                 <UploadCloud className="w-4 h-4" /> Choose Image
                 <input type="file" accept="image/*" className="hidden" onChange={(e) => setProofFile(e.target.files?.[0] || null)} />

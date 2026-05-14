@@ -26,10 +26,40 @@ Rules:
 - Motivate students and keep them positive
 - If asked to generate a quiz, provide 3-5 MCQ questions with answers`;
 
+function normalizeBanglaDigits(value: string) {
+  const map: Record<string, string> = { "০": "0", "১": "1", "২": "2", "৩": "3", "৪": "4", "৫": "5", "৬": "6", "৭": "7", "৮": "8", "৯": "9" };
+  return value.replace(/[০-৯]/g, (d) => map[d] || d);
+}
+
+function solveArithmeticQuestion(text: string) {
+  const cleaned = normalizeBanglaDigits(text)
+    .replace(/[?？=]/g, "")
+    .replace(/×|x/gi, "*")
+    .replace(/÷/g, "/")
+    .replace(/−/g, "-")
+    .trim();
+  const match = cleaned.match(/[-+*/().\d\s]+/g)?.join(" ").trim() || "";
+  if (!match || match.length < 3 || !/[+*/-]/.test(match)) return null;
+  if (!/^[\d+\-*/().\s]+$/.test(match)) return null;
+  try {
+    // Safe because the expression is strictly whitelisted above.
+    const value = Function(`"use strict"; return (${match})`)();
+    if (typeof value === "number" && Number.isFinite(value)) return { expression: match, value };
+  } catch {}
+  return null;
+}
+
 function offlineTutorReply(text: string) {
   const q = text.trim();
   const lower = q.toLowerCase();
   const isBangla = /[\u0980-\u09FF]/.test(q);
+  const math = solveArithmeticQuestion(q);
+  if (math) {
+    const answer = Number.isInteger(math.value) ? String(math.value) : math.value.toFixed(4).replace(/\.0+$/, "").replace(/0+$/, "");
+    return isBangla
+      ? `উত্তর: ${answer}\n\nসমাধান:\n${math.expression} = ${answer}`
+      : `Answer: ${answer}\n\nSolution:\n${math.expression} = ${answer}`;
+  }
 
   if (lower.includes("quiz") || q.includes("কুইজ")) {
     return isBangla
@@ -50,8 +80,28 @@ function offlineTutorReply(text: string) {
   }
 
   return isBangla
-    ? `আমি বুঝেছি: “${q}”\n\nসহজভাবে পড়ার নিয়ম:\n1) topic টা ছোট অংশে ভাগ করো\n2) definition মুখস্থ না করে example দেখো\n3) শেষে ৩টা MCQ solve করো\n\nআরো নির্দিষ্ট করে subject/chapter লিখলে আমি step-by-step বুঝিয়ে দেবো।`
-    : `I got it: “${q}”\n\nUse this method:\n1) Break the topic into small parts\n2) Learn with examples, not just definitions\n3) Solve 3 MCQs after reading\n\nSend the exact subject/chapter and I will explain it step by step.`;
+    ? `তোমার প্রশ্ন: “${q}”
+
+সংক্ষিপ্ত উত্তর:
+এটা বুঝতে হলে মূল ধারণা, উদাহরণ, আর অনুশীলন — এই ৩ ধাপে এগোও।
+
+দ্রুত গাইড:
+1) প্রথমে topic-এর meaning বুঝো
+2) ১টা সহজ example দেখো
+3) তারপর ৩টা MCQ বা problem solve করো
+
+আরো direct answer চাইলে subject/chapter সহ প্রশ্নটা লিখো, আমি step-by-step solve করবো।`
+    : `Your question: “${q}”
+
+Quick answer:
+Use the core idea + example + practice method.
+
+Steps:
+1) Identify the topic
+2) Learn one simple example
+3) Solve 3 related questions
+
+Send the subject/chapter with the question and I will solve it step by step.`;
 }
 
 export default function AiAssistantPage() {
