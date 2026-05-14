@@ -88,7 +88,7 @@ function stripUndefined<T extends object>(obj: T): T {
 
 export async function createUserProfile(
   firebaseUser: FirebaseUser,
-  extra?: { username?: string; examMode?: string; district?: string }
+  extra?: { username?: string; displayName?: string; examMode?: string; district?: string; school?: string; college?: string; className?: string; thana?: string; avatar?: string; photoURL?: string }
 ) {
   const ref = doc(db, "users", firebaseUser.uid);
   const snap = await getDoc(ref);
@@ -98,8 +98,8 @@ export async function createUserProfile(
     uid: firebaseUser.uid,
     email: firebaseUser.email || "",
     username: extra?.username || firebaseUser.displayName?.split(" ")[0] || `player_${Date.now()}`,
-    displayName: firebaseUser.displayName || "Student",
-    photoURL: firebaseUser.photoURL || "",
+    displayName: extra?.displayName || firebaseUser.displayName || extra?.username || "Student",
+    photoURL: extra?.photoURL || firebaseUser.photoURL || "",
     level: 1,
     xp: 0,
     xpToNextLevel: 100,
@@ -113,9 +113,12 @@ export async function createUserProfile(
     badges: [] as string[],
     friends: [] as string[],
     district: extra?.district || "Dhaka",
-    school: "",
+    school: extra?.school || extra?.college || "",
+    college: extra?.college || extra?.school || "",
+    className: extra?.className || "",
+    thana: extra?.thana || "",
     examMode: (extra?.examMode || "SSC") as User["examMode"],
-    avatar: "default",
+    avatar: extra?.avatar || "⚡",
     frame: "default",
     isGuest: firebaseUser.isAnonymous,
     language: "bn",
@@ -136,6 +139,12 @@ export async function getUserProfile(uid: string): Promise<User | null> {
     createdAt: (data.createdAt as Timestamp)?.toDate() || new Date(),
     lastLoginAt: (data.lastLoginAt as Timestamp)?.toDate() || new Date(),
   } as User;
+}
+
+export async function updateUserProfile(uid: string, updates: Partial<Pick<User, "username" | "displayName" | "photoURL" | "district" | "school" | "college" | "className" | "thana" | "examMode" | "avatar" | "language">>) {
+  const clean = stripUndefined({ ...updates, updatedAt: serverTimestamp() });
+  await updateDoc(doc(db, "users", uid), clean);
+  return clean;
 }
 
 export async function addXp(uid: string, xpAmount: number): Promise<{ leveledUp: boolean; newLevel: number }> {
@@ -176,7 +185,28 @@ export async function updateStreak(uid: string): Promise<number> {
 export async function getLeaderboard(_type: "global" | "weekly" = "global", count = 50) {
   const q = query(collection(db, "users"), orderBy("xp", "desc"), limit(count));
   const snap = await getDocs(q);
-  return snap.docs.map((d, i) => ({ ...d.data(), rank: i + 1, userId: d.id }));
+  return snap.docs.map((d, i) => {
+    const data = d.data() as User;
+    return {
+      userId: d.id,
+      leaderboardRank: i + 1,
+      rank: i + 1,
+      rank_title: data.rank,
+      userRank: data.rank,
+      username: data.username || data.displayName || "Student",
+      displayName: data.displayName || data.username || "Student",
+      photoURL: data.photoURL || "",
+      avatar: data.avatar || "⚡",
+      level: data.level || 1,
+      xp: data.xp || 0,
+      streak: data.streak || 0,
+      district: data.district || "Unknown",
+      school: data.school || data.college || "",
+      college: data.college || data.school || "",
+      className: data.className || "",
+      thana: data.thana || "",
+    };
+  });
 }
 
 export async function addCoins(uid: string, amount: number) {
@@ -205,8 +235,11 @@ export function createLocalGuestProfile(options?: { username?: string }): import
     friends: [],
     district: "Dhaka",
     school: "",
+    college: "",
+    className: "",
+    thana: "",
     examMode: "SSC",
-    avatar: "default",
+    avatar: "⚡",
     frame: "default",
     isGuest: true,
     language: "bn",

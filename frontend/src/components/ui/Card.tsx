@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   glow?: "green" | "cyan" | "purple" | "red" | "gold" | "none";
@@ -21,7 +21,7 @@ export function Card({ glow = "none", hover = false, className, children, ...pro
   return (
     <div
       className={cn(
-        "glass-card p-5 transition-all duration-300",
+        "glass-card p-5 transition-all duration-300 animate-card-in",
         hover && "cursor-pointer",
         glow !== "none" && glowMap[glow],
         className
@@ -42,13 +42,13 @@ export function StatCard({
 }: {
   label: string;
   value: string | number;
-  icon: React.ReactNode;
+  icon: ReactNode;
   color?: string;
   sub?: string;
 }) {
   return (
     <div
-      className="glass-card p-4 flex items-center gap-4 border transition-all duration-300"
+      className="glass-card p-4 flex items-center gap-4 border transition-all duration-300 hover-lift"
       style={{ borderColor: `${color}20` }}
     >
       <div

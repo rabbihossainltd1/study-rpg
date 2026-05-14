@@ -18,7 +18,7 @@ export default function SubjectsPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-card-in">
       {/* Header */}
       <div className="flex items-center gap-3 mb-1">
         <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
@@ -53,7 +53,7 @@ export default function SubjectsPage() {
             onClick={() => navigate(`/subjects/${subject.id}`)}
             style={{ background: "none", border: "none", cursor: "pointer", display: "block", width: "100%", textAlign: "left", padding: 0 }}
           >
-            <div className="glass-card p-5 border transition-all duration-300 hover:shadow-lg" style={{ borderColor: `${subject.color}25` }}>
+            <div className="glass-card p-5 border transition-all duration-300 hover:shadow-lg hover-lift" style={{ borderColor: `${subject.color}25` }}>
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl" style={{ background: `${subject.color}15`, boxShadow: `0 0 20px ${subject.color}20` }}>
                   {subject.icon}
@@ -66,7 +66,7 @@ export default function SubjectsPage() {
                 </div>
               </div>
               <h3 className="font-black text-white text-base mb-0.5">{language === "bn" ? subject.nameBn : subject.name}</h3>
-              <p className="text-xs text-gray-500 mb-3">{subject.completedChapters}/{subject.totalChapters} chapters completed</p>
+              <p className="text-xs text-gray-500 mb-3">{subject.completedChapters}/{subject.totalChapters} chapters · 120 quizzes</p>
               <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
                 <div className="h-full rounded-full transition-all duration-700" style={{ background: subject.color, width: `${subject.progress}%` }} />
               </div>

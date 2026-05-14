@@ -1,21 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 import { navigate } from "@/lib/navigate";
-import { Zap, Mail, Lock, User, Eye, EyeOff, Chrome, MapPin, GraduationCap, ChevronRight } from "lucide-react";
+import { Zap, Mail, Lock, User, Eye, EyeOff, MapPin, GraduationCap, ChevronRight, School, Home } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { signUpEmail, signInWithGoogle, createUserProfile, getGoogleRedirectResult } from "@/lib/firebase";
+import { signUpEmail, createUserProfile } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
 
-const DISTRICTS = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi", "Khulna", "Barisal", "Rangpur", "Mymensingh", "Comilla", "Gazipur", "Narayanganj"];
-const EXAM_MODES = [
-  { id: "SSC", label: "SSC", emoji: "📘", desc: "Secondary School Certificate" },
-  { id: "HSC", label: "HSC", emoji: "📗", desc: "Higher Secondary Certificate" },
-  { id: "Admission", label: "Admission", emoji: "🏫", desc: "University Admission Test" },
-  { id: "University", label: "University", emoji: "🎓", desc: "University Level" },
+const DISTRICTS = [
+  "Dhaka", "Chattogram", "Khulna", "Rajshahi", "Sylhet", "Barishal", "Rangpur", "Mymensingh",
+  "Cumilla", "Gazipur", "Jessore", "Jhenaidah", "Pirojpur", "Narayanganj", "Bogura", "Faridpur"
 ];
-const AVATARS = ["🦁", "🐯", "🦊", "🐺", "🦅", "🐉", "🦄", "⚡", "🔥", "💎"];
+const EXAM_MODES = [
+  { id: "SSC", label: "SSC", desc: "School level" },
+  { id: "HSC", label: "HSC", desc: "College level" },
+  { id: "Admission", label: "Admission", desc: "University admission" },
+  { id: "University", label: "University", desc: "Honours / Degree" },
+];
+const AVATARS = ["⚡", "🔥", "📚", "🎯", "🏆", "💎", "🦁", "🦅", "🤖", "⭐"];
 
 export default function SignupPage() {
   const { setUser } = useUserStore();
@@ -24,34 +27,49 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [className, setClassName] = useState("");
+  const [college, setCollege] = useState("");
+  const [district, setDistrict] = useState("Dhaka");
+  const [thana, setThana] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [examMode, setExamMode] = useState("SSC");
-  const [district, setDistrict] = useState("Dhaka");
   const [avatar, setAvatar] = useState("⚡");
 
-  useEffect(() => {
-    getGoogleRedirectResult().then(async (cred) => {
-      if (!cred?.user) return;
-      const profile = await createUserProfile(cred.user, { examMode, district });
-      setUser(profile);
-      navigate("/dashboard");
-    }).catch(() => {});
-  }, []);
-
-  const handleStep1 = (e: React.FormEvent) => {
+  const handleStep1 = (e: FormEvent) => {
     e.preventDefault();
     if (!email || !password || !username) return;
+    if (username.trim().length < 3) { toast.error("Username minimum 3 characters"); return; }
     if (password.length < 6) { toast.error("Password must be at least 6 characters"); return; }
     setStep(2);
+  };
+
+  const handleStep2 = (e: FormEvent) => {
+    e.preventDefault();
+    if (!displayName.trim() || !className.trim() || !college.trim() || !district.trim() || !thana.trim()) {
+      toast.error("সব তথ্য পূরণ করো");
+      return;
+    }
+    setStep(3);
   };
 
   const handleSignup = async () => {
     setIsLoading(true);
     try {
       const cred = await signUpEmail(email, password);
-      const profile = await createUserProfile(cred.user, { username, examMode, district });
+      const profile = await createUserProfile(cred.user, {
+        username: username.trim(),
+        displayName: displayName.trim(),
+        examMode,
+        district: district.trim(),
+        school: college.trim(),
+        college: college.trim(),
+        className: className.trim(),
+        thana: thana.trim(),
+        avatar,
+      });
       setUser(profile);
-      toast.success("Welcome to Study RPG! Your journey begins! ⚡");
+      toast.success("Account created successfully ⚡");
       navigate("/dashboard");
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Signup failed";
@@ -61,189 +79,141 @@ export default function SignupPage() {
     }
   };
 
-  const handleGoogleSignup = async () => {
-    setIsLoading(true);
-    try {
-      const cred = await signInWithGoogle();
-      if (!cred) {
-        // redirect flow - page will reload
-        return;
-      }
-      if (!cred?.user) throw new Error("No Google user returned");
-
-      const profile = await createUserProfile(cred.user, {
-        username: cred.user.displayName || "Student",
-        examMode,
-        district,
-      });
-
-      setUser(profile);
-      toast.success("Account created! ⚡");
-      navigate("/dashboard");
-    } catch (err: any) {
-      console.error("Google signup error:", err);
-      toast.error(err?.message || "Google signup failed");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const steps = [
-    { label: "Account", icon: Mail },
-    { label: "Customize", icon: GraduationCap },
-    { label: "Avatar", icon: User },
-  ];
+  const steps = ["Account", "Student Info", "Avatar"];
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <button onClick={() => navigate("/")} style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-            <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary" />
+    <div className="min-h-screen flex items-center justify-center p-4 particle-bg">
+      <div className="w-full max-w-md animate-card-in">
+        <div className="text-center mb-7">
+          <button onClick={() => navigate("/login")} className="inline-flex items-center gap-2 mb-4 bg-transparent border-0 cursor-pointer tap-bounce">
+            <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center animate-float-soft">
+              <Zap className="w-6 h-6 text-primary" />
             </div>
-            <span className="font-black text-xl text-white">Study RPG</span>
+            <span className="font-black text-2xl text-white">Study RPG</span>
           </button>
           <h1 className="text-3xl font-black text-white mb-1">Create Account</h1>
-          <p className="text-gray-500 text-sm">Join 50,000+ Bangladeshi students</p>
+          <p className="text-gray-500 text-sm">প্রথমে অ্যাকাউন্ট, তারপর স্টুডেন্ট প্রোফাইল</p>
         </div>
 
         <div className="flex items-center justify-center gap-2 mb-6">
-          {steps.map((s, i) => (
-            <div key={s.label} className="flex items-center gap-2">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border transition-all ${
+          {steps.map((label, i) => (
+            <div key={label} className="flex items-center gap-2">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border transition-all duration-300 ${
                 step > i + 1 ? "bg-primary border-primary text-black" :
-                step === i + 1 ? "border-primary text-primary bg-primary/10" :
+                step === i + 1 ? "border-primary text-primary bg-primary/10 scale-110" :
                 "border-white/20 text-gray-600"
               }`}>
                 {step > i + 1 ? "✓" : i + 1}
               </div>
-              <span className={`text-xs hidden sm:block ${step === i + 1 ? "text-primary" : "text-gray-600"}`}>{s.label}</span>
-              {i < steps.length - 1 && <div className={`w-8 h-px ${step > i + 1 ? "bg-primary" : "bg-white/10"}`} />}
+              {i < steps.length - 1 && <div className={`w-10 h-px ${step > i + 1 ? "bg-primary" : "bg-white/10"}`} />}
             </div>
           ))}
         </div>
 
-        <div className="glass-card p-7">
+        <div className="glass-card p-7 hover-lift">
           {step === 1 && (
-            <div>
-
-              <div className="flex items-center gap-3 mb-5">
-                <div className="flex-1 h-px bg-white/10" />
-                <span className="text-xs text-gray-600">OR</span>
-                <div className="flex-1 h-px bg-white/10" />
+            <form onSubmit={handleStep1} className="space-y-4 animate-card-in">
+              <Input label="Username" icon={<User className="w-4 h-4" />} value={username} onChange={setUsername} placeholder="rabbihossainltd" minLength={3} />
+              <Input label="Email" icon={<Mail className="w-4 h-4" />} value={email} onChange={setEmail} placeholder="your@email.com" type="email" />
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1.5">Password</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+                  <input type={showPass ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Min 6 characters" required minLength={6}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all" />
+                  <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400 transition-colors">
+                    {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
-              <form onSubmit={handleStep1} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1.5">Username</label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}
-                      placeholder="coolscholar123" required minLength={3} maxLength={20}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-all" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1.5">Email</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                      placeholder="your@email.com" required
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-all" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1.5">Password</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
-                    <input type={showPass ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Min 6 characters" required minLength={6}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-all" />
-                    <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400">
-                      {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                </div>
-                <Button type="submit" className="w-full" size="lg" rightIcon={<ChevronRight className="w-4 h-4" />}>
-                  Next Step
-                </Button>
-              </form>
-            </div>
+              <Button type="submit" className="w-full" size="lg" rightIcon={<ChevronRight className="w-4 h-4" />}>Next Step</Button>
+            </form>
           )}
 
           {step === 2 && (
-            <div className="space-y-5">
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-3">Exam Mode</label>
-                <div className="grid grid-cols-2 gap-3">
-                  {EXAM_MODES.map((mode) => (
-                    <button key={mode.id} type="button" onClick={() => setExamMode(mode.id)}
-                      className={`p-4 rounded-xl border text-left transition-all ${
-                        examMode === mode.id ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/3 text-gray-400 hover:border-white/20"
-                      }`}>
-                      <div className="text-2xl mb-1">{mode.emoji}</div>
-                      <div className="font-bold text-sm">{mode.label}</div>
-                      <div className="text-xs opacity-70">{mode.desc}</div>
-                    </button>
-                  ))}
+            <form onSubmit={handleStep2} className="space-y-4 animate-card-in">
+              <Input label="Student Name" icon={<User className="w-4 h-4" />} value={displayName} onChange={setDisplayName} placeholder="Your full name" />
+              <div className="grid grid-cols-2 gap-3">
+                <Input label="Class" icon={<GraduationCap className="w-4 h-4" />} value={className} onChange={setClassName} placeholder="SSC / HSC / Honours" />
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1.5">Mode</label>
+                  <select value={examMode} onChange={(e) => setExamMode(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-primary/50">
+                    {EXAM_MODES.map((m) => <option key={m.id} value={m.id} className="bg-surface">{m.label}</option>)}
+                  </select>
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">
-                  <MapPin className="w-3 h-3 inline mr-1" />District
-                </label>
-                <select value={district} onChange={(e) => setDistrict(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-primary/50 transition-all">
-                  {DISTRICTS.map((d) => <option key={d} value={d} className="bg-surface">{d}</option>)}
-                </select>
+              <Input label="School / College / University" icon={<School className="w-4 h-4" />} value={college} onChange={setCollege} placeholder="Institution name" />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1.5"><MapPin className="w-3 h-3 inline mr-1" />District</label>
+                  <input list="districts" value={district} onChange={(e) => setDistrict(e.target.value)} required placeholder="District"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50" />
+                  <datalist id="districts">{DISTRICTS.map((d) => <option key={d} value={d} />)}</datalist>
+                </div>
+                <Input label="Thana" icon={<Home className="w-4 h-4" />} value={thana} onChange={setThana} placeholder="Thana" />
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-3 pt-1">
                 <Button variant="ghost" className="flex-1" onClick={() => setStep(1)}>Back</Button>
-                <Button className="flex-1" onClick={() => setStep(3)} rightIcon={<ChevronRight className="w-4 h-4" />}>Next</Button>
+                <Button type="submit" className="flex-1" rightIcon={<ChevronRight className="w-4 h-4" />}>Next</Button>
               </div>
-            </div>
+            </form>
           )}
 
           {step === 3 && (
-            <div className="space-y-5">
+            <div className="space-y-5 animate-card-in">
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-3">Choose Your Avatar</label>
+                <label className="block text-sm font-medium text-gray-400 mb-3">Choose Avatar</label>
                 <div className="grid grid-cols-5 gap-3">
                   {AVATARS.map((av) => (
-                    <button key={av} type="button" onClick={() => setAvatar(av)}
-                      className={`aspect-square rounded-xl text-2xl flex items-center justify-center border transition-all ${
-                        avatar === av ? "border-primary bg-primary/10 scale-110 shadow-neon-primary" : "border-white/10 bg-white/3 hover:border-white/20"
-                      }`}>
+                    <button key={av} type="button" onClick={() => setAvatar(av)} className={`aspect-square rounded-xl text-2xl flex items-center justify-center border transition-all duration-300 tap-bounce ${
+                      avatar === av ? "border-primary bg-primary/10 scale-110 shadow-neon-primary" : "border-white/10 bg-white/3 hover:border-white/20"
+                    }`}>
                       {av}
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="glass rounded-xl p-4 flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center text-3xl">
-                  {avatar}
-                </div>
-                <div>
-                  <p className="font-bold text-white">{username}</p>
+              <div className="glass rounded-xl p-4 flex items-center gap-4 border border-primary/10">
+                <div className="w-14 h-14 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center text-3xl">{avatar}</div>
+                <div className="min-w-0">
+                  <p className="font-bold text-white truncate">{displayName || username}</p>
                   <p className="text-sm text-primary">Level 1 · Novice · {examMode}</p>
-                  <p className="text-xs text-gray-500">{district}</p>
+                  <p className="text-xs text-gray-500 truncate">{college} · {district}</p>
                 </div>
               </div>
               <div className="flex gap-3">
                 <Button variant="ghost" className="flex-1" onClick={() => setStep(2)}>Back</Button>
-                <Button className="flex-1" onClick={handleSignup} isLoading={isLoading}>
-                  <Zap className="w-4 h-4" />
-                  Create Account!
-                </Button>
+                <Button className="flex-1" onClick={handleSignup} isLoading={isLoading}><Zap className="w-4 h-4" />Create</Button>
               </div>
             </div>
           )}
 
           <p className="text-center text-sm text-gray-600 mt-5">
             Already have an account?{" "}
-            <button onClick={() => navigate("/login")} style={{ background: "none", border: "none", cursor: "pointer", color: "#39FF14", fontWeight: 600, fontSize: 14, textDecoration: "underline" }}>Sign In</button>
+            <button onClick={() => navigate("/login")} className="bg-transparent border-0 cursor-pointer text-primary font-semibold underline">Sign In</button>
           </p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function Input({ label, icon, value, onChange, placeholder, type = "text", minLength }: {
+  label: string;
+  icon: ReactNode;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  type?: string;
+  minLength?: number;
+}) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-gray-400 mb-1.5">{label}</label>
+      <div className="relative">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600">{icon}</span>
+        <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} required minLength={minLength}
+          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all" />
       </div>
     </div>
   );

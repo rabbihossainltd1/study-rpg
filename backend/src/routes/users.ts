@@ -17,7 +17,7 @@ userRoutes.get("/me", authenticate, async (req: AuthRequest, res: Response) => {
 
 userRoutes.put("/me", authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const allowed = ["username", "district", "examMode", "language", "avatar"];
+    const allowed = ["username", "displayName", "photoURL", "district", "school", "college", "className", "thana", "examMode", "language", "avatar"];
     const updates: Record<string, unknown> = {};
     for (const key of allowed) {
       if (req.body[key] !== undefined) updates[key] = req.body[key];

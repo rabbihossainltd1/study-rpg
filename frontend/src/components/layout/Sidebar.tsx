@@ -22,14 +22,15 @@ const NAV_ITEMS = [
 ];
 
 export function Sidebar() {
-  const { user, language } = useUserStore();
+  const { user, language, reset } = useUserStore();
   const [mobileOpen, setMobileOpen] = useState(false);
   const rankColor = user ? RANK_COLORS[user.rank] : "#39FF14";
   const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
 
   const handleLogout = async () => {
-    await logOut();
-    navigate("/");
+    await logOut().catch(() => {});
+    reset();
+    navigate("/login");
   };
 
   const SidebarContent = () => (
@@ -52,8 +53,8 @@ export function Sidebar() {
       {user && (
         <div style={{ padding: "16px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-            <div style={{ width: 40, height: 40, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, border: `2px solid ${rankColor}`, background: `${rankColor}20`, color: rankColor }}>
-              {user.displayName?.charAt(0).toUpperCase()}
+            <div style={{ width: 40, height: 40, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, border: `2px solid ${rankColor}`, background: `${rankColor}20`, color: rankColor, overflow: "hidden" }}>
+              {user.photoURL ? <img src={user.photoURL} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : user.avatar || user.displayName?.charAt(0).toUpperCase() || "⚡"}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 700, color: "#fff", fontSize: 13, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.username}</p>
@@ -71,6 +72,7 @@ export function Sidebar() {
           const isActive = currentPath === item.href || currentPath.startsWith(item.href + "/");
           return (
             <button key={item.href} onClick={() => { navigate(item.href); setMobileOpen(false); }}
+              className="tap-bounce"
               style={{
                 display: "flex", alignItems: "center", gap: 12, width: "100%",
                 padding: "10px 12px", borderRadius: 12, marginBottom: 4,
@@ -135,34 +137,34 @@ export function Sidebar() {
         backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)"
       }} className="lg:hidden">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px" }}>
-          <button onClick={() => navigate("/dashboard")} style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer" }}>
-            <Zap size={22} color="#39FF14" />
-            <span style={{ fontWeight: 900, color: "#fff", fontSize: 16 }}>Study RPG</span>
-          </button>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            {user && (
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#39FF14" }}>LV.{user.level}</span>
-                <span style={{ fontSize: 12, color: "#FFD700" }}>🪙{user.coins}</span>
-                <span style={{ fontSize: 12, color: "#FB923C" }}>🔥{user.streak}</span>
-              </div>
-            )}
-            <button onClick={() => setMobileOpen(true)} style={{ padding: 8, borderRadius: 10, background: "rgba(255,255,255,0.05)", border: "none", cursor: "pointer" }}>
-              <Menu size={20} color="#fff" />
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <button onClick={() => setMobileOpen(true)} className="tap-bounce" style={{ padding: 8, borderRadius: 12, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", cursor: "pointer" }}>
+              <Menu size={21} color="#fff" />
+            </button>
+            <button onClick={() => navigate("/dashboard")} style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer" }}>
+              <Zap size={22} color="#39FF14" />
+              <span style={{ fontWeight: 900, color: "#fff", fontSize: 16 }}>Study RPG</span>
             </button>
           </div>
+          {user && (
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#39FF14" }}>LV.{user.level}</span>
+              <span style={{ fontSize: 12, color: "#FFD700" }}>🪙{user.coins}</span>
+              <span style={{ fontSize: 12, color: "#FB923C" }}>🔥{user.streak}</span>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Mobile Drawer */}
       {mobileOpen && (
         <>
-          <div onClick={() => setMobileOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 50 }} />
-          <aside style={{
+          <div onClick={() => setMobileOpen(false)} className="animate-fade-in" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 50 }} />
+          <aside className="animate-drawer-in" style={{
             position: "fixed", left: 0, top: 0, height: "100vh", width: 280, zIndex: 51,
-            background: "rgba(10,10,10,0.99)", borderRight: "1px solid rgba(255,255,255,0.07)"
+            background: "rgba(10,10,10,0.99)", borderRight: "1px solid rgba(255,255,255,0.07)", boxShadow: "20px 0 60px rgba(0,0,0,0.45)"
           }}>
-            <button onClick={() => setMobileOpen(false)} style={{ position: "absolute", top: 16, right: 16, padding: 6, borderRadius: 8, background: "rgba(255,255,255,0.05)", border: "none", cursor: "pointer" }}>
+            <button onClick={() => setMobileOpen(false)} className="tap-bounce" style={{ position: "absolute", top: 16, right: 16, padding: 6, borderRadius: 8, background: "rgba(255,255,255,0.05)", border: "none", cursor: "pointer" }}>
               <X size={18} color="#fff" />
             </button>
             <SidebarContent />

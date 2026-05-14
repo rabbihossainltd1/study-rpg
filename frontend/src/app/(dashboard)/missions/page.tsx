@@ -8,7 +8,7 @@ import { Target, Zap, Trophy, CheckCircle2, Lock } from "lucide-react";
 import { addXp, addCoins } from "@/lib/firebase";
 import { getRarityColor } from "@/lib/utils";
 import toast from "react-hot-toast";
-import type { Mission } from "@/types";
+import { calculateLevel, type Mission } from "@/types";
 
 const TABS = ["Daily", "Weekly", "Achievements"];
 
@@ -19,13 +19,19 @@ export default function MissionsPage() {
 
   const handleClaim = async (mission: Mission) => {
     if (!user || completedMissions.has(mission.id)) return;
+    const nextXp = user.xp + mission.xpReward;
+    const nextLevel = calculateLevel(nextXp);
     try {
-      const result = await addXp(user.uid, mission.xpReward);
-      await addCoins(user.uid, mission.coinReward);
-      setUser({ ...user, xp: user.xp + mission.xpReward, coins: user.coins + mission.coinReward });
+      if (!user.uid.startsWith("guest_")) {
+        const result = await addXp(user.uid, mission.xpReward);
+        await addCoins(user.uid, mission.coinReward);
+        if (result.leveledUp) triggerLevelUp(result.newLevel);
+      } else if (nextLevel > user.level) {
+        triggerLevelUp(nextLevel);
+      }
+      setUser({ ...user, xp: nextXp, coins: user.coins + mission.coinReward, level: Math.max(user.level, nextLevel) });
       setCompletedMissions((prev) => new Set([...prev, mission.id]));
       addXpPopup(mission.xpReward, 50, 40);
-      if (result.leveledUp) triggerLevelUp(result.newLevel);
       toast.success(`+${mission.xpReward} XP & ${mission.coinReward} coins claimed! 🎉`);
     } catch {
       toast.error("Failed to claim reward");
@@ -39,7 +45,7 @@ export default function MissionsPage() {
 
     return (
       <div
-        className={`glass-card p-4 border transition-all ${
+        className={`glass-card p-4 border transition-all hover-lift animate-card-in ${
           isCompleted ? "border-primary/20 bg-primary/3" :
           canClaim ? "border-gold/30 bg-gold/3 shadow-[0_0_20px_rgba(255,215,0,0.1)]" :
           "border-white/5"
@@ -129,7 +135,7 @@ export default function MissionsPage() {
   const totalXp = [...DAILY_MISSIONS, ...WEEKLY_MISSIONS].reduce((sum, m) => sum + m.xpReward, 0);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 animate-card-in">
       <div>
         <div className="flex items-center gap-3 mb-1">
           <div className="w-10 h-10 rounded-xl bg-secondary/10 border border-secondary/30 flex items-center justify-center">

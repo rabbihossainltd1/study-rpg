@@ -1,15 +1,13 @@
-import { Subject, Chapter, QuizQuestion } from "@/types";
+import type { Chapter, Subject } from "@/types";
+import { QUIZ_TOPICS, getQuizCount } from "@/lib/quizData";
 
-export const SUBJECTS: Subject[] = [
+const SUBJECT_BASE: Array<Omit<Subject, "totalChapters" | "completedChapters" | "progress">> = [
   {
     id: "math",
     name: "Mathematics",
     nameBn: "গণিত",
     icon: "📐",
     color: "#00F0FF",
-    totalChapters: 12,
-    completedChapters: 0,
-    progress: 0,
     xpReward: 150,
     difficulty: "hard",
     examTypes: ["SSC", "HSC", "Admission"],
@@ -20,9 +18,6 @@ export const SUBJECTS: Subject[] = [
     nameBn: "পদার্থবিজ্ঞান",
     icon: "⚛️",
     color: "#BF5FFF",
-    totalChapters: 10,
-    completedChapters: 0,
-    progress: 0,
     xpReward: 140,
     difficulty: "hard",
     examTypes: ["SSC", "HSC", "Admission"],
@@ -33,9 +28,6 @@ export const SUBJECTS: Subject[] = [
     nameBn: "রসায়ন",
     icon: "🧪",
     color: "#39FF14",
-    totalChapters: 11,
-    completedChapters: 0,
-    progress: 0,
     xpReward: 140,
     difficulty: "hard",
     examTypes: ["SSC", "HSC", "Admission"],
@@ -46,9 +38,6 @@ export const SUBJECTS: Subject[] = [
     nameBn: "জীববিজ্ঞান",
     icon: "🧬",
     color: "#FF8C00",
-    totalChapters: 10,
-    completedChapters: 0,
-    progress: 0,
     xpReward: 130,
     difficulty: "medium",
     examTypes: ["SSC", "HSC", "Admission"],
@@ -59,9 +48,6 @@ export const SUBJECTS: Subject[] = [
     nameBn: "ইংরেজি",
     icon: "📖",
     color: "#FFD700",
-    totalChapters: 8,
-    completedChapters: 0,
-    progress: 0,
     xpReward: 100,
     difficulty: "medium",
     examTypes: ["SSC", "HSC", "Admission", "University"],
@@ -72,9 +58,6 @@ export const SUBJECTS: Subject[] = [
     nameBn: "বাংলা",
     icon: "🅱️",
     color: "#FF003C",
-    totalChapters: 9,
-    completedChapters: 0,
-    progress: 0,
     xpReward: 100,
     difficulty: "medium",
     examTypes: ["SSC", "HSC"],
@@ -85,9 +68,6 @@ export const SUBJECTS: Subject[] = [
     nameBn: "তথ্য ও যোগাযোগ প্রযুক্তি",
     icon: "💻",
     color: "#00F0FF",
-    totalChapters: 7,
-    completedChapters: 0,
-    progress: 0,
     xpReward: 120,
     difficulty: "medium",
     examTypes: ["SSC", "HSC"],
@@ -98,142 +78,84 @@ export const SUBJECTS: Subject[] = [
     nameBn: "সাধারণ জ্ঞান",
     icon: "🌍",
     color: "#39FF14",
-    totalChapters: 6,
-    completedChapters: 0,
-    progress: 0,
     xpReward: 80,
     difficulty: "easy",
     examTypes: ["Admission", "University"],
   },
 ];
 
-export const CHAPTERS: Record<string, Chapter[]> = {
-  math: [
-    {
-      id: "math-1",
-      subjectId: "math",
-      title: "Real Numbers",
-      titleBn: "বাস্তব সংখ্যা",
-      description: "Natural numbers, integers, rational and irrational numbers",
-      order: 1,
-      isLocked: false,
-      isCompleted: false,
-      xpReward: 80,
-      lessons: [
-        { id: "m1-l1", chapterId: "math-1", title: "Introduction to Real Numbers", titleBn: "বাস্তব সংখ্যার পরিচয়", content: "", type: "concept", duration: 15, isCompleted: false, xpReward: 20 },
-        { id: "m1-l2", chapterId: "math-1", title: "Number Line", titleBn: "সংখ্যারেখা", content: "", type: "concept", duration: 10, isCompleted: false, xpReward: 15 },
-        { id: "m1-l3", chapterId: "math-1", title: "Practice Problems", titleBn: "অনুশীলন সমস্যা", content: "", type: "practice", duration: 20, isCompleted: false, xpReward: 25 },
-        { id: "m1-l4", chapterId: "math-1", title: "Chapter Quiz", titleBn: "অধ্যায় কুইজ", content: "", type: "quiz", duration: 15, isCompleted: false, xpReward: 20 },
-      ],
-    },
-    {
-      id: "math-2",
-      subjectId: "math",
-      title: "Algebra",
-      titleBn: "বীজগণিত",
-      description: "Algebraic expressions, equations and inequalities",
-      order: 2,
-      isLocked: false,
-      isCompleted: false,
-      xpReward: 100,
-      lessons: [
-        { id: "m2-l1", chapterId: "math-2", title: "Algebraic Expressions", titleBn: "বীজগাণিতিক রাশি", content: "", type: "concept", duration: 20, isCompleted: false, xpReward: 25 },
-        { id: "m2-l2", chapterId: "math-2", title: "Linear Equations", titleBn: "রৈখিক সমীকরণ", content: "", type: "concept", duration: 25, isCompleted: false, xpReward: 30 },
-        { id: "m2-l3", chapterId: "math-2", title: "Quadratic Equations", titleBn: "দ্বিঘাত সমীকরণ", content: "", type: "concept", duration: 30, isCompleted: false, xpReward: 35 },
-        { id: "m2-l4", chapterId: "math-2", title: "Practice Problems", titleBn: "অনুশীলন", content: "", type: "practice", duration: 25, isCompleted: false, xpReward: 30 },
-      ],
-    },
-    {
-      id: "math-3",
-      subjectId: "math",
-      title: "Geometry",
-      titleBn: "জ্যামিতি",
-      description: "Lines, angles, triangles and circles",
-      order: 3,
-      isLocked: true,
-      isCompleted: false,
-      xpReward: 120,
-      lessons: [],
-    },
-  ],
-  physics: [
-    {
-      id: "phy-1",
-      subjectId: "physics",
-      title: "Physical Quantities & Measurement",
-      titleBn: "ভৌত রাশি ও পরিমাপ",
-      description: "SI units, dimensional analysis, measurement tools",
-      order: 1,
-      isLocked: false,
-      isCompleted: false,
-      xpReward: 80,
-      lessons: [
-        { id: "p1-l1", chapterId: "phy-1", title: "SI Units", titleBn: "এস.আই. একক", content: "", type: "concept", duration: 15, isCompleted: false, xpReward: 20 },
-        { id: "p1-l2", chapterId: "phy-1", title: "Dimensional Analysis", titleBn: "মাত্রা বিশ্লেষণ", content: "", type: "concept", duration: 20, isCompleted: false, xpReward: 25 },
-      ],
-    },
-    {
-      id: "phy-2",
-      subjectId: "physics",
-      title: "Motion",
-      titleBn: "গতি",
-      description: "Speed, velocity, acceleration and Newton's laws",
-      order: 2,
-      isLocked: false,
-      isCompleted: false,
-      xpReward: 100,
-      lessons: [
-        { id: "p2-l1", chapterId: "phy-2", title: "Speed & Velocity", titleBn: "দ্রুতি ও বেগ", content: "", type: "concept", duration: 20, isCompleted: false, xpReward: 25 },
-        { id: "p2-l2", chapterId: "phy-2", title: "Newton's Laws", titleBn: "নিউটনের সূত্র", content: "", type: "concept", duration: 25, isCompleted: false, xpReward: 30 },
-      ],
-    },
-  ],
-};
+export const SUBJECTS: Subject[] = SUBJECT_BASE.map((subject) => ({
+  ...subject,
+  totalChapters: Math.max(1, QUIZ_TOPICS[subject.id]?.length || 1),
+  completedChapters: 0,
+  progress: 0,
+}));
 
-export const SAMPLE_QUIZ_QUESTIONS: QuizQuestion[] = [
-  {
-    id: "q1",
-    question: "Which of the following is an irrational number?",
-    questionBn: "নিচের কোনটি অমূলদ সংখ্যা?",
-    options: ["√4", "√9", "√2", "√16"],
-    correctAnswer: 2,
-    explanation: "√2 cannot be expressed as a fraction p/q, making it irrational.",
-    difficulty: "easy",
-  },
-  {
-    id: "q2",
-    question: "What is the value of π (pi) approximately?",
-    questionBn: "π (পাই) এর আনুমানিক মান কত?",
-    options: ["3.14", "3.41", "3.12", "3.16"],
-    correctAnswer: 0,
-    explanation: "π ≈ 3.14159... commonly approximated as 3.14",
-    difficulty: "easy",
-  },
-  {
-    id: "q3",
-    question: "If 2x + 5 = 13, what is x?",
-    questionBn: "যদি 2x + 5 = 13 হয়, তাহলে x = ?",
-    options: ["3", "4", "5", "6"],
-    correctAnswer: 1,
-    explanation: "2x = 13 - 5 = 8, so x = 4",
-    difficulty: "easy",
-  },
-  {
-    id: "q4",
-    question: "The SI unit of force is:",
-    questionBn: "বলের এস.আই. একক হলো:",
-    options: ["Watt", "Joule", "Newton", "Pascal"],
-    correctAnswer: 2,
-    explanation: "Force is measured in Newtons (N) in the SI system.",
-    difficulty: "easy",
-  },
-  {
-    id: "q5",
-    question: "Which gas is most abundant in Earth's atmosphere?",
-    questionBn: "পৃথিবীর বায়ুমণ্ডলে সবচেয়ে বেশি কোন গ্যাস আছে?",
-    options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"],
-    correctAnswer: 2,
-    explanation: "Nitrogen makes up about 78% of Earth's atmosphere.",
-    difficulty: "easy",
-  },
-];
+const makeId = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9\u0980-\u09FF]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 32) || "chapter";
+
+function createChapters(subject: Subject): Chapter[] {
+  const topics = QUIZ_TOPICS[subject.id] || [subject.name];
+  return topics.map((topic, index) => ({
+    id: `${subject.id}-${makeId(topic)}-${index + 1}`,
+    subjectId: subject.id,
+    title: topic,
+    titleBn: topic,
+    description: `${subject.name} ${topic} concept, practice and quiz set`,
+    order: index + 1,
+    isLocked: false,
+    isCompleted: false,
+    xpReward: subject.xpReward,
+    lessons: [
+      {
+        id: `${subject.id}-${index + 1}-concept`,
+        chapterId: `${subject.id}-${makeId(topic)}-${index + 1}`,
+        title: `${topic} Concept`,
+        titleBn: `${topic} কনসেপ্ট`,
+        content: "",
+        type: "concept",
+        duration: 12,
+        isCompleted: false,
+        xpReward: Math.max(15, Math.round(subject.xpReward * 0.25)),
+      },
+      {
+        id: `${subject.id}-${index + 1}-practice`,
+        chapterId: `${subject.id}-${makeId(topic)}-${index + 1}`,
+        title: `${topic} Practice`,
+        titleBn: `${topic} অনুশীলন`,
+        content: "",
+        type: "practice",
+        duration: 18,
+        isCompleted: false,
+        xpReward: Math.max(20, Math.round(subject.xpReward * 0.35)),
+      },
+      {
+        id: `${subject.id}-${index + 1}-quiz`,
+        chapterId: `${subject.id}-${makeId(topic)}-${index + 1}`,
+        title: `${topic} Quiz`,
+        titleBn: `${topic} কুইজ`,
+        content: "",
+        type: "quiz",
+        duration: 10,
+        isCompleted: false,
+        xpReward: Math.max(25, Math.round(subject.xpReward * 0.4)),
+      },
+    ],
+  }));
+}
+
+export const CHAPTERS: Record<string, Chapter[]> = Object.fromEntries(
+  SUBJECTS.map((subject) => [subject.id, createChapters(subject)])
+);
+
+export const QUIZ_STATS = SUBJECTS.map((subject) => ({
+  subjectId: subject.id,
+  total: getQuizCount(subject.id),
+  easy: getQuizCount(subject.id, "easy"),
+  medium: getQuizCount(subject.id, "medium"),
+  hard: getQuizCount(subject.id, "hard"),
+}));

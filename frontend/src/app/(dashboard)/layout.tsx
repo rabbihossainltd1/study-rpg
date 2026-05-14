@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, getUserProfile, updateStreak, createUserProfile } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
@@ -10,7 +10,7 @@ import { XpFloatingPopups } from "@/components/gamification/XpFloating";
 import { navigate } from "@/lib/navigate";
 import { Loader2 } from "lucide-react";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { user, setUser, setLoading, isLoading } = useUserStore();
   const authChecked = useRef(false);
 

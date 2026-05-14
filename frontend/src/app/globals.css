@@ -103,14 +103,13 @@ html, body {
 }
 
 .particle-bg {
-  position: fixed;
-  inset: 0;
+  position: relative;
+  overflow: hidden;
   background:
     radial-gradient(ellipse at 20% 50%, rgba(57,255,20,0.04) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(0,240,255,0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, rgba(191,95,255,0.03) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
+    radial-gradient(ellipse at 50% 80%, rgba(191,95,255,0.03) 0%, transparent 50%),
+    #050505;
 }
 
 .grid-overlay {
@@ -157,4 +156,63 @@ html, body {
   0% { opacity: 0; transform: translateY(0) scale(0.5); }
   60% { opacity: 1; transform: translateY(-40px) scale(1.2); }
   100% { opacity: 0; transform: translateY(-80px) scale(1); }
+}
+
+.animate-card-in {
+  animation: card-in 420ms ease-out both;
+}
+
+.animate-drawer-in {
+  animation: drawer-in 260ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.animate-drawer-up {
+  animation: drawer-up 260ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.animate-float-soft {
+  animation: float-soft 3.2s ease-in-out infinite;
+}
+
+.hover-lift {
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35), 0 0 24px rgba(57,255,20,0.06);
+}
+
+.tap-bounce {
+  transition: transform 160ms ease, opacity 160ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.tap-bounce:active {
+  transform: scale(0.96);
+}
+
+button, a, input, select, textarea {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes drawer-in {
+  from { opacity: 0; transform: translateX(-100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes drawer-up {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }

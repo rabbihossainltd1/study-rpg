@@ -43,7 +43,7 @@ export function Button({
       type={props.type || "button"}
       disabled={disabled || isLoading}
       className={cn(
-        "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-95",
+        "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 tap-bounce",
         variants[variant],
         sizes[size],
         className

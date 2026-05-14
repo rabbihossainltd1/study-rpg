@@ -1,17 +1,18 @@
 "use client";
 
 import { navigate } from "@/lib/navigate";
-import { useState } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent, type ReactNode } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { XpBar } from "@/components/ui/XpBar";
 import { StatCard } from "@/components/ui/Card";
-import { RANK_COLORS, RANK_THRESHOLDS, type Rank, type User as UserType, type Achievement } from "@/types";
+import { Button } from "@/components/ui/Button";
+import { RANK_COLORS, RANK_THRESHOLDS, type Rank, type Achievement } from "@/types";
 import { getRarityColor, formatDuration } from "@/lib/utils";
+import { updateUserProfile, logOut } from "@/lib/firebase";
 import {
-  User, Edit3, Trophy, Zap, Flame, Clock, Star,
-  Shield, Globe, LogOut, Settings, ChevronRight, Copy, Check,
+  Edit3, Trophy, Zap, Flame, Clock, Star, Shield, LogOut, Copy, Check,
+  Camera, Save, X, User, School, MapPin, Home, GraduationCap, Languages,
 } from "lucide-react";
-import { logOut } from "@/lib/firebase";
 import toast from "react-hot-toast";
 
 const RANK_ORDER: Rank[] = ["Novice", "Apprentice", "Scholar", "Expert", "Master", "Grandmaster", "Legend"];
@@ -27,54 +28,157 @@ const ACHIEVEMENTS: Achievement[] = [
   { id: "study_hour", title: "Hour of Power", titleBn: "শক্তির ঘণ্টা", description: "Study for 1 hour in a single session", icon: "⏱️", rarity: "rare", xpReward: 250, isUnlocked: false },
 ];
 
+const AVATARS = ["⚡", "🔥", "📚", "🎯", "🏆", "💎", "🦁", "🦅", "🤖", "⭐"];
+
+async function compressImage(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        const size = 240;
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return reject(new Error("Canvas unavailable"));
+        const scale = Math.max(size / image.width, size / image.height);
+        const width = image.width * scale;
+        const height = image.height * scale;
+        ctx.drawImage(image, (size - width) / 2, (size - height) / 2, width, height);
+        resolve(canvas.toDataURL("image/jpeg", 0.82));
+      };
+      image.onerror = reject;
+      image.src = String(reader.result);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 export default function ProfilePage() {
-  const { user, language, setUser } = useUserStore();
+  const { user, language, setUser, setLanguage, reset } = useUserStore();
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState("stats");
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({
+    username: "",
+    displayName: "",
+    photoURL: "",
+    avatar: "⚡",
+    school: "",
+    college: "",
+    className: "",
+    district: "",
+    thana: "",
+    examMode: "SSC" as "SSC" | "HSC" | "Admission" | "University",
+  });
+
+  useEffect(() => {
+    if (!user) return;
+    setForm({
+      username: user.username || "",
+      displayName: user.displayName || user.username || "",
+      photoURL: user.photoURL || "",
+      avatar: user.avatar || "⚡",
+      school: user.school || user.college || "",
+      college: user.college || user.school || "",
+      className: user.className || "",
+      district: user.district || "",
+      thana: user.thana || "",
+      examMode: user.examMode || "SSC",
+    });
+  }, [user]);
+
+  const unlockedAchievements = useMemo(
+    () => ACHIEVEMENTS.filter((a) => user?.achievements?.includes(a.id)),
+    [user?.achievements]
+  );
 
   if (!user) return null;
 
   const rankColor = RANK_COLORS[user.rank];
   const currentRankIndex = RANK_ORDER.indexOf(user.rank);
   const nextRank = RANK_ORDER[currentRankIndex + 1];
-  const nextRankXp = nextRank ? RANK_THRESHOLDS[nextRank] : null;
+  const displayPhoto = user.photoURL || "";
 
   const handleLogout = async () => {
-    await logOut();
-    navigate("/");
-    toast.success("Logged out successfully");
+    await logOut().catch(() => {});
+    reset();
+    navigate("/login");
+    toast.success("Logged out");
   };
 
   const copyUid = () => {
     navigator.clipboard.writeText(user.uid);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    toast.success("Player ID copied!");
+    toast.success("Player ID copied");
   };
 
-  const unlockedAchievements = ACHIEVEMENTS.filter((a) => user.achievements?.includes(a.id));
+  const handlePhoto = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Only image files are allowed");
+      return;
+    }
+    try {
+      const photoURL = await compressImage(file);
+      setForm((prev) => ({ ...prev, photoURL }));
+      toast.success("Profile photo ready");
+    } catch {
+      toast.error("Photo could not be processed");
+    }
+  };
 
-  const TABS = [
-    { id: "stats", label: "Stats" },
-    { id: "achievements", label: "Achievements" },
-    { id: "settings", label: "Settings" },
-  ];
+  const saveProfile = async () => {
+    if (!form.username.trim() || !form.displayName.trim()) {
+      toast.error("Name and username required");
+      return;
+    }
+    setSaving(true);
+    const updates = {
+      username: form.username.trim(),
+      displayName: form.displayName.trim(),
+      photoURL: form.photoURL,
+      avatar: form.avatar,
+      school: form.school.trim() || form.college.trim(),
+      college: form.college.trim() || form.school.trim(),
+      className: form.className.trim(),
+      district: form.district.trim(),
+      thana: form.thana.trim(),
+      examMode: form.examMode,
+    };
+    try {
+      if (!user.isGuest || !user.uid.startsWith("guest_")) {
+        await updateUserProfile(user.uid, updates);
+      }
+      setUser({ ...user, ...updates });
+      setEditing(false);
+      toast.success("Profile updated");
+    } catch {
+      toast.error("Profile update failed. Check Firestore rules.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const toggleLanguage = () => {
     const newLang = language === "bn" ? "en" : "bn";
-    useUserStore.getState().setLanguage(newLang);
+    setLanguage(newLang);
     toast.success(`Language: ${newLang === "bn" ? "বাংলা" : "English"}`);
   };
 
   return (
-    <div className="space-y-5 max-w-2xl mx-auto">
-      {/* Profile Card */}
-      <div className="glass-card p-6 border relative overflow-hidden" style={{ borderColor: `${rankColor}30` }}>
+    <div className="space-y-5 max-w-2xl mx-auto animate-card-in">
+      <div className="glass-card p-6 border relative overflow-hidden hover-lift" style={{ borderColor: `${rankColor}30` }}>
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full opacity-10 blur-3xl pointer-events-none" style={{ background: rankColor }} />
         <div className="flex items-start gap-4 relative">
-          <div className="relative">
-            <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl border-2 flex-shrink-0" style={{ borderColor: rankColor, background: `${rankColor}15`, boxShadow: `0 0 30px ${rankColor}30` }}>
-              ⚡
+          <div className="relative flex-shrink-0">
+            <div className="w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center text-4xl border-2" style={{ borderColor: rankColor, background: `${rankColor}15`, boxShadow: `0 0 30px ${rankColor}30` }}>
+              {displayPhoto ? <img src={displayPhoto} alt="Profile" className="w-full h-full object-cover" /> : <span>{user.avatar || "⚡"}</span>}
             </div>
             <div className="absolute -bottom-1 -right-1 text-xs font-black px-1.5 py-0.5 rounded-md" style={{ background: rankColor, color: "#000" }}>
               {user.level}
@@ -82,19 +186,20 @@ export default function ProfilePage() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
-              <div>
-                <h1 className="text-xl font-black text-white">{user.username}</h1>
+              <div className="min-w-0">
+                <h1 className="text-xl font-black text-white truncate">{user.displayName || user.username}</h1>
                 <p className="text-sm font-semibold mt-0.5" style={{ color: rankColor }}>{user.rank}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{user.examMode} · {user.district}</p>
+                <p className="text-xs text-gray-500 mt-0.5 truncate">{user.examMode} · {user.school || user.college || "Institution not set"}</p>
+                <p className="text-xs text-gray-600 mt-0.5 truncate">{user.district}{user.thana ? ` · ${user.thana}` : ""}</p>
               </div>
-              <button className="p-2 glass rounded-xl border border-white/10 hover:border-white/20 transition-colors">
+              <button onClick={() => setEditing(true)} className="p-2 glass rounded-xl border border-white/10 hover:border-primary/30 transition-all tap-bounce" aria-label="Edit profile">
                 <Edit3 className="w-4 h-4 text-gray-400" />
               </button>
             </div>
             <div className="flex gap-2 mt-3 flex-wrap">
               <span className="text-xs px-2 py-1 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">🔥 {user.streak} day streak</span>
               <span className="text-xs px-2 py-1 rounded-lg bg-primary/10 text-primary border border-primary/20">⚡ LV.{user.level}</span>
-              {user.isGuest && <span className="text-xs px-2 py-1 rounded-lg bg-gray-500/10 text-gray-400 border border-gray-500/20">👻 Guest</span>}
+              {user.className && <span className="text-xs px-2 py-1 rounded-lg bg-secondary/10 text-secondary border border-secondary/20">{user.className}</span>}
             </div>
           </div>
         </div>
@@ -103,33 +208,31 @@ export default function ProfilePage() {
         </div>
         <div className="mt-3 flex items-center gap-2">
           <p className="text-xs text-gray-600 font-mono truncate flex-1">ID: {user.uid.substring(0, 16)}...</p>
-          <button onClick={copyUid} className="p-1.5 glass rounded-lg border border-white/10 hover:border-white/20 transition-colors">
+          <button onClick={copyUid} className="p-1.5 glass rounded-lg border border-white/10 hover:border-white/20 transition-colors tap-bounce">
             {copied ? <Check className="w-3 h-3 text-primary" /> : <Copy className="w-3 h-3 text-gray-500" />}
           </button>
         </div>
       </div>
 
-      {/* Rank Progress */}
-      <div className="glass-card p-5">
+      <div className="glass-card p-5 hover-lift">
         <div className="flex items-center gap-2 mb-4">
           <Shield className="w-4 h-4" style={{ color: rankColor }} />
           <p className="font-bold text-white text-sm">Rank Journey</p>
         </div>
-        <div className="flex items-center gap-1 overflow-x-auto pb-2">
+        <div className="flex items-center gap-1 overflow-x-auto overflow-y-visible px-4 py-4 -mx-2">
           {RANK_ORDER.map((rank, i) => {
             const rColor = RANK_COLORS[rank];
             const isActive = rank === user.rank;
             const isPast = RANK_ORDER.indexOf(rank) < currentRankIndex;
             return (
-              <div key={rank} className="flex items-center gap-1 flex-shrink-0">
+              <div key={rank} className="flex items-center gap-2 flex-shrink-0">
                 <div className="text-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all ${isActive ? "scale-125" : ""}`}
-                    style={{ borderColor: isPast || isActive ? rColor : "rgba(255,255,255,0.1)", background: isPast || isActive ? `${rColor}20` : "transparent", color: isPast || isActive ? rColor : "#4B5563" }}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 ${isActive ? "scale-125 shadow-lg" : ""}`}
+                    style={{ borderColor: isPast || isActive ? rColor : "rgba(255,255,255,0.1)", background: isPast || isActive ? `${rColor}20` : "transparent", color: isPast || isActive ? rColor : "#4B5563", boxShadow: isActive ? `0 0 22px ${rColor}40` : undefined }}>
                     {isPast ? "✓" : isActive ? "●" : "○"}
                   </div>
-                  <p className="text-xs mt-1 hidden sm:block" style={{ color: isPast || isActive ? rColor : "#4B5563", fontSize: "9px" }}>{rank}</p>
                 </div>
-                {i < RANK_ORDER.length - 1 && <div className={`w-4 h-px flex-shrink-0 ${isPast ? "" : "bg-white/10"}`} style={isPast ? { background: rColor } : {}} />}
+                {i < RANK_ORDER.length - 1 && <div className="w-8 h-px flex-shrink-0" style={{ background: isPast ? rColor : "rgba(255,255,255,0.1)" }} />}
               </div>
             );
           })}
@@ -141,18 +244,16 @@ export default function ProfilePage() {
         )}
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-2">
-        {TABS.map((t) => (
-          <button key={t.id} onClick={() => setActiveTab(t.id)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${activeTab === t.id ? "bg-primary text-black font-bold" : "glass border border-white/10 text-gray-400 hover:text-white"}`}>
-            {t.label}
+      <div className="grid grid-cols-3 gap-2">
+        {["stats", "achievements", "settings"].map((tab) => (
+          <button key={tab} onClick={() => setActiveTab(tab)} className={`px-3 py-2 rounded-xl text-sm font-medium transition-all tap-bounce ${activeTab === tab ? "bg-primary text-black font-bold" : "glass border border-white/10 text-gray-400 hover:text-white"}`}>
+            {tab[0].toUpperCase() + tab.slice(1)}
           </button>
         ))}
       </div>
 
       {activeTab === "stats" && (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 animate-card-in">
           <StatCard label="Total XP" value={user.xp.toLocaleString()} icon={<Zap className="w-4 h-4" />} color="#39FF14" />
           <StatCard label="Level" value={user.level} icon={<Star className="w-4 h-4" />} color="#FFD700" />
           <StatCard label="Study Time" value={formatDuration(user.totalStudyTime)} icon={<Clock className="w-4 h-4" />} color="#00F0FF" />
@@ -163,66 +264,90 @@ export default function ProfilePage() {
       )}
 
       {activeTab === "achievements" && (
-        <div className="space-y-3">
+        <div className="space-y-3 animate-card-in">
           {unlockedAchievements.length === 0 ? (
             <div className="glass-card p-8 text-center">
               <p className="text-4xl mb-3">🏆</p>
-              <p className="text-gray-400 font-medium">No achievements yet!</p>
-              <p className="text-sm text-gray-600 mt-1">Complete missions and study to unlock achievements.</p>
+              <p className="text-gray-400 font-medium">No achievements yet</p>
+              <p className="text-sm text-gray-600 mt-1">Complete missions and quizzes to unlock achievements.</p>
             </div>
-          ) : (
-            unlockedAchievements.map((a) => {
-              const color = getRarityColor(a.rarity);
-              return (
-                <div key={a.id} className="glass-card p-4 border flex items-center gap-3" style={{ borderColor: `${color}25` }}>
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style={{ background: `${color}15` }}>{a.icon}</div>
-                  <div>
-                    <p className="font-bold text-white text-sm">{a.title}</p>
-                    <p className="text-xs text-gray-500">{a.description}</p>
-                    <span className="text-xs font-bold" style={{ color }}>+{a.xpReward} XP · {a.rarity}</span>
-                  </div>
-                </div>
-              );
-            })
-          )}
+          ) : unlockedAchievements.map((a) => {
+            const color = getRarityColor(a.rarity);
+            return (
+              <div key={a.id} className="glass-card p-4 border flex items-center gap-3 hover-lift" style={{ borderColor: `${color}25` }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style={{ background: `${color}15` }}>{a.icon}</div>
+                <div><p className="font-bold text-white text-sm">{language === "bn" ? a.titleBn : a.title}</p><p className="text-xs text-gray-500">{a.description}</p></div>
+              </div>
+            );
+          })}
         </div>
       )}
 
       {activeTab === "settings" && (
-        <div className="glass-card divide-y divide-white/5">
-          <button onClick={toggleLanguage} className="w-full flex items-center gap-3 p-4 hover:bg-white/3 transition-colors text-left">
-            <Globe className="w-5 h-5 text-secondary" />
-            <div className="flex-1">
-              <p className="text-sm font-medium text-white">Language / ভাষা</p>
-              <p className="text-xs text-gray-500">Currently: {language === "bn" ? "বাংলা" : "English"}</p>
-            </div>
-            <ChevronRight className="w-4 h-4 text-gray-600" />
-          </button>
-          <div className="flex items-center gap-3 p-4">
-            <Settings className="w-5 h-5 text-gray-400" />
-            <div className="flex-1">
-              <p className="text-sm font-medium text-white">Exam Mode</p>
-              <p className="text-xs text-gray-500">{user.examMode}</p>
-            </div>
-            <select value={user.examMode} onChange={(e) => setUser({ ...user, examMode: e.target.value as UserType["examMode"] })}
-              className="bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-xs text-white">
-              {["SSC", "HSC", "Admission", "University"].map((m) => <option key={m} value={m} className="bg-surface">{m}</option>)}
-            </select>
-          </div>
-          <div className="flex items-center gap-3 p-4">
-            <Trophy className="w-5 h-5 text-gold" />
-            <div className="flex-1">
-              <p className="text-sm font-medium text-white">District</p>
-              <p className="text-xs text-gray-500">{user.district}</p>
-            </div>
-            <ChevronRight className="w-4 h-4 text-gray-600" />
-          </div>
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 p-4 hover:bg-accent/5 transition-colors text-left">
-            <LogOut className="w-5 h-5 text-accent" />
-            <p className="text-sm font-medium text-accent">Log Out</p>
-          </button>
+        <div className="glass-card p-5 space-y-3 animate-card-in">
+          <Button variant="ghost" className="w-full justify-start" onClick={toggleLanguage} leftIcon={<Languages className="w-4 h-4" />}>Language: {language === "bn" ? "বাংলা" : "English"}</Button>
+          <Button variant="ghost" className="w-full justify-start" onClick={() => setEditing(true)} leftIcon={<Edit3 className="w-4 h-4" />}>Edit profile info</Button>
+          <Button variant="danger" className="w-full justify-start" onClick={handleLogout} leftIcon={<LogOut className="w-4 h-4" />}>Log out</Button>
         </div>
       )}
+
+      {editing && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-fade-in">
+          <div className="glass-card w-full max-w-lg p-5 border border-primary/20 animate-drawer-up">
+            <div className="flex items-center justify-between mb-4">
+              <div><h2 className="text-lg font-black text-white">Edit Profile</h2><p className="text-xs text-gray-500">Name, photo and student info</p></div>
+              <button onClick={() => setEditing(false)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>
+            </div>
+
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-20 h-20 rounded-2xl overflow-hidden bg-primary/10 border border-primary/30 flex items-center justify-center text-4xl">
+                {form.photoURL ? <img src={form.photoURL} alt="Preview" className="w-full h-full object-cover" /> : form.avatar}
+              </div>
+              <div className="flex-1">
+                <label className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-white cursor-pointer hover:border-primary/30 transition-all">
+                  <Camera className="w-4 h-4" /> Change photo
+                  <input type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
+                </label>
+                <div className="flex gap-2 mt-2 flex-wrap">
+                  {AVATARS.slice(0, 6).map((av) => <button key={av} onClick={() => setForm((p) => ({ ...p, avatar: av, photoURL: p.photoURL }))} className={`w-8 h-8 rounded-lg border ${form.avatar === av ? "border-primary bg-primary/10" : "border-white/10 bg-white/5"}`}>{av}</button>)}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <EditInput label="Student Name" icon={<User className="w-4 h-4" />} value={form.displayName} onChange={(v) => setForm((p) => ({ ...p, displayName: v }))} />
+              <EditInput label="Username" icon={<User className="w-4 h-4" />} value={form.username} onChange={(v) => setForm((p) => ({ ...p, username: v }))} />
+              <EditInput label="Class" icon={<GraduationCap className="w-4 h-4" />} value={form.className} onChange={(v) => setForm((p) => ({ ...p, className: v }))} />
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Mode</label>
+                <select value={form.examMode} onChange={(e) => setForm((p) => ({ ...p, examMode: e.target.value as typeof form.examMode }))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-primary/50">
+                  {(["SSC", "HSC", "Admission", "University"] as const).map((m) => <option key={m} value={m} className="bg-surface">{m}</option>)}
+                </select>
+              </div>
+              <EditInput label="School / College / University" icon={<School className="w-4 h-4" />} value={form.school || form.college} onChange={(v) => setForm((p) => ({ ...p, school: v, college: v }))} />
+              <EditInput label="District" icon={<MapPin className="w-4 h-4" />} value={form.district} onChange={(v) => setForm((p) => ({ ...p, district: v }))} />
+              <EditInput label="Thana" icon={<Home className="w-4 h-4" />} value={form.thana} onChange={(v) => setForm((p) => ({ ...p, thana: v }))} />
+            </div>
+
+            <div className="flex gap-3 mt-5">
+              <Button variant="ghost" className="flex-1" onClick={() => setEditing(false)}>Cancel</Button>
+              <Button className="flex-1" onClick={saveProfile} isLoading={saving} leftIcon={<Save className="w-4 h-4" />}>Save</Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EditInput({ label, icon, value, onChange }: { label: string; icon: ReactNode; value: string; onChange: (value: string) => void }) {
+  return (
+    <div>
+      <label className="block text-xs text-gray-500 mb-1">{label}</label>
+      <div className="relative">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600">{icon}</span>
+        <input value={value} onChange={(e) => onChange(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-3 py-3 text-sm text-white focus:outline-none focus:border-primary/50" />
+      </div>
     </div>
   );
 }

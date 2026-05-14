@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import type { ReactNode } from "react";
 import { RouterProvider } from "@/components/RouterProvider";
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="dark" style={{ background: "#050505" }}>
       <body style={{ background: "#050505", color: "#ffffff", margin: 0, padding: 0, minHeight: "100vh", fontFamily: "Inter, system-ui, -apple-system, sans-serif" }}>

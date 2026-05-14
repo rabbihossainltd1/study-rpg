@@ -5,6 +5,7 @@ import { useUserStore } from "@/store/useUserStore";
 import { Button } from "@/components/ui/Button";
 import { StatCard } from "@/components/ui/Card";
 import { formatTime } from "@/lib/utils";
+import { calculateLevel } from "@/types";
 import { addXp, addCoins } from "@/lib/firebase";
 import {
   Play, Pause, RotateCcw, Coffee, Brain,
@@ -44,20 +45,28 @@ export default function FocusPage() {
       toast.success("Break complete! Back to focus! 🚀");
       return;
     }
-    const minutesStudied = Math.floor((mode.duration - timeLeft) / 60);
+    const minutesStudied = Math.floor(mode.duration / 60);
     const xpEarned = Math.max(10, minutesStudied * mode.xpPerMin);
     const coinsEarned = Math.floor(minutesStudied * 1.5);
     setSessions((s) => s + 1);
     setTotalMinutes((m) => m + minutesStudied);
+    const nextXp = user.xp + xpEarned;
+    const nextLevel = calculateLevel(nextXp);
     try {
-      const result = await addXp(user.uid, xpEarned);
-      await addCoins(user.uid, coinsEarned);
-      setUser({ ...user, xp: user.xp + xpEarned, coins: user.coins + coinsEarned });
+      if (!user.uid.startsWith("guest_")) {
+        const result = await addXp(user.uid, xpEarned);
+        await addCoins(user.uid, coinsEarned);
+        if (result.leveledUp) triggerLevelUp(result.newLevel);
+      } else if (nextLevel > user.level) {
+        triggerLevelUp(nextLevel);
+      }
+      setUser({ ...user, xp: nextXp, coins: user.coins + coinsEarned, level: Math.max(user.level, nextLevel) });
       addXpPopup(xpEarned, 50, 40);
-      if (result.leveledUp) triggerLevelUp(result.newLevel);
       toast.success(`Session complete! +${xpEarned} XP ⚡`);
-    } catch {}
-  }, [user, mode, timeLeft, setUser, addXpPopup, triggerLevelUp]);
+    } catch {
+      toast.error("Reward sync failed. Try again later.");
+    }
+  }, [user, mode, setUser, addXpPopup, triggerLevelUp]);
 
   useEffect(() => {
     if (isRunning) {
@@ -102,7 +111,7 @@ export default function FocusPage() {
   const progressColor = mode.color;
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
+    <div className="space-y-6 max-w-2xl mx-auto animate-card-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -200,6 +209,23 @@ export default function FocusPage() {
           ))}
         </div>
       </div>
+
+
+
+      {showSettings && (
+        <div className="glass-card p-4 border border-secondary/15 animate-card-in">
+          <p className="text-sm font-bold text-white mb-2">Focus Settings</p>
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs text-gray-500">Selected ambient</p>
+              <p className="text-sm text-secondary font-semibold">{ambient}</p>
+            </div>
+            <Button variant="ghost" size="sm" onClick={() => { setSessions(0); setTotalMinutes(0); }}>
+              Reset Stats
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">

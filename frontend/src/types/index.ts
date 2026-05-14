@@ -18,6 +18,9 @@ export interface User {
   friends: string[];
   district: string;
   school: string;
+  college?: string;
+  className?: string;
+  thana?: string;
   examMode: "SSC" | "HSC" | "Admission" | "University";
   avatar: string;
   frame: string;
@@ -148,10 +151,14 @@ export interface LeaderboardEntry {
   username: string;
   displayName: string;
   photoURL?: string;
+  school?: string;
+  college?: string;
+  className?: string;
+  thana?: string;
+  district: string;
   level: number;
   xp: number;
   userRank: Rank;
-  district: string;
   streak: number;
   isCurrentUser?: boolean;
 }

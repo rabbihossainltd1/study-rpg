@@ -1,7 +1,7 @@
 "use client";
 
 import { navigate } from "@/lib/navigate";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { Zap, Mail, Lock, Eye, EyeOff, Chrome } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
@@ -25,7 +25,7 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
 
-  const handleEmailLogin = async (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
     setIsLoading(true);
@@ -99,11 +99,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4 particle-bg">
+      <div className="w-full max-w-md animate-card-in">
         <div className="text-center mb-8">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/login")}
             style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24 }}
           >
             <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
@@ -115,8 +115,10 @@ export default function LoginPage() {
           <p className="text-gray-500">Continue your learning journey</p>
         </div>
 
-        <div className="glass-card p-7 space-y-5">
-          
+        <div className="glass-card p-7 space-y-5 hover-lift">
+          <Button variant="ghost" className="w-full" onClick={handleGoogleLogin} isLoading={googleLoading}>
+            <Chrome className="w-4 h-4" /> Continue with Google
+          </Button>
 
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-white/10" />
