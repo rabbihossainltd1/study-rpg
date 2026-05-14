@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "494377620744-hoqg1ortbl4rqkcbjcnuea8sel4l44pe.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.rabbi.studyrpg.app",
-            "certificate_hash": "32504a90ee4c1919f0e6fff407c890c49f4b077d"
-          }
-        },
-        {
           "client_id": "494377620744-f12bb0qqre8nhik1hfd7ufjjftnbm7qr.apps.googleusercontent.com",
           "client_type": 3
         }
