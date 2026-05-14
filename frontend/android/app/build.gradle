@@ -25,7 +25,7 @@ android {
 
     signingConfigs {
         customDebug {
-            storeFile file('/root/.android/debug.keystore')
+            storeFile file(System.getenv('HOME') + '/.android/debug.keystore')
             storePassword System.getenv('KEYSTORE_PASSWORD') ?: 'studyrpg456'
             keyAlias System.getenv('KEY_ALIAS') ?: 'studyrpg2'
             keyPassword System.getenv('KEY_PASSWORD') ?: 'studyrpg456'
