@@ -116,11 +116,7 @@ export default function LoginPage() {
         </div>
 
         <div className="glass-card p-7 space-y-5">
-          {/* Google login hidden - not supported on native
-          <Button variant="ghost" className="w-full" size="lg" onClick={handleGoogleLogin} isLoading={googleLoading} leftIcon={<Chrome className="w-5 h-5 text-blue-400" />}>
-            Continue with Google
-          </Button>
-          */}
+          
 
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-white/10" />
@@ -168,7 +164,6 @@ export default function LoginPage() {
           <Button variant="ghost" className="w-full text-gray-500 hover:text-white" onClick={handleGuestLogin} isLoading={guestLoading}>
             👻 Continue as Guest
           </Button>
-          */}
 
           <p className="text-center text-sm text-gray-600">
             Don&apos;t have an account?{" "}
