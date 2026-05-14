@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { logOut } from "@/lib/firebase";
+import { logOut, searchUsers, sendFriendRequest, type PublicUserResult } from "@/lib/firebase";
 import { navigate } from "@/lib/navigate";
 import { XpBar } from "@/components/ui/XpBar";
+import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
+import toast from "react-hot-toast";
 import { RANK_COLORS } from "@/types";
 import {
   LayoutDashboard, BookOpen, Trophy, Bot,
-  Target, User, LogOut, Zap, Menu, X, ChevronRight, Users,
+  Target, User, LogOut, Zap, Menu, X, ChevronRight, Users, Search, UserPlus, Coins, Gem, Flame,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -20,6 +22,71 @@ const NAV_ITEMS = [
   { href: "/friends", label: "Friends", labelBn: "ফ্রেন্ডস", icon: Users },
   { href: "/profile", label: "Profile", labelBn: "প্রোফাইল", icon: User },
 ];
+
+
+function HeaderSearch() {
+  const { user } = useUserStore();
+  const [term, setTerm] = useState("");
+  const [results, setResults] = useState<PublicUserResult[]>([]);
+  const [busy, setBusy] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user || user.uid.startsWith("guest_")) return;
+    const timer = setTimeout(async () => {
+      const q = term.trim();
+      if (q.length < 2) {
+        setResults([]);
+        return;
+      }
+      try {
+        setResults(await searchUsers(q, user.uid));
+      } catch {
+        setResults([]);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [term, user]);
+
+  const add = async (target: PublicUserResult) => {
+    if (!user || user.uid.startsWith("guest_")) return toast.error("Login required");
+    setBusy(target.uid);
+    try {
+      await sendFriendRequest(user.uid, target.uid);
+      setResults((items) => items.map((i) => i.uid === target.uid ? { ...i, friendStatus: "pending" } : i));
+      toast.success("Friend request sent");
+    } catch {
+      toast.error("Request failed");
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  return (
+    <div style={{ flex: 1, maxWidth: 260, position: "relative", margin: "0 8px" }}>
+      <Search size={14} color="#6B7280" style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", zIndex: 2 }} />
+      <input
+        value={term}
+        onChange={(e) => setTerm(e.target.value)}
+        placeholder="Search ID/name"
+        style={{ width: "100%", border: "1px solid rgba(255,255,255,.09)", background: "rgba(255,255,255,.045)", color: "white", borderRadius: 13, padding: "9px 10px 9px 32px", fontSize: 12, outline: "none" }}
+      />
+      {results.length > 0 && (
+        <div style={{ position: "absolute", top: 44, left: -42, right: -70, background: "rgba(10,10,10,.98)", border: "1px solid rgba(57,255,20,.22)", borderRadius: 16, padding: 8, boxShadow: "0 20px 50px rgba(0,0,0,.5)", zIndex: 80 }}>
+          {results.slice(0, 4).map((person) => (
+            <div key={person.uid} style={{ display: "flex", alignItems: "center", gap: 8, padding: 8, borderRadius: 12, background: "rgba(255,255,255,.035)", marginBottom: 6 }}>
+              <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-9 h-9" iconClassName="w-4 h-4" />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ margin: 0, color: "white", fontSize: 12, fontWeight: 800, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{person.displayName}</p>
+                <p style={{ margin: 0, color: "#6B7280", fontSize: 10, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{person.username} · ID {person.studentId}</p>
+              </div>
+              {person.friendStatus === "pending" ? <span style={{ color: "#FFD700", fontSize: 10, fontWeight: 800 }}>Pending</span> : person.friendStatus === "accepted" ? <span style={{ color: "#39FF14", fontSize: 10, fontWeight: 800 }}>Friend</span> : <button onClick={() => add(person)} disabled={busy === person.uid} style={{ border: 0, background: "#39FF14", color: "#000", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><UserPlus size={13} />Add</button>}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function Sidebar() {
   const { user, language, reset } = useUserStore();
@@ -53,9 +120,7 @@ export function Sidebar() {
       {user && (
         <div style={{ padding: "16px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-            <div style={{ width: 40, height: 40, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, border: `2px solid ${rankColor}`, background: `${rankColor}20`, color: rankColor, overflow: "hidden" }}>
-              {user.photoURL ? <img src={user.photoURL} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : user.avatar || user.displayName?.charAt(0).toUpperCase() || "⚡"}
-            </div>
+            <UserAvatar photoURL={user.photoURL} avatar={user.avatar} name={user.displayName} sizeClass="w-10 h-10" iconClassName="w-5 h-5" borderColor={rankColor} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 700, color: "#fff", fontSize: 13, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.displayName || user.username}</p>
               <p style={{ fontSize: 11, color: "#9CA3AF", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{user.username} · ID {user.studentId || "—"}</p>
@@ -95,17 +160,17 @@ export function Sidebar() {
         <div style={{ padding: "12px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
           <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "10px", display: "flex", justifyContent: "space-around", marginBottom: 8 }}>
             <div style={{ textAlign: "center" }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#FFD700", margin: 0 }}>🪙 {user.coins}</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#FFD700", margin: 0, display: "inline-flex", alignItems: "center", gap: 3 }}><Coins size={13} />{user.coins}</p>
               <p style={{ fontSize: 10, color: "#6B7280", margin: 0 }}>Coins</p>
             </div>
             <div style={{ width: 1, background: "rgba(255,255,255,0.05)" }} />
             <div style={{ textAlign: "center" }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#BF5FFF", margin: 0 }}>💎 {user.gems}</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#BF5FFF", margin: 0, display: "inline-flex", alignItems: "center", gap: 3 }}><Gem size={13} />{user.gems}</p>
               <p style={{ fontSize: 10, color: "#6B7280", margin: 0 }}>Gems</p>
             </div>
             <div style={{ width: 1, background: "rgba(255,255,255,0.05)" }} />
             <div style={{ textAlign: "center" }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#FB923C", margin: 0 }}>🔥 {user.streak}</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#FB923C", margin: 0, display: "inline-flex", alignItems: "center", gap: 3 }}><Flame size={13} />{user.streak}</p>
               <p style={{ fontSize: 10, color: "#6B7280", margin: 0 }}>Streak</p>
             </div>
           </div>
@@ -144,14 +209,13 @@ export function Sidebar() {
             </button>
             <button onClick={() => navigate("/dashboard")} style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer" }}>
               <Zap size={22} color="#39FF14" />
-              <span style={{ fontWeight: 900, color: "#fff", fontSize: 16 }}>Study RPG</span>
             </button>
           </div>
+          <HeaderSearch />
           {user && (
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 7, flexShrink: 0 }}>
               <span style={{ fontSize: 12, fontWeight: 700, color: "#39FF14" }}>LV.{user.level}</span>
-              <span style={{ fontSize: 12, color: "#FFD700" }}>🪙{user.coins}</span>
-              <span style={{ fontSize: 12, color: "#FB923C" }}>🔥{user.streak}</span>
+              <span style={{ fontSize: 12, color: "#FFD700", display: "inline-flex", alignItems: "center", gap: 2 }}><Coins size={12} />{user.coins}</span>
             </div>
           )}
         </div>

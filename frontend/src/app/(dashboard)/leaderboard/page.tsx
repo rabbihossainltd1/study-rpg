@@ -6,7 +6,8 @@ import { getLeaderboard, sendFriendRequest } from "@/lib/firebase";
 import { RANK_COLORS, type Rank } from "@/types";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
-import { Trophy, Globe, MapPin, TrendingUp, Crown, X, School, UserRound, UserPlus } from "lucide-react";
+import { Trophy, Globe, MapPin, TrendingUp, Crown, X, School, UserRound, UserPlus, Flame } from "lucide-react";
+import { AppIcon, UserAvatar, CrownBadge } from "@/components/ui/AppIcon";
 
 const TABS = [
   { id: "global", label: "Global", labelBn: "গ্লোবাল", icon: Globe },
@@ -94,20 +95,14 @@ export default function LeaderboardPage() {
   };
 
   const RankBadge = ({ rank }: { rank: number }) => {
-    if (rank === 1) return <Crown className="w-5 h-5 text-gold" />;
-    if (rank === 2) return <span className="text-xl">🥈</span>;
-    if (rank === 3) return <span className="text-xl">🥉</span>;
+    if (rank <= 3) return <CrownBadge rank={rank} className="w-5 h-5" />;
     return <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">{rank}</span>;
   };
 
   const Avatar = ({ entry, size = "md" }: { entry: LeaderEntry; size?: "sm" | "md" | "lg" }) => {
     const cls = size === "lg" ? "w-16 h-16 text-3xl" : size === "sm" ? "w-9 h-9 text-lg" : "w-12 h-12 text-2xl";
     const rankColor = RANK_COLORS[(entry.rank_title || entry.userRank || "Novice") as Rank] || "#9CA3AF";
-    return (
-      <div className={`${cls} rounded-full flex items-center justify-center overflow-hidden border-2 flex-shrink-0`} style={{ borderColor: `${rankColor}70`, background: `${rankColor}12` }}>
-        {entry.photoURL ? <img src={entry.photoURL} alt="" className="w-full h-full object-cover" /> : entry.avatar || "⚡"}
-      </div>
-    );
+    return <UserAvatar photoURL={entry.photoURL} avatar={entry.avatar} name={entry.displayName || entry.username} sizeClass={cls} iconClassName={size === "lg" ? "w-8 h-8" : "w-5 h-5"} borderColor={rankColor} rank={entry.rank <= 3 ? entry.rank : undefined} />;
   };
 
   return (
@@ -130,7 +125,7 @@ export default function LeaderboardPage() {
           return (
             <button key={entry.userId || entry.rank} onClick={() => setSelected(entry)} className={`bg-transparent border-0 p-0 cursor-pointer tap-bounce ${visualIndex === 0 ? "mt-7" : visualIndex === 2 ? "mt-9" : ""}`}>
               <div className={`glass-card p-3 text-center border hover-lift ${position === 0 ? "shadow-[0_0_34px_rgba(255,215,0,0.16)]" : ""}`} style={{ borderColor: `${rankColor}50` }}>
-                {position === 0 && <div className="text-lg text-center mb-1">👑</div>}
+                <div className="flex justify-center mb-1"><CrownBadge rank={entry.rank} className="w-5 h-5" /></div>
                 <div className="mx-auto mb-2 flex justify-center"><Avatar entry={entry} size={position === 0 ? "lg" : "md"} /></div>
                 <p className="font-bold text-white text-xs truncate">{entry.displayName || entry.username}</p>
                 <p className="text-xs" style={{ color: rankColor }}>LV.{entry.level}</p>
@@ -155,7 +150,7 @@ export default function LeaderboardPage() {
 
       {user && (
         <div className="glass-card p-4 border border-primary/20 flex items-center gap-4 hover-lift">
-          <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-lg">{user.photoURL ? <img src={user.photoURL} alt="" className="w-full h-full rounded-full object-cover" /> : user.avatar || "⚡"}</div>
+          <UserAvatar photoURL={user.photoURL} avatar={user.avatar} name={user.displayName} sizeClass="w-10 h-10" iconClassName="w-5 h-5" rank={myRank && myRank <= 3 ? myRank : undefined} />
           <div className="flex-1"><p className="text-sm font-bold text-white">Your Rank: <span className="text-primary">#{myRank || "—"}</span></p><p className="text-xs text-gray-500">Keep studying to climb higher</p></div>
           <div className="text-right"><p className="text-sm font-bold text-primary">{(user.xp / 1000).toFixed(1)}K XP</p><p className="text-xs text-gray-500">LV.{user.level}</p></div>
         </div>
@@ -163,7 +158,7 @@ export default function LeaderboardPage() {
 
       <div className="glass-card overflow-hidden border border-gold/10 shadow-[0_0_28px_rgba(255,215,0,0.08)]">
         <div className="p-4 border-b border-white/5 flex items-center justify-between">
-          <span className="text-sm font-bold text-white">{tab === "global" ? "🌍 Global Ranking" : tab === "district" ? `📍 ${user?.district || "District"}` : "📈 Weekly Highlight"}</span>
+          <span className="text-sm font-bold text-white">{tab === "global" ? "Global Ranking" : tab === "district" ? `${user?.district || "District"}` : "Weekly Highlight"}</span>
           <span className="text-xs text-gray-500">{loading ? "Loading" : `${visibleEntries.length} players`}</span>
         </div>
         <div className="divide-y divide-white/5 max-h-[600px] overflow-y-auto">
@@ -176,7 +171,7 @@ export default function LeaderboardPage() {
                 <Avatar entry={entry} size="sm" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2"><p className={`font-semibold text-sm truncate ${isCurrentUser ? "text-primary" : "text-white"}`}>{entry.displayName || entry.username}</p>{isCurrentUser && <span className="text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded font-bold">YOU</span>}</div>
-                  <div className="flex items-center gap-2 mt-0.5"><span className="text-xs" style={{ color: rankColor }}>{entry.rank_title || entry.userRank || "Novice"}</span><span className="text-xs text-gray-600">·</span><span className="text-xs text-gray-600">{entry.district}</span><span className="text-xs text-gray-600">·</span><span className="text-xs text-orange-400">🔥{entry.streak}</span></div>
+                  <div className="flex items-center gap-2 mt-0.5"><span className="text-xs" style={{ color: rankColor }}>{entry.rank_title || entry.userRank || "Novice"}</span><span className="text-xs text-gray-600">·</span><span className="text-xs text-gray-600">{entry.district}</span><span className="text-xs text-gray-600">·</span><span className="text-xs text-orange-400 inline-flex items-center gap-1"><Flame className="w-3 h-3" />{entry.streak}</span></div>
                 </div>
                 <div className="text-right flex-shrink-0"><p className="text-sm font-bold text-primary">{(entry.xp / 1000).toFixed(1)}K</p><p className="text-xs text-gray-600">LV.{entry.level}</p></div>
               </button>
@@ -193,7 +188,7 @@ export default function LeaderboardPage() {
               <button type="button" onClick={() => setSelected(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>
             </div>
             <div className="text-center mb-5">
-              <div className="flex justify-center mb-3"><Avatar entry={selected} size="lg" /></div>
+              <div className="flex justify-center mb-3"><Avatar entry={selected} size="lg" /></div>{selected.rank <= 3 && <div className="flex justify-center -mt-2 mb-2"><CrownBadge rank={selected.rank} className="w-6 h-6" /></div>}
               <p className="text-xl font-black text-white">{selected.displayName || selected.username}</p>
               <p className="text-xs text-gray-500">@{selected.username} · ID {selected.studentId || selected.userId.slice(0, 8)}</p>
             </div>

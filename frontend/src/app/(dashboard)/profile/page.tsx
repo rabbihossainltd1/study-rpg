@@ -8,27 +8,28 @@ import { StatCard } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { RANK_COLORS, RANK_THRESHOLDS, type Rank, type Achievement } from "@/types";
 import { getRarityColor, formatDuration } from "@/lib/utils";
-import { updateUserProfile, logOut } from "@/lib/firebase";
+import { updateUserProfile, logOut, bindGuestAccountToEmail } from "@/lib/firebase";
 import {
   Edit3, Trophy, Zap, Flame, Clock, Star, Shield, LogOut, Copy, Check,
-  Camera, Save, X, User, School, MapPin, Home, GraduationCap, Languages,
+  Camera, Save, X, User, School, MapPin, Home, GraduationCap, Languages, Coins, Gem, Award, Mail, Lock, Crown,
 } from "lucide-react";
+import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
 import toast from "react-hot-toast";
 
 const RANK_ORDER: Rank[] = ["Novice", "Apprentice", "Scholar", "Expert", "Master", "Grandmaster", "Legend"];
 
 const ACHIEVEMENTS: Achievement[] = [
-  { id: "first_session", title: "First Step", titleBn: "প্রথম পদক্ষেপ", description: "Complete your first study session", icon: "🎯", rarity: "common", xpReward: 50, isUnlocked: false },
-  { id: "streak_7", title: "Week Warrior", titleBn: "সপ্তাহের যোদ্ধা", description: "Maintain a 7-day study streak", icon: "🔥", rarity: "rare", xpReward: 200, isUnlocked: false },
-  { id: "streak_30", title: "Monthly Master", titleBn: "মাসিক মাস্টার", description: "Maintain a 30-day study streak", icon: "⚡", rarity: "epic", xpReward: 500, isUnlocked: false },
-  { id: "xp_1000", title: "XP Hunter", titleBn: "এক্সপি শিকারী", description: "Earn 1,000 total XP", icon: "💫", rarity: "common", xpReward: 100, isUnlocked: false },
-  { id: "xp_10000", title: "XP Legend", titleBn: "এক্সপি কিংবদন্তি", description: "Earn 10,000 total XP", icon: "🌟", rarity: "legendary", xpReward: 1000, isUnlocked: false },
-  { id: "quiz_10", title: "Quiz Enthusiast", titleBn: "কুইজ উৎসাহী", description: "Complete 10 quizzes", icon: "📝", rarity: "common", xpReward: 150, isUnlocked: false },
-  { id: "perfect_quiz", title: "Perfectionist", titleBn: "নিখুঁততাবাদী", description: "Score 100% on a quiz", icon: "🏆", rarity: "rare", xpReward: 300, isUnlocked: false },
-  { id: "study_hour", title: "Hour of Power", titleBn: "শক্তির ঘণ্টা", description: "Study for 1 hour in a single session", icon: "⏱️", rarity: "rare", xpReward: 250, isUnlocked: false },
+  { id: "first_session", title: "First Step", titleBn: "প্রথম পদক্ষেপ", description: "Complete your first study session", icon: "target", rarity: "common", xpReward: 50, isUnlocked: false },
+  { id: "streak_7", title: "Week Warrior", titleBn: "সপ্তাহের যোদ্ধা", description: "Maintain a 7-day study streak", icon: "fire", rarity: "rare", xpReward: 200, isUnlocked: false },
+  { id: "streak_30", title: "Monthly Master", titleBn: "মাসিক মাস্টার", description: "Maintain a 30-day study streak", icon: "zap", rarity: "epic", xpReward: 500, isUnlocked: false },
+  { id: "xp_1000", title: "XP Hunter", titleBn: "এক্সপি শিকারী", description: "Earn 1,000 total XP", icon: "sparkles", rarity: "common", xpReward: 100, isUnlocked: false },
+  { id: "xp_10000", title: "XP Legend", titleBn: "এক্সপি কিংবদন্তি", description: "Earn 10,000 total XP", icon: "star", rarity: "legendary", xpReward: 1000, isUnlocked: false },
+  { id: "quiz_10", title: "Quiz Enthusiast", titleBn: "কুইজ উৎসাহী", description: "Complete 10 quizzes", icon: "notebook", rarity: "common", xpReward: 150, isUnlocked: false },
+  { id: "perfect_quiz", title: "Perfectionist", titleBn: "নিখুঁততাবাদী", description: "Score 100% on a quiz", icon: "trophy", rarity: "rare", xpReward: 300, isUnlocked: false },
+  { id: "study_hour", title: "Hour of Power", titleBn: "শক্তির ঘণ্টা", description: "Study for 1 hour in a single session", icon: "calendar", rarity: "rare", xpReward: 250, isUnlocked: false },
 ];
 
-const AVATARS = ["⚡", "🔥", "📚", "🎯", "🏆", "💎", "🦁", "🦅", "🤖", "⭐"];
+const AVATARS = ["zap", "fire", "book", "target", "trophy", "gem", "rocket", "brain", "bot", "star"];
 
 async function compressImage(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -62,11 +63,14 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("stats");
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [bindEmail, setBindEmail] = useState("");
+  const [bindPassword, setBindPassword] = useState("");
+  const [binding, setBinding] = useState(false);
   const [form, setForm] = useState({
     username: "",
     displayName: "",
     photoURL: "",
-    avatar: "⚡",
+    avatar: "zap",
     school: "",
     college: "",
     className: "",
@@ -81,7 +85,7 @@ export default function ProfilePage() {
       username: user.username || "",
       displayName: user.displayName || user.username || "",
       photoURL: user.photoURL || "",
-      avatar: user.avatar || "⚡",
+      avatar: user.avatar || "zap",
       school: user.school || user.college || "",
       college: user.college || user.school || "",
       className: user.className || "",
@@ -108,6 +112,23 @@ export default function ProfilePage() {
     reset();
     navigate("/login");
     toast.success("Logged out");
+  };
+
+  const bindGuestEmail = async () => {
+    if (!bindEmail || bindPassword.length < 6) return toast.error("Valid email and 6+ digit password required");
+    setBinding(true);
+    try {
+      await bindGuestAccountToEmail(bindEmail, bindPassword);
+      setUser({ ...user, email: bindEmail, isGuest: false });
+      toast.success("Guest account linked with email");
+      setBindEmail("");
+      setBindPassword("");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message.includes("already") ? "Email already used" : "Bind failed");
+    } finally {
+      setBinding(false);
+    }
   };
 
   const copyUid = () => {
@@ -178,7 +199,7 @@ export default function ProfilePage() {
         <div className="flex items-start gap-4 relative">
           <div className="relative flex-shrink-0">
             <div className="w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center text-4xl border-2" style={{ borderColor: rankColor, background: `${rankColor}15`, boxShadow: `0 0 30px ${rankColor}30` }}>
-              {displayPhoto ? <img src={displayPhoto} alt="Profile" className="w-full h-full object-cover" /> : <span>{user.avatar || "⚡"}</span>}
+              {displayPhoto ? <img src={displayPhoto} alt="Profile" className="w-full h-full object-cover" /> : <AppIcon name={user.avatar || "zap"} className="w-9 h-9" color={rankColor} />}
             </div>
             <div className="absolute -bottom-1 -right-1 text-xs font-black px-1.5 py-0.5 rounded-md" style={{ background: rankColor, color: "#000" }}>
               {user.level}
@@ -197,8 +218,8 @@ export default function ProfilePage() {
               </button>
             </div>
             <div className="flex gap-2 mt-3 flex-wrap">
-              <span className="text-xs px-2 py-1 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">🔥 {user.streak} day streak</span>
-              <span className="text-xs px-2 py-1 rounded-lg bg-primary/10 text-primary border border-primary/20">⚡ LV.{user.level}</span>
+              <span className="text-xs px-2 py-1 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20"><Flame className="w-3 h-3" /> {user.streak} day streak</span>
+              <span className="text-xs px-2 py-1 rounded-lg bg-primary/10 text-primary border border-primary/20"><Zap className="w-3 h-3" /> LV.{user.level}</span>
               {user.className && <span className="text-xs px-2 py-1 rounded-lg bg-secondary/10 text-secondary border border-secondary/20">{user.className}</span>}
             </div>
           </div>
@@ -258,8 +279,8 @@ export default function ProfilePage() {
           <StatCard label="Level" value={user.level} icon={<Star className="w-4 h-4" />} color="#FFD700" />
           <StatCard label="Study Time" value={formatDuration(user.totalStudyTime)} icon={<Clock className="w-4 h-4" />} color="#00F0FF" />
           <StatCard label="Max Streak" value={`${user.maxStreak || 0}d`} icon={<Flame className="w-4 h-4" />} color="#FF8C00" />
-          <StatCard label="Coins" value={user.coins} icon={<span>🪙</span>} color="#FFD700" />
-          <StatCard label="Gems" value={user.gems} icon={<span>💎</span>} color="#BF5FFF" />
+          <StatCard label="Coins" value={user.coins} icon={<Coins className="w-4 h-4" />} color="#FFD700" />
+          <StatCard label="Gems" value={user.gems} icon={<Gem className="w-4 h-4" />} color="#BF5FFF" />
         </div>
       )}
 
@@ -267,7 +288,7 @@ export default function ProfilePage() {
         <div className="space-y-3 animate-card-in">
           {unlockedAchievements.length === 0 ? (
             <div className="glass-card p-8 text-center">
-              <p className="text-4xl mb-3">🏆</p>
+              <Trophy className="w-10 h-10 mx-auto mb-3 text-gold" />
               <p className="text-gray-400 font-medium">No achievements yet</p>
               <p className="text-sm text-gray-600 mt-1">Complete missions and quizzes to unlock achievements.</p>
             </div>
@@ -275,7 +296,7 @@ export default function ProfilePage() {
             const color = getRarityColor(a.rarity);
             return (
               <div key={a.id} className="glass-card p-4 border flex items-center gap-3 hover-lift" style={{ borderColor: `${color}25` }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style={{ background: `${color}15` }}>{a.icon}</div>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style={{ background: `${color}15` }}><AppIcon name={a.icon} className="w-6 h-6" color={color} /></div>
                 <div><p className="font-bold text-white text-sm">{language === "bn" ? a.titleBn : a.title}</p><p className="text-xs text-gray-500">{a.description}</p></div>
               </div>
             );
@@ -285,6 +306,14 @@ export default function ProfilePage() {
 
       {activeTab === "settings" && (
         <div className="glass-card p-5 space-y-3 animate-card-in">
+          {user.isGuest && (
+            <div className="rounded-2xl border border-primary/20 bg-primary/5 p-3 space-y-2">
+              <p className="text-sm font-bold text-white">Bind guest account with Gmail</p>
+              <div className="relative"><Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" /><input value={bindEmail} onChange={(e) => setBindEmail(e.target.value)} placeholder="email@gmail.com" className="w-full bg-black/30 border border-white/10 rounded-xl pl-10 pr-3 py-2 text-sm text-white outline-none" /></div>
+              <div className="relative"><Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" /><input value={bindPassword} onChange={(e) => setBindPassword(e.target.value)} type="password" placeholder="New password" className="w-full bg-black/30 border border-white/10 rounded-xl pl-10 pr-3 py-2 text-sm text-white outline-none" /></div>
+              <Button onClick={bindGuestEmail} isLoading={binding} className="w-full" size="sm">Bind Email</Button>
+            </div>
+          )}
           <Button variant="ghost" className="w-full justify-start" onClick={toggleLanguage} leftIcon={<Languages className="w-4 h-4" />}>Language: {language === "bn" ? "বাংলা" : "English"}</Button>
           <Button variant="ghost" className="w-full justify-start" onClick={() => setEditing(true)} leftIcon={<Edit3 className="w-4 h-4" />}>Edit profile info</Button>
           <Button variant="danger" className="w-full justify-start" onClick={handleLogout} leftIcon={<LogOut className="w-4 h-4" />}>Log out</Button>
@@ -301,7 +330,7 @@ export default function ProfilePage() {
 
             <div className="flex items-center gap-4 mb-4">
               <div className="w-20 h-20 rounded-2xl overflow-hidden bg-primary/10 border border-primary/30 flex items-center justify-center text-4xl">
-                {form.photoURL ? <img src={form.photoURL} alt="Preview" className="w-full h-full object-cover" /> : form.avatar}
+                {form.photoURL ? <img src={form.photoURL} alt="Preview" className="w-full h-full object-cover" /> : <AppIcon name={form.avatar} className="w-9 h-9 text-primary" />}
               </div>
               <div className="flex-1">
                 <label className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-white cursor-pointer hover:border-primary/30 transition-all">
@@ -309,7 +338,7 @@ export default function ProfilePage() {
                   <input type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
                 </label>
                 <div className="flex gap-2 mt-2 flex-wrap">
-                  {AVATARS.slice(0, 6).map((av) => <button key={av} onClick={() => setForm((p) => ({ ...p, avatar: av, photoURL: p.photoURL }))} className={`w-8 h-8 rounded-lg border ${form.avatar === av ? "border-primary bg-primary/10" : "border-white/10 bg-white/5"}`}>{av}</button>)}
+                  {AVATARS.slice(0, 6).map((av) => <button key={av} onClick={() => setForm((p) => ({ ...p, avatar: av, photoURL: p.photoURL }))} className={`w-8 h-8 rounded-lg border flex items-center justify-center ${form.avatar === av ? "border-primary bg-primary/10" : "border-white/10 bg-white/5"}`}><AppIcon name={av} className="w-4 h-4" /></button>)}
                 </div>
               </div>
             </div>

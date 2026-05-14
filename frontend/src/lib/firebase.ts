@@ -2,6 +2,8 @@ import { initializeApp, getApps } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
+  EmailAuthProvider,
+  linkWithCredential,
   signInWithPopup,
   getRedirectResult,
   signInWithEmailAndPassword,
@@ -47,7 +49,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
-const AVATARS = ["⚡", "🔥", "📚", "🎯", "🏆", "💎", "🦁", "🦅", "🤖", "⭐", "🚀", "🧠", "📝", "🌟"];
+const AVATARS = ["zap", "fire", "book", "target", "trophy", "gem", "rocket", "brain", "notebook", "star", "bot", "graduation", "sparkles", "shield"];
 
 export const randomAvatar = () => AVATARS[Math.floor(Math.random() * AVATARS.length)];
 
@@ -217,6 +219,84 @@ export async function updateUserProfile(uid: string, updates: Partial<Pick<User,
   return clean;
 }
 
+
+export type ProgressRecord = {
+  id: string;
+  userId: string;
+  subjectId: string;
+  itemId: string;
+  kind: "lesson" | "quiz";
+  rewardClaimed: boolean;
+  proofStatus?: "approved" | "pending" | "rejected";
+  score?: number;
+  difficulty?: string;
+};
+
+function progressDocId(uid: string, subjectId: string, itemId: string, kind: "lesson" | "quiz") {
+  return `${uid}_${subjectId}_${kind}_${itemId}`.replace(/[^A-Za-z0-9_-]/g, "_").slice(0, 240);
+}
+
+export async function getSubjectProgress(uid: string, subjectId: string): Promise<ProgressRecord[]> {
+  if (!uid || uid.startsWith("guest_")) return [];
+  const snap = await getDocs(query(collection(db, "userProgress"), where("userId", "==", uid), where("subjectId", "==", subjectId), limit(300)));
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ProgressRecord, "id">) }));
+}
+
+export async function hasRewardBeenClaimed(uid: string, subjectId: string, itemId: string, kind: "lesson" | "quiz") {
+  if (!uid || uid.startsWith("guest_")) return false;
+  const ref = doc(db, "userProgress", progressDocId(uid, subjectId, itemId, kind));
+  const snap = await getDoc(ref);
+  return snap.exists() && (snap.data() as ProgressRecord).rewardClaimed === true;
+}
+
+export async function markLessonRewardClaimed(uid: string, subjectId: string, lessonId: string, proof?: { name: string; size: number; type: string }) {
+  const ref = doc(db, "userProgress", progressDocId(uid, subjectId, lessonId, "lesson"));
+  const snap = await getDoc(ref);
+  if (snap.exists() && (snap.data() as ProgressRecord).rewardClaimed) return false;
+  await setDoc(ref, stripUndefined({
+    userId: uid,
+    subjectId,
+    itemId: lessonId,
+    kind: "lesson",
+    rewardClaimed: true,
+    proofStatus: "approved",
+    proofName: proof?.name,
+    proofSize: proof?.size,
+    proofType: proof?.type,
+    updatedAt: serverTimestamp(),
+    createdAt: snap.exists() ? undefined : serverTimestamp(),
+  }), { merge: true });
+  return true;
+}
+
+export async function markQuizRewardClaimed(uid: string, subjectId: string, difficulty: string, score: number) {
+  const itemId = `quiz_${difficulty}`;
+  const ref = doc(db, "userProgress", progressDocId(uid, subjectId, itemId, "quiz"));
+  const snap = await getDoc(ref);
+  if (snap.exists() && (snap.data() as ProgressRecord).rewardClaimed) return false;
+  await setDoc(ref, stripUndefined({
+    userId: uid,
+    subjectId,
+    itemId,
+    kind: "quiz",
+    difficulty,
+    score,
+    rewardClaimed: true,
+    proofStatus: "approved",
+    updatedAt: serverTimestamp(),
+    createdAt: snap.exists() ? undefined : serverTimestamp(),
+  }), { merge: true });
+  return true;
+}
+
+export async function bindGuestAccountToEmail(email: string, password: string) {
+  if (!auth.currentUser) throw new Error("No active user");
+  const credential = EmailAuthProvider.credential(email, password);
+  const result = await linkWithCredential(auth.currentUser, credential);
+  await updateDoc(doc(db, "users", result.user.uid), { email, isGuest: false, updatedAt: serverTimestamp() }).catch(() => undefined);
+  return result;
+}
+
 export async function addXp(uid: string, xpAmount: number): Promise<{ leveledUp: boolean; newLevel: number }> {
   const ref = doc(db, "users", uid);
   const snap = await getDoc(ref);
@@ -267,7 +347,7 @@ export async function getLeaderboard(_type: "global" | "weekly" = "global", coun
       username: data.username || data.displayName || "Student",
       displayName: data.displayName || data.username || "Student",
       photoURL: data.photoURL || "",
-      avatar: data.avatar || "⚡",
+      avatar: data.avatar || "zap",
       level: data.level || 1,
       xp: data.xp || 0,
       streak: data.streak || 0,
@@ -333,7 +413,7 @@ export async function searchUsers(term: string, currentUid: string): Promise<Pub
         username: u.username || "student",
         displayName: u.displayName || u.username || "Student",
         photoURL: u.photoURL || "",
-        avatar: u.avatar || "⚡",
+        avatar: u.avatar || "zap",
         district: u.district || "",
         school: u.school || u.college || "",
         college: u.college || u.school || "",
@@ -360,7 +440,7 @@ export async function getIncomingFriendRequests(uid: string): Promise<PublicUser
         username: u.username || "student",
         displayName: u.displayName || u.username || "Student",
         photoURL: u.photoURL || "",
-        avatar: u.avatar || "⚡",
+        avatar: u.avatar || "zap",
         district: u.district || "",
         school: u.school || u.college || "",
         className: u.className || "",
@@ -442,7 +522,7 @@ export async function getFriendsForUser(uid: string): Promise<PublicUserResult[]
       username: u.username || "student",
       displayName: u.displayName || u.username || "Student",
       photoURL: u.photoURL || "",
-      avatar: u.avatar || "⚡",
+      avatar: u.avatar || "zap",
       district: u.district || "",
       school: u.school || u.college || "",
       college: u.college || u.school || "",

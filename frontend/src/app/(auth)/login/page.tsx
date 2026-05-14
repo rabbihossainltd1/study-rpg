@@ -2,16 +2,14 @@
 
 import { navigate } from "@/lib/navigate";
 import { useState, useEffect, type FormEvent } from "react";
-import { Zap, Mail, Lock, Eye, EyeOff, Chrome } from "lucide-react";
+import { Zap, Mail, Lock, Eye, EyeOff, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
-  signInWithGoogle,
   signInEmail,
   signInGuest,
   createUserProfile,
   getUserProfile,
   createLocalGuestProfile,
-  getGoogleRedirectResult,
 } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
@@ -22,7 +20,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
 
   useEffect(() => {
@@ -38,7 +35,7 @@ export default function LoginPage() {
       const profile = await getUserProfile(cred.user.uid);
       if (profile) {
         setUser(profile);
-        toast.success("Welcome back! 🎮");
+        toast.success("Welcome back");
         navigate("/dashboard");
       } else {
         toast.error("Profile not found. Please sign up.");
@@ -53,34 +50,6 @@ export default function LoginPage() {
     }
   };
 
-  useEffect(() => {
-    getGoogleRedirectResult().then(async (cred) => {
-      if (!cred?.user) return;
-      const profile = await createUserProfile(cred.user);
-      setUser(profile);
-      navigate("/dashboard");
-    }).catch(() => {});
-  }, []);
-
-  const handleGoogleLogin = async () => {
-    setGoogleLoading(true);
-    try {
-      const cred = await signInWithGoogle();
-      if (!cred) return;
-      let profile = await getUserProfile((cred as any).user.uid);
-      if (!profile) profile = await createUserProfile((cred as any).user);
-      setUser(profile);
-      toast.success("Welcome! ⚡");
-      navigate("/dashboard");
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      if (!message.includes("cancelled") && !message.includes("cancel")) {
-        toast.error("Google sign-in failed. Try email login.");
-      }
-    } finally {
-      setGoogleLoading(false);
-    }
-  };
 
   const handleGuestLogin = async () => {
     setGuestLoading(true);
@@ -89,13 +58,13 @@ export default function LoginPage() {
       const cred = await signInGuest();
       const profile = await createUserProfile(cred.user, { username });
       setUser(profile);
-      toast.success("Playing as Guest 👻");
+      toast.success("Playing as Guest");
       navigate("/dashboard");
     } catch (err: unknown) {
       console.warn("Guest login failed, using offline guest", err);
       const profile = createLocalGuestProfile({ username });
       setUser(profile);
-      toast.success("Playing as Guest 👻");
+      toast.success("Playing as Guest");
       navigate("/dashboard");
     } finally {
       setGuestLoading(false);
@@ -120,16 +89,6 @@ export default function LoginPage() {
         </div>
 
         <div className="glass-card p-7 space-y-5 hover-lift">
-          <Button variant="ghost" className="w-full" onClick={handleGoogleLogin} isLoading={googleLoading}>
-            <Chrome className="w-4 h-4" /> Continue with Google
-          </Button>
-
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-white/10" />
-            <span className="text-xs text-gray-600">OR</span>
-            <div className="flex-1 h-px bg-white/10" />
-          </div>
-
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-1.5">Email</label>
@@ -168,7 +127,7 @@ export default function LoginPage() {
           </form>
 
           <Button variant="ghost" className="w-full text-gray-500 hover:text-white" onClick={handleGuestLogin} isLoading={guestLoading}>
-            👻 Continue as Guest
+            <UserRound className="w-4 h-4" /> Continue as Guest
           </Button>
 
           <p className="text-center text-sm text-gray-600">

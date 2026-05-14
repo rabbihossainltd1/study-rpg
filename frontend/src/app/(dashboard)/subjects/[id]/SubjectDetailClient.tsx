@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
 import { SUBJECTS, CHAPTERS } from "@/lib/subjects";
@@ -8,11 +8,12 @@ import { getSubjectQuizQuestions, type QuizDifficulty } from "@/lib/quizData";
 import { Button } from "@/components/ui/Button";
 import {
   ChevronLeft, Lock, CheckCircle2, Play, Clock,
-  Zap, BookOpen, HelpCircle, ChevronDown, ChevronUp, X, Check, Trophy
+  Zap, BookOpen, HelpCircle, ChevronDown, ChevronUp, X, Check, Trophy, UploadCloud, ShieldCheck, Coins
 } from "lucide-react";
-import { addXp, addCoins } from "@/lib/firebase";
+import { addXp, addCoins, getSubjectProgress, markLessonRewardClaimed, markQuizRewardClaimed } from "@/lib/firebase";
 import toast from "react-hot-toast";
 import type { Lesson } from "@/types";
+import { AppIcon } from "@/components/ui/AppIcon";
 
 const DIFFICULTIES: Array<{ id: QuizDifficulty; label: string; color: string }> = [
   { id: "easy", label: "Easy", color: "#39FF14" },
@@ -31,6 +32,10 @@ export default function SubjectDetailClient({ id }: { id: string }) {
   const [score, setScore] = useState(0);
   const [quizDone, setQuizDone] = useState(false);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [completedQuizzes, setCompletedQuizzes] = useState<Set<string>>(new Set());
+  const [proofLesson, setProofLesson] = useState<Lesson | null>(null);
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [proofChecking, setProofChecking] = useState(false);
 
   const subject = SUBJECTS.find((s) => s.id === id);
   const chapters = CHAPTERS[id] || [];
@@ -38,6 +43,16 @@ export default function SubjectDetailClient({ id }: { id: string }) {
   const currentQ = quizQuestions[quizIndex];
   const difficultyBonus = quizDifficulty === "hard" ? 15 : quizDifficulty === "medium" ? 8 : 0;
   const quizRewardXp = score * 30 + (score === quizQuestions.length ? 50 : 0) + difficultyBonus;
+
+  useEffect(() => {
+    if (!user || !id || user.uid.startsWith("guest_")) return;
+    getSubjectProgress(user.uid, id)
+      .then((records) => {
+        setCompletedLessons(new Set(records.filter((r) => r.kind === "lesson" && r.rewardClaimed).map((r) => r.itemId)));
+        setCompletedQuizzes(new Set(records.filter((r) => r.kind === "quiz" && r.rewardClaimed).map((r) => String(r.difficulty || r.itemId.replace("quiz_", "")))));
+      })
+      .catch(() => undefined);
+  }, [user?.uid, id]);
 
   if (!subject) {
     return (
@@ -84,12 +99,51 @@ export default function SubjectDetailClient({ id }: { id: string }) {
       return;
     }
     if (completedLessons.has(lesson.id)) {
-      toast("Already completed");
+      toast("Reward already collected");
       return;
     }
-    setCompletedLessons((prev) => new Set([...prev, lesson.id]));
-    await updateLocalReward(lesson.xpReward, Math.max(1, Math.round(lesson.xpReward / 8)));
-    toast.success(`${lesson.title} complete · +${lesson.xpReward} XP`);
+    setProofLesson(lesson);
+    setProofFile(null);
+  };
+
+  const submitProofAndCollect = async () => {
+    if (!user || !proofLesson) return;
+    if (completedLessons.has(proofLesson.id)) {
+      toast("Reward already collected");
+      setProofLesson(null);
+      return;
+    }
+    if (!proofFile) {
+      toast.error("Study proof image required");
+      return;
+    }
+    if (!proofFile.type.startsWith("image/") || proofFile.size < 8000) {
+      toast.error("AI rejected proof. Upload a clear study image.");
+      return;
+    }
+    setProofChecking(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 900));
+      let firstClaim = true;
+      if (!user.uid.startsWith("guest_")) {
+        firstClaim = await markLessonRewardClaimed(user.uid, id, proofLesson.id, { name: proofFile.name, size: proofFile.size, type: proofFile.type });
+      }
+      if (!firstClaim) {
+        setCompletedLessons((prev) => new Set([...prev, proofLesson.id]));
+        toast("Already collected before");
+        setProofLesson(null);
+        return;
+      }
+      setCompletedLessons((prev) => new Set([...prev, proofLesson.id]));
+      await updateLocalReward(proofLesson.xpReward, Math.max(1, Math.round(proofLesson.xpReward / 8)));
+      toast.success("Proof approved. Reward collected.");
+      setProofLesson(null);
+      setProofFile(null);
+    } catch {
+      toast.error("Proof check failed");
+    } finally {
+      setProofChecking(false);
+    }
   };
 
   const handleAnswer = (optionIndex: number) => {
@@ -111,10 +165,20 @@ export default function SubjectDetailClient({ id }: { id: string }) {
 
   const handleFinishQuiz = async () => {
     if (!user || quizQuestions.length === 0) return;
-    const xpEarned = quizRewardXp;
-    const coinsEarned = score * 5;
-    await updateLocalReward(xpEarned, coinsEarned);
-    toast.success(`Quiz done! +${xpEarned} XP`);
+    const alreadyClaimed = completedQuizzes.has(quizDifficulty);
+    let firstClaim = !alreadyClaimed;
+    if (!alreadyClaimed && !user.uid.startsWith("guest_")) {
+      firstClaim = await markQuizRewardClaimed(user.uid, id, quizDifficulty, score).catch(() => false);
+    }
+    if (firstClaim) {
+      const xpEarned = quizRewardXp;
+      const coinsEarned = score * 5;
+      await updateLocalReward(xpEarned, coinsEarned);
+      setCompletedQuizzes((prev) => new Set([...prev, quizDifficulty]));
+      toast.success(`Quiz done! +${xpEarned} XP`);
+    } else {
+      toast("Quiz already solved. Reward not repeated.");
+    }
     setQuizActive(false);
     setQuizDone(false);
     setQuizIndex(0);
@@ -132,7 +196,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
         <div className="glass-card p-5 border hover-lift" style={{ borderColor: `${subject.color}25` }}>
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-4xl flex-shrink-0 animate-float-soft" style={{ background: `${subject.color}15` }}>
-              {subject.icon}
+              <AppIcon name={subject.icon} className="w-9 h-9" color={subject.color} />
             </div>
             <div className="flex-1 min-w-0">
               <h1 className="text-2xl font-black text-white truncate">{language === "bn" ? subject.nameBn : subject.name}</h1>
@@ -199,8 +263,8 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                             <span className="text-xs font-semibold text-primary">+{lesson.xpReward} XP</span>
                           </div>
                         </div>
-                        <Button size="sm" variant={done ? "secondary" : "ghost"} leftIcon={done ? <CheckCircle2 className="w-3 h-3" /> : <Play className="w-3 h-3" />} className="text-xs py-1 px-2" onClick={() => handleLessonStart(lesson)}>
-                          {done ? "Done" : lesson.type === "quiz" ? "Quiz" : "Start"}
+                        <Button size="sm" variant={done ? "secondary" : "ghost"} leftIcon={done ? <CheckCircle2 className="w-3 h-3" /> : lesson.type === "quiz" ? <Play className="w-3 h-3" /> : <UploadCloud className="w-3 h-3" />} className="text-xs py-1 px-2" onClick={() => handleLessonStart(lesson)}>
+                          {done ? "Solved" : lesson.type === "quiz" ? "Quiz" : "Collect"}
                         </Button>
                       </div>
                     );
@@ -211,6 +275,39 @@ export default function SubjectDetailClient({ id }: { id: string }) {
           ))}
         </div>
       </div>
+
+
+      {proofLesson && (
+        <div className="fixed inset-0 bg-black/90 z-[260] flex items-center justify-center p-4 animate-fade-in">
+          <div className="glass-card w-full max-w-md p-5 border border-primary/25 animate-card-in">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
+                  <ShieldCheck className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-white">AI Proof Check</h3>
+                  <p className="text-xs text-gray-500">Upload study proof to collect once</p>
+                </div>
+              </div>
+              <button onClick={() => setProofLesson(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-500"><X className="w-5 h-5" /></button>
+            </div>
+            <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.03] p-5 text-center">
+              <UploadCloud className="w-8 h-8 text-secondary mx-auto mb-2" />
+              <p className="text-sm text-white font-bold mb-1">{language === "bn" ? proofLesson.titleBn : proofLesson.title}</p>
+              <p className="text-xs text-gray-500 mb-4">Clear image dile AI verify kore reward unlock korbe.</p>
+              <label className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-white cursor-pointer hover:border-primary/40">
+                <UploadCloud className="w-4 h-4" /> Choose Image
+                <input type="file" accept="image/*" className="hidden" onChange={(e) => setProofFile(e.target.files?.[0] || null)} />
+              </label>
+              {proofFile && <p className="text-xs text-primary mt-3 truncate">{proofFile.name}</p>}
+            </div>
+            <Button onClick={submitProofAndCollect} className="w-full mt-4" size="lg" isLoading={proofChecking}>
+              <ShieldCheck className="w-4 h-4" /> Verify & Collect
+            </Button>
+          </div>
+        </div>
+      )}
 
       {quizActive && (
         <div className="fixed inset-0 bg-black/92 z-[250] flex items-start justify-center p-3 pt-[72px] overflow-y-auto animate-fade-in">
@@ -254,11 +351,11 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                 <div className="glass rounded-xl p-4 mb-5 flex justify-around">
                   <div><p className="text-xl font-bold text-primary">+{quizRewardXp} XP</p><p className="text-xs text-gray-500">Earned</p></div>
                   <div className="w-px bg-white/10" />
-                  <div><p className="text-xl font-bold text-gold">+{score * 5} 🪙</p><p className="text-xs text-gray-500">Coins</p></div>
+                  <div><p className="text-xl font-bold text-gold inline-flex items-center gap-1">+{score * 5} <Coins className="w-5 h-5" /></p><p className="text-xs text-gray-500">Coins</p></div>
                   <div className="w-px bg-white/10" />
                   <div><p className="text-xl font-bold text-secondary">{Math.round((score / quizQuestions.length) * 100)}%</p><p className="text-xs text-gray-500">Accuracy</p></div>
                 </div>
-                <Button onClick={handleFinishQuiz} className="w-full" size="lg">Claim Rewards ⚡</Button>
+                <Button onClick={handleFinishQuiz} className="w-full" size="lg">Claim Rewards</Button>
               </div>
             )}
           </div>

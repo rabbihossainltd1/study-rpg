@@ -3,7 +3,7 @@
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
 import { SUBJECTS } from "@/lib/subjects";
-import { BookOpen, ChevronRight, Zap } from "lucide-react";
+import { BookOpen, ChevronRight, Zap, Star } from "lucide-react";
 import { useState } from "react";
 
 const FILTERS = ["All", "SSC", "HSC", "Admission", "University"];
@@ -90,7 +90,7 @@ export default function SubjectsPage() {
 
       {/* Recommended banner */}
       <div className="glass-card p-5 border border-gold/20 flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center text-2xl flex-shrink-0">⭐</div>
+        <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0"><Star className="w-6 h-6 text-gold fill-gold" /></div>
         <div className="flex-1">
           <p className="font-bold text-white text-sm">Recommended for {examMode}</p>
           <p className="text-xs text-gray-500 mt-0.5">

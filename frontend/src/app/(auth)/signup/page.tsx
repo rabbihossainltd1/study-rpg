@@ -4,6 +4,7 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { navigate } from "@/lib/navigate";
 import { Zap, Mail, Lock, User, Eye, EyeOff, MapPin, GraduationCap, ChevronRight, School, Home } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { AppIcon } from "@/components/ui/AppIcon";
 import { signUpEmail, createUserProfile } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
@@ -18,7 +19,7 @@ const EXAM_MODES = [
   { id: "Admission", label: "Admission", desc: "University admission" },
   { id: "University", label: "University", desc: "Honours / Degree" },
 ];
-const AVATARS = ["⚡", "🔥", "📚", "🎯", "🏆", "💎", "🦁", "🦅", "🤖", "⭐", "🚀", "🧠", "📝", "🌟"];
+const AVATARS = ["zap", "fire", "book", "target", "trophy", "gem", "rocket", "brain", "notebook", "star", "bot", "graduation", "sparkles", "shield"];
 const getRandomAvatar = () => AVATARS[Math.floor(Math.random() * AVATARS.length)];
 
 export default function SignupPage() {
@@ -70,7 +71,7 @@ export default function SignupPage() {
         avatar,
       });
       setUser(profile);
-      toast.success("Account created successfully ⚡");
+      toast.success("Account created successfully");
       navigate("/dashboard");
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Signup failed";
@@ -169,13 +170,13 @@ export default function SignupPage() {
                     <button key={av} type="button" onClick={() => setAvatar(av)} className={`aspect-square rounded-xl text-2xl flex items-center justify-center border transition-all duration-300 tap-bounce ${
                       avatar === av ? "border-primary bg-primary/10 scale-110 shadow-neon-primary" : "border-white/10 bg-white/3 hover:border-white/20"
                     }`}>
-                      {av}
+                      <AppIcon name={av} className="w-6 h-6" />
                     </button>
                   ))}
                 </div>
               </div>
               <div className="glass rounded-xl p-4 flex items-center gap-4 border border-primary/10">
-                <div className="w-14 h-14 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center text-3xl">{avatar}</div>
+                <div className="w-14 h-14 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center"><AppIcon name={avatar} className="w-7 h-7 text-primary" /></div>
                 <div className="min-w-0">
                   <p className="font-bold text-white truncate">{displayName || username}</p>
                   <p className="text-sm text-primary">Level 1 · Novice · {examMode}</p>

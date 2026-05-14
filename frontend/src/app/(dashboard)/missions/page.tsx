@@ -4,6 +4,7 @@ import { useState } from "react";
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
 import { DAILY_MISSIONS, WEEKLY_MISSIONS, ACHIEVEMENTS } from "@/lib/missions";
+import { AppIcon } from "@/components/ui/AppIcon";
 import { Button } from "@/components/ui/Button";
 import { Target, Zap, Trophy, CheckCircle2, Lock } from "lucide-react";
 import { addXp, addCoins } from "@/lib/firebase";
@@ -39,7 +40,7 @@ export default function MissionsPage() {
       setUser({ ...user, xp: nextXp, coins: user.coins + mission.coinReward, level: Math.max(user.level, nextLevel) });
       setCompletedMissions((prev) => new Set([...prev, mission.id]));
       addXpPopup(mission.xpReward, 50, 40);
-      toast.success(`+${mission.xpReward} XP & ${mission.coinReward} coins claimed! 🎉`);
+      toast.success(`+${mission.xpReward} XP & ${mission.coinReward} coins claimed!`);
     } catch {
       toast.error("Failed to claim reward");
     }
@@ -66,7 +67,7 @@ export default function MissionsPage() {
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 ${
             isCompleted ? "bg-primary/10" : canClaim ? "bg-gold/10" : "bg-white/5"
           }`}>
-            {isCompleted ? "✅" : mission.icon}
+            {isCompleted ? <CheckCircle2 className="w-5 h-5 text-primary" /> : <AppIcon name={mission.icon} className="w-5 h-5" />}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
@@ -96,7 +97,7 @@ export default function MissionsPage() {
             </div>
             <div className="flex gap-3 mt-2">
               <span className="text-xs font-bold text-primary">+{mission.xpReward} XP</span>
-              <span className="text-xs font-bold text-gold">+{mission.coinReward} 🪙</span>
+              <span className="text-xs font-bold text-gold">+{mission.coinReward}</span>
             </div>
           </div>
         </div>
@@ -132,7 +133,7 @@ export default function MissionsPage() {
               <Zap className="w-3 h-3 text-primary" />
               <span className="text-xs font-bold text-primary">+{achievement.xpReward} XP</span>
               {achievement.isUnlocked && achievement.unlockedAt && (
-                <span className="text-xs text-gray-600 ml-auto">✅ {achievement.unlockedAt.toLocaleDateString()}</span>
+                <span className="text-xs text-gray-600 ml-auto">{achievement.unlockedAt.toLocaleDateString()}</span>
               )}
             </div>
           </div>
@@ -198,7 +199,7 @@ export default function MissionsPage() {
             <div className="flex items-center justify-between">
               <p className="text-xs text-gray-600 uppercase tracking-wider font-mono">Resets in 23h 14m</p>
               <div className="flex items-center gap-1 text-xs text-orange-400">
-                <span>🔥 Day {user?.streak || 0} Streak</span>
+                <span>Day {user?.streak || 0} Streak</span>
               </div>
             </div>
             {DAILY_MISSIONS.map((m, i) => <MissionCard key={m.id} mission={m} index={i} />)}

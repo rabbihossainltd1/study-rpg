@@ -20,7 +20,7 @@ const MODES = [
   { id: "deep", label: "Deep Focus", labelBn: "ডিপ ফোকাস", duration: 50 * 60, color: "#FF003C", icon: Zap, xpPerMin: 5, desc: "50 min power session" },
 ];
 
-const AMBIENT_LABELS = ["🌧️ Rain", "☕ Cafe", "🌊 Ocean", "🌲 Forest", "🔇 Silent"];
+const AMBIENT_LABELS = ["Rain", "Cafe", "Ocean", "Forest", "Silent"];
 
 export default function FocusPage() {
   const { user, setUser, language, addXpPopup, triggerLevelUp } = useUserStore();
@@ -29,7 +29,7 @@ export default function FocusPage() {
   const [isRunning, setIsRunning] = useState(false);
   const [sessions, setSessions] = useState(0);
   const [totalMinutes, setTotalMinutes] = useState(0);
-  const [ambient, setAmbient] = useState("🔇 Silent");
+  const [ambient, setAmbient] = useState("Silent");
   const [showSettings, setShowSettings] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -42,7 +42,7 @@ export default function FocusPage() {
   const handleComplete = useCallback(async () => {
     if (!user || mode.id === "short" || mode.id === "long") {
       setSessions((s) => s + 1);
-      toast.success("Break complete! Back to focus! 🚀");
+      toast.success("Break complete! Back to focus!");
       return;
     }
     const minutesStudied = Math.floor(mode.duration / 60);
@@ -62,7 +62,7 @@ export default function FocusPage() {
       }
       setUser({ ...user, xp: nextXp, coins: user.coins + coinsEarned, level: Math.max(user.level, nextLevel) });
       addXpPopup(xpEarned, 50, 40);
-      toast.success(`Session complete! +${xpEarned} XP ⚡`);
+      toast.success(`Session complete! +${xpEarned} XP`);
     } catch {
       toast.error("Reward sync failed. Try again later.");
     }
@@ -165,7 +165,7 @@ export default function FocusPage() {
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            {isRunning && <div className="text-2xl mb-1">🎯</div>}
+            
             <p className="text-5xl font-black font-mono tabular-nums" style={{ color: progressColor, textShadow: `0 0 30px ${progressColor}60` }}>
               {formatTime(timeLeft)}
             </p>
@@ -241,7 +241,7 @@ export default function FocusPage() {
             <TrendingUp className="w-4 h-4 text-primary" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white mb-1">Focus Tips 💡</p>
+            <p className="text-sm font-semibold text-white mb-1">Focus Tips</p>
             <ul className="text-xs text-gray-500 space-y-1">
               <li>• Put your phone face-down to minimize distractions</li>
               <li>• Use headphones with ambient sounds for better concentration</li>

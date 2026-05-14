@@ -5,14 +5,15 @@ import { useUserStore } from "@/store/useUserStore";
 import { Button } from "@/components/ui/Button";
 import { ChatMessage } from "@/types";
 import { Bot, Send, User, RefreshCw } from "lucide-react";
+import { AppIcon } from "@/components/ui/AppIcon";
 
 const QUICK_PROMPTS = [
-  { label: "অধ্যায় ব্যাখ্যা", labelEn: "Explain a chapter", emoji: "📖" },
-  { label: "কুইজ তৈরি করো", labelEn: "Generate a quiz", emoji: "❓" },
-  { label: "সূত্র মনে করিয়ে দাও", labelEn: "Important formulas", emoji: "📐" },
-  { label: "পরীক্ষার টিপস", labelEn: "Exam tips", emoji: "💡" },
-  { label: "রুটিন তৈরি করো", labelEn: "Study routine", emoji: "📅" },
-  { label: "কঠিন বিষয় সহজ করো", labelEn: "Simplify a topic", emoji: "✨" },
+  { label: "অধ্যায় ব্যাখ্যা", labelEn: "Explain a chapter", icon: "book" },
+  { label: "কুইজ তৈরি করো", labelEn: "Generate a quiz", icon: "help" },
+  { label: "সূত্র মনে করিয়ে দাও", labelEn: "Important formulas", icon: "calculator" },
+  { label: "পরীক্ষার টিপস", labelEn: "Exam tips", icon: "sparkles" },
+  { label: "রুটিন তৈরি করো", labelEn: "Study routine", icon: "calendar" },
+  { label: "কঠিন বিষয় সহজ করো", labelEn: "Simplify a topic", icon: "sparkles" },
 ];
 
 const SYSTEM_PROMPT = `You are StudyBot, an expert AI tutor for Bangladeshi students (SSC, HSC, and university level). 
@@ -20,7 +21,7 @@ You help students with subjects like Math, Physics, Chemistry, Biology, English,
 Rules:
 - Always respond in the same language the student uses (Bangla or English)
 - Keep responses concise and easy to understand
-- Use emojis to make responses engaging
+- Use clean bullet points and avoid emojis
 - For math/science, show step-by-step solutions
 - Motivate students and keep them positive
 - If asked to generate a quiz, provide 3-5 MCQ questions with answers`;
@@ -38,8 +39,8 @@ function offlineTutorReply(text: string) {
 
   if (lower.includes("routine") || q.includes("রুটিন")) {
     return isBangla
-      ? `একটা সহজ রুটিন:\n\n• ২৫ মিনিট পড়া + ৫ মিনিট বিরতি\n• আগে কঠিন subject\n• প্রতিদিন ৩টা quiz\n• রাতে ১০ মিনিট revision\n\nআজ শুধু ১টা chapter শেষ করো — consistency matters ⚡`
-      : `Simple routine:\n\n• 25 min study + 5 min break\n• Start with the hardest subject\n• Take 3 quizzes daily\n• Revise for 10 minutes at night\n\nFinish one chapter today — consistency wins ⚡`;
+      ? `একটা সহজ রুটিন:\n\n• ২৫ মিনিট পড়া + ৫ মিনিট বিরতি\n• আগে কঠিন subject\n• প্রতিদিন ৩টা quiz\n• রাতে ১০ মিনিট revision\n\nআজ শুধু ১টা chapter শেষ করো — consistency matters`
+      : `Simple routine:\n\n• 25 min study + 5 min break\n• Start with the hardest subject\n• Take 3 quizzes daily\n• Revise for 10 minutes at night\n\nFinish one chapter today — consistency wins`;
   }
 
   if (lower.includes("formula") || q.includes("সূত্র")) {
@@ -49,8 +50,8 @@ function offlineTutorReply(text: string) {
   }
 
   return isBangla
-    ? `আমি বুঝেছি: “${q}”\n\nসহজভাবে পড়ার নিয়ম:\n1) topic টা ছোট অংশে ভাগ করো\n2) definition মুখস্থ না করে example দেখো\n3) শেষে ৩টা MCQ solve করো\n\nআরো নির্দিষ্ট করে subject/chapter লিখলে আমি step-by-step বুঝিয়ে দেবো। ⚡`
-    : `I got it: “${q}”\n\nUse this method:\n1) Break the topic into small parts\n2) Learn with examples, not just definitions\n3) Solve 3 MCQs after reading\n\nSend the exact subject/chapter and I will explain it step by step. ⚡`;
+    ? `আমি বুঝেছি: “${q}”\n\nসহজভাবে পড়ার নিয়ম:\n1) topic টা ছোট অংশে ভাগ করো\n2) definition মুখস্থ না করে example দেখো\n3) শেষে ৩টা MCQ solve করো\n\nআরো নির্দিষ্ট করে subject/chapter লিখলে আমি step-by-step বুঝিয়ে দেবো।`
+    : `I got it: “${q}”\n\nUse this method:\n1) Break the topic into small parts\n2) Learn with examples, not just definitions\n3) Solve 3 MCQs after reading\n\nSend the exact subject/chapter and I will explain it step by step.`;
 }
 
 export default function AiAssistantPage() {
@@ -60,8 +61,8 @@ export default function AiAssistantPage() {
       id: "welcome",
       role: "assistant",
       content: language === "bn"
-        ? "আসসালামুয়ালাইকুম! আমি StudyBot 🤖 তোমার AI পড়াশোনার সহযোগী। যেকোনো বিষয়ে প্রশ্ন করো! ⚡"
-        : "Hi! I'm StudyBot 🤖 your personal AI study assistant. Ask me anything! ⚡",
+        ? "আসসালামুয়ালাইকুম! আমি StudyBot তোমার AI পড়াশোনার সহযোগী। যেকোনো বিষয়ে প্রশ্ন করো!"
+        : "Hi! I'm StudyBot your personal AI study assistant. Ask me anything!",
       timestamp: new Date(),
     }
   ]);
@@ -125,7 +126,7 @@ export default function AiAssistantPage() {
   };
 
   const clearChat = () => {
-    setMessages([{ id: "welcome-new", role: "assistant", content: "Chat cleared! How can I help you? 🤖", timestamp: new Date() }]);
+    setMessages([{ id: "welcome-new", role: "assistant", content: "Chat cleared! How can I help you?", timestamp: new Date() }]);
   };
 
   const formatMessage = (content: string) => content
@@ -161,7 +162,7 @@ export default function AiAssistantPage() {
             background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: 100, fontSize: 12, color: "#9CA3AF", whiteSpace: "nowrap", cursor: "pointer"
           }}>
-            {p.emoji} {language === "bn" ? p.label : p.labelEn}
+            <AppIcon name={p.icon} className="w-4 h-4" /> {language === "bn" ? p.label : p.labelEn}
           </button>
         ))}
       </div>

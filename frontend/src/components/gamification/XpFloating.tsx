@@ -19,7 +19,7 @@ export function XpFloatingPopups() {
             className="absolute font-black text-primary text-xl pointer-events-none"
             style={{ left: `${popup.x}%`, top: `${popup.y}%`, textShadow: "0 0 20px #39FF14" }}
           >
-            +{popup.amount} XP ⚡
+            +{popup.amount} XP
           </motion.div>
         ))}
       </AnimatePresence>

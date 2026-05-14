@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
-import { Zap, X, Star } from "lucide-react";
+import { Zap, X, Star, Coins, Gem, Unlock } from "lucide-react";
 import { RANK_COLORS } from "@/types";
 import { useEffect } from "react";
 
@@ -159,7 +159,7 @@ export function LevelUpModal() {
                 Level Up!
               </p>
               <h2 className="text-3xl font-black text-white mb-2">
-                অভিনন্দন! 🎉
+                অভিনন্দন!
               </h2>
               <p className="text-gray-400 text-sm mb-1">
                 You reached{" "}
@@ -182,17 +182,17 @@ export function LevelUpModal() {
               className="mt-5 p-3 rounded-xl border border-white/10 bg-white/5 flex justify-around"
             >
               <div className="text-center">
-                <p className="text-lg font-bold text-gold">+{newLevel * 20} 🪙</p>
+                <p className="text-lg font-bold text-gold inline-flex items-center gap-1">+{newLevel * 20} <Coins className="w-4 h-4" /></p>
                 <p className="text-xs text-gray-500">Coins</p>
               </div>
               <div className="w-px bg-white/10" />
               <div className="text-center">
-                <p className="text-lg font-bold text-purple-400">+{Math.floor(newLevel / 5)} 💎</p>
+                <p className="text-lg font-bold text-purple-400 inline-flex items-center gap-1">+{Math.floor(newLevel / 5)} <Gem className="w-4 h-4" /></p>
                 <p className="text-xs text-gray-500">Gems</p>
               </div>
               <div className="w-px bg-white/10" />
               <div className="text-center">
-                <p className="text-lg font-bold text-primary">🔓 Unlocked</p>
+                <p className="text-lg font-bold text-primary inline-flex items-center gap-1"><Unlock className="w-4 h-4" /> Unlocked</p>
                 <p className="text-xs text-gray-500">New content</p>
               </div>
             </motion.div>
@@ -209,7 +209,7 @@ export function LevelUpModal() {
                 onClick={(e) => { e.stopPropagation(); closeModal(); }}
                 className="w-full rounded-xl bg-primary text-black font-black py-4 shadow-neon-primary active:scale-95 transition-all"
               >
-                ⚡ Continue Journey
+                Continue Journey
               </button>
             </motion.div>
           </motion.div>
