@@ -18,7 +18,8 @@ const EXAM_MODES = [
   { id: "Admission", label: "Admission", desc: "University admission" },
   { id: "University", label: "University", desc: "Honours / Degree" },
 ];
-const AVATARS = ["⚡", "🔥", "📚", "🎯", "🏆", "💎", "🦁", "🦅", "🤖", "⭐"];
+const AVATARS = ["⚡", "🔥", "📚", "🎯", "🏆", "💎", "🦁", "🦅", "🤖", "⭐", "🚀", "🧠", "📝", "🌟"];
+const getRandomAvatar = () => AVATARS[Math.floor(Math.random() * AVATARS.length)];
 
 export default function SignupPage() {
   const { setUser } = useUserStore();
@@ -34,7 +35,7 @@ export default function SignupPage() {
   const [thana, setThana] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [examMode, setExamMode] = useState("SSC");
-  const [avatar, setAvatar] = useState("⚡");
+  const [avatar, setAvatar] = useState(() => getRandomAvatar());
 
   const handleStep1 = (e: FormEvent) => {
     e.preventDefault();

@@ -111,10 +111,10 @@ export default function ProfilePage() {
   };
 
   const copyUid = () => {
-    navigator.clipboard.writeText(user.uid);
+    navigator.clipboard.writeText(user.studentId || user.uid);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    toast.success("Player ID copied");
+    toast.success("Student ID copied");
   };
 
   const handlePhoto = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -207,7 +207,7 @@ export default function ProfilePage() {
           <XpBar currentXp={user.xp} totalXp={user.xp} level={user.level} rank={user.rank} />
         </div>
         <div className="mt-3 flex items-center gap-2">
-          <p className="text-xs text-gray-600 font-mono truncate flex-1">ID: {user.uid.substring(0, 16)}...</p>
+          <p className="text-xs text-gray-600 font-mono truncate flex-1">ID: {user.studentId || user.uid.substring(0, 10)}</p>
           <button onClick={copyUid} className="p-1.5 glass rounded-lg border border-white/10 hover:border-white/20 transition-colors tap-bounce">
             {copied ? <Check className="w-3 h-3 text-primary" /> : <Copy className="w-3 h-3 text-gray-500" />}
           </button>

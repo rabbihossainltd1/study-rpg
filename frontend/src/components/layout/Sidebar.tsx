@@ -57,7 +57,8 @@ export function Sidebar() {
               {user.photoURL ? <img src={user.photoURL} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : user.avatar || user.displayName?.charAt(0).toUpperCase() || "⚡"}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontWeight: 700, color: "#fff", fontSize: 13, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.username}</p>
+              <p style={{ fontWeight: 700, color: "#fff", fontSize: 13, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.displayName || user.username}</p>
+              <p style={{ fontSize: 11, color: "#9CA3AF", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{user.username} · ID {user.studentId || "—"}</p>
               <p style={{ fontSize: 11, color: rankColor, margin: 0 }}>{user.rank}</p>
             </div>
           </div>

@@ -1,5 +1,6 @@
 export interface User {
   uid: string;
+  studentId?: string;
   email: string;
   username: string;
   displayName: string;
@@ -148,6 +149,7 @@ export interface Achievement {
 export interface LeaderboardEntry {
   rank: number;
   userId: string;
+  studentId?: string;
   username: string;
   displayName: string;
   photoURL?: string;

@@ -17,13 +17,17 @@ import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
-  const { setUser } = useUserStore();
+  const { user, setUser } = useUserStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) navigate("/dashboard");
+  }, [user]);
 
   const handleEmailLogin = async (e: FormEvent) => {
     e.preventDefault();

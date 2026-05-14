@@ -75,6 +75,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
     setQuizDone(false);
     setSelected(null);
     setAnswered(false);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleLessonStart = async (lesson: Lesson) => {
@@ -212,8 +213,8 @@ export default function SubjectDetailClient({ id }: { id: string }) {
       </div>
 
       {quizActive && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="glass-card w-full max-w-lg p-6 border border-secondary/20 animate-drawer-up">
+        <div className="fixed inset-x-0 top-[64px] bottom-0 bg-black/88 z-[120] flex items-start justify-center p-3 overflow-y-auto animate-fade-in">
+          <div className="glass-card w-full max-w-lg p-5 border border-secondary/20 animate-card-in my-3 max-h-[calc(100dvh-88px)] overflow-y-auto">
             {!quizDone ? (
               currentQ ? <>
                 <div className="flex items-center justify-between mb-5">
@@ -225,7 +226,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                 </div>
                 <div className="h-1.5 bg-white/5 rounded-full mb-5 overflow-hidden"><div className="h-full bg-secondary rounded-full transition-all" style={{ width: `${((quizIndex + 1) / quizQuestions.length) * 100}%` }} /></div>
                 <div className="mb-4"><span className="text-xs px-2 py-1 rounded-lg bg-white/5 text-gray-500">{currentQ.topic}</span></div>
-                <h3 className="text-lg font-bold text-white mb-4 leading-relaxed">{currentQ.questionBn || currentQ.question}</h3>
+                <h3 className="text-lg font-bold text-white mb-4 leading-relaxed scroll-mt-24">{currentQ.questionBn || currentQ.question}</h3>
                 <div className="space-y-2 mb-5">
                   {currentQ.options.map((opt, idx) => {
                     const isCorrect = currentQ.correctAnswer === idx;

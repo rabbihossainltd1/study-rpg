@@ -77,6 +77,38 @@ service cloud.firestore {
       allow read, write: if isOwner(userId);
     }
 
+
+
+    // Friend requests, challenges and messages
+    match /friendRequests/{requestId} {
+      allow read: if isAuthenticated() && request.auth.uid in resource.data.participants;
+      allow create: if isAuthenticated()
+        && request.resource.data.from == request.auth.uid
+        && request.auth.uid in request.resource.data.participants;
+      allow update: if isAuthenticated()
+        && request.auth.uid in resource.data.participants
+        && request.resource.data.participants == resource.data.participants;
+      allow delete: if false;
+    }
+
+    match /challenges/{challengeId} {
+      allow read: if isAuthenticated() && request.auth.uid in resource.data.participants;
+      allow create: if isAuthenticated()
+        && request.resource.data.from == request.auth.uid
+        && request.auth.uid in request.resource.data.participants;
+      allow update: if isAuthenticated() && request.auth.uid in resource.data.participants;
+      allow delete: if false;
+    }
+
+    match /messages/{messageId} {
+      allow read: if isAuthenticated() && request.auth.uid in resource.data.participants;
+      allow create: if isAuthenticated()
+        && request.resource.data.from == request.auth.uid
+        && request.auth.uid in request.resource.data.participants;
+      allow update: if isAuthenticated() && request.auth.uid in resource.data.participants;
+      allow delete: if false;
+    }
+
     // Notifications
     match /notifications/{userId}/{notifId} {
       allow read, delete: if isOwner(userId);

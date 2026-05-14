@@ -15,6 +15,7 @@ const TABS = [
 type LeaderEntry = {
   rank: number;
   userId: string;
+  studentId?: string;
   username: string;
   displayName: string;
   photoURL?: string;
@@ -27,6 +28,7 @@ type LeaderEntry = {
   district: string;
   school?: string;
   college?: string;
+  className?: string;
 };
 
 export default function LeaderboardPage() {
@@ -62,8 +64,10 @@ export default function LeaderboardPage() {
         rank_title: user.rank,
         userRank: user.rank,
         district: user.district,
+        studentId: user.studentId,
         school: user.school,
         college: user.college,
+        className: user.className,
       }];
     }
     return list.map((entry, index) => ({ ...entry, rank: index + 1 }));
@@ -166,17 +170,22 @@ export default function LeaderboardPage() {
       </div>
 
       {selected && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-fade-in">
-          <div className="glass-card w-full max-w-sm p-5 border border-gold/20 animate-drawer-up">
+        <div className="fixed inset-0 z-[200] bg-black/85 flex items-center justify-center p-4 animate-fade-in" onClick={() => setSelected(null)}>
+          <div className="glass-card w-full max-w-sm p-5 border border-gold/30 shadow-[0_0_50px_rgba(255,215,0,0.16)] animate-card-in" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-black text-white">Student Profile</h2>
-              <button onClick={() => setSelected(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>
+              <button type="button" onClick={() => setSelected(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>
             </div>
-            <div className="text-center mb-5"><div className="flex justify-center mb-3"><Avatar entry={selected} size="lg" /></div><p className="text-xl font-black text-white">{selected.displayName || selected.username}</p><p className="text-xs text-gray-500">Public leaderboard profile</p></div>
+            <div className="text-center mb-5">
+              <div className="flex justify-center mb-3"><Avatar entry={selected} size="lg" /></div>
+              <p className="text-xl font-black text-white">{selected.displayName || selected.username}</p>
+              <p className="text-xs text-gray-500">@{selected.username} · ID {selected.studentId || selected.userId.slice(0, 8)}</p>
+            </div>
             <div className="space-y-3">
               <InfoRow icon={<UserRound className="w-4 h-4" />} label="Student Name" value={selected.displayName || selected.username} />
               <InfoRow icon={<School className="w-4 h-4" />} label="School / University" value={selected.school || selected.college || "Not added"} />
               <InfoRow icon={<MapPin className="w-4 h-4" />} label="District" value={selected.district || "Not added"} />
+              <InfoRow icon={<Trophy className="w-4 h-4" />} label="Class / Level" value={`${selected.className || "Student"} · LV.${selected.level}`} />
             </div>
           </div>
         </div>

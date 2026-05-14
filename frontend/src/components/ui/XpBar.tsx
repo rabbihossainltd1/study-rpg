@@ -40,8 +40,9 @@ function getXpForLevel(level: number): number {
 export function XpBar({ currentXp, totalXp, level, rank, compact = false, className }: XpBarProps) {
   const currentLevelXp = getXpForLevel(level);
   const nextLevelXp = getXpForLevel(level + 1);
-  const progressXp = totalXp - currentLevelXp;
   const neededXp = nextLevelXp - currentLevelXp;
+  const rawProgressXp = totalXp - currentLevelXp;
+  const progressXp = Math.min(neededXp, Math.max(0, rawProgressXp));
   const percentage = Math.min(100, Math.max(0, (progressXp / neededXp) * 100));
   const rankColor = RANK_COLORS[rank] || "#9CA3AF";
 

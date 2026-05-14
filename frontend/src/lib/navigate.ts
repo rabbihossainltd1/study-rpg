@@ -4,7 +4,7 @@ type AppRouter = {
 
 let appRouter: AppRouter = null;
 
-function normalizePath(path: string) {
+export function normalizePathForRouter(path: string) {
   if (!path) return "/";
 
   let url = path.startsWith("/") ? path : `/${path}`;
@@ -29,7 +29,7 @@ export function registerRouter(router: AppRouter) {
 export function navigate(path: string) {
   if (typeof window === "undefined") return;
 
-  const url = normalizePath(path);
+  const url = normalizePathForRouter(path);
 
   // Use Next router if available
   if (appRouter) {

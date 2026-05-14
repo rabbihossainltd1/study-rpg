@@ -56,6 +56,11 @@ function fireConfetti() {
 export function LevelUpModal() {
   const { showLevelUpModal, newLevel, dismissLevelUp, user } = useUserStore();
 
+  const closeModal = () => {
+    dismissLevelUp();
+    setTimeout(() => dismissLevelUp(), 50);
+  };
+
   useEffect(() => {
     if (showLevelUpModal) {
       fireConfetti();
@@ -72,7 +77,7 @@ export function LevelUpModal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
-          onClick={dismissLevelUp}
+          onClick={closeModal}
         >
           <motion.div
             initial={{ scale: 0.5, y: 50, opacity: 0 }}
@@ -94,7 +99,8 @@ export function LevelUpModal() {
 
             {/* Close */}
             <button
-              onClick={dismissLevelUp}
+              type="button"
+              onClick={closeModal}
               className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
             >
               <X className="w-5 h-5" />
@@ -198,7 +204,7 @@ export function LevelUpModal() {
               transition={{ delay: 0.6 }}
               className="mt-5"
             >
-              <Button onClick={dismissLevelUp} className="w-full" size="lg">
+              <Button onClick={(e) => { e.stopPropagation(); closeModal(); }} className="w-full" size="lg">
                 ⚡ Continue Journey
               </Button>
             </motion.div>

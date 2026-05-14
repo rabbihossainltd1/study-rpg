@@ -10,10 +10,12 @@ import { SUBJECTS } from "@/lib/subjects";
 import { DAILY_MISSIONS } from "@/lib/missions";
 import { getGreeting, formatDuration } from "@/lib/utils";
 import { RANK_COLORS } from "@/types";
-import { getLeaderboard } from "@/lib/firebase";
+import { getLeaderboard, searchUsers, sendFriendRequest, acceptFriendRequest, getIncomingFriendRequests, createChallenge, sendQuickMessage, type PublicUserResult } from "@/lib/firebase";
+import toast from "react-hot-toast";
 import {
   Zap, Trophy, Target, BookOpen, Timer, Bot,
-  Flame, Star, TrendingUp, ChevronRight, Play, Crown,
+  Flame, Star, TrendingUp, ChevronRight, Play, Crown, Search,
+  UserPlus, CheckCircle2, MessageCircle, Swords, Inbox,
 } from "lucide-react";
 
 const MOTIVATIONAL_QUOTES = [
@@ -33,6 +35,12 @@ type LeaderPreview = {
   xp: number;
   level: number;
 };
+
+function getMissionHref(id: string) {
+  if (id.includes("study") || id.includes("streak")) return "/focus";
+  if (id.includes("quiz") || id.includes("lesson") || id.includes("subject")) return "/subjects";
+  return "/missions";
+}
 
 export default function DashboardPage() {
   const { user, language } = useUserStore();
@@ -68,6 +76,7 @@ export default function DashboardPage() {
             <div className="flex items-center gap-2 mt-2 flex-wrap">
               <span className="px-2.5 py-1 rounded-lg text-xs font-bold border" style={{ color: rankColor, borderColor: `${rankColor}35`, background: `${rankColor}12` }}>{user.rank}</span>
               <span className="px-2.5 py-1 rounded-lg text-xs text-gray-400 bg-white/5 border border-white/10">{user.examMode} Mode</span>
+              <span className="px-2.5 py-1 rounded-lg text-xs text-gray-400 bg-white/5 border border-white/10">ID {user.studentId || "—"}</span>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -85,6 +94,8 @@ export default function DashboardPage() {
           <XpBar currentXp={user.xp} totalXp={user.xp} level={user.level} rank={user.rank} />
         </div>
       </section>
+
+      <UserSearchPanel />
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <StatCard label="Level" value={user.level} icon={<Zap className="w-5 h-5" />} color="#39FF14" />
@@ -107,7 +118,7 @@ export default function DashboardPage() {
             </div>
             <div className="divide-y divide-white/5">
               {todayMissions.map((mission, index) => (
-                <div key={mission.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-white/3 transition-colors animate-card-in" style={{ animationDelay: `${index * 45}ms` }}>
+                <button key={mission.id} onClick={() => navigate(getMissionHref(mission.id))} className="w-full flex items-center gap-4 px-5 py-3.5 hover:bg-white/3 transition-colors animate-card-in text-left bg-transparent border-0 cursor-pointer tap-bounce" style={{ animationDelay: `${index * 45}ms` }}>
                   <div className="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center text-xl flex-shrink-0">{mission.icon}</div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-white truncate">{language === "bn" ? mission.titleBn : mission.title}</p>
@@ -117,7 +128,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0"><p className="text-xs font-bold text-primary">+{mission.xpReward} XP</p><p className="text-xs text-gold">+{mission.coinReward}🪙</p></div>
-                </div>
+                </button>
               ))}
             </div>
           </Card>
@@ -206,5 +217,148 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function UserSearchPanel() {
+  const { user } = useUserStore();
+  const [term, setTerm] = useState("");
+  const [results, setResults] = useState<PublicUserResult[]>([]);
+  const [incoming, setIncoming] = useState<PublicUserResult[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [busyId, setBusyId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user || user.uid.startsWith("guest_")) return;
+    getIncomingFriendRequests(user.uid).then(setIncoming).catch(() => setIncoming([]));
+  }, [user]);
+
+  useEffect(() => {
+    if (!user || user.uid.startsWith("guest_")) return;
+    const t = setTimeout(async () => {
+      const q = term.trim();
+      if (q.length < 2) {
+        setResults([]);
+        return;
+      }
+      setLoading(true);
+      try {
+        setResults(await searchUsers(q, user.uid));
+      } catch {
+        setResults([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 350);
+    return () => clearTimeout(t);
+  }, [term, user]);
+
+  if (!user) return null;
+
+  const addFriend = async (target: PublicUserResult) => {
+    if (user.uid.startsWith("guest_")) return toast.error("Account login required");
+    setBusyId(target.uid);
+    try {
+      await sendFriendRequest(user.uid, target.uid);
+      setResults((items) => items.map((i) => i.uid === target.uid ? { ...i, friendStatus: "pending" } : i));
+      toast.success("Friend request sent");
+    } catch {
+      toast.error("Request failed");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const accept = async (target: PublicUserResult) => {
+    if (!target.requestId) return;
+    setBusyId(target.uid);
+    try {
+      await acceptFriendRequest(target.requestId);
+      setIncoming((items) => items.filter((i) => i.uid !== target.uid));
+      setResults((items) => items.map((i) => i.uid === target.uid ? { ...i, friendStatus: "accepted" } : i));
+      toast.success("Friend request accepted");
+    } catch {
+      toast.error("Accept failed");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const challenge = async (target: PublicUserResult) => {
+    setBusyId(target.uid);
+    try {
+      await createChallenge(user.uid, target.uid);
+      toast.success("Challenge sent");
+      navigate("/subjects");
+    } catch {
+      toast.error("Challenge failed");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const message = async (target: PublicUserResult) => {
+    setBusyId(target.uid);
+    try {
+      await sendQuickMessage(user.uid, target.uid, "Hi, let us study together in Study RPG.");
+      toast.success("Message sent");
+    } catch {
+      toast.error("Message failed");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const renderUser = (target: PublicUserResult, source: "search" | "incoming") => (
+    <div key={`${source}-${target.uid}`} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+      <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center overflow-hidden text-lg flex-shrink-0">
+        {target.photoURL ? <img src={target.photoURL} alt="" className="w-full h-full object-cover" /> : target.avatar || "⚡"}
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold text-white truncate">{target.displayName}</p>
+        <p className="text-xs text-gray-500 truncate">@{target.username} · ID {target.studentId} · {target.district || "BD"}</p>
+      </div>
+      {source === "incoming" || target.friendStatus === "incoming" ? (
+        <Button size="sm" variant="secondary" onClick={() => accept(target)} disabled={busyId === target.uid}><CheckCircle2 className="w-3 h-3" />Accept</Button>
+      ) : target.friendStatus === "accepted" ? (
+        <div className="flex gap-1">
+          <Button size="sm" variant="gold" onClick={() => challenge(target)} disabled={busyId === target.uid}><Swords className="w-3 h-3" /></Button>
+          <Button size="sm" variant="ghost" onClick={() => message(target)} disabled={busyId === target.uid}><MessageCircle className="w-3 h-3" /></Button>
+        </div>
+      ) : target.friendStatus === "pending" ? (
+        <span className="text-xs text-gold font-bold px-2">Pending</span>
+      ) : (
+        <Button size="sm" onClick={() => addFriend(target)} disabled={busyId === target.uid}><UserPlus className="w-3 h-3" />Add</Button>
+      )}
+    </div>
+  );
+
+  return (
+    <Card className="border border-primary/15 bg-primary/3 hover-lift">
+      <div className="flex items-center gap-2 mb-3">
+        <Search className="w-5 h-5 text-primary" />
+        <h2 className="font-bold text-white">Find Students</h2>
+      </div>
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+        <input
+          value={term}
+          onChange={(e) => setTerm(e.target.value)}
+          placeholder="Search by name, username or numeric student ID"
+          className="w-full bg-black/30 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all"
+        />
+      </div>
+      {incoming.length > 0 && (
+        <div className="mt-3 space-y-2">
+          <p className="text-xs text-secondary font-bold flex items-center gap-1"><Inbox className="w-3 h-3" />Incoming requests</p>
+          {incoming.map((item) => renderUser(item, "incoming"))}
+        </div>
+      )}
+      <div className="mt-3 space-y-2">
+        {loading && <p className="text-xs text-gray-500">Searching...</p>}
+        {!loading && term.trim().length >= 2 && results.length === 0 && <p className="text-xs text-gray-600">No student found</p>}
+        {results.map((item) => renderUser(item, "search"))}
+      </div>
+    </Card>
   );
 }

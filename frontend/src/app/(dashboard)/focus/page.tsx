@@ -129,14 +129,14 @@ export default function FocusPage() {
       </div>
 
       {/* Mode Tabs */}
-      <div className="flex gap-2 overflow-x-auto scrollbar-none">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         {MODES.map((m) => {
           const Icon = m.icon;
           return (
             <button
               key={m.id}
               onClick={() => handleModeChange(m)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all border ${
+              className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all border ${
                 mode.id === m.id ? "text-black font-bold" : "glass border-white/10 text-gray-400 hover:text-white"
               }`}
               style={mode.id === m.id ? { background: m.color, borderColor: m.color, boxShadow: `0 0 20px ${m.color}40` } : {}}
@@ -150,7 +150,7 @@ export default function FocusPage() {
 
       {/* Timer Circle */}
       <div className="flex justify-center">
-        <div className="relative w-64 h-64">
+        <div className="relative w-60 h-60 sm:w-64 sm:h-64">
           <svg className="w-full h-full -rotate-90" viewBox="0 0 240 240">
             <circle cx="120" cy="120" r="110" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8" />
             <circle
@@ -176,7 +176,7 @@ export default function FocusPage() {
       </div>
 
       {/* Controls */}
-      <div className="flex justify-center gap-3">
+      <div className="flex justify-center items-center gap-5">
         <button onClick={handleReset} className="w-12 h-12 glass rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/30 transition-all active:scale-95">
           <RotateCcw className="w-5 h-5" />
         </button>
@@ -195,7 +195,7 @@ export default function FocusPage() {
       {/* Ambient Sound */}
       <div>
         <p className="text-xs text-gray-600 text-center mb-2">Ambient Sound</p>
-        <div className="flex gap-2 justify-center flex-wrap">
+        <div className="grid grid-cols-3 sm:flex gap-2 justify-center">
           {AMBIENT_LABELS.map((a) => (
             <button
               key={a}
@@ -228,7 +228,7 @@ export default function FocusPage() {
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         <StatCard label="Sessions Today" value={sessions} icon={<CheckCircle2 className="w-4 h-4" />} color="#39FF14" />
         <StatCard label="Minutes Focused" value={totalMinutes} icon={<Timer className="w-4 h-4" />} color="#00F0FF" />
         <StatCard label="XP Earned" value={`${totalMinutes * mode.xpPerMin}`} icon={<Zap className="w-4 h-4" />} color="#FFD700" />

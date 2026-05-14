@@ -3,7 +3,6 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect,
   getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -29,8 +28,10 @@ import {
   getDocs,
   serverTimestamp,
   Timestamp,
+  where,
+  addDoc,
 } from "firebase/firestore";
-import { calculateLevel, getRankFromXp, type User } from "@/types";
+import { calculateLevel, calculateXpToNextLevel, getRankFromXp, type User } from "@/types";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyAkmsjwK2FQQAcHSKxTFClkwSOi-XIKKTo",
@@ -46,10 +47,30 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
-// Set persistence to LOCAL so auth state survives Capacitor WebView reloads
-if (typeof window !== "undefined") {
-  setPersistence(auth, browserLocalPersistence).catch(() => {});
+const AVATARS = ["⚡", "🔥", "📚", "🎯", "🏆", "💎", "🦁", "🦅", "🤖", "⭐", "🚀", "🧠", "📝", "🌟"];
 
+export const randomAvatar = () => AVATARS[Math.floor(Math.random() * AVATARS.length)];
+
+export function generateStudentId(seed = `${Date.now()}${Math.random()}`) {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  }
+  const numeric = String(hash).padStart(10, "0").slice(-10);
+  return numeric.startsWith("0") ? `9${numeric.slice(1)}` : numeric;
+}
+
+let persistenceReady: Promise<void> | null = null;
+export function ensureAuthPersistence() {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (!persistenceReady) {
+    persistenceReady = setPersistence(auth, browserLocalPersistence).catch(() => undefined) as Promise<void>;
+  }
+  return persistenceReady;
+}
+
+if (typeof window !== "undefined") {
+  ensureAuthPersistence().catch(() => undefined);
 }
 
 export const isNativeApp = () =>
@@ -58,6 +79,7 @@ export const isNativeApp = () =>
     window.navigator.userAgent.includes("wv"));
 
 export const signInWithGoogle = async () => {
+  await ensureAuthPersistence();
   if (isNativeApp()) {
     const { registerPlugin } = await import("@capacitor/core");
     const GoogleSignIn = registerPlugin<{ signIn: (opts: { webClientId: string }) => Promise<{ idToken: string }> }>("GoogleSignIn");
@@ -70,13 +92,23 @@ export const signInWithGoogle = async () => {
   return signInWithPopup(auth, googleProvider);
 };
 
-export const getGoogleRedirectResult = () => getRedirectResult(auth);
+export const getGoogleRedirectResult = async () => {
+  await ensureAuthPersistence();
+  return getRedirectResult(auth);
+};
 
-export const signInEmail = (email: string, password: string) =>
-  signInWithEmailAndPassword(auth, email, password);
-export const signUpEmail = (email: string, password: string) =>
-  createUserWithEmailAndPassword(auth, email, password);
-export const signInGuest = () => signInAnonymously(auth);
+export const signInEmail = async (email: string, password: string) => {
+  await ensureAuthPersistence();
+  return signInWithEmailAndPassword(auth, email, password);
+};
+export const signUpEmail = async (email: string, password: string) => {
+  await ensureAuthPersistence();
+  return createUserWithEmailAndPassword(auth, email, password);
+};
+export const signInGuest = async () => {
+  await ensureAuthPersistence();
+  return signInAnonymously(auth);
+};
 export const logOut = () => signOut(auth);
 export { onAuthStateChanged };
 
@@ -86,18 +118,48 @@ function stripUndefined<T extends object>(obj: T): T {
   ) as T;
 }
 
+function normalizeUsername(value: string) {
+  return value.trim().toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_.-]/g, "").slice(0, 24);
+}
+
+function isNumericStudentId(value: unknown) {
+  return typeof value === "string" && /^\d{6,12}$/.test(value);
+}
+
+function buildProfilePatch(uid: string, data: Partial<User>) {
+  const xp = Math.max(0, Number(data.xp || 0));
+  const normalizedLevel = calculateLevel(xp);
+  const normalizedRank = getRankFromXp(xp);
+  const patch: Partial<User> = {};
+
+  if (!isNumericStudentId(data.studentId)) patch.studentId = generateStudentId(uid);
+  if (!data.avatar) patch.avatar = randomAvatar();
+  if (!data.level || data.level !== normalizedLevel) patch.level = normalizedLevel;
+  if (!data.rank || data.rank !== normalizedRank) patch.rank = normalizedRank;
+  if (data.xpToNextLevel === undefined || data.xpToNextLevel < 0) patch.xpToNextLevel = calculateXpToNextLevel(xp);
+
+  return patch;
+}
+
 export async function createUserProfile(
   firebaseUser: FirebaseUser,
-  extra?: { username?: string; displayName?: string; examMode?: string; district?: string; school?: string; college?: string; className?: string; thana?: string; avatar?: string; photoURL?: string }
+  extra?: { username?: string; displayName?: string; examMode?: string; district?: string; school?: string; college?: string; className?: string; thana?: string; avatar?: string; photoURL?: string; studentId?: string }
 ) {
   const ref = doc(db, "users", firebaseUser.uid);
   const snap = await getDoc(ref);
-  if (snap.exists()) return snap.data() as User;
+  if (snap.exists()) {
+    const data = snap.data() as User;
+    const patch = buildProfilePatch(firebaseUser.uid, data);
+    if (Object.keys(patch).length) await updateDoc(ref, stripUndefined({ ...patch, updatedAt: serverTimestamp() })).catch(() => undefined);
+    return { ...data, ...patch } as User;
+  }
 
+  const baseName = extra?.username || firebaseUser.displayName?.split(" ")[0] || `player_${Date.now()}`;
   const newUser = stripUndefined({
     uid: firebaseUser.uid,
+    studentId: extra?.studentId || generateStudentId(firebaseUser.uid),
     email: firebaseUser.email || "",
-    username: extra?.username || firebaseUser.displayName?.split(" ")[0] || `player_${Date.now()}`,
+    username: normalizeUsername(baseName) || `player_${Date.now()}`,
     displayName: extra?.displayName || firebaseUser.displayName || extra?.username || "Student",
     photoURL: extra?.photoURL || firebaseUser.photoURL || "",
     level: 1,
@@ -118,7 +180,7 @@ export async function createUserProfile(
     className: extra?.className || "",
     thana: extra?.thana || "",
     examMode: (extra?.examMode || "SSC") as User["examMode"],
-    avatar: extra?.avatar || "⚡",
+    avatar: extra?.avatar || randomAvatar(),
     frame: "default",
     isGuest: firebaseUser.isAnonymous,
     language: "bn",
@@ -131,18 +193,22 @@ export async function createUserProfile(
 }
 
 export async function getUserProfile(uid: string): Promise<User | null> {
-  const snap = await getDoc(doc(db, "users", uid));
+  const ref = doc(db, "users", uid);
+  const snap = await getDoc(ref);
   if (!snap.exists()) return null;
   const data = snap.data();
+  const patch = buildProfilePatch(uid, data as Partial<User>);
+  if (Object.keys(patch).length) updateDoc(ref, stripUndefined({ ...patch, updatedAt: serverTimestamp() })).catch(() => undefined);
   return {
     ...data,
-    createdAt: (data.createdAt as Timestamp)?.toDate() || new Date(),
-    lastLoginAt: (data.lastLoginAt as Timestamp)?.toDate() || new Date(),
+    ...patch,
+    createdAt: (data.createdAt as Timestamp)?.toDate?.() || new Date(),
+    lastLoginAt: (data.lastLoginAt as Timestamp)?.toDate?.() || new Date(),
   } as User;
 }
 
 export async function updateUserProfile(uid: string, updates: Partial<Pick<User, "username" | "displayName" | "photoURL" | "district" | "school" | "college" | "className" | "thana" | "examMode" | "avatar" | "language">>) {
-  const clean = stripUndefined({ ...updates, updatedAt: serverTimestamp() });
+  const clean = stripUndefined({ ...updates, username: updates.username ? normalizeUsername(updates.username) : undefined, updatedAt: serverTimestamp() });
   await updateDoc(doc(db, "users", uid), clean);
   return clean;
 }
@@ -154,7 +220,7 @@ export async function addXp(uid: string, xpAmount: number): Promise<{ leveledUp:
 
   const user = snap.data() as User;
   const oldLevel = user.level;
-  const newXp = user.xp + xpAmount;
+  const newXp = (user.xp || 0) + xpAmount;
   const newLevel = calculateLevel(newXp);
   const newRank = getRankFromXp(newXp);
   const xpForNext = newLevel ** 2 * 100;
@@ -169,11 +235,11 @@ export async function updateStreak(uid: string): Promise<number> {
   if (!snap.exists()) return 0;
 
   const user = snap.data() as User;
-  const lastLogin = (user.lastLoginAt as unknown as Timestamp)?.toDate();
+  const lastLogin = (user.lastLoginAt as unknown as Timestamp)?.toDate?.();
   const now = new Date();
   const diffDays = lastLogin ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)) : 0;
 
-  let newStreak = user.streak;
+  let newStreak = user.streak || 0;
   if (diffDays === 1) newStreak += 1;
   else if (diffDays > 1) newStreak = 1;
 
@@ -189,6 +255,7 @@ export async function getLeaderboard(_type: "global" | "weekly" = "global", coun
     const data = d.data() as User;
     return {
       userId: d.id,
+      studentId: isNumericStudentId(data.studentId) ? data.studentId : generateStudentId(d.id),
       leaderboardRank: i + 1,
       rank: i + 1,
       rank_title: data.rank,
@@ -213,10 +280,136 @@ export async function addCoins(uid: string, amount: number) {
   await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
 }
 
+export type PublicUserResult = {
+  uid: string;
+  studentId: string;
+  username: string;
+  displayName: string;
+  photoURL?: string;
+  avatar?: string;
+  district?: string;
+  school?: string;
+  college?: string;
+  className?: string;
+  level?: number;
+  xp?: number;
+  friendStatus?: "none" | "pending" | "incoming" | "accepted";
+  requestId?: string;
+};
+
+async function getRelationsForUser(uid: string) {
+  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(100)));
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }));
+}
+
+export async function searchUsers(term: string, currentUid: string): Promise<PublicUserResult[]> {
+  const q = term.trim().toLowerCase();
+  if (!q || q.length < 2) return [];
+  const usersSnap = await getDocs(query(collection(db, "users"), limit(120)));
+  const relations = await getRelationsForUser(currentUid).catch(() => []);
+
+  return usersSnap.docs
+    .filter((d) => d.id !== currentUid)
+    .map((d) => ({ uid: d.id, ...(d.data() as User) }))
+    .filter((u) => {
+      const hay = [u.studentId, u.username, u.displayName, u.district, u.school, u.college, u.className, u.uid]
+        .filter(Boolean).join(" ").toLowerCase();
+      return hay.includes(q);
+    })
+    .slice(0, 12)
+    .map((u) => {
+      const rel = relations.find((r: any) => r.participants?.includes(u.uid));
+      let friendStatus: PublicUserResult["friendStatus"] = "none";
+      if (rel?.status === "accepted") friendStatus = "accepted";
+      else if (rel?.status === "pending" && rel.from === currentUid) friendStatus = "pending";
+      else if (rel?.status === "pending" && rel.to === currentUid) friendStatus = "incoming";
+      return {
+        uid: u.uid,
+        studentId: isNumericStudentId(u.studentId) ? u.studentId : generateStudentId(u.uid),
+        username: u.username || "student",
+        displayName: u.displayName || u.username || "Student",
+        photoURL: u.photoURL || "",
+        avatar: u.avatar || "⚡",
+        district: u.district || "",
+        school: u.school || u.college || "",
+        college: u.college || u.school || "",
+        className: u.className || "",
+        level: u.level || 1,
+        xp: u.xp || 0,
+        friendStatus,
+        requestId: rel?.id,
+      };
+    });
+}
+
+export async function getIncomingFriendRequests(uid: string): Promise<PublicUserResult[]> {
+  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(50)));
+  const incoming = snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) })).filter((r: any) => r.to === uid && r.status === "pending");
+  const results: PublicUserResult[] = [];
+  for (const req of incoming.slice(0, 6)) {
+    const userSnap = await getDoc(doc(db, "users", req.from));
+    if (userSnap.exists()) {
+      const u = { uid: req.from, ...(userSnap.data() as User) };
+      results.push({
+        uid: u.uid,
+        studentId: isNumericStudentId(u.studentId) ? u.studentId : generateStudentId(u.uid),
+        username: u.username || "student",
+        displayName: u.displayName || u.username || "Student",
+        photoURL: u.photoURL || "",
+        avatar: u.avatar || "⚡",
+        district: u.district || "",
+        school: u.school || u.college || "",
+        className: u.className || "",
+        level: u.level || 1,
+        xp: u.xp || 0,
+        friendStatus: "incoming",
+        requestId: req.id,
+      });
+    }
+  }
+  return results;
+}
+
+export async function sendFriendRequest(currentUid: string, targetUid: string) {
+  const id = [currentUid, targetUid].sort().join("_");
+  const ref = doc(db, "friendRequests", id);
+  const snap = await getDoc(ref);
+  if (snap.exists()) return { id, ...(snap.data() as any) };
+  const payload = { from: currentUid, to: targetUid, participants: [currentUid, targetUid], status: "pending", createdAt: serverTimestamp(), updatedAt: serverTimestamp() };
+  await setDoc(ref, payload);
+  return { id, ...payload };
+}
+
+export async function acceptFriendRequest(requestId: string) {
+  await updateDoc(doc(db, "friendRequests", requestId), { status: "accepted", updatedAt: serverTimestamp() });
+}
+
+export async function createChallenge(currentUid: string, targetUid: string) {
+  return addDoc(collection(db, "challenges"), {
+    from: currentUid,
+    to: targetUid,
+    participants: [currentUid, targetUid],
+    status: "pending",
+    createdAt: serverTimestamp(),
+  });
+}
+
+export async function sendQuickMessage(currentUid: string, targetUid: string, content: string) {
+  return addDoc(collection(db, "messages"), {
+    from: currentUid,
+    to: targetUid,
+    participants: [currentUid, targetUid],
+    content,
+    createdAt: serverTimestamp(),
+    read: false,
+  });
+}
+
 export function createLocalGuestProfile(options?: { username?: string }): import("@/types").User {
   const username = options?.username || `Guest_${Math.floor(Math.random() * 9999)}`;
   return {
     uid: `guest_${Date.now()}`,
+    studentId: generateStudentId(username),
     email: "",
     username,
     displayName: username,
@@ -239,7 +432,7 @@ export function createLocalGuestProfile(options?: { username?: string }): import
     className: "",
     thana: "",
     examMode: "SSC",
-    avatar: "⚡",
+    avatar: randomAvatar(),
     frame: "default",
     isGuest: true,
     language: "bn",

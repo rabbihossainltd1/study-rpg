@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
 import { DAILY_MISSIONS, WEEKLY_MISSIONS, ACHIEVEMENTS } from "@/lib/missions";
 import { Button } from "@/components/ui/Button";
@@ -11,6 +12,12 @@ import toast from "react-hot-toast";
 import { calculateLevel, type Mission } from "@/types";
 
 const TABS = ["Daily", "Weekly", "Achievements"];
+function missionHref(id: string) {
+  if (id.includes("study") || id.includes("streak")) return "/focus";
+  if (id.includes("quiz") || id.includes("lesson") || id.includes("subject")) return "/subjects";
+  return "/missions";
+}
+
 
 export default function MissionsPage() {
   const { user, setUser, language, addXpPopup, triggerLevelUp } = useUserStore();
@@ -45,7 +52,11 @@ export default function MissionsPage() {
 
     return (
       <div
-        className={`glass-card p-4 border transition-all hover-lift animate-card-in ${
+        role="button"
+        tabIndex={0}
+        onClick={() => navigate(missionHref(mission.id))}
+        onKeyDown={(e) => { if (e.key === "Enter") navigate(missionHref(mission.id)); }}
+        className={`w-full text-left glass-card p-4 border transition-all hover-lift animate-card-in cursor-pointer tap-bounce ${
           isCompleted ? "border-primary/20 bg-primary/3" :
           canClaim ? "border-gold/30 bg-gold/3 shadow-[0_0_20px_rgba(255,215,0,0.1)]" :
           "border-white/5"
@@ -66,7 +77,7 @@ export default function MissionsPage() {
                 <p className="text-xs text-gray-500 mt-0.5">{mission.description}</p>
               </div>
               {canClaim && !isCompleted && (
-                <Button size="sm" variant="gold" onClick={() => handleClaim(mission)} className="flex-shrink-0 text-xs py-1 px-2">
+                <Button size="sm" variant="gold" onClick={(e) => { e.stopPropagation(); handleClaim(mission); }} className="flex-shrink-0 text-xs py-1 px-2">
                   Claim!
                 </Button>
               )}
