@@ -105,6 +105,10 @@ jobs:
           test -f google-services.json
           grep -q "com.rabbi.studyrpg.app" google-services.json
 
+      - name: Print Debug SHA-1
+        run: |
+          keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android 2>/dev/null | grep SHA1 || echo 'debug keystore not found'
+
       - name: Download Gradle Wrapper JAR
         working-directory: frontend/android
         run: |
