@@ -122,7 +122,7 @@ function normalizeUsername(value: string) {
   return value.trim().toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_.-]/g, "").slice(0, 24);
 }
 
-function isNumericStudentId(value: unknown) {
+function isNumericStudentId(value: unknown): value is string {
   return typeof value === "string" && /^\d{6,12}$/.test(value);
 }
 
@@ -310,7 +310,7 @@ export async function searchUsers(term: string, currentUid: string): Promise<Pub
 
   return usersSnap.docs
     .filter((d) => d.id !== currentUid)
-    .map((d) => ({ uid: d.id, ...(d.data() as User) }))
+    .map((d) => ({ ...(d.data() as User), uid: d.id }))
     .filter((u) => {
       const hay = [u.studentId, u.username, u.displayName, u.district, u.school, u.college, u.className, u.uid]
         .filter(Boolean).join(" ").toLowerCase();
@@ -349,7 +349,7 @@ export async function getIncomingFriendRequests(uid: string): Promise<PublicUser
   for (const req of incoming.slice(0, 6)) {
     const userSnap = await getDoc(doc(db, "users", req.from));
     if (userSnap.exists()) {
-      const u = { uid: req.from, ...(userSnap.data() as User) };
+      const u = { ...(userSnap.data() as User), uid: req.from };
       results.push({
         uid: u.uid,
         studentId: isNumericStudentId(u.studentId) ? u.studentId : generateStudentId(u.uid),
