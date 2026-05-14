@@ -25,6 +25,34 @@ Rules:
 - Motivate students and keep them positive
 - If asked to generate a quiz, provide 3-5 MCQ questions with answers`;
 
+function offlineTutorReply(text: string) {
+  const q = text.trim();
+  const lower = q.toLowerCase();
+  const isBangla = /[\u0980-\u09FF]/.test(q);
+
+  if (lower.includes("quiz") || q.includes("কুইজ")) {
+    return isBangla
+      ? `ঠিক আছে, ছোট কুইজ দিচ্ছি:\n\n1) 12 × 8 = কত?\nA) 86 B) 96 C) 108 D) 112\nAnswer: B\n\n2) H2O কী?\nA) Oxygen B) Water C) Salt D) Acid\nAnswer: B\n\n3) Verb কী বোঝায়?\nA) কাজ B) নাম C) গুণ D) সংখ্যা\nAnswer: A`
+      : `Here is a quick quiz:\n\n1) 12 × 8 = ?\nA) 86 B) 96 C) 108 D) 112\nAnswer: B\n\n2) H2O is known as?\nA) Oxygen B) Water C) Salt D) Acid\nAnswer: B\n\n3) A verb shows?\nA) Action B) Name C) Quality D) Number\nAnswer: A`;
+  }
+
+  if (lower.includes("routine") || q.includes("রুটিন")) {
+    return isBangla
+      ? `একটা সহজ রুটিন:\n\n• ২৫ মিনিট পড়া + ৫ মিনিট বিরতি\n• আগে কঠিন subject\n• প্রতিদিন ৩টা quiz\n• রাতে ১০ মিনিট revision\n\nআজ শুধু ১টা chapter শেষ করো — consistency matters ⚡`
+      : `Simple routine:\n\n• 25 min study + 5 min break\n• Start with the hardest subject\n• Take 3 quizzes daily\n• Revise for 10 minutes at night\n\nFinish one chapter today — consistency wins ⚡`;
+  }
+
+  if (lower.includes("formula") || q.includes("সূত্র")) {
+    return isBangla
+      ? `কিছু দরকারি সূত্র:\n\n• Speed = Distance ÷ Time\n• Area of triangle = ½ × base × height\n• (a+b)² = a² + 2ab + b²\n• Force = mass × acceleration\n\nযে chapter-এর সূত্র দরকার, নাম লিখে দাও।`
+      : `Useful formulas:\n\n• Speed = Distance ÷ Time\n• Area of triangle = ½ × base × height\n• (a+b)² = a² + 2ab + b²\n• Force = mass × acceleration\n\nTell me the chapter name for specific formulas.`;
+  }
+
+  return isBangla
+    ? `আমি বুঝেছি: “${q}”\n\nসহজভাবে পড়ার নিয়ম:\n1) topic টা ছোট অংশে ভাগ করো\n2) definition মুখস্থ না করে example দেখো\n3) শেষে ৩টা MCQ solve করো\n\nআরো নির্দিষ্ট করে subject/chapter লিখলে আমি step-by-step বুঝিয়ে দেবো। ⚡`
+    : `I got it: “${q}”\n\nUse this method:\n1) Break the topic into small parts\n2) Learn with examples, not just definitions\n3) Solve 3 MCQs after reading\n\nSend the exact subject/chapter and I will explain it step by step. ⚡`;
+}
+
 export default function AiAssistantPage() {
   const { user, language } = useUserStore();
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -59,7 +87,11 @@ export default function AiAssistantPage() {
 
     try {
       const apiKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY;
-      if (!apiKey) throw new Error("API key not configured");
+
+      if (!apiKey) {
+        setMessages((prev) => prev.map((m) => m.id === loadingMsg.id ? { ...m, content: offlineTutorReply(userMessage), isLoading: false } : m));
+        return;
+      }
 
       const conversationHistory = [
         ...messages.filter((m) => !m.isLoading).map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
@@ -76,12 +108,13 @@ export default function AiAssistantPage() {
         }),
       });
 
+      if (!response.ok) throw new Error(`AI request failed ${response.status}`);
       const data = await response.json();
-      const aiText = data.choices?.[0]?.message?.content || "Sorry, I couldn't process that. Please try again.";
+      const aiText = data.choices?.[0]?.message?.content || offlineTutorReply(userMessage);
       setMessages((prev) => prev.map((m) => m.id === loadingMsg.id ? { ...m, content: aiText, isLoading: false } : m));
     } catch {
       setMessages((prev) => prev.map((m) => m.id === loadingMsg.id
-        ? { ...m, content: "⚠️ Connection error. Please check your internet and try again.", isLoading: false } : m));
+        ? { ...m, content: offlineTutorReply(userMessage), isLoading: false } : m));
     } finally {
       setIsLoading(false);
     }
@@ -98,6 +131,7 @@ export default function AiAssistantPage() {
   const formatMessage = (content: string) => content
     .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#fff">$1</strong>')
     .replace(/`(.*?)`/g, '<code style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:4px;color:#39FF14;font-size:12px">$1</code>')
+    .replace(/\\n/g, "<br>")
     .replace(/\n/g, "<br>");
 
   return (

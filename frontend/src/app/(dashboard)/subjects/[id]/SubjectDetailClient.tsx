@@ -213,8 +213,8 @@ export default function SubjectDetailClient({ id }: { id: string }) {
       </div>
 
       {quizActive && (
-        <div className="fixed inset-x-0 top-[64px] bottom-0 bg-black/88 z-[120] flex items-start justify-center p-3 overflow-y-auto animate-fade-in">
-          <div className="glass-card w-full max-w-lg p-5 border border-secondary/20 animate-card-in my-3 max-h-[calc(100dvh-88px)] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/92 z-[250] flex items-start justify-center p-3 pt-[72px] overflow-y-auto animate-fade-in">
+          <div className="glass-card w-full max-w-lg p-4 sm:p-5 border border-secondary/30 animate-card-in max-h-[calc(100dvh-84px)] overflow-y-auto shadow-[0_0_46px_rgba(0,240,255,0.12)]">
             {!quizDone ? (
               currentQ ? <>
                 <div className="flex items-center justify-between mb-5">
@@ -226,25 +226,25 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                 </div>
                 <div className="h-1.5 bg-white/5 rounded-full mb-5 overflow-hidden"><div className="h-full bg-secondary rounded-full transition-all" style={{ width: `${((quizIndex + 1) / quizQuestions.length) * 100}%` }} /></div>
                 <div className="mb-4"><span className="text-xs px-2 py-1 rounded-lg bg-white/5 text-gray-500">{currentQ.topic}</span></div>
-                <h3 className="text-lg font-bold text-white mb-4 leading-relaxed scroll-mt-24">{currentQ.questionBn || currentQ.question}</h3>
-                <div className="space-y-2 mb-5">
+                <h3 className="text-xl font-black text-white mb-4 leading-relaxed scroll-mt-24">{currentQ.questionBn || currentQ.question}</h3>
+                <div className="space-y-3 mb-5">
                   {currentQ.options.map((opt, idx) => {
                     const isCorrect = currentQ.correctAnswer === idx;
                     const isSelected = selected === idx;
                     return (
-                      <button key={idx} onClick={() => handleAnswer(idx)} disabled={answered} className={`w-full text-left p-3.5 rounded-xl border text-sm transition-all font-medium tap-bounce ${
-                        !answered ? "border-white/10 hover:border-white/30 hover:bg-white/5 text-gray-300" :
-                        isCorrect ? "border-primary bg-primary/15 text-primary" :
+                      <button key={idx} onClick={() => handleAnswer(idx)} disabled={answered} className={`w-full text-left p-4 rounded-2xl border text-base transition-all font-bold tap-bounce shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] ${
+                        !answered ? "border-white/15 bg-white/[0.03] hover:border-secondary/60 hover:bg-secondary/10 text-white" :
+                        isCorrect ? "border-primary bg-primary/15 text-primary shadow-[0_0_20px_rgba(57,255,20,0.15)]" :
                         isSelected && !isCorrect ? "border-accent bg-accent/15 text-accent" :
-                        "border-white/5 text-gray-600"
+                        "border-white/5 text-gray-600 bg-white/[0.02]"
                       }`}>
-                        <span className="flex items-center gap-3"><span className="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold flex-shrink-0">{answered && isCorrect ? <Check className="w-3 h-3" /> : answered && isSelected && !isCorrect ? <X className="w-3 h-3" /> : String.fromCharCode(65 + idx)}</span>{opt}</span>
+                        <span className="flex items-center gap-3"><span className="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center text-sm font-black flex-shrink-0 bg-black/20">{answered && isCorrect ? <Check className="w-4 h-4" /> : answered && isSelected && !isCorrect ? <X className="w-4 h-4" /> : String.fromCharCode(65 + idx)}</span><span className="leading-snug">{opt}</span></span>
                       </button>
                     );
                   })}
                 </div>
                 {answered && <div className={`p-3 rounded-xl text-sm mb-4 ${selected === currentQ.correctAnswer ? "bg-primary/10 text-primary border border-primary/20" : "bg-accent/10 text-accent border border-accent/20"}`}>{selected === currentQ.correctAnswer ? "Correct. " : "Incorrect. "}{currentQ.explanation}</div>}
-                {answered && <Button onClick={handleNextQuestion} className="w-full">{quizIndex + 1 < quizQuestions.length ? "Next Question →" : "See Results"}</Button>}
+                {answered && <Button onClick={handleNextQuestion} className="w-full sticky bottom-0 shadow-neon-primary" size="lg">{quizIndex + 1 < quizQuestions.length ? "Next Question →" : "See Results"}</Button>}
               </> : <div className="text-center"><p className="text-gray-400 mb-4">No quiz found for this subject.</p><Button onClick={() => setQuizActive(false)}>Close</Button></div>
             ) : (
               <div className="text-center">

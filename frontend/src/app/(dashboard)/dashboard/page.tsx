@@ -65,28 +65,26 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 animate-card-in">
+      <UserSearchPanel />
+
       <section className="glass-card p-5 border border-primary/10 relative overflow-hidden hover-lift">
         <div className="absolute -right-12 -top-12 w-36 h-36 rounded-full bg-primary/10 blur-3xl" />
-        <div className="flex items-start justify-between gap-4 relative">
-          <div className="min-w-0">
-            <p className="text-sm text-gray-500 mb-1">{getGreeting()}</p>
-            <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight truncate">
-              {user.displayName || user.username}
-            </h1>
+        <div className="relative flex items-center gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 border-2 border-primary/30 flex items-center justify-center overflow-hidden text-3xl shadow-[0_0_28px_rgba(57,255,20,0.12)] flex-shrink-0">
+            {user.photoURL ? <img src={user.photoURL} alt="" className="w-full h-full object-cover" /> : user.avatar || "⚡"}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs text-gray-500 mb-1">{getGreeting()}</p>
+            <div className="flex items-center gap-2 min-w-0">
+              <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight truncate">{user.displayName || user.username}</h1>
+              <span className="px-2 py-1 rounded-lg text-xs font-black bg-primary/15 text-primary border border-primary/30 flex-shrink-0">LV.{user.level}</span>
+            </div>
+            <p className="text-xs text-gray-500 mt-1 truncate">@{user.username} · Student ID {user.studentId || "—"}</p>
             <div className="flex items-center gap-2 mt-2 flex-wrap">
               <span className="px-2.5 py-1 rounded-lg text-xs font-bold border" style={{ color: rankColor, borderColor: `${rankColor}35`, background: `${rankColor}12` }}>{user.rank}</span>
               <span className="px-2.5 py-1 rounded-lg text-xs text-gray-400 bg-white/5 border border-white/10">{user.examMode} Mode</span>
-              <span className="px-2.5 py-1 rounded-lg text-xs text-gray-400 bg-white/5 border border-white/10">ID {user.studentId || "—"}</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <div className="glass rounded-xl px-3 py-2 text-center border border-orange-500/20 min-w-[76px]">
-              <p className="text-lg font-black text-orange-400">🔥 {user.streak}</p>
-              <p className="text-xs text-gray-600">Streak</p>
-            </div>
-            <div className="glass rounded-xl px-3 py-2 text-center border border-gold/20 min-w-[76px]">
-              <p className="text-lg font-black text-gold">🪙 {user.coins}</p>
-              <p className="text-xs text-gray-600">Coins</p>
+              <span className="px-2.5 py-1 rounded-lg text-xs text-gold bg-gold/5 border border-gold/10">🪙 {user.coins}</span>
+              <span className="px-2.5 py-1 rounded-lg text-xs text-orange-400 bg-orange-500/5 border border-orange-500/10">🔥 {user.streak}</span>
             </div>
           </div>
         </div>
@@ -94,8 +92,6 @@ export default function DashboardPage() {
           <XpBar currentXp={user.xp} totalXp={user.xp} level={user.level} rank={user.rank} />
         </div>
       </section>
-
-      <UserSearchPanel />
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <StatCard label="Level" value={user.level} icon={<Zap className="w-5 h-5" />} color="#39FF14" />
@@ -334,10 +330,13 @@ function UserSearchPanel() {
   );
 
   return (
-    <Card className="border border-primary/15 bg-primary/3 hover-lift">
-      <div className="flex items-center gap-2 mb-3">
-        <Search className="w-5 h-5 text-primary" />
-        <h2 className="font-bold text-white">Find Students</h2>
+    <Card className="border border-primary/20 bg-primary/5 hover-lift shadow-[0_0_26px_rgba(57,255,20,0.06)]">
+      <div className="flex items-center justify-between gap-3 mb-3">
+        <div className="flex items-center gap-2">
+          <Search className="w-5 h-5 text-primary" />
+          <h2 className="font-bold text-white">Find Students</h2>
+        </div>
+        <span className="text-[10px] text-gray-600">name · username · ID</span>
       </div>
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />

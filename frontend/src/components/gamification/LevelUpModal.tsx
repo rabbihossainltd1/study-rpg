@@ -3,7 +3,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
 import { Zap, X, Star } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 import { RANK_COLORS } from "@/types";
 import { useEffect } from "react";
 
@@ -202,11 +201,16 @@ export function LevelUpModal() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="mt-5"
+              className="mt-5 relative z-[220]"
             >
-              <Button onClick={(e) => { e.stopPropagation(); closeModal(); }} className="w-full" size="lg">
+              <button
+                type="button"
+                onPointerDown={(e) => { e.stopPropagation(); closeModal(); }}
+                onClick={(e) => { e.stopPropagation(); closeModal(); }}
+                className="w-full rounded-xl bg-primary text-black font-black py-4 shadow-neon-primary active:scale-95 transition-all"
+              >
                 ⚡ Continue Journey
-              </Button>
+              </button>
             </motion.div>
           </motion.div>
         </motion.div>

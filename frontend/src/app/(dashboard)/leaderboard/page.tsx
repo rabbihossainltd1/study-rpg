@@ -2,9 +2,11 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { getLeaderboard } from "@/lib/firebase";
+import { getLeaderboard, sendFriendRequest } from "@/lib/firebase";
 import { RANK_COLORS, type Rank } from "@/types";
-import { Trophy, Globe, MapPin, TrendingUp, Crown, X, School, UserRound } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import toast from "react-hot-toast";
+import { Trophy, Globe, MapPin, TrendingUp, Crown, X, School, UserRound, UserPlus } from "lucide-react";
 
 const TABS = [
   { id: "global", label: "Global", labelBn: "গ্লোবাল", icon: Globe },
@@ -37,6 +39,7 @@ export default function LeaderboardPage() {
   const [entries, setEntries] = useState<LeaderEntry[]>([]);
   const [selected, setSelected] = useState<LeaderEntry | null>(null);
   const [loading, setLoading] = useState(true);
+  const [busyAdd, setBusyAdd] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -76,6 +79,19 @@ export default function LeaderboardPage() {
   const myRank = visibleEntries.find((entry) => entry.userId === user?.uid)?.rank;
   const topThree = visibleEntries.slice(0, 3);
   const rest = visibleEntries.slice(3);
+
+  const addFromLeaderboard = async (entry: LeaderEntry) => {
+    if (!user || user.uid === entry.userId) return;
+    setBusyAdd(entry.userId);
+    try {
+      await sendFriendRequest(user.uid, entry.userId);
+      toast.success("Friend request sent");
+    } catch {
+      toast.error("Request failed");
+    } finally {
+      setBusyAdd(null);
+    }
+  };
 
   const RankBadge = ({ rank }: { rank: number }) => {
     if (rank === 1) return <Crown className="w-5 h-5 text-gold" />;
@@ -170,8 +186,8 @@ export default function LeaderboardPage() {
       </div>
 
       {selected && (
-        <div className="fixed inset-0 z-[200] bg-black/85 flex items-center justify-center p-4 animate-fade-in" onClick={() => setSelected(null)}>
-          <div className="glass-card w-full max-w-sm p-5 border border-gold/30 shadow-[0_0_50px_rgba(255,215,0,0.16)] animate-card-in" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-[200] bg-black/88 flex items-start justify-center p-4 pt-[76px] animate-fade-in overflow-y-auto" onClick={() => setSelected(null)}>
+          <div className="glass-card w-full max-w-sm p-5 border border-gold/30 shadow-[0_0_50px_rgba(255,215,0,0.16)] animate-card-in max-h-[calc(100dvh-92px)] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-black text-white">Student Profile</h2>
               <button type="button" onClick={() => setSelected(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>
@@ -187,6 +203,11 @@ export default function LeaderboardPage() {
               <InfoRow icon={<MapPin className="w-4 h-4" />} label="District" value={selected.district || "Not added"} />
               <InfoRow icon={<Trophy className="w-4 h-4" />} label="Class / Level" value={`${selected.className || "Student"} · LV.${selected.level}`} />
             </div>
+            {user && selected.userId !== user.uid && (
+              <Button className="w-full mt-4" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>
+                <UserPlus className="w-4 h-4" /> Add Friend
+              </Button>
+            )}
           </div>
         </div>
       )}

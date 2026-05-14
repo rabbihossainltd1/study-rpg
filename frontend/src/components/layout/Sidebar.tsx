@@ -7,8 +7,8 @@ import { navigate } from "@/lib/navigate";
 import { XpBar } from "@/components/ui/XpBar";
 import { RANK_COLORS } from "@/types";
 import {
-  LayoutDashboard, BookOpen, Trophy, Bot, Timer,
-  Target, User, LogOut, Zap, Menu, X, ChevronRight,
+  LayoutDashboard, BookOpen, Trophy, Bot,
+  Target, User, LogOut, Zap, Menu, X, ChevronRight, Users,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -17,7 +17,7 @@ const NAV_ITEMS = [
   { href: "/missions", label: "Missions", labelBn: "মিশন", icon: Target },
   { href: "/leaderboard", label: "Leaderboard", labelBn: "লিডারবোর্ড", icon: Trophy },
   { href: "/ai-assistant", label: "AI Tutor", labelBn: "এআই টিউটর", icon: Bot },
-  { href: "/focus", label: "Focus Mode", labelBn: "ফোকাস মোড", icon: Timer },
+  { href: "/friends", label: "Friends", labelBn: "ফ্রেন্ডস", icon: Users },
   { href: "/profile", label: "Profile", labelBn: "প্রোফাইল", icon: User },
 ];
 

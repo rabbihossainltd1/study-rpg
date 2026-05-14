@@ -134,6 +134,10 @@ function buildProfilePatch(uid: string, data: Partial<User>) {
 
   if (!isNumericStudentId(data.studentId)) patch.studentId = generateStudentId(uid);
   if (!data.avatar) patch.avatar = randomAvatar();
+  if (!data.username || ["username", "student", "user"].includes(String(data.username).toLowerCase())) {
+    const fromName = normalizeUsername(data.displayName || "student");
+    patch.username = fromName || `student_${generateStudentId(uid).slice(-5)}`;
+  }
   if (!data.level || data.level !== normalizedLevel) patch.level = normalizedLevel;
   if (!data.rank || data.rank !== normalizedRank) patch.rank = normalizedRank;
   if (data.xpToNextLevel === undefined || data.xpToNextLevel < 0) patch.xpToNextLevel = calculateXpToNextLevel(xp);
@@ -371,11 +375,24 @@ export async function getIncomingFriendRequests(uid: string): Promise<PublicUser
 }
 
 export async function sendFriendRequest(currentUid: string, targetUid: string) {
+  if (!currentUid || !targetUid || currentUid === targetUid) throw new Error("Invalid student");
   const id = [currentUid, targetUid].sort().join("_");
+  const payload = {
+    from: currentUid,
+    to: targetUid,
+    participants: [currentUid, targetUid],
+    status: "pending",
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  };
+
   const ref = doc(db, "friendRequests", id);
-  const snap = await getDoc(ref);
-  if (snap.exists()) return { id, ...(snap.data() as any) };
-  const payload = { from: currentUid, to: targetUid, participants: [currentUid, targetUid], status: "pending", createdAt: serverTimestamp(), updatedAt: serverTimestamp() };
+  try {
+    const snap = await getDoc(ref);
+    if (snap.exists()) return { id, ...(snap.data() as any) };
+  } catch {
+    // Some older rules deny reads for missing request docs. Continue with create.
+  }
   await setDoc(ref, payload);
   return { id, ...payload };
 }
@@ -403,6 +420,60 @@ export async function sendQuickMessage(currentUid: string, targetUid: string, co
     createdAt: serverTimestamp(),
     read: false,
   });
+}
+
+
+export async function getFriendsForUser(uid: string): Promise<PublicUserResult[]> {
+  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(100)));
+  const accepted = snap.docs
+    .map((d) => ({ id: d.id, ...(d.data() as any) }))
+    .filter((r: any) => r.status === "accepted" && Array.isArray(r.participants));
+
+  const friends: PublicUserResult[] = [];
+  for (const rel of accepted) {
+    const otherUid = rel.participants.find((id: string) => id !== uid);
+    if (!otherUid) continue;
+    const userSnap = await getDoc(doc(db, "users", otherUid));
+    if (!userSnap.exists()) continue;
+    const u = { ...(userSnap.data() as User), uid: otherUid };
+    friends.push({
+      uid: u.uid,
+      studentId: isNumericStudentId(u.studentId) ? u.studentId : generateStudentId(u.uid),
+      username: u.username || "student",
+      displayName: u.displayName || u.username || "Student",
+      photoURL: u.photoURL || "",
+      avatar: u.avatar || "⚡",
+      district: u.district || "",
+      school: u.school || u.college || "",
+      college: u.college || u.school || "",
+      className: u.className || "",
+      level: u.level || 1,
+      xp: u.xp || 0,
+      friendStatus: "accepted",
+      requestId: rel.id,
+    });
+  }
+  return friends;
+}
+
+export type FriendMessage = {
+  id: string;
+  from: string;
+  to: string;
+  content: string;
+  createdAt?: Timestamp;
+};
+
+export async function getMessagesWithFriend(currentUid: string, targetUid: string): Promise<FriendMessage[]> {
+  const snap = await getDocs(query(collection(db, "messages"), where("participants", "array-contains", currentUid), limit(80)));
+  return snap.docs
+    .map((d) => ({ id: d.id, ...(d.data() as any) } as FriendMessage & { participants?: string[] }))
+    .filter((m) => Array.isArray(m.participants) && m.participants.includes(targetUid))
+    .sort((a, b) => {
+      const ta = (a.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
+      const tb = (b.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
+      return ta - tb;
+    });
 }
 
 export function createLocalGuestProfile(options?: { username?: string }): import("@/types").User {
