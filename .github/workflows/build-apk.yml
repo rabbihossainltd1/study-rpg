@@ -133,10 +133,9 @@ jobs:
       - name: Build APK
         working-directory: frontend/android
         env:
-          KEYSTORE_PATH: /root/.android/debug.keystore
-          KEYSTORE_PASSWORD: studyrpg123
-          KEY_ALIAS: studyrpg
-          KEY_PASSWORD: studyrpg123
+          KEYSTORE_PASSWORD: studyrpg456
+          KEY_ALIAS: studyrpg2
+          KEY_PASSWORD: studyrpg456
         run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=512m"
 
       - name: Verify APK has JS chunks
