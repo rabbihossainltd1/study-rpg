@@ -14,6 +14,7 @@ const AVATARS = ["zap", "book", "target", "trophy", "gem", "rocket", "brain", "n
 const getRandomAvatar = () => AVATARS[Math.floor(Math.random() * AVATARS.length)];
 const usernamePattern = /^[a-z0-9_.]{3,20}$/;
 const gmailPattern = /^[a-z0-9._%+-]+@gmail\.com$/;
+const makeGuestUsername = () => normalizePublicUsername(`guest_${Date.now().toString(36).slice(-6)}_${Math.floor(100 + Math.random() * 900)}`).slice(0, 20);
 
 type ThemeChoice = "dark" | "light";
 type LangChoice = "bn" | "en";
@@ -44,8 +45,8 @@ async function compressProfileImage(file: File): Promise<string> {
 
 export default function SignupPage() {
   const { setUser, setTheme, setLanguage } = useUserStore();
-  const isGuestSignup = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("guest") === "1";
-  const [step, setStep] = useState(isGuestSignup ? 2 : 1);
+  const [isGuestSignup, setIsGuestSignup] = useState(false);
+  const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [checkingUsername, setCheckingUsername] = useState(false);
   const [email, setEmail] = useState("");
@@ -65,12 +66,17 @@ export default function SignupPage() {
   const [languageChoice, setLanguageChoice] = useState<LangChoice>("bn");
 
   useEffect(() => {
-    if (isGuestSignup) {
-      const n = Math.floor(1000 + Math.random() * 9000);
-      setUsername(`guest_${n}`);
-      setDisplayName((v) => v || `Guest Student ${n}`);
+    const guestMode = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("guest") === "1";
+    setIsGuestSignup(guestMode);
+    if (guestMode) {
+      const guestName = makeGuestUsername();
+      setStep(2);
+      setUsername(guestName);
+      setDisplayName((v) => v || "");
+      setEmail("");
+      setPassword("");
     }
-  }, [isGuestSignup]);
+  }, []);
 
   const zilaOptions = useMemo(() => getDistrictsForDivision(division), [division]);
   const thanaOptions = useMemo(() => getThanasForZila(zila), [zila]);
@@ -112,8 +118,9 @@ export default function SignupPage() {
 
   const handleStep2 = (e: FormEvent) => {
     e.preventDefault();
-    if (!displayName.trim() || !college.trim() || !division.trim() || !zila.trim() || !thana.trim()) {
-      toast.error("সব তথ্য পূরণ করো");
+    const requiredStudentFieldsMissing = !isGuestSignup && (!displayName.trim() || !college.trim());
+    if (requiredStudentFieldsMissing || !className.trim() || !division.trim() || !zila.trim() || !thana.trim()) {
+      toast.error(isGuestSignup ? "Class and address select করো" : "সব তথ্য পূরণ করো");
       return;
     }
     if (!DIVISIONS.includes(division)) {
@@ -154,16 +161,18 @@ export default function SignupPage() {
       setLanguage(languageChoice);
       const examMode = deriveExamModeFromClass(className);
       const cred = isGuestSignup ? await signInGuest() : await signUpEmail(cleanEmail, password);
-      const guestUsername = cleanUsername || `guest_${Math.floor(1000 + Math.random() * 9000)}`;
+      const finalGuestUsername = isGuestSignup ? (cleanUsername || makeGuestUsername()) : cleanUsername;
+      const finalDisplayName = displayName.trim() || (isGuestSignup ? "Guest Student" : cleanUsername);
+      const institutionName = college.trim();
       const profile = await createUserProfile(cred.user, {
-        username: isGuestSignup ? guestUsername : cleanUsername,
-        displayName: displayName.trim() || (isGuestSignup ? "Guest Student" : cleanUsername),
+        username: isGuestSignup ? finalGuestUsername : cleanUsername,
+        displayName: finalDisplayName,
         examMode,
         division,
         zila,
         district: zila,
-        school: college.trim(),
-        college: college.trim(),
+        school: institutionName,
+        college: institutionName,
         className,
         groupName: showGroup ? groupName : "General",
         thana,
@@ -185,7 +194,7 @@ export default function SignupPage() {
     }
   };
 
-  const steps = [1, 2, 3, 4];
+  const steps = isGuestSignup ? [2, 3, 4] : [1, 2, 3, 4];
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 particle-bg">
@@ -196,13 +205,13 @@ export default function SignupPage() {
             <span className="font-black text-2xl text-white">Study RPG</span>
           </button>
           <h1 className="text-3xl font-black text-white mb-1">{isGuestSignup ? "Create Guest Profile" : "Create Account"}</h1>
-          <p className="text-gray-500 text-sm">{isGuestSignup ? "student profile → avatar → interface" : "Secure account → student profile → avatar → interface"}</p>
+          <p className="text-gray-500 text-sm">{isGuestSignup ? "class → address → avatar → interface" : "Secure account → student profile → avatar → interface"}</p>
         </div>
 
         <div className="flex items-center justify-center gap-3 mb-5">
-          {steps.map((n) => (
+          {steps.map((n, index) => (
             <div key={n} className={`w-11 h-11 rounded-full border flex items-center justify-center text-sm font-black transition-all ${step === n ? "border-primary bg-primary text-black shadow-neon-primary" : step > n ? "border-primary/50 bg-primary/10 text-primary" : "border-white/10 bg-white/5 text-gray-600"}`}>
-              {step > n ? <CheckCircle2 className="w-5 h-5" /> : n}
+              {step > n ? <CheckCircle2 className="w-5 h-5" /> : index + 1}
             </div>
           ))}
         </div>
@@ -227,10 +236,10 @@ export default function SignupPage() {
 
           {step === 2 && (
             <form onSubmit={handleStep2} className="space-y-4 animate-card-in">
-              <Input label="Full Name" icon={<User className="w-4 h-4" />} value={displayName} onChange={setDisplayName} placeholder="Your full name" />
+              <Input label={isGuestSignup ? "Student Name (optional)" : "Full Name"} icon={<User className="w-4 h-4" />} value={displayName} onChange={setDisplayName} placeholder={isGuestSignup ? "Guest Student" : "Your full name"} required={!isGuestSignup} />
               <SelectBox label="Class" icon={<GraduationCap className="w-4 h-4" />} value={className} onChange={(v) => { setClassName(v); if (!needsEducationGroup(v)) setGroupName("General"); else if (groupName === "General") setGroupName("Science"); }} options={[...CLASS_OPTIONS]} />
               {showGroup && <SelectBox label="Group / Subject" icon={<GraduationCap className="w-4 h-4" />} value={groupName} onChange={setGroupName} options={["Science", "Humanities", "Business Studies"]} />}
-              <Input label="School / College / University" icon={<School className="w-4 h-4" />} value={college} onChange={setCollege} placeholder="Institution name" />
+              <Input label={isGuestSignup ? "School / College / University (optional)" : "School / College / University"} icon={<School className="w-4 h-4" />} value={college} onChange={setCollege} placeholder="Institution name" required={!isGuestSignup} />
               <div className="grid grid-cols-1 gap-3">
                 <SelectBox label="Division" icon={<MapPin className="w-4 h-4" />} value={division} onChange={(v) => { setDivision(v); const first = getDistrictsForDivision(v)[0] || ""; setZila(first); setThana(""); }} options={DIVISIONS} />
                 <SelectBox label="Zila / District" icon={<Building2 className="w-4 h-4" />} value={zila} onChange={(v) => { setZila(v); setThana(""); }} options={zilaOptions} />
@@ -267,8 +276,8 @@ export default function SignupPage() {
   );
 }
 
-function Input({ label, icon, value, onChange, placeholder, type = "text", minLength }: { label: string; icon: ReactNode; value: string; onChange: (value: string) => void; placeholder: string; type?: string; minLength?: number; }) {
-  return <div><label className="block text-sm font-medium text-gray-400 mb-1.5">{label}</label><div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600">{icon}</span><input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} required minLength={minLength} className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all" /></div></div>;
+function Input({ label, icon, value, onChange, placeholder, type = "text", minLength, required = true }: { label: string; icon: ReactNode; value: string; onChange: (value: string) => void; placeholder: string; type?: string; minLength?: number; required?: boolean; }) {
+  return <div><label className="block text-sm font-medium text-gray-400 mb-1.5">{label}</label><div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600">{icon}</span><input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} required={required} minLength={minLength} className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all" /></div></div>;
 }
 
 function SelectBox({ label, icon, value, onChange, options }: { label: string; icon: ReactNode; value: string; onChange: (value: string) => void; options: string[] }) {

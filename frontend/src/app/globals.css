@@ -159,15 +159,15 @@ html, body {
 }
 
 .animate-card-in {
-  animation: card-in 420ms ease-out both;
+  animation: card-in 420ms ease-out;
 }
 
 .animate-drawer-in {
-  animation: drawer-in 260ms cubic-bezier(.2,.8,.2,1) both;
+  animation: drawer-in 260ms cubic-bezier(.2,.8,.2,1);
 }
 
 .animate-drawer-up {
-  animation: drawer-up 260ms cubic-bezier(.2,.8,.2,1) both;
+  animation: drawer-up 260ms cubic-bezier(.2,.8,.2,1);
 }
 
 .animate-float-soft {
@@ -199,17 +199,17 @@ button, a, input, select, textarea {
 
 @keyframes card-in {
   from { opacity: 0; transform: translateY(14px) scale(0.985); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes drawer-in {
   from { opacity: 0; transform: translateX(-100%); }
-  to { opacity: 1; transform: translateX(0); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes drawer-up {
   from { opacity: 0; transform: translateY(24px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes float-soft {
@@ -332,28 +332,32 @@ html[data-theme="light"] .bottom-nav-shell button:not(.bg-primary),
 html[data-theme="light"] .sidebar-panel button:not(.bg-primary) { color: #4B5563; }
 html[data-theme="light"] .shadow-neon-primary { box-shadow: 0 10px 30px rgba(57,255,20,0.22) !important; }
 
-/* v10: all popups stay centered and compact while background is locked */
+/* v13: keep every popup centered above the app shell and bottom nav */
 .modal-backdrop {
   position: fixed !important;
   inset: 0 !important;
-  z-index: 250 !important;
+  width: 100vw !important;
+  min-height: 100vh !important;
+  min-height: 100svh !important;
+  z-index: 1000 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 12px !important;
-  padding-top: 12px !important;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)) !important;
   overflow: hidden !important;
   overscroll-behavior: contain !important;
   touch-action: none !important;
+  transform: none !important;
 }
 .modal-backdrop > .glass-card,
 .modal-backdrop > .app-panel {
   width: min(100%, 430px) !important;
-  max-height: min(82dvh, 680px) !important;
+  max-height: calc(100svh - 32px) !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
   margin: auto !important;
   overscroll-behavior: contain !important;
+  transform-origin: center center !important;
 }
 .modal-backdrop .glass-card h3,
 .modal-backdrop .glass-card h2 {
@@ -361,12 +365,12 @@ html[data-theme="light"] .shadow-neon-primary { box-shadow: 0 10px 30px rgba(57,
 }
 .modal-compact-card {
   width: min(100%, 380px) !important;
-  max-height: min(80dvh, 620px) !important;
+  max-height: calc(100svh - 32px) !important;
   overflow-y: auto !important;
 }
 .quiz-modal-card {
   width: min(100%, 430px) !important;
-  max-height: min(82dvh, 650px) !important;
+  max-height: calc(100svh - 32px) !important;
 }
 .quiz-modal-card h3 {
   font-size: 1.05rem !important;
