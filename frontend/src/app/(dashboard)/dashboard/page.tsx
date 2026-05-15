@@ -28,8 +28,9 @@ type LeaderPreview = {
 };
 
 function getMissionHref(id: string) {
-  if (id.includes("study") || id.includes("streak")) return "/focus";
-  if (id.includes("quiz") || id.includes("lesson") || id.includes("subject")) return "/subjects";
+  if (id === "daily-progress-subjects") return "/subjects";
+  if (id.startsWith("gk-")) return "/missions";
+  if (id.includes("quiz") || id.includes("subject")) return "/subjects";
   return "/missions";
 }
 
@@ -79,8 +80,8 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 gap-3">
         <button onClick={() => navigate("/subjects")} className="glass-card p-4 text-left border border-primary/10 hover-lift tap-bounce">
           <BookOpen className="w-5 h-5 text-primary mb-2" />
-          <p className="text-white font-black">{language === "bn" ? "MCQ প্র্যাকটিস" : "MCQ Practice"}</p>
-          <p className="text-xs text-gray-500">{language === "bn" ? "ক্লাস অনুযায়ী প্রশ্ন" : "Exam mode questions"}</p>
+          <p className="text-white font-black">{language === "bn" ? "লিখিত প্রশ্ন" : "Written Practice"}</p>
+          <p className="text-xs text-gray-500">{language === "bn" ? "ক্লাস অনুযায়ী লিখিত প্রশ্ন" : "Class-based questions"}</p>
         </button>
         <button onClick={() => navigate("/leaderboard")} className="glass-card p-4 text-left border border-gold/10 hover-lift tap-bounce">
           <Trophy className="w-5 h-5 text-gold mb-2" />
@@ -127,7 +128,7 @@ export default function DashboardPage() {
               <div className="glass-card p-4 border hover-lift animate-card-in" style={{ borderColor: `${subject.color}20`, animationDelay: `${index * 55}ms` }}>
                 <div className="flex items-center gap-3">
                   <IconBadge name={subject.icon} color={subject.color} className="w-11 h-11 rounded-xl" />
-                  <div className="flex-1 min-w-0"><p className="font-bold text-white text-sm truncate">{language === "bn" ? subject.nameBn : subject.name}</p><p className="text-xs text-gray-500">{subject.totalChapters} chapters · MCQ bank</p></div>
+                  <div className="flex-1 min-w-0"><p className="font-bold text-white text-sm truncate">{language === "bn" ? subject.nameBn : subject.name}</p><p className="text-xs text-gray-500">{subject.totalChapters} chapters · Written bank</p></div>
                   <span className="text-xs font-bold" style={{ color: subject.color }}>+{subject.xpReward}</span>
                 </div>
               </div>

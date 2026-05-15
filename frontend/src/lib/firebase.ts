@@ -290,7 +290,7 @@ export async function hasRewardBeenClaimed(uid: string, subjectId: string, itemI
   return snap.exists() && (snap.data() as ProgressRecord).rewardClaimed === true;
 }
 
-export async function markLessonRewardClaimed(uid: string, subjectId: string, lessonId: string, proof?: { name: string; size: number; type: string }) {
+export async function markLessonRewardClaimed(uid: string, subjectId: string, lessonId: string, proof?: { name: string; size: number; type: string; questionId?: string; difficulty?: string; topic?: string; score?: number }) {
   const ref = doc(db, "userProgress", progressDocId(uid, subjectId, lessonId, "lesson"));
   const snap = await getDoc(ref);
   if (snap.exists() && (snap.data() as ProgressRecord).rewardClaimed) return false;
@@ -304,6 +304,10 @@ export async function markLessonRewardClaimed(uid: string, subjectId: string, le
     proofName: proof?.name,
     proofSize: proof?.size,
     proofType: proof?.type,
+    questionId: proof?.questionId,
+    difficulty: proof?.difficulty,
+    topic: proof?.topic,
+    proofScore: proof?.score,
     updatedAt: serverTimestamp(),
     createdAt: snap.exists() ? undefined : serverTimestamp(),
   }), { merge: true });

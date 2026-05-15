@@ -10,7 +10,7 @@ import { LevelUpModal } from "@/components/gamification/LevelUpModal";
 import { XpFloatingPopups } from "@/components/gamification/XpFloating";
 import { navigate } from "@/lib/navigate";
 import { Loader2 } from "lucide-react";
-import { APP_VERSION, UPDATE_API_URL, UPDATE_RELEASE_URL } from "@/lib/appVersion";
+import { UpdatePopup } from "@/components/updates/UpdatePopup";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { user, setUser, setLoading, isLoading, theme } = useUserStore();
@@ -93,33 +93,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     if (typeof document !== "undefined") document.documentElement.dataset.theme = theme || "light";
   }, [theme]);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const key = `study-rpg-update-dismissed-${APP_VERSION}`;
-    if (localStorage.getItem(key)) return;
-    const compareVersion = (a: string, b: string) => {
-      const pa = a.replace(/^v/i, "").split(".").map((n) => Number(n) || 0);
-      const pb = b.replace(/^v/i, "").split(".").map((n) => Number(n) || 0);
-      for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-        if ((pa[i] || 0) > (pb[i] || 0)) return 1;
-        if ((pa[i] || 0) < (pb[i] || 0)) return -1;
-      }
-      return 0;
-    };
-    fetch(UPDATE_API_URL, { cache: "no-store" })
-      .then((r) => r.ok ? r.json() : null)
-      .then((release) => {
-        const latest = release?.tag_name ? String(release.tag_name).replace(/^v/i, "") : "";
-        if (latest && compareVersion(latest, APP_VERSION) > 0) {
-          const open = confirm(`Study RPG v${latest} update available. Download now?`);
-          if (open) window.open(release.html_url || UPDATE_RELEASE_URL, "_blank");
-          else localStorage.setItem(key, "1");
-        }
-      })
-      .catch(() => undefined);
-  }, []);
-
-
   if (isLoading && !user) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--app-bg)" }}>
@@ -147,6 +120,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <BottomNav />
       <LevelUpModal />
       <XpFloatingPopups />
+      <UpdatePopup />
     </div>
   );
 }

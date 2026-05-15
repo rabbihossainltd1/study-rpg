@@ -1,0 +1,13 @@
+Study RPG v1.3.1 Firebase rules note
+
+Current Firestore rules do not need a required change for this update.
+Reason:
+- Guest users are Firebase authenticated anonymous users, so request.auth != null works.
+- Written answer proof reward uses the existing /userProgress/{progressId} collection.
+- Leaderboard profile read uses existing /users/{userId} authenticated read rule.
+- Mission/GK quiz rewards use existing users XP/coin updates from the app.
+
+Keep Firebase Authentication providers enabled:
+- Anonymous
+- Email/Password
+- Google

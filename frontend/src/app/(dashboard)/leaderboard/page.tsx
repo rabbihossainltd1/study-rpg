@@ -248,10 +248,10 @@ export default function LeaderboardPage() {
               {!canSeeFull && <p className="text-[11px] text-gray-500 text-center pt-1">Friend হলে full information দেখা যাবে।</p>}
             </div>
             {user && selected.userId !== user.uid && (() => {
-              if (state === "accepted") return <div className="grid grid-cols-2 gap-2 mt-3"><Button variant="secondary" onClick={() => messageFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Message</Button><Button variant="gold" onClick={() => challengeFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Challenge</Button></div>;
+              if (state === "accepted") return <div className="grid grid-cols-3 gap-2 mt-3"><Button variant="ghost" onClick={() => undefined} disabled={busyAdd === selected.userId}>View Profile</Button><Button variant="secondary" onClick={() => messageFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Message</Button><Button variant="gold" onClick={() => challengeFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Challenge</Button></div>;
               if (state === "pending") return <Button className="w-full mt-3" variant="gold" onClick={() => cancelLeaderboardRequest(selected)} disabled={busyAdd === selected.userId}>Cancel Request</Button>;
               if (state === "blocked_by_me" || state === "blocked_me") return <Button className="w-full mt-3" variant="danger" disabled>Unavailable</Button>;
-              return <Button className="w-full mt-3" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}><UserPlus className="w-4 h-4" /> Add Friend</Button>;
+              return <div className="grid grid-cols-2 gap-2 mt-3"><Button variant="ghost" onClick={() => undefined} disabled={busyAdd === selected.userId}>View Profile</Button><Button onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}><UserPlus className="w-4 h-4" /> Add Friend</Button></div>;
             })()}
           </div>
         </div>);

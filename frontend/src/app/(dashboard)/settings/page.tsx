@@ -22,6 +22,7 @@ export default function SettingsPage() {
   const [binding, setBinding] = useState(false);
   const [savingStudent, setSavingStudent] = useState(false);
   const [checkingUpdate, setCheckingUpdate] = useState(false);
+  const [showStudentEditor, setShowStudentEditor] = useState(false);
   const [studentForm, setStudentForm] = useState(() => ({
     className: user?.className || "Class 9",
     groupName: user?.groupName || "Science",
@@ -184,24 +185,37 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <div className="glass-card p-5 space-y-3 border border-primary/15">
-        <SectionTitle icon={<DownloadCloud className="w-4 h-4" />} title={isBn ? "অ্যাপ আপডেট" : "App update"} />
-        <p className="text-sm text-gray-500">{isBn ? `ইনস্টলড ভার্সন: v${APP_VERSION}` : `Installed version: v${APP_VERSION}`}</p>
-        <Button onClick={checkForUpdate} isLoading={checkingUpdate} className="w-full" leftIcon={<DownloadCloud className="w-4 h-4" />}>{isBn ? "চেক আপডেট" : "Check update"}</Button>
-      </div>
-
       <div className="glass-card p-5 space-y-4">
-        <SectionTitle icon={<GraduationCap className="w-4 h-4" />} title={isBn ? "স্টুডেন্ট ইনফো" : "Student info"} />
-        <p className="text-xs text-gray-500">{isBn ? "ক্লাস পরিবর্তন করলে MCQ ও subject list সেই অনুযায়ী বদলাবে।" : "Changing class updates MCQ and subject list automatically."}</p>
-        <SelectBox label={isBn ? "ক্লাস" : "Class"} icon={<GraduationCap className="w-4 h-4" />} value={studentForm.className} onChange={(v) => setStudentForm((p) => ({ ...p, className: v, groupName: needsEducationGroup(v) ? (p.groupName === "General" ? "Science" : p.groupName) : "General" }))} options={[...CLASS_OPTIONS]} />
-        {showGroup && <SelectBox label={isBn ? "গ্রুপ" : "Group"} icon={<GraduationCap className="w-4 h-4" />} value={studentForm.groupName} onChange={(v) => setStudentForm((p) => ({ ...p, groupName: v }))} options={EDUCATION_GROUPS.filter((g) => g !== "General")} />}
-        <TextInput label={isBn ? "স্কুল/কলেজ/ইউনিভার্সিটি" : "School / College / University"} icon={<School className="w-4 h-4" />} value={studentForm.school} onChange={(v) => setStudentForm((p) => ({ ...p, school: v }))} />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <SelectBox label={isBn ? "বিভাগ" : "Division"} icon={<MapPin className="w-4 h-4" />} value={studentForm.division} onChange={(v) => { const first = getDistrictsForDivision(v)[0] || ""; setStudentForm((p) => ({ ...p, division: v, zila: first, thana: "" })); }} options={DIVISIONS} />
-          <SelectBox label={isBn ? "জেলা" : "District"} icon={<Building2 className="w-4 h-4" />} value={studentForm.zila} onChange={(v) => setStudentForm((p) => ({ ...p, zila: v, thana: "" }))} options={zilaOptions} />
-          <SelectBox label={isBn ? "থানা/উপজেলা" : "Thana / Upazila"} icon={<Home className="w-4 h-4" />} value={studentForm.thana} onChange={(v) => setStudentForm((p) => ({ ...p, thana: v }))} options={["", ...thanaOptions]} />
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <SectionTitle icon={<GraduationCap className="w-4 h-4" />} title={isBn ? "স্টুডেন্ট আইডি ইনফো" : "Student ID info"} />
+            <p className="text-xs text-gray-500 mt-1">{isBn ? "ক্লাস অনুযায়ী subject ও লিখিত প্রশ্ন বদলাবে।" : "Class changes update subjects and written questions."}</p>
+          </div>
+          <Button size="sm" variant="secondary" onClick={() => setShowStudentEditor((v) => !v)} leftIcon={<Edit3 className="w-4 h-4" />}>
+            {isBn ? "Edit" : "Edit"}
+          </Button>
         </div>
-        <Button onClick={saveStudentInfo} isLoading={savingStudent} className="w-full" leftIcon={<Save className="w-4 h-4" />}>{isBn ? "স্টুডেন্ট ইনফো সেভ" : "Save student info"}</Button>
+        {!showStudentEditor && (
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <InfoPill label={isBn ? "ক্লাস" : "Class"} value={`${studentForm.className}${showGroup ? ` · ${studentForm.groupName}` : ""}`} />
+            <InfoPill label={isBn ? "প্রতিষ্ঠান" : "Institution"} value={studentForm.school || "Not added"} />
+            <InfoPill label={isBn ? "জেলা" : "District"} value={studentForm.zila || "Not added"} />
+            <InfoPill label={isBn ? "থানা" : "Thana"} value={studentForm.thana || "Not added"} />
+          </div>
+        )}
+        {showStudentEditor && (
+          <div className="space-y-4 animate-card-in">
+            <SelectBox label={isBn ? "ক্লাস" : "Class"} icon={<GraduationCap className="w-4 h-4" />} value={studentForm.className} onChange={(v) => setStudentForm((p) => ({ ...p, className: v, groupName: needsEducationGroup(v) ? (p.groupName === "General" ? "Science" : p.groupName) : "General" }))} options={[...CLASS_OPTIONS]} />
+            {showGroup && <SelectBox label={isBn ? "গ্রুপ" : "Group"} icon={<GraduationCap className="w-4 h-4" />} value={studentForm.groupName} onChange={(v) => setStudentForm((p) => ({ ...p, groupName: v }))} options={EDUCATION_GROUPS.filter((g) => g !== "General")} />}
+            <TextInput label={isBn ? "স্কুল/কলেজ/ইউনিভার্সিটি" : "School / College / University"} icon={<School className="w-4 h-4" />} value={studentForm.school} onChange={(v) => setStudentForm((p) => ({ ...p, school: v }))} />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <SelectBox label={isBn ? "বিভাগ" : "Division"} icon={<MapPin className="w-4 h-4" />} value={studentForm.division} onChange={(v) => { const first = getDistrictsForDivision(v)[0] || ""; setStudentForm((p) => ({ ...p, division: v, zila: first, thana: "" })); }} options={DIVISIONS} />
+              <SelectBox label={isBn ? "জেলা" : "District"} icon={<Building2 className="w-4 h-4" />} value={studentForm.zila} onChange={(v) => setStudentForm((p) => ({ ...p, zila: v, thana: "" }))} options={zilaOptions} />
+              <SelectBox label={isBn ? "থানা/উপজেলা" : "Thana / Upazila"} icon={<Home className="w-4 h-4" />} value={studentForm.thana} onChange={(v) => setStudentForm((p) => ({ ...p, thana: v }))} options={["", ...thanaOptions]} />
+            </div>
+            <Button onClick={saveStudentInfo} isLoading={savingStudent} className="w-full" leftIcon={<Save className="w-4 h-4" />}>{isBn ? "স্টুডেন্ট ইনফো সেভ" : "Save student info"}</Button>
+          </div>
+        )}
       </div>
 
       <div className="glass-card p-5 space-y-4">
@@ -251,12 +265,29 @@ export default function SettingsPage() {
           <Trash2 className="w-4 h-4" /> {isBn ? "অ্যাকাউন্ট ডিলিট" : "Delete account"}
         </button>
       </div>
+
+
+      <div className="glass-card p-4 space-y-2 border border-primary/10">
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <SectionTitle icon={<DownloadCloud className="w-4 h-4" />} title={isBn ? "অ্যাপ আপডেট" : "App update"} />
+            <p className="text-xs text-gray-500 mt-1">{isBn ? `ইনস্টলড ভার্সন: v${APP_VERSION}` : `Installed version: v${APP_VERSION}`}</p>
+          </div>
+          <Button onClick={checkForUpdate} isLoading={checkingUpdate} size="sm" className="px-3 py-2 text-xs" leftIcon={<DownloadCloud className="w-3.5 h-3.5" />}>
+            {isBn ? "চেক" : "Check"}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
 
 function SectionTitle({ icon, title }: { icon: ReactNode; title: string }) {
   return <div className="flex items-center gap-2 text-white font-black">{icon}<span>{title}</span></div>;
+}
+
+function InfoPill({ label, value }: { label: string; value: string }) {
+  return <div className="rounded-xl border border-white/10 bg-white/5 p-3 min-w-0"><p className="text-[11px] text-gray-500 mb-1">{label}</p><p className="text-sm font-black text-white truncate">{value}</p></div>;
 }
 
 function SelectBox({ label, icon, value, onChange, options }: { label: string; icon: ReactNode; value: string; onChange: (value: string) => void; options: readonly string[] }) {
