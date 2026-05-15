@@ -19,7 +19,7 @@ export default function SubjectsPage() {
         </div>
         <div>
           <h1 className="text-2xl font-black text-white">{language === "bn" ? "বিষয়সমূহ" : "Subjects"}</h1>
-          <p className="text-sm text-gray-500">{language === "bn" ? "তোমার ক্লাস অনুযায়ী লিখিত প্রশ্ন" : "Class-wise written questions"}</p>
+          <p className="text-sm text-gray-500">{language === "bn" ? "তোমার ক্লাস অনুযায়ী MCQ ও লিখিত প্রশ্ন" : "Class-wise MCQ and written questions"}</p>
         </div>
       </div>
 
@@ -41,7 +41,7 @@ export default function SubjectsPage() {
                 </div>
               </div>
               <h3 className="font-black text-white text-xl leading-tight mb-1 break-words whitespace-normal">{language === "bn" ? subject.nameBn : subject.name}</h3>
-              <p className="text-xs text-gray-500 mb-3 leading-relaxed">{subject.totalChapters} {language === "bn" ? "অধ্যায়" : "chapters"} · {language === "bn" ? "লিখিত প্রশ্ন" : "Written questions"}</p>
+              <p className="text-xs text-gray-500 mb-3 leading-relaxed">{subject.totalChapters} {language === "bn" ? "অধ্যায়" : "chapters"} · {language === "bn" ? "MCQ ও লিখিত প্রশ্ন" : "MCQ and written questions"}</p>
               <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2"><div className="h-full rounded-full transition-all duration-700" style={{ background: subject.color, width: `${subject.progress}%` }} /></div>
               <div className="flex items-center justify-between"><span className="text-xs text-gray-500">{subject.progress}%</span><div className="flex items-center gap-1 text-xs" style={{ color: subject.color }}>{language === "bn" ? "শুরু করো" : "Start"} <ChevronRight className="w-3 h-3" /></div></div>
             </div>
@@ -52,8 +52,8 @@ export default function SubjectsPage() {
       <div className="glass-card p-5 border border-gold/20 flex items-center gap-4">
         <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0"><Star className="w-6 h-6 text-gold" /></div>
         <div className="flex-1">
-          <p className="font-bold text-white text-sm">{language === "bn" ? "ক্লাস-ভিত্তিক লিখিত প্রশ্ন" : "Class-wise written questions"}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{language === "bn" ? "তোমার প্রোফাইলে সেট করা ক্লাস/গ্রুপ অনুযায়ী বিষয় ও লিখিত প্রশ্ন দেখানো হচ্ছে।" : "Subjects and written questions are filtered by your class and group."}</p>
+          <p className="font-bold text-white text-sm">{language === "bn" ? "ক্লাস-ভিত্তিক MCQ ও লিখিত প্রশ্ন" : "Class-wise MCQ and written questions"}</p>
+          <p className="text-xs text-gray-500 mt-0.5">{language === "bn" ? "তোমার প্রোফাইলে সেট করা ক্লাস/গ্রুপ অনুযায়ী বিষয়, MCQ ও লিখিত প্রশ্ন দেখানো হচ্ছে।" : "Subjects, MCQ and written questions are filtered by your class and group."}</p>
         </div>
       </div>
     </div>

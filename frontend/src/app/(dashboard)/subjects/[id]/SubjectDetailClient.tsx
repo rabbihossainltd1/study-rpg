@@ -4,13 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
 import { getSubjectsForUser, SUBJECTS, CHAPTERS } from "@/lib/subjects";
+import { getSubjectQuizQuestions, type QuizDifficulty } from "@/lib/quizData";
 import { getWrittenQuestionsForChapter, writtenQuestionToLesson, type WrittenDifficulty, type WrittenQuestion } from "@/lib/writtenQuestions";
 import { Button } from "@/components/ui/Button";
 import {
   ChevronLeft, Lock, CheckCircle2, Clock, Zap, BookOpen, ChevronDown, ChevronUp,
-  X, UploadCloud, ShieldCheck, FileText, Coins, AlertTriangle
+  X, UploadCloud, ShieldCheck, FileText, Coins, AlertTriangle, HelpCircle, Play, Check, Trophy
 } from "lucide-react";
-import { addXp, addCoins, getSubjectProgress, markLessonRewardClaimed } from "@/lib/firebase";
+import { addXp, addCoins, getSubjectProgress, markLessonRewardClaimed, markQuizRewardClaimed } from "@/lib/firebase";
 import toast from "react-hot-toast";
 import type { Lesson } from "@/types";
 import { AppIcon } from "@/components/ui/AppIcon";
@@ -93,7 +94,7 @@ async function analyzeWrittenAnswerImage(file: File, question: WrittenQuestion):
           rowEdges += 1;
         }
       }
-      if (rowEdges > 12) horizontalRuns += 1;
+      if (rowEdges > width * 0.08) horizontalRuns += 1;
     }
 
     const edgeRatio = edges / pixels;
@@ -103,21 +104,16 @@ async function analyzeWrittenAnswerImage(file: File, question: WrittenQuestion):
     const inkRatio = inkLike / pixels;
     const lineRatio = horizontalRuns / height;
 
-    let score = 0;
-    if (paperRatio > 0.06) score += 25;
-    if (edgeRatio > 0.04) score += 25;
-    if (inkRatio > 0.08) score += 20;
-    if (lineRatio > 0.16) score += 15;
-    if (variance > 720) score += 15;
-    if (question.keywords.length >= 4) score += 0;
+    if (darkRatio > 0.75 || avg < 45) return { ok: false, reason: "Image is too dark. Upload a clear notebook answer photo.", score: 0 };
+    if (variance < 560) return { ok: false, reason: "Image looks plain or blurry. Upload solved notebook work.", score: 0 };
+    if (edgeRatio < 0.032) return { ok: false, reason: "AI could not detect enough handwriting/detail.", score: 0 };
+    if (paperRatio < 0.035 && edgeRatio < 0.065) return { ok: false, reason: "Upload a notebook/page photo, not a random image.", score: 0 };
+    if (saturatedRatio > 0.44 && paperRatio < 0.055) return { ok: false, reason: "This looks like a random photo, not solved answer proof.", score: 0 };
+    if (inkRatio < 0.08 && lineRatio < 0.08) return { ok: false, reason: "Write the answer clearly in your notebook, then upload.", score: 0 };
 
-    if (darkRatio > 0.74 || avg < 42) return { ok: false, reason: "Image is too dark. Upload a clear notebook answer.", score };
-    if (saturatedRatio > 0.46 && paperRatio < 0.07) return { ok: false, reason: "This looks like a random photo, not a written answer page.", score };
-    if (paperRatio < 0.045) return { ok: false, reason: "AI could not detect a notebook/page background.", score };
-    if (edgeRatio < 0.032 || inkRatio < 0.055 || lineRatio < 0.1) return { ok: false, reason: "AI could not detect enough handwriting/answer lines.", score };
-    if (variance < 560) return { ok: false, reason: "Image looks blurry/plain. Upload the solved answer clearly.", score };
-
-    return { ok: score >= 60, reason: score >= 60 ? "Answer proof approved." : "Answer photo needs clearer writing.", score };
+    const score = Math.round(Math.min(100, 48 + edgeRatio * 520 + paperRatio * 55 + lineRatio * 120));
+    const hasExpectedShape = Boolean(question.expectedAnswer && question.keywords.length);
+    return { ok: hasExpectedShape && score >= 62, reason: "Proof approved.", score };
   } catch {
     return { ok: false, reason: "Could not read image. Try another clear proof.", score: 0 };
   } finally {
@@ -129,7 +125,14 @@ export default function SubjectDetailClient({ id }: { id: string }) {
   const { user, setUser, addXpPopup, triggerLevelUp, language } = useUserStore();
   const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState<WrittenDifficulty>("easy");
+  const [quizActive, setQuizActive] = useState(false);
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [answered, setAnswered] = useState(false);
+  const [score, setScore] = useState(0);
+  const [quizDone, setQuizDone] = useState(false);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [completedQuizzes, setCompletedQuizzes] = useState<Set<string>>(new Set());
   const [proofLesson, setProofLesson] = useState<Lesson | null>(null);
   const [proofQuestion, setProofQuestion] = useState<WrittenQuestion | null>(null);
   const [proofFile, setProofFile] = useState<File | null>(null);
@@ -139,14 +142,19 @@ export default function SubjectDetailClient({ id }: { id: string }) {
   const allowedSubjects = useMemo(() => getSubjectsForUser(user), [user?.className, user?.groupName, user?.examMode]);
   const isAllowed = !user || allowedSubjects.some((s) => s.id === id);
   const chapters = CHAPTERS[id] || [];
+  const quizQuestions = useMemo(() => getSubjectQuizQuestions(id, difficulty as QuizDifficulty, 10, user?.examMode), [id, difficulty, user?.examMode]);
+  const currentQ = quizQuestions[quizIndex];
   const isBn = language === "bn";
-  useBodyScrollLock(Boolean(proofLesson));
+  const difficultyBonus = difficulty === "hard" ? 15 : difficulty === "medium" ? 8 : 0;
+  const quizRewardXp = score * 30 + (score === quizQuestions.length ? 50 : 0) + difficultyBonus;
+  useBodyScrollLock(Boolean(proofLesson) || quizActive);
 
   useEffect(() => {
     if (!user || !id || user.uid.startsWith("guest_")) return;
     getSubjectProgress(user.uid, id)
       .then((records) => {
         setCompletedLessons(new Set(records.filter((r) => r.kind === "lesson" && r.rewardClaimed).map((r) => r.itemId)));
+        setCompletedQuizzes(new Set(records.filter((r) => r.kind === "quiz" && r.rewardClaimed).map((r) => String(r.difficulty || r.itemId.replace("quiz_", "")))));
       })
       .catch(() => undefined);
   }, [user?.uid, id]);
@@ -190,6 +198,58 @@ export default function SubjectDetailClient({ id }: { id: string }) {
     setUser({ ...user, xp: user.xp + xpEarned, coins: user.coins + coinsEarned, level: newLevel });
     addXpPopup(xpEarned, 50, 35);
     if (leveledUp) triggerLevelUp(newLevel);
+  };
+
+  const startQuiz = () => {
+    setQuizActive(true);
+    setQuizIndex(0);
+    setScore(0);
+    setQuizDone(false);
+    setSelected(null);
+    setAnswered(false);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleAnswer = (optionIndex: number) => {
+    if (answered || !currentQ) return;
+    setSelected(optionIndex);
+    setAnswered(true);
+    if (currentQ.correctAnswer === optionIndex) setScore((s) => s + 1);
+  };
+
+  const handleNextQuestion = () => {
+    if (quizIndex + 1 < quizQuestions.length) {
+      setQuizIndex((i) => i + 1);
+      setSelected(null);
+      setAnswered(false);
+    } else {
+      setQuizDone(true);
+    }
+  };
+
+  const handleFinishQuiz = async () => {
+    if (!user || quizQuestions.length === 0) return;
+    const quizDifficulty = difficulty as QuizDifficulty;
+    const alreadyClaimed = completedQuizzes.has(quizDifficulty);
+    let firstClaim = !alreadyClaimed;
+    if (!alreadyClaimed && !user.uid.startsWith("guest_")) {
+      firstClaim = await markQuizRewardClaimed(user.uid, id, quizDifficulty, score).catch(() => false);
+    }
+    if (firstClaim) {
+      const xpEarned = quizRewardXp;
+      const coinsEarned = score * 5;
+      await updateLocalReward(xpEarned, coinsEarned);
+      setCompletedQuizzes((prev) => new Set([...prev, quizDifficulty]));
+      toast.success(`Quiz done! +${xpEarned} XP`);
+    } else {
+      toast("Quiz already solved. Reward not repeated.");
+    }
+    setQuizActive(false);
+    setQuizDone(false);
+    setQuizIndex(0);
+    setScore(0);
+    setSelected(null);
+    setAnswered(false);
   };
 
   const openProof = (question: WrittenQuestion) => {
@@ -244,7 +304,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
       }
       setCompletedLessons((prev) => new Set([...prev, proofLesson.id]));
       await updateLocalReward(proofLesson.xpReward, Math.max(1, Math.round(proofLesson.xpReward / 8)));
-      toast.success(isBn ? "উত্তর proof approved. XP collect হয়েছে।" : "Answer proof approved. Reward collected.");
+      toast.success(isBn ? "Solved proof approved. XP collect হয়েছে।" : "Solved proof approved. Reward collected.");
       setProofLesson(null);
       setProofQuestion(null);
       setProofFile(null);
@@ -255,7 +315,8 @@ export default function SubjectDetailClient({ id }: { id: string }) {
     }
   };
 
-  const totalQuestions = chapters.length * 3;
+  const totalWritten = chapters.length * 3;
+  const solvedThisDifficulty = completedQuizzes.has(difficulty);
 
   return (
     <div className="space-y-5 animate-card-in">
@@ -271,9 +332,9 @@ export default function SubjectDetailClient({ id }: { id: string }) {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-3xl font-black text-white mb-1">{isBn ? subject.nameBn : subject.name}</h1>
-            <p className="text-gray-500 mb-3">{chapters.length} {isBn ? "অধ্যায়" : "chapters"} · {isBn ? "লিখিত পরীক্ষার প্রশ্ন" : "written exam question bank"}</p>
+            <p className="text-gray-500 mb-3">{chapters.length} {isBn ? "অধ্যায়" : "chapters"} · {isBn ? "MCQ ও লিখিত প্রশ্ন" : "MCQ and written practice"}</p>
             <div className="h-2 bg-white/5 rounded-full overflow-hidden mb-2"><div className="h-full rounded-full" style={{ width: `${subject.progress}%`, background: subject.color }} /></div>
-            <div className="flex justify-between text-xs"><span className="text-gray-600">{subject.progress}%</span><span style={{ color: subject.color }}>{totalQuestions} {difficulty} questions</span></div>
+            <div className="flex justify-between text-xs"><span className="text-gray-600">{subject.progress}%</span><span style={{ color: subject.color }}>{quizQuestions.length} MCQ · {totalWritten} written</span></div>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-2 mt-5">
@@ -287,6 +348,14 @@ export default function SubjectDetailClient({ id }: { id: string }) {
               {isBn ? item.labelBn : item.label}
             </button>
           ))}
+        </div>
+        <div className="grid grid-cols-2 gap-2 mt-3">
+          <Button onClick={startQuiz} variant="secondary" size="md" leftIcon={solvedThisDifficulty ? <CheckCircle2 className="w-4 h-4" /> : <HelpCircle className="w-4 h-4" />} className="w-full">
+            {isBn ? "MCQ শুরু" : "Start MCQ"}
+          </Button>
+          <div className="flex items-center justify-center gap-1 px-3 py-2.5 glass rounded-xl text-sm font-bold" style={{ color: subject.color }}>
+            <Zap className="w-4 h-4" /> {subject.xpReward} XP/chapter
+          </div>
         </div>
       </div>
 
@@ -306,7 +375,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-white text-sm truncate">{isBn ? chapter.titleBn : chapter.title}</p>
-                    <p className="text-xs text-gray-500 truncate">{isBn ? "বোর্ড/পরীক্ষা ধাঁচের লিখিত প্রশ্ন" : "Board-style written practice"}</p>
+                    <p className="text-xs text-gray-500 truncate">{isBn ? "প্রশ্ন দেখে খাতায় সমাধান করো" : "Solve in notebook and upload proof"}</p>
                     <div className="flex gap-2 mt-1">
                       <span className="text-xs text-gray-600">{writtenQuestions.length} questions</span>
                       <span className="text-xs font-bold" style={{ color: subject.color }}>+{writtenQuestions.reduce((sum, q) => sum + q.xpReward, 0)} XP</span>
@@ -332,7 +401,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                                 <span className="text-[11px] text-gray-600">{question.topic}</span>
                               </div>
                               <p className="text-sm text-white font-bold leading-relaxed whitespace-pre-line">{isBn ? question.questionBn : question.question}</p>
-                              <p className="text-xs text-gray-500 mt-2">{isBn ? "গাইড" : "Guide"}: {question.expectedAnswer}</p>
+                              <p className="text-xs text-gray-500 mt-2">{isBn ? "নির্দেশনা: উত্তর খাতায় লিখে solved proof upload করো।" : "Instruction: solve in notebook and upload proof."}</p>
                               <div className="flex items-center gap-2 mt-2">
                                 <Clock className="w-3 h-3 text-gray-600" />
                                 <span className="text-xs text-gray-600">{question.duration} min</span>
@@ -340,7 +409,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                               </div>
                             </div>
                             <Button size="sm" variant={done ? "secondary" : "ghost"} leftIcon={done ? <CheckCircle2 className="w-3 h-3" /> : <UploadCloud className="w-3 h-3" />} className="text-xs py-1 px-2 flex-shrink-0" onClick={() => openProof(question)}>
-                              {done ? "Collected" : isBn ? "Upload" : "Upload"}
+                              {done ? "Collected" : isBn ? "Proof" : "Proof"}
                             </Button>
                           </div>
                         </div>
@@ -363,7 +432,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                   <ShieldCheck className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-black text-white">{isBn ? "AI Answer Proof" : "AI Answer Proof"}</h3>
+                  <h3 className="text-lg font-black text-white">{isBn ? "Solved Proof" : "Solved Proof"}</h3>
                   <p className="text-xs text-gray-500">{isBn ? "খাতায় উত্তর লিখে ছবি upload করো" : "Write in notebook and upload photo"}</p>
                 </div>
               </div>
@@ -374,9 +443,8 @@ export default function SubjectDetailClient({ id }: { id: string }) {
               <div className="text-left rounded-xl border border-primary/20 bg-primary/5 p-3 mb-3">
                 <p className="text-xs text-gray-500 mb-1">{isBn ? "প্রশ্ন" : "Question"}</p>
                 <p className="text-sm font-bold text-white leading-relaxed">{isBn ? proofQuestion.questionBn : proofQuestion.question}</p>
-                <p className="text-xs text-gray-500 mt-3">{isBn ? "সঠিক উত্তরের গাইড" : "Answer guide"}: {proofQuestion.expectedAnswer}</p>
               </div>
-              <p className="text-xs text-gray-500 mb-4">{isBn ? "প্রশ্নের উত্তর খাতায় লিখে পরিষ্কার ছবি upload করো। Random image approve হবে না।" : "Upload a clear notebook photo with this answer. Random images will not be approved."}</p>
+              <p className="text-xs text-gray-500 mb-4">{isBn ? "প্রশ্নের উত্তর খাতায় লিখে পরিষ্কার ছবি upload করো। Random image approve হবে না।" : "Upload a clear notebook photo with your solved answer. Random images will not be approved."}</p>
               <label className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-white cursor-pointer hover:border-primary/40">
                 <UploadCloud className="w-4 h-4" /> Choose Image
                 <input type="file" accept="image/*" className="hidden" onChange={(e) => setProofFile(e.target.files?.[0] || null)} />
@@ -390,6 +458,59 @@ export default function SubjectDetailClient({ id }: { id: string }) {
               <Zap className="w-3 h-3 text-primary" /> +{proofLesson.xpReward} XP
               <Coins className="w-3 h-3 text-gold ml-2" /> +{Math.max(1, Math.round(proofLesson.xpReward / 8))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {quizActive && (
+        <div className="modal-backdrop fixed inset-0 z-[250] flex items-center justify-center p-3 overflow-hidden animate-fade-in">
+          <div className="glass-card quiz-modal-card w-full max-w-lg p-4 sm:p-5 border border-secondary/30 animate-card-in overflow-y-auto shadow-[0_0_46px_rgba(0,240,255,0.12)]">
+            {!quizDone ? (
+              currentQ ? <>
+                <div className="flex items-center justify-between mb-5">
+                  <div>
+                    <p className="text-xs text-gray-500 uppercase font-mono tracking-wider">{subject.name} · {difficulty}</p>
+                    <p className="text-lg font-bold text-white">Question {quizIndex + 1}/{quizQuestions.length}</p>
+                  </div>
+                  <button onClick={() => setQuizActive(false)} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white transition-colors"><X className="w-5 h-5" /></button>
+                </div>
+                <div className="h-1.5 bg-white/5 rounded-full mb-5 overflow-hidden"><div className="h-full bg-secondary rounded-full transition-all" style={{ width: `${((quizIndex + 1) / quizQuestions.length) * 100}%` }} /></div>
+                <div className="mb-4"><span className="text-xs px-2 py-1 rounded-lg bg-white/5 text-gray-500">{currentQ.topic}</span></div>
+                <h3 className="text-xl font-black text-white mb-4 leading-relaxed scroll-mt-24">{currentQ.questionBn || currentQ.question}</h3>
+                <div className="space-y-3 mb-5">
+                  {currentQ.options.map((opt, idx) => {
+                    const isCorrect = currentQ.correctAnswer === idx;
+                    const isSelected = selected === idx;
+                    return (
+                      <button key={idx} onClick={() => handleAnswer(idx)} disabled={answered} className={`quiz-option-btn w-full text-left p-4 rounded-2xl border text-base transition-all font-bold tap-bounce shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] ${
+                        !answered ? "border-white/15 bg-white/[0.03] hover:border-secondary/60 hover:bg-secondary/10 text-white" :
+                        isCorrect ? "border-primary bg-primary/15 text-primary shadow-[0_0_20px_rgba(57,255,20,0.15)]" :
+                        isSelected && !isCorrect ? "border-accent bg-accent/15 text-accent" :
+                        "border-white/5 text-gray-600 bg-white/[0.02]"
+                      }`}>
+                        <span className="flex items-center gap-3"><span className="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center text-sm font-black flex-shrink-0 bg-black/20">{answered && isCorrect ? <Check className="w-4 h-4" /> : answered && isSelected && !isCorrect ? <X className="w-4 h-4" /> : String.fromCharCode(65 + idx)}</span><span className="leading-snug">{opt}</span></span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {answered && <div className={`p-3 rounded-xl text-sm mb-4 ${selected === currentQ.correctAnswer ? "bg-primary/10 text-primary border border-primary/20" : "bg-accent/10 text-accent border border-accent/20"}`}>{selected === currentQ.correctAnswer ? "Correct. " : "Incorrect. "}{currentQ.explanation}</div>}
+                {answered && <Button onClick={handleNextQuestion} className="w-full sticky bottom-0 shadow-neon-primary" size="lg">{quizIndex + 1 < quizQuestions.length ? "Next Question →" : "See Results"}</Button>}
+              </> : <div className="text-center"><p className="text-gray-400 mb-4">No quiz found for this subject.</p><Button onClick={() => setQuizActive(false)}>Close</Button></div>
+            ) : (
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-2xl bg-gold/10 border border-gold/30 flex items-center justify-center mx-auto mb-4"><Trophy className="w-8 h-8 text-gold" /></div>
+                <h3 className="text-2xl font-black text-white mb-1">Quiz Complete</h3>
+                <p className="text-gray-400 mb-4">You scored <span className="text-primary font-bold">{score}/{quizQuestions.length}</span></p>
+                <div className="glass rounded-xl p-4 mb-5 flex justify-around">
+                  <div><p className="text-xl font-bold text-primary">+{quizRewardXp} XP</p><p className="text-xs text-gray-500">Earned</p></div>
+                  <div className="w-px bg-white/10" />
+                  <div><p className="text-xl font-bold text-gold inline-flex items-center gap-1">+{score * 5} <Coins className="w-5 h-5" /></p><p className="text-xs text-gray-500">Coins</p></div>
+                  <div className="w-px bg-white/10" />
+                  <div><p className="text-xl font-bold text-secondary">{Math.round((score / quizQuestions.length) * 100)}%</p><p className="text-xs text-gray-500">Accuracy</p></div>
+                </div>
+                <Button onClick={handleFinishQuiz} className="w-full" size="lg">Claim Rewards</Button>
+              </div>
+            )}
           </div>
         </div>
       )}

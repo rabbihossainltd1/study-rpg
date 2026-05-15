@@ -7,25 +7,25 @@ export type UpdateInfo = {
 };
 
 export const CURRENT_UPDATE_INFO: UpdateInfo = {
-  version: "1.3.1",
-  title: "Study RPG v1.3.1",
-  titleBn: "Study RPG v1.3.1 আপডেট",
+  version: "1.3.2",
+  title: "Study RPG v1.3.2",
+  titleBn: "Study RPG v1.3.2 আপডেট",
   notes: [
-    "Class and group based subjects now show written exam questions instead of subject MCQ tasks.",
-    "Easy, Medium and Hard written question banks are separated for every class and subject.",
-    "Students must solve the shown question in a notebook and upload a clear answer photo for reward verification.",
-    "Leaderboard profiles now support a View Profile action with basic info for non-friends and full info for friends.",
-    "Settings page is cleaner: student ID info is hidden behind an edit button and update check is compact at the bottom.",
-    "Removed inactive study-time, lesson, streak and perfect-score mission tasks.",
-    "Mission Daily Progress opens Subjects directly, and General Knowledge quiz missions were added."
+    "Bottom navigation keeps the MCQ button like before.",
+    "Subject pages now include both class-wise MCQ and written questions.",
+    "Written questions are cleaner, subject-specific and separated by Easy, Medium and Hard.",
+    "Students must solve written questions in a notebook and upload solved proof for XP.",
+    "Leaderboard View Profile now opens a working profile page with friend-based full/basic information.",
+    "Question banks were regenerated to avoid repeated SSC/HSC prefix text and duplicate exact questions.",
+    "Firebase rules text file is included for deployment reference."
   ],
   notesBn: [
-    "ক্লাস ও গ্রুপ অনুযায়ী বিষয়গুলোতে MCQ task এর বদলে লিখিত পরীক্ষার প্রশ্ন দেখাবে।",
-    "প্রতি ক্লাস ও বিষয়ে Easy, Medium, Hard লিখিত প্রশ্ন আলাদা করা হয়েছে।",
-    "দেওয়া প্রশ্ন খাতায় সমাধান করে পরিষ্কার উত্তরসহ ছবি upload করলে reward verification হবে।",
-    "Leaderboard profile-এ View Profile action যোগ হয়েছে; non-friend basic info, friend full info দেখতে পাবে।",
-    "Settings page পরিষ্কার করা হয়েছে: student ID info edit button-এর ভিতরে থাকবে, update check নিচে compact থাকবে।",
-    "Study-time, lesson, streak ও perfect-score related inactive mission task remove করা হয়েছে।",
-    "Mission Daily Progress click করলে Subjects open হবে, আর General Knowledge quiz mission যোগ হয়েছে।"
+    "Bottom navigation-এ আগের মতো MCQ button রাখা হয়েছে।",
+    "Subject page-এ এখন class-wise MCQ এবং লিখিত প্রশ্ন দুইটাই থাকবে।",
+    "লিখিত প্রশ্নগুলো clean, subject-specific এবং Easy, Medium, Hard অনুযায়ী আলাদা করা হয়েছে।",
+    "লিখিত প্রশ্ন খাতায় solve করে solved proof upload করলে XP verification হবে।",
+    "Leaderboard View Profile এখন working profile page open করবে; friend হলে full info, না হলে basic info।",
+    "Repeated SSC/HSC prefix text ও exact duplicate question এড়াতে question bank regenerate করা হয়েছে।",
+    "Firebase rules deployment reference হিসেবে TXT file ZIP-এর ভিতরে দেওয়া হয়েছে।"
   ]
 };

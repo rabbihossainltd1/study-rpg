@@ -7,7 +7,7 @@ import { useUserStore } from "@/store/useUserStore";
 
 const ITEMS = [
   { href: "/dashboard", label: "Home", bn: "হোম", icon: Home },
-  { href: "/subjects", label: "Questions", bn: "প্রশ্ন", icon: ListChecks },
+  { href: "/subjects", label: "MCQ", bn: "MCQ", icon: ListChecks },
   { href: "/leaderboard", label: "Leaderboard", bn: "র‍্যাঙ্ক", icon: Trophy },
   { href: "/profile", label: "Profile", bn: "প্রোফাইল", icon: UserRound },
 ];

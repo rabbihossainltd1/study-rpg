@@ -1,5 +1,5 @@
 import type { Lesson } from "@/types";
-import { CURRICULUM_SUBJECTS } from "@/lib/curriculum";
+import { CURRICULUM_SUBJECTS, type CurriculumSubject } from "@/lib/curriculum";
 
 export type WrittenDifficulty = "easy" | "medium" | "hard";
 
@@ -32,158 +32,176 @@ function safeTopics(subjectId: string) {
   return subject?.topics?.length ? subject.topics : [subject?.nameBn || subject?.name || "বিষয়"];
 }
 
-function classLabel(subjectId: string) {
-  const subject = getSubject(subjectId);
-  return (subject?.classLevels || []).join("/")
-    .replace(/Class 6/g, "ক্লাস ৬")
-    .replace(/Class 7/g, "ক্লাস ৭")
-    .replace(/Class 8/g, "ক্লাস ৮")
-    .replace(/Class 9/g, "ক্লাস ৯")
-    .replace(/Class 10/g, "ক্লাস ১০")
-    .replace(/SSC/g, "এসএসসি")
-    .replace(/HSC 1st Year/g, "এইচএসসি ১ম বর্ষ")
-    .replace(/HSC 2nd Year/g, "এইচএসসি ২য় বর্ষ")
-    .replace(/HSC/g, "এইচএসসি")
-    .replace(/Admission/g, "ভর্তি")
-    .replace(/University/g, "বিশ্ববিদ্যালয়")
-    .replace(/Honours/g, "অনার্স")
-    .replace(/Masters/g, "মাস্টার্স")
-    .replace(/Degree/g, "ডিগ্রি") || "ক্লাস";
+function classPrefix(subject?: CurriculumSubject) {
+  const levels = subject?.classLevels || [];
+  if (levels.includes("Class 6")) return "ক্লাস ৬";
+  if (levels.includes("Class 7")) return "ক্লাস ৭";
+  if (levels.includes("Class 8")) return "ক্লাস ৮";
+  if (levels.includes("Class 9") || levels.includes("Class 10") || levels.includes("SSC")) return "নবম-দশম";
+  if (levels.some((level) => level.includes("HSC"))) return "উচ্চমাধ্যমিক";
+  if (levels.includes("Admission")) return "ভর্তি প্রস্তুতি";
+  if (levels.some((level) => /University|Honours|Degree|Masters/.test(level))) return "বিশ্ববিদ্যালয়";
+  return "পাঠ্যসূচি";
 }
 
-function categoryOf(subjectId: string, name: string) {
-  const value = `${subjectId} ${name}`.toLowerCase();
-  if (value.includes("bangla") || name.includes("বাংলা")) return "bangla";
+function categoryOf(subject?: CurriculumSubject) {
+  const value = `${subject?.id || ""} ${subject?.name || ""} ${subject?.nameBn || ""}`.toLowerCase();
+  if (value.includes("bangla") || value.includes("বাংলা")) return "bangla";
   if (value.includes("english")) return "english";
-  if (value.includes("math") || name.includes("গণিত")) return "math";
-  if (value.includes("physics") || name.includes("পদার্থ")) return "physics";
-  if (value.includes("chemistry") || name.includes("রসায়ন")) return "chemistry";
-  if (value.includes("biology") || name.includes("জীব")) return "biology";
-  if (value.includes("ict") || value.includes("digital") || name.includes("প্রযুক্তি")) return "ict";
-  if (value.includes("accounting") || name.includes("হিসাব")) return "accounting";
-  if (value.includes("finance") || value.includes("business") || name.includes("ব্যবসায়") || name.includes("ফিন্যান্স")) return "business";
-  if (value.includes("history") || name.includes("ইতিহাস")) return "history";
-  if (value.includes("geography") || name.includes("ভূগোল")) return "geography";
-  if (value.includes("civics") || name.includes("পৌরনীতি")) return "civics";
-  if (value.includes("economics") || name.includes("অর্থনীতি")) return "economics";
-  if (value.includes("religion") || name.includes("ধর্ম")) return "religion";
-  if (value.includes("health") || name.includes("স্বাস্থ্য")) return "health";
-  if (value.includes("gk") || name.includes("সাধারণ জ্ঞান")) return "gk";
-  return "general";
+  if (value.includes("math") || value.includes("গণিত")) return "math";
+  if (value.includes("physics") || value.includes("chemistry") || value.includes("biology") || value.includes("science") || value.includes("ict") || value.includes("digital") || value.includes("বিজ্ঞান") || value.includes("প্রযুক্তি") || value.includes("স্বাস্থ্য")) return "science";
+  if (value.includes("accounting") || value.includes("finance") || value.includes("business") || value.includes("হিসাব") || value.includes("ফিন্যান্স") || value.includes("ব্যবসায়")) return "business";
+  if (value.includes("gk") || value.includes("সাধারণ জ্ঞান")) return "gk";
+  return "humanities";
 }
 
-type WrittenTemplate = { task: string; expected: string; keywords: string[] };
+type BuiltQuestion = Pick<WrittenQuestion, "question" | "questionBn" | "expectedAnswer" | "keywords">;
 
-const templates: Record<string, Record<WrittenDifficulty, WrittenTemplate[]>> = {
-  bangla: {
-    easy: [
-      { task: "মূলভাব ৫টি বাক্যে লিখে একটি প্রাসঙ্গিক উদাহরণ দাও", expected: "মূলভাব, চরিত্র/ঘটনা, প্রাসঙ্গিক উদাহরণ ও শুদ্ধ বানান থাকবে", keywords: ["মূলভাব", "উদাহরণ", "শুদ্ধ", "বাক্য"] },
-      { task: "শব্দার্থ/ব্যাকরণ নিয়ম লিখে ৩টি নিজস্ব বাক্য তৈরি করো", expected: "নিয়ম, শব্দার্থ, নিজস্ব বাক্য ও বানানশুদ্ধ উত্তর থাকবে", keywords: ["নিয়ম", "শব্দার্থ", "বাক্য", "বানান"] },
-      { task: "পাঠের দুইটি গুরুত্বপূর্ণ প্রশ্নের সংক্ষিপ্ত উত্তর লিখো", expected: "প্রশ্ন অনুযায়ী সরাসরি উত্তর, মূল পয়েন্ট ও পরিচ্ছন্ন লেখা থাকবে", keywords: ["প্রশ্ন", "উত্তর", "মূল", "পরিচ্ছন্ন"] }
-    ],
-    medium: [
-      { task: "কারণসহ ব্যাখ্যা করো এবং লেখকের বক্তব্যের সাথে মিলিয়ে উত্তর দাও", expected: "কারণ, ব্যাখ্যা, লেখকের বক্তব্য ও উপসংহার থাকবে", keywords: ["কারণ", "ব্যাখ্যা", "লেখক", "উপসংহার"] },
-      { task: "ভাবসম্প্রসারণ/সারাংশ লিখে প্রাসঙ্গিক দৃষ্টান্ত দাও", expected: "মূল ভাব, সম্প্রসারণ/সারাংশ, দৃষ্টান্ত ও ভাষার শুদ্ধতা থাকবে", keywords: ["ভাব", "সারাংশ", "দৃষ্টান্ত", "ভাষা"] },
-      { task: "উদ্ধৃত অংশ বিশ্লেষণ করে প্রশ্নোত্তর আকারে সাজাও", expected: "উদ্ধৃতি, বিশ্লেষণ, প্রশ্নোত্তর ও যুক্তি থাকবে", keywords: ["উদ্ধৃতি", "বিশ্লেষণ", "যুক্তি", "প্রশ্নোত্তর"] }
-    ],
-    hard: [
-      { task: "সৃজনশীল প্রশ্নের চার অংশ—জ্ঞান, অনুধাবন, প্রয়োগ, উচ্চতর দক্ষতা—সম্পূর্ণ করো", expected: "চার অংশ আলাদা, প্রাসঙ্গিক ব্যাখ্যা, উদাহরণ ও সিদ্ধান্ত থাকবে", keywords: ["জ্ঞান", "অনুধাবন", "প্রয়োগ", "উচ্চতর"] },
-      { task: "বোর্ড পরীক্ষার মানে রচনামূলক উত্তর লিখে যুক্তি ও উপসংহার দাও", expected: "ভূমিকা, বিশ্লেষণ, যুক্তি, উদাহরণ ও উপসংহার থাকবে", keywords: ["ভূমিকা", "বিশ্লেষণ", "যুক্তি", "উপসংহার"] },
-      { task: "পাঠের বক্তব্যকে বর্তমান জীবনের ঘটনার সাথে তুলনা করে বিশ্লেষণ করো", expected: "তুলনা, প্রেক্ষাপট, বাস্তব উদাহরণ ও মূল্যায়ন থাকবে", keywords: ["তুলনা", "প্রেক্ষাপট", "বাস্তব", "মূল্যায়ন"] }
-    ]
-  },
-  english: {
-    easy: [
-      { task: "five correct examples with Bangla meaning write করো", expected: "correct rule/example, Bangla meaning and clean sentences থাকবে", keywords: ["rule", "example", "meaning", "sentence"] },
-      { task: "given topic থেকে short paragraph outline লিখো", expected: "topic sentence, 3 points and conclusion থাকবে", keywords: ["topic", "points", "conclusion", "paragraph"] },
-      { task: "basic grammar item identify করে ৩টি sentence বানাও", expected: "grammar name, correct form and examples থাকবে", keywords: ["grammar", "form", "example", "correct"] }
-    ],
-    medium: [
-      { task: "passage/grammar item বিশ্লেষণ করে answer with reason লিখো", expected: "answer, reason, context and correction থাকবে", keywords: ["answer", "reason", "context", "correction"] },
-      { task: "transformation/tense/voice type question solve করে rule explain করো", expected: "rule, transformation, tense/voice accuracy and explanation থাকবে", keywords: ["rule", "tense", "voice", "explanation"] },
-      { task: "writing task-এর draft লিখে grammar mistake আলাদা করে দেখাও", expected: "organized draft, grammar accuracy and correction list থাকবে", keywords: ["draft", "grammar", "correction", "organized"] }
-    ],
-    hard: [
-      { task: "board standard writing/grammar answer লিখে explanation দাও", expected: "full answer, grammar accuracy, explanation and final correction থাকবে", keywords: ["board", "grammar", "explanation", "correction"] },
-      { task: "complex sentence/passage থেকে inference বের করে justified answer লিখো", expected: "inference, evidence, reason and accurate language থাকবে", keywords: ["inference", "evidence", "reason", "accurate"] },
-      { task: "composition-style answer লিখে coherence, vocabulary ও conclusion দেখাও", expected: "coherence, vocabulary, paragraph structure and conclusion থাকবে", keywords: ["coherence", "vocabulary", "structure", "conclusion"] }
-    ]
-  },
-  math: {
-    easy: [
-      { task: "প্রদত্ত ধারণা দিয়ে একটি মৌলিক অঙ্ক ধাপে ধাপে সমাধান করো", expected: "দেওয়া তথ্য, সূত্র, হিসাবের ধাপ ও চূড়ান্ত উত্তর থাকবে", keywords: ["তথ্য", "সূত্র", "হিসাব", "উত্তর"] },
-      { task: "সংজ্ঞা/নিয়ম লিখে ছোট উদাহরণ সমাধান করো", expected: "নিয়ম, উদাহরণ, ধাপ ও ফলাফল থাকবে", keywords: ["নিয়ম", "উদাহরণ", "ধাপ", "ফলাফল"] },
-      { task: "চিত্র/সংখ্যা ব্যবহার করে সহজ সমস্যা সমাধান করো", expected: "চিত্র/সংখ্যা, পদ্ধতি, হিসাব ও যাচাই থাকবে", keywords: ["চিত্র", "পদ্ধতি", "হিসাব", "যাচাই"] }
-    ],
-    medium: [
-      { task: "প্রয়োগভিত্তিক সমস্যা তৈরি করে সূত্রসহ সম্পূর্ণ সমাধান করো", expected: "সমস্যার তথ্য, সূত্র নির্বাচন, হিসাব ও যাচাই থাকবে", keywords: ["সমস্যা", "সূত্র", "হিসাব", "যাচাই"] },
-      { task: "দুই ধাপের সমীকরণ/জ্যামিতিক সমস্যা সমাধান করো", expected: "ধাপ, যুক্তি, মান বসানো এবং চূড়ান্ত ফল থাকবে", keywords: ["ধাপ", "যুক্তি", "মান", "ফল"] },
-      { task: "ভুল সমাধান কোথায় হয়েছে দেখিয়ে সঠিক সমাধান লিখো", expected: "ভুল শনাক্ত, সংশোধন, সঠিক হিসাব ও উত্তর থাকবে", keywords: ["ভুল", "সংশোধন", "হিসাব", "উত্তর"] }
-    ],
-    hard: [
-      { task: "সৃজনশীল/বোর্ড-ধাঁচের সমস্যা সমাধান করে নিয়মের কারণ ব্যাখ্যা করো", expected: "যুক্তিসহ সূত্র, ধারাবাহিক সমাধান, যাচাই ও ফলাফল থাকবে", keywords: ["যুক্তি", "সূত্র", "ধারাবাহিক", "ফলাফল"] },
-      { task: "একাধিক ধারণা মিলিয়ে জটিল অঙ্কের প্রমাণ/সমাধান দাও", expected: "ধারণা নির্বাচন, প্রমাণ/সমাধান, ব্যাখ্যা ও সিদ্ধান্ত থাকবে", keywords: ["ধারণা", "প্রমাণ", "ব্যাখ্যা", "সিদ্ধান্ত"] },
-      { task: "বোর্ড পরীক্ষার পূর্ণ নম্বরের মতো উপস্থাপন করে final answer দাও", expected: "পরিচ্ছন্ন উপস্থাপন, সব ধাপ, একক/ফলাফল ও যাচাই থাকবে", keywords: ["উপস্থাপন", "ধাপ", "একক", "যাচাই"] }
-    ]
-  },
-  science: {
-    easy: [
-      { task: "সংজ্ঞা লিখে ২টি উদাহরণ দাও", expected: "সংজ্ঞা, মূল ধারণা, উদাহরণ ও পরিষ্কার উপস্থাপন থাকবে", keywords: ["সংজ্ঞা", "ধারণা", "উদাহরণ", "উত্তর"] },
-      { task: "চিত্র/ধারণার অংশগুলো নামসহ লিখো", expected: "লেবেল, কাজ/ধারণা, উদাহরণ ও পরিচ্ছন্ন লেখা থাকবে", keywords: ["লেবেল", "কাজ", "ধারণা", "উদাহরণ"] },
-      { task: "ছোট প্রশ্নের উত্তর কারণসহ লিখো", expected: "সরাসরি উত্তর, কারণ ও প্রাসঙ্গিক তথ্য থাকবে", keywords: ["উত্তর", "কারণ", "তথ্য", "প্রাসঙ্গিক"] }
-    ],
-    medium: [
-      { task: "কারণ-ফলাফলসহ একটি গুরুত্বপূর্ণ প্রশ্নের উত্তর লিখো", expected: "মূল কারণ, ফলাফল, তথ্য/সূত্র ও উপসংহার থাকবে", keywords: ["কারণ", "ফলাফল", "তথ্য", "উপসংহার"] },
-      { task: "প্রক্রিয়া/পরীক্ষণ ধাপে ধাপে ব্যাখ্যা করো", expected: "ধাপ, পর্যবেক্ষণ, ব্যাখ্যা ও সিদ্ধান্ত থাকবে", keywords: ["ধাপ", "পর্যবেক্ষণ", "ব্যাখ্যা", "সিদ্ধান্ত"] },
-      { task: "বাস্তব উদাহরণের সাথে বৈজ্ঞানিক ধারণা মিলিয়ে উত্তর দাও", expected: "বাস্তব উদাহরণ, ধারণা, প্রয়োগ ও উপসংহার থাকবে", keywords: ["বাস্তব", "ধারণা", "প্রয়োগ", "উপসংহার"] }
-    ],
-    hard: [
-      { task: "সৃজনশীল প্রশ্নের চার অংশ—জ্ঞান, অনুধাবন, প্রয়োগ ও উচ্চতর দক্ষতা—সাজাও", expected: "চার অংশের উত্তর, ব্যাখ্যা, প্রয়োগ ও যুক্তিসঙ্গত সিদ্ধান্ত থাকবে", keywords: ["জ্ঞান", "অনুধাবন", "প্রয়োগ", "সিদ্ধান্ত"] },
-      { task: "চিত্র/ডেটা বিশ্লেষণ করে কারণ ও ফলাফলসহ সিদ্ধান্ত দাও", expected: "চিত্র/ডেটা, বিশ্লেষণ, কারণ, ফলাফল ও সিদ্ধান্ত থাকবে", keywords: ["চিত্র", "ডেটা", "বিশ্লেষণ", "সিদ্ধান্ত"] },
-      { task: "বোর্ড-ধাঁচের দীর্ঘ প্রশ্নের পূর্ণাঙ্গ উত্তর লিখো", expected: "ভূমিকা, মূল ব্যাখ্যা, প্রয়োগ, উদাহরণ ও উপসংহার থাকবে", keywords: ["ভূমিকা", "ব্যাখ্যা", "প্রয়োগ", "উপসংহার"] }
-    ]
-  },
-  general: {
-    easy: [
-      { task: "৫টি মূল পয়েন্ট লিখে সংক্ষিপ্ত উত্তর দাও", expected: "মূল পয়েন্ট, সংজ্ঞা/পরিচিতি ও পরিষ্কার সংক্ষিপ্ত উত্তর থাকবে", keywords: ["মূল", "পয়েন্ট", "সংজ্ঞা", "উত্তর"] },
-      { task: "প্রাথমিক ধারণা লিখে একটি উদাহরণ দাও", expected: "ধারণা, উদাহরণ, কারণ ও ছোট উপসংহার থাকবে", keywords: ["ধারণা", "উদাহরণ", "কারণ", "উপসংহার"] },
-      { task: "অধ্যায়ের গুরুত্বপূর্ণ শব্দ/ঘটনা ব্যাখ্যা করো", expected: "শব্দ/ঘটনা, অর্থ, প্রাসঙ্গিক তথ্য ও উত্তর থাকবে", keywords: ["শব্দ", "ঘটনা", "অর্থ", "তথ্য"] }
-    ],
-    medium: [
-      { task: "কারণ-ব্যাখ্যাভিত্তিক প্রশ্নের উত্তর লিখে উদাহরণ দাও", expected: "কারণ, ব্যাখ্যা, উদাহরণ ও বিষয়ভিত্তিক উপসংহার থাকবে", keywords: ["কারণ", "ব্যাখ্যা", "উদাহরণ", "উপসংহার"] },
-      { task: "দুইটি ধারণা তুলনা করে সাদৃশ্য-ভিন্নতা লিখো", expected: "তুলনা, সাদৃশ্য, ভিন্নতা ও সিদ্ধান্ত থাকবে", keywords: ["তুলনা", "সাদৃশ্য", "ভিন্নতা", "সিদ্ধান্ত"] },
-      { task: "বাস্তব জীবনের উদাহরণ দিয়ে প্রয়োগ ব্যাখ্যা করো", expected: "বাস্তব উদাহরণ, প্রয়োগ, বিশ্লেষণ ও উপসংহার থাকবে", keywords: ["বাস্তব", "প্রয়োগ", "বিশ্লেষণ", "উপসংহার"] }
-    ],
-    hard: [
-      { task: "সৃজনশীল/বিশ্লেষণধর্মী প্রশ্নের উত্তর লিখো; প্রেক্ষাপট, বিশ্লেষণ ও সিদ্ধান্ত আলাদা করো", expected: "প্রেক্ষাপট, বিশ্লেষণ, যুক্তি, উদাহরণ ও সিদ্ধান্ত থাকবে", keywords: ["প্রেক্ষাপট", "বিশ্লেষণ", "যুক্তি", "সিদ্ধান্ত"] },
-      { task: "উদ্দীপকভিত্তিক প্রশ্নে তথ্য যাচাই করে পূর্ণাঙ্গ উত্তর দাও", expected: "উদ্দীপক, তথ্য যাচাই, ব্যাখ্যা, উদাহরণ ও সিদ্ধান্ত থাকবে", keywords: ["উদ্দীপক", "তথ্য", "ব্যাখ্যা", "সিদ্ধান্ত"] },
-      { task: "বোর্ড মানের দীর্ঘ উত্তর লিখে মূল্যায়ন যোগ করো", expected: "ভূমিকা, মূল আলোচনা, মূল্যায়ন, উদাহরণ ও উপসংহার থাকবে", keywords: ["ভূমিকা", "আলোচনা", "মূল্যায়ন", "উপসংহার"] }
-    ]
-  }
-};
-
-function templateGroup(category: string) {
-  if (["physics", "chemistry", "biology", "ict", "health"].includes(category)) return templates.science;
-  if (["business", "accounting", "history", "geography", "civics", "economics", "religion", "gk"].includes(category)) return templates.general;
-  return templates[category] || templates.general;
+function mathNumbers(subjectId: string, chapterOrder: number, serial: number) {
+  const seed = Array.from(subjectId).reduce((sum, ch) => sum + ch.charCodeAt(0), 0) + chapterOrder * 13 + serial * 7;
+  return {
+    a: 6 + (seed % 17),
+    b: 3 + (seed % 11),
+    c: 2 + (seed % 9),
+  };
 }
 
-function buildQuestion(subjectId: string, topic: string, difficulty: WrittenDifficulty, serial: number): Omit<WrittenQuestion, "id" | "subjectId" | "chapterOrder" | "topic" | "difficulty" | "xpReward" | "duration"> {
+function buildBanglaQuestion(level: string, subjectName: string, topic: string, difficulty: WrittenDifficulty, serial: number): BuiltQuestion {
+  const easy = [
+    `${level} ${subjectName}: '${topic}' পাঠের মূল বক্তব্য নিজের ভাষায় ৫-৬ বাক্যে লিখো।`,
+    `${level} ${subjectName}: '${topic}' পাঠ থেকে ৪টি গুরুত্বপূর্ণ শব্দের অর্থ লিখে প্রতিটি দিয়ে বাক্য তৈরি করো।`,
+    `${level} ${subjectName}: '${topic}' অংশের চরিত্র/ঘটনা সম্পর্কে সংক্ষিপ্ত প্রশ্নোত্তর লেখো।`,
+  ];
+  const medium = [
+    `${level} ${subjectName}: '${topic}' পাঠে লেখকের বক্তব্য কারণসহ ব্যাখ্যা করো।`,
+    `${level} ${subjectName}: '${topic}' অংশের একটি উদ্ধৃতি ধরে ভাবসম্প্রসারণ বা সারাংশ লিখো।`,
+    `${level} ${subjectName}: '${topic}' পাঠের ঘটনার সাথে বাস্তব জীবনের একটি মিল দেখাও।`,
+  ];
+  const hard = [
+    `${level} ${subjectName}: '${topic}' পাঠের আলোকে সৃজনশীল প্রশ্নের জ্ঞান, অনুধাবন, প্রয়োগ ও উচ্চতর দক্ষতা অংশের উত্তর লিখো।`,
+    `${level} ${subjectName}: '${topic}' পাঠের মূল শিক্ষা বিশ্লেষণ করে যুক্তিসহ পূর্ণাঙ্গ রচনামূলক উত্তর দাও।`,
+    `${level} ${subjectName}: '${topic}' পাঠের বক্তব্য বর্তমান সমাজের একটি ঘটনার সাথে তুলনা করে মূল্যায়ন করো।`,
+  ];
+  const pool = difficulty === "easy" ? easy : difficulty === "medium" ? medium : hard;
+  return {
+    question: pool[(serial - 1) % pool.length],
+    questionBn: pool[(serial - 1) % pool.length],
+    expectedAnswer: "মূল বক্তব্য, প্রাসঙ্গিক উদাহরণ, যুক্তি ও শুদ্ধ বানান থাকবে।",
+    keywords: ["মূল বক্তব্য", "উদাহরণ", "ব্যাখ্যা", "উপসংহার"],
+  };
+}
+
+function buildEnglishQuestion(level: string, subjectName: string, topic: string, difficulty: WrittenDifficulty, serial: number): BuiltQuestion {
+  const easy = [
+    `${level} ${subjectName}: Write 5 correct sentences using the rule or vocabulary from '${topic}'.`,
+    `${level} ${subjectName}: Read the '${topic}' item and write the Bangla meaning with two examples.`,
+    `${level} ${subjectName}: Identify the basic grammar point from '${topic}' and make three short sentences.`,
+  ];
+  const medium = [
+    `${level} ${subjectName}: Solve a '${topic}' grammar/writing question and explain the rule with reasons.`,
+    `${level} ${subjectName}: Write a short paragraph outline from '${topic}' with topic sentence, points and conclusion.`,
+    `${level} ${subjectName}: Correct the mistakes in a '${topic}' style answer and write the reason for each correction.`,
+  ];
+  const hard = [
+    `${level} ${subjectName}: Write a board-standard answer on '${topic}' with clear structure and grammatical accuracy.`,
+    `${level} ${subjectName}: Analyze a complex '${topic}' item and justify the answer with evidence.`,
+    `${level} ${subjectName}: Complete a composition-style task from '${topic}' using coherence, vocabulary and conclusion.`,
+  ];
+  const pool = difficulty === "easy" ? easy : difficulty === "medium" ? medium : hard;
+  return {
+    question: pool[(serial - 1) % pool.length],
+    questionBn: pool[(serial - 1) % pool.length],
+    expectedAnswer: "Correct grammar, relevant examples, organized structure and conclusion should be present.",
+    keywords: ["rule", "example", "reason", "conclusion"],
+  };
+}
+
+function buildMathQuestion(level: string, subjectName: string, topic: string, difficulty: WrittenDifficulty, serial: number, subjectId: string, chapterOrder: number): BuiltQuestion {
+  const { a, b, c } = mathNumbers(subjectId, chapterOrder, serial);
+  const easy = [
+    `${level} ${subjectName}: '${topic}' অধ্যায়ের নিয়ম ব্যবহার করে ${a} ও ${b} সংখ্যার একটি মৌলিক সমস্যা ধাপে ধাপে সমাধান করো।`,
+    `${level} ${subjectName}: '${topic}' থেকে একটি সূত্র লিখে ${a + b} এর উপর সহজ উদাহরণ সমাধান করো।`,
+    `${level} ${subjectName}: '${topic}' ধারণা দিয়ে ${a} : ${b} অনুপাত/মান নির্ণয় করো।`,
+  ];
+  const medium = [
+    `${level} ${subjectName}: '${topic}' অধ্যায় থেকে দুই ধাপের সমস্যা তৈরি করে সূত্রসহ সম্পূর্ণ সমাধান করো।`,
+    `${level} ${subjectName}: '${topic}' ব্যবহার করে ${a}x + ${b} = ${a * c + b} সমীকরণটি সমাধান করো।`,
+    `${level} ${subjectName}: '${topic}' সম্পর্কিত একটি ভুল সমাধান দেখিয়ে সঠিক পদ্ধতি লিখো।`,
+  ];
+  const hard = [
+    `${level} ${subjectName}: '${topic}' অধ্যায়ের একাধিক ধারণা মিলিয়ে বোর্ড-ধাঁচের একটি জটিল সমস্যা সমাধান করো।`,
+    `${level} ${subjectName}: '${topic}' থেকে প্রমাণ/উপপাদ্য/সূত্রের ব্যবহার দেখিয়ে পূর্ণাঙ্গ উত্তর লিখো।`,
+    `${level} ${subjectName}: '${topic}' সমস্যার সমাধানে সূত্র নির্বাচন, হিসাব, যাচাই ও চূড়ান্ত সিদ্ধান্ত আলাদা করে দেখাও।`,
+  ];
+  const pool = difficulty === "easy" ? easy : difficulty === "medium" ? medium : hard;
+  return {
+    question: pool[(serial - 1) % pool.length],
+    questionBn: pool[(serial - 1) % pool.length],
+    expectedAnswer: "দেওয়া তথ্য, সূত্র, ধারাবাহিক হিসাব, যাচাই ও চূড়ান্ত ফল থাকবে।",
+    keywords: ["তথ্য", "সূত্র", "হিসাব", "যাচাই"],
+  };
+}
+
+function buildScienceQuestion(level: string, subjectName: string, topic: string, difficulty: WrittenDifficulty, serial: number): BuiltQuestion {
+  const easy = [
+    `${level} ${subjectName}: '${topic}' অধ্যায়ের একটি গুরুত্বপূর্ণ সংজ্ঞা লিখে ২টি উদাহরণ দাও।`,
+    `${level} ${subjectName}: '${topic}' ধারণার অংশগুলো নামসহ লিখে কাজ ব্যাখ্যা করো।`,
+    `${level} ${subjectName}: '${topic}' থেকে একটি ছোট প্রশ্নের উত্তর কারণসহ লিখো।`,
+  ];
+  const medium = [
+    `${level} ${subjectName}: '${topic}' অধ্যায়ের একটি প্রক্রিয়া ধাপে ধাপে ব্যাখ্যা করো।`,
+    `${level} ${subjectName}: '${topic}' বিষয়ে কারণ-ফলাফলসহ একটি গুরুত্বপূর্ণ প্রশ্নের উত্তর লিখো।`,
+    `${level} ${subjectName}: '${topic}' ধারণাকে বাস্তব উদাহরণের সাথে মিলিয়ে ব্যাখ্যা করো।`,
+  ];
+  const hard = [
+    `${level} ${subjectName}: '${topic}' অধ্যায়ের উদ্দীপকভিত্তিক প্রশ্নে তথ্য বিশ্লেষণ করে পূর্ণাঙ্গ উত্তর দাও।`,
+    `${level} ${subjectName}: '${topic}' থেকে সূত্র/চিত্র/তত্ত্ব ব্যবহার করে বোর্ড-মানের উত্তর লিখো।`,
+    `${level} ${subjectName}: '${topic}' বিষয়ের প্রয়োগ, সীমাবদ্ধতা ও সিদ্ধান্ত বিশ্লেষণ করো।`,
+  ];
+  const pool = difficulty === "easy" ? easy : difficulty === "medium" ? medium : hard;
+  return {
+    question: pool[(serial - 1) % pool.length],
+    questionBn: pool[(serial - 1) % pool.length],
+    expectedAnswer: "সংজ্ঞা/তথ্য, কারণ, প্রক্রিয়া/চিত্র, উদাহরণ ও উপসংহার থাকবে।",
+    keywords: ["সংজ্ঞা", "কারণ", "প্রক্রিয়া", "উদাহরণ"],
+  };
+}
+
+function buildGeneralQuestion(level: string, subjectName: string, topic: string, difficulty: WrittenDifficulty, serial: number): BuiltQuestion {
+  const easy = [
+    `${level} ${subjectName}: '${topic}' অধ্যায়ের মূল ধারণা সংক্ষেপে লিখে একটি উদাহরণ দাও।`,
+    `${level} ${subjectName}: '${topic}' থেকে ৪টি গুরুত্বপূর্ণ তথ্য লিখো।`,
+    `${level} ${subjectName}: '${topic}' বিষয়ে ছোট প্রশ্নের সরাসরি উত্তর লিখো।`,
+  ];
+  const medium = [
+    `${level} ${subjectName}: '${topic}' বিষয়ে কারণ-ব্যাখ্যাসহ উত্তর লিখে উদাহরণ দাও।`,
+    `${level} ${subjectName}: '${topic}' অধ্যায়ের দুইটি ধারণা তুলনা করে সাদৃশ্য-ভিন্নতা লেখো।`,
+    `${level} ${subjectName}: '${topic}' ধারণার বাস্তব প্রয়োগ ব্যাখ্যা করো।`,
+  ];
+  const hard = [
+    `${level} ${subjectName}: '${topic}' নিয়ে উদ্দীপকভিত্তিক বিশ্লেষণধর্মী উত্তর লিখো।`,
+    `${level} ${subjectName}: '${topic}' অধ্যায়ের তথ্য যাচাই করে পূর্ণাঙ্গ সিদ্ধান্ত দাও।`,
+    `${level} ${subjectName}: '${topic}' বিষয়ের গুরুত্ব, সমস্যা ও সমাধান মূল্যায়ন করো।`,
+  ];
+  const pool = difficulty === "easy" ? easy : difficulty === "medium" ? medium : hard;
+  return {
+    question: pool[(serial - 1) % pool.length],
+    questionBn: pool[(serial - 1) % pool.length],
+    expectedAnswer: "মূল তথ্য, কারণ, উদাহরণ, বিশ্লেষণ ও উপসংহার থাকবে।",
+    keywords: ["তথ্য", "কারণ", "উদাহরণ", "উপসংহার"],
+  };
+}
+
+function buildQuestion(subjectId: string, topic: string, difficulty: WrittenDifficulty, serial: number, chapterOrder: number): BuiltQuestion {
   const subject = getSubject(subjectId);
   const subjectName = subject?.nameBn || subject?.name || "বিষয়";
-  const category = categoryOf(subjectId, subjectName);
-  const group = templateGroup(category);
-  const tmpl = group[difficulty][(serial - 1) % group[difficulty].length];
-  const label = difficultyMeta[difficulty].label;
-  const cls = classLabel(subjectId);
-  const prefix = `${cls} · ${subjectName} · ${topic} · ${subjectId}`;
-  const questionBn = `${prefix}: ${label} লিখিত প্রশ্ন ${serial} — ${tmpl.task}।`;
-  return {
-    question: questionBn,
-    questionBn,
-    expectedAnswer: tmpl.expected,
-    keywords: tmpl.keywords,
-  };
+  const level = classPrefix(subject);
+  const category = categoryOf(subject);
+  if (category === "bangla") return buildBanglaQuestion(level, subjectName, topic, difficulty, serial);
+  if (category === "english") return buildEnglishQuestion(level, subjectName, topic, difficulty, serial);
+  if (category === "math") return buildMathQuestion(level, subjectName, topic, difficulty, serial, subjectId, chapterOrder);
+  if (category === "science") return buildScienceQuestion(level, subjectName, topic, difficulty, serial);
+  return buildGeneralQuestion(level, subjectName, topic, difficulty, serial);
 }
 
 export function getWrittenQuestionsForChapter(subjectId: string, chapterOrder: number, difficulty: WrittenDifficulty, count = 3): WrittenQuestion[] {
@@ -193,7 +211,7 @@ export function getWrittenQuestionsForChapter(subjectId: string, chapterOrder: n
   const meta = difficultyMeta[difficulty];
   return Array.from({ length: count }, (_, idx) => {
     const serial = idx + 1;
-    const core = buildQuestion(subjectId, topic, difficulty, serial);
+    const core = buildQuestion(subjectId, topic, difficulty, serial, chapterOrder);
     return {
       id: `${subjectId}-${chapterOrder}-${difficulty}-written-${serial}`,
       subjectId,
@@ -213,7 +231,7 @@ export function writtenQuestionToLesson(question: WrittenQuestion): Lesson {
     chapterId: `${question.subjectId}-${question.chapterOrder}`,
     title: `${question.topic} ${question.difficulty} written ${question.id.split("-").pop()}`,
     titleBn: `${question.topic} ${difficultyMeta[question.difficulty].label} লিখিত প্রশ্ন`,
-    content: `${question.questionBn}\n\nসঠিক উত্তরের গাইড: ${question.expectedAnswer}`,
+    content: question.questionBn,
     type: "practice",
     duration: question.duration,
     isCompleted: false,
