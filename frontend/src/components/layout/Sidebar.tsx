@@ -6,6 +6,7 @@ import { logOut, searchUsers, sendFriendRequest, cancelFriendRequest, acceptFrie
 import { navigate } from "@/lib/navigate";
 import { XpBar } from "@/components/ui/XpBar";
 import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
+import { Button } from "@/components/ui/Button";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 import toast from "react-hot-toast";
 import { RANK_COLORS } from "@/types";
