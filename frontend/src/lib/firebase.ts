@@ -364,6 +364,8 @@ export async function addCoins(uid: string, amount: number) {
   await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
 }
 
+export type FriendStatus = "none" | "pending" | "incoming" | "accepted" | "blocked_by_me" | "blocked_me";
+
 export type PublicUserResult = {
   uid: string;
   studentId: string;
@@ -377,19 +379,85 @@ export type PublicUserResult = {
   className?: string;
   level?: number;
   xp?: number;
-  friendStatus?: "none" | "pending" | "incoming" | "accepted";
+  friendStatus?: FriendStatus;
   requestId?: string;
+  lastActiveAt?: Date | Timestamp | null;
+  blockedBy?: string;
 };
 
+export type FriendRelationState = {
+  id: string;
+  status: FriendStatus;
+  rawStatus?: string;
+  from?: string;
+  to?: string;
+  blockedBy?: string;
+};
+
+function relationId(a: string, b: string) {
+  return [a, b].sort().join("_");
+}
+
+function timestampToDate(value: unknown): Date | null {
+  if (!value) return null;
+  if (value instanceof Date) return value;
+  const maybe = value as { toDate?: () => Date; seconds?: number };
+  if (typeof maybe.toDate === "function") return maybe.toDate();
+  if (typeof maybe.seconds === "number") return new Date(maybe.seconds * 1000);
+  return null;
+}
+
+function mapRelationStatus(rel: any, currentUid: string): FriendStatus {
+  if (!rel) return "none";
+  if (rel.status === "accepted") return "accepted";
+  if (rel.status === "pending" && rel.from === currentUid) return "pending";
+  if (rel.status === "pending" && rel.to === currentUid) return "incoming";
+  if (rel.status === "blocked") return rel.blockedBy === currentUid ? "blocked_by_me" : "blocked_me";
+  return "none";
+}
+
 async function getRelationsForUser(uid: string) {
-  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(100)));
+  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(150)));
   return snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }));
+}
+
+async function getRelation(currentUid: string, targetUid: string) {
+  const ref = doc(db, "friendRequests", relationId(currentUid, targetUid));
+  const snap = await getDoc(ref).catch(() => null);
+  if (!snap || !snap.exists()) return null;
+  return { id: snap.id, ...(snap.data() as any) };
+}
+
+function toPublicUser(u: User & { uid: string }, relation?: any, currentUid?: string): PublicUserResult {
+  return {
+    uid: u.uid,
+    studentId: isNumericStudentId(u.studentId) ? u.studentId : generateStudentId(u.uid),
+    username: u.username || "student",
+    displayName: u.displayName || u.username || "Student",
+    photoURL: u.photoURL || "",
+    avatar: u.avatar || "zap",
+    district: u.district || "",
+    school: u.school || u.college || "",
+    college: u.college || u.school || "",
+    className: u.className || "",
+    level: u.level || 1,
+    xp: u.xp || 0,
+    friendStatus: currentUid ? mapRelationStatus(relation, currentUid) : "none",
+    requestId: relation?.id,
+    blockedBy: relation?.blockedBy,
+    lastActiveAt: timestampToDate((u as any).lastActiveAt || (u as any).lastLoginAt),
+  };
+}
+
+export async function touchUserPresence(uid: string) {
+  if (!uid || uid.startsWith("guest_")) return;
+  await updateDoc(doc(db, "users", uid), { lastActiveAt: serverTimestamp(), updatedAt: serverTimestamp() }).catch(() => undefined);
 }
 
 export async function searchUsers(term: string, currentUid: string): Promise<PublicUserResult[]> {
   const q = term.trim().toLowerCase();
   if (!q || q.length < 2) return [];
-  const usersSnap = await getDocs(query(collection(db, "users"), limit(120)));
+  const usersSnap = await getDocs(query(collection(db, "users"), limit(160)));
   const relations = await getRelationsForUser(currentUid).catch(() => []);
 
   return usersSnap.docs
@@ -400,88 +468,99 @@ export async function searchUsers(term: string, currentUid: string): Promise<Pub
         .filter(Boolean).join(" ").toLowerCase();
       return hay.includes(q);
     })
-    .slice(0, 12)
+    .slice(0, 14)
     .map((u) => {
-      const rel = relations.find((r: any) => r.participants?.includes(u.uid));
-      let friendStatus: PublicUserResult["friendStatus"] = "none";
-      if (rel?.status === "accepted") friendStatus = "accepted";
-      else if (rel?.status === "pending" && rel.from === currentUid) friendStatus = "pending";
-      else if (rel?.status === "pending" && rel.to === currentUid) friendStatus = "incoming";
-      return {
-        uid: u.uid,
-        studentId: isNumericStudentId(u.studentId) ? u.studentId : generateStudentId(u.uid),
-        username: u.username || "student",
-        displayName: u.displayName || u.username || "Student",
-        photoURL: u.photoURL || "",
-        avatar: u.avatar || "zap",
-        district: u.district || "",
-        school: u.school || u.college || "",
-        college: u.college || u.school || "",
-        className: u.className || "",
-        level: u.level || 1,
-        xp: u.xp || 0,
-        friendStatus,
-        requestId: rel?.id,
-      };
+      const rel = relations.find((r: any) => Array.isArray(r.participants) && r.participants.includes(u.uid));
+      return toPublicUser(u, rel, currentUid);
     });
 }
 
+export async function getFriendRelationState(currentUid: string, targetUid: string): Promise<FriendRelationState> {
+  const rel = await getRelation(currentUid, targetUid);
+  return {
+    id: relationId(currentUid, targetUid),
+    status: mapRelationStatus(rel, currentUid),
+    rawStatus: rel?.status,
+    from: rel?.from,
+    to: rel?.to,
+    blockedBy: rel?.blockedBy,
+  };
+}
+
 export async function getIncomingFriendRequests(uid: string): Promise<PublicUserResult[]> {
-  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(50)));
-  const incoming = snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) })).filter((r: any) => r.to === uid && r.status === "pending");
+  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(80)));
+  const incoming = snap.docs
+    .map((d) => ({ id: d.id, ...(d.data() as any) }))
+    .filter((r: any) => r.to === uid && r.status === "pending");
   const results: PublicUserResult[] = [];
-  for (const req of incoming.slice(0, 6)) {
+  for (const req of incoming.slice(0, 12)) {
     const userSnap = await getDoc(doc(db, "users", req.from));
-    if (userSnap.exists()) {
-      const u = { ...(userSnap.data() as User), uid: req.from };
-      results.push({
-        uid: u.uid,
-        studentId: isNumericStudentId(u.studentId) ? u.studentId : generateStudentId(u.uid),
-        username: u.username || "student",
-        displayName: u.displayName || u.username || "Student",
-        photoURL: u.photoURL || "",
-        avatar: u.avatar || "zap",
-        district: u.district || "",
-        school: u.school || u.college || "",
-        className: u.className || "",
-        level: u.level || 1,
-        xp: u.xp || 0,
-        friendStatus: "incoming",
-        requestId: req.id,
-      });
-    }
+    if (userSnap.exists()) results.push(toPublicUser({ ...(userSnap.data() as User), uid: req.from }, req, uid));
   }
   return results;
 }
 
 export async function sendFriendRequest(currentUid: string, targetUid: string) {
   if (!currentUid || !targetUid || currentUid === targetUid) throw new Error("Invalid student");
-  const id = [currentUid, targetUid].sort().join("_");
+  const id = relationId(currentUid, targetUid);
+  const ref = doc(db, "friendRequests", id);
+  const existing = await getDoc(ref).catch(() => null);
+
+  if (existing?.exists()) {
+    const data = existing.data() as any;
+    if (data.status === "blocked") throw new Error(data.blockedBy === currentUid ? "You blocked this student" : "This student is unavailable");
+    if (data.status === "accepted" || data.status === "pending") return { id, ...data };
+  }
+
+  const existingData = existing?.exists() ? (existing.data() as any) : null;
   const payload = {
     from: currentUid,
     to: targetUid,
-    participants: [currentUid, targetUid],
+    participants: Array.isArray(existingData?.participants) ? existingData.participants : [currentUid, targetUid],
     status: "pending",
-    createdAt: serverTimestamp(),
+    blockedBy: null,
+    createdAt: existingData?.createdAt || serverTimestamp(),
     updatedAt: serverTimestamp(),
   };
-
-  const ref = doc(db, "friendRequests", id);
-  try {
-    const snap = await getDoc(ref);
-    if (snap.exists()) return { id, ...(snap.data() as any) };
-  } catch {
-    // Some older rules deny reads for missing request docs. Continue with create.
-  }
-  await setDoc(ref, payload);
+  await setDoc(ref, payload, { merge: true });
   return { id, ...payload };
+}
+
+export async function cancelFriendRequest(currentUid: string, targetUid: string) {
+  const id = relationId(currentUid, targetUid);
+  const rel = await getRelation(currentUid, targetUid);
+  if (!rel || rel.status !== "pending" || rel.from !== currentUid) throw new Error("No outgoing request");
+  await updateDoc(doc(db, "friendRequests", id), { status: "cancelled", cancelledBy: currentUid, updatedAt: serverTimestamp() });
 }
 
 export async function acceptFriendRequest(requestId: string) {
   await updateDoc(doc(db, "friendRequests", requestId), { status: "accepted", updatedAt: serverTimestamp() });
 }
 
+export async function unfriendUser(currentUid: string, targetUid: string) {
+  const id = relationId(currentUid, targetUid);
+  await updateDoc(doc(db, "friendRequests", id), { status: "unfriended", actionBy: currentUid, updatedAt: serverTimestamp() });
+}
+
+export async function blockUser(currentUid: string, targetUid: string) {
+  const id = relationId(currentUid, targetUid);
+  const rel = await getRelation(currentUid, targetUid);
+  const payload = rel
+    ? { status: "blocked", blockedBy: currentUid, updatedAt: serverTimestamp() }
+    : { from: currentUid, to: targetUid, participants: [currentUid, targetUid], status: "blocked", blockedBy: currentUid, createdAt: serverTimestamp(), updatedAt: serverTimestamp() };
+  await setDoc(doc(db, "friendRequests", id), payload, { merge: true });
+}
+
+export async function unblockUser(currentUid: string, targetUid: string) {
+  const id = relationId(currentUid, targetUid);
+  const rel = await getRelation(currentUid, targetUid);
+  if (!rel || rel.status !== "blocked" || rel.blockedBy !== currentUid) throw new Error("No block found");
+  await updateDoc(doc(db, "friendRequests", id), { status: "unfriended", blockedBy: null, actionBy: currentUid, updatedAt: serverTimestamp() });
+}
+
 export async function createChallenge(currentUid: string, targetUid: string) {
+  const rel = await getRelation(currentUid, targetUid);
+  if (mapRelationStatus(rel, currentUid) !== "accepted") throw new Error("Only friends can be challenged");
   return addDoc(collection(db, "challenges"), {
     from: currentUid,
     to: targetUid,
@@ -492,6 +571,8 @@ export async function createChallenge(currentUid: string, targetUid: string) {
 }
 
 export async function sendQuickMessage(currentUid: string, targetUid: string, content: string) {
+  const rel = await getRelation(currentUid, targetUid);
+  if (mapRelationStatus(rel, currentUid) !== "accepted") throw new Error("Only friends can message");
   return addDoc(collection(db, "messages"), {
     from: currentUid,
     to: targetUid,
@@ -499,12 +580,12 @@ export async function sendQuickMessage(currentUid: string, targetUid: string, co
     content,
     createdAt: serverTimestamp(),
     read: false,
+    readAt: null,
   });
 }
 
-
 export async function getFriendsForUser(uid: string): Promise<PublicUserResult[]> {
-  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(100)));
+  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(150)));
   const accepted = snap.docs
     .map((d) => ({ id: d.id, ...(d.data() as any) }))
     .filter((r: any) => r.status === "accepted" && Array.isArray(r.participants));
@@ -515,23 +596,7 @@ export async function getFriendsForUser(uid: string): Promise<PublicUserResult[]
     if (!otherUid) continue;
     const userSnap = await getDoc(doc(db, "users", otherUid));
     if (!userSnap.exists()) continue;
-    const u = { ...(userSnap.data() as User), uid: otherUid };
-    friends.push({
-      uid: u.uid,
-      studentId: isNumericStudentId(u.studentId) ? u.studentId : generateStudentId(u.uid),
-      username: u.username || "student",
-      displayName: u.displayName || u.username || "Student",
-      photoURL: u.photoURL || "",
-      avatar: u.avatar || "zap",
-      district: u.district || "",
-      school: u.school || u.college || "",
-      college: u.college || u.school || "",
-      className: u.className || "",
-      level: u.level || 1,
-      xp: u.xp || 0,
-      friendStatus: "accepted",
-      requestId: rel.id,
-    });
+    friends.push(toPublicUser({ ...(userSnap.data() as User), uid: otherUid }, rel, uid));
   }
   return friends;
 }
@@ -542,18 +607,27 @@ export type FriendMessage = {
   to: string;
   content: string;
   createdAt?: Timestamp;
+  read?: boolean;
+  readAt?: Timestamp | null;
+  participants?: string[];
 };
 
 export async function getMessagesWithFriend(currentUid: string, targetUid: string): Promise<FriendMessage[]> {
-  const snap = await getDocs(query(collection(db, "messages"), where("participants", "array-contains", currentUid), limit(80)));
+  const snap = await getDocs(query(collection(db, "messages"), where("participants", "array-contains", currentUid), limit(120)));
   return snap.docs
-    .map((d) => ({ id: d.id, ...(d.data() as any) } as FriendMessage & { participants?: string[] }))
+    .map((d) => ({ id: d.id, ...(d.data() as any) } as FriendMessage))
     .filter((m) => Array.isArray(m.participants) && m.participants.includes(targetUid))
     .sort((a, b) => {
       const ta = (a.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
       const tb = (b.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
       return ta - tb;
     });
+}
+
+export async function markMessagesRead(currentUid: string, targetUid: string) {
+  const messages = await getMessagesWithFriend(currentUid, targetUid);
+  const unread = messages.filter((m) => m.to === currentUid && m.from === targetUid && !m.read);
+  await Promise.all(unread.slice(0, 50).map((m) => updateDoc(doc(db, "messages", m.id), { read: true, readAt: serverTimestamp() }).catch(() => undefined)));
 }
 
 export function createLocalGuestProfile(options?: { username?: string }): import("@/types").User {

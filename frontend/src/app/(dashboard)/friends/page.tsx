@@ -1,37 +1,88 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import {
   acceptFriendRequest,
+  blockUser,
   createChallenge,
   getFriendsForUser,
   getIncomingFriendRequests,
   getMessagesWithFriend,
+  markMessagesRead,
   sendQuickMessage,
+  unfriendUser,
   type FriendMessage,
   type PublicUserResult,
 } from "@/lib/firebase";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { UserAvatar } from "@/components/ui/AppIcon";
-import { MessageCircle, Swords, Users, CheckCircle2, RefreshCw, Send, ChevronLeft } from "lucide-react";
+import { MessageCircle, Swords, Users, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, CheckCheck } from "lucide-react";
 import toast from "react-hot-toast";
 
-function PersonRow({ person, onMessage, onChallenge, busy }: { person: PublicUserResult; onMessage: () => void; onChallenge: () => void; busy: boolean }) {
+type MenuState = { uid: string; open: boolean };
+
+function dateFromUnknown(value: unknown): Date | null {
+  if (!value) return null;
+  if (value instanceof Date) return value;
+  const maybe = value as { toDate?: () => Date; seconds?: number };
+  if (typeof maybe.toDate === "function") return maybe.toDate();
+  if (typeof maybe.seconds === "number") return new Date(maybe.seconds * 1000);
+  return null;
+}
+
+function activityText(person: PublicUserResult) {
+  const date = dateFromUnknown(person.lastActiveAt);
+  if (!date) return "offline";
+  const diffMin = Math.max(0, Math.floor((Date.now() - date.getTime()) / 60000));
+  if (diffMin < 2) return "Active now";
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const hours = Math.floor(diffMin / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.floor(hours / 24)}d ago`;
+}
+
+function messageTime(msg: FriendMessage) {
+  const date = dateFromUnknown(msg.createdAt);
+  if (!date) return "";
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function FriendRow({ person, menu, setMenu, onMessage, onChallenge, onBlock, onUnfriend, busy }: {
+  person: PublicUserResult;
+  menu: MenuState;
+  setMenu: (menu: MenuState) => void;
+  onMessage: () => void;
+  onChallenge: () => void;
+  onBlock: () => void;
+  onUnfriend: () => void;
+  busy: boolean;
+}) {
+  const active = activityText(person);
   return (
-    <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/[0.035] border border-white/10 hover:border-primary/20 transition-all">
-      <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-12 h-12" iconClassName="w-5 h-5" />
+    <div className="relative flex items-center gap-3 p-3 rounded-2xl bg-white/[0.035] border border-white/10 hover:border-primary/20 transition-all">
+      <div className="relative">
+        <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-12 h-12" iconClassName="w-5 h-5" />
+        <span className={`absolute -right-0.5 -bottom-0.5 w-3 h-3 rounded-full border-2 border-[#101010] ${active === "Active now" ? "bg-primary" : "bg-gray-600"}`} />
+      </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-black text-white truncate">{person.displayName}</p>
-        <p className="text-xs text-gray-500 truncate">@{person.username} · LV.{person.level} · {person.district || "BD"}</p>
+        <p className="text-xs text-gray-500 truncate">@{person.username} · LV.{person.level} · {active}</p>
       </div>
       <button onClick={onMessage} className="w-10 h-10 rounded-xl bg-secondary/10 border border-secondary/25 text-secondary flex items-center justify-center tap-bounce" aria-label="Message">
         <MessageCircle className="w-4 h-4" />
       </button>
-      <button onClick={onChallenge} disabled={busy} className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/25 text-gold flex items-center justify-center tap-bounce disabled:opacity-50" aria-label="Challenge">
-        <Swords className="w-4 h-4" />
+      <button onClick={() => setMenu({ uid: person.uid, open: !(menu.open && menu.uid === person.uid) })} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce" aria-label="More">
+        <MoreVertical className="w-4 h-4" />
       </button>
+      {menu.open && menu.uid === person.uid && (
+        <div className="absolute right-3 top-14 z-20 w-48 rounded-2xl border border-white/10 bg-[#101010] shadow-2xl overflow-hidden animate-card-in">
+          <button onClick={onChallenge} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><Swords className="w-4 h-4" />Challenge</button>
+          <button onClick={onUnfriend} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><UserMinus className="w-4 h-4" />Unfriend</button>
+          <button onClick={onBlock} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2 disabled:opacity-50"><Ban className="w-4 h-4" />Block</button>
+        </div>
+      )}
     </div>
   );
 }
@@ -45,6 +96,7 @@ export default function FriendsPage() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [menu, setMenu] = useState<MenuState>({ uid: "", open: false });
 
   const load = async () => {
     if (!user || user.uid.startsWith("guest_")) return;
@@ -64,15 +116,24 @@ export default function FriendsPage() {
     }
   };
 
+  const refreshMessages = async (friend = selected) => {
+    if (!user || !friend || user.uid.startsWith("guest_")) return;
+    await markMessagesRead(user.uid, friend.uid).catch(() => undefined);
+    const list = await getMessagesWithFriend(user.uid, friend.uid).catch(() => []);
+    setMessages(list);
+  };
+
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid]);
 
   useEffect(() => {
-    if (!user || !selected || user.uid.startsWith("guest_")) return;
-    getMessagesWithFriend(user.uid, selected.uid).then(setMessages).catch(() => setMessages([]));
-  }, [user, selected]);
+    refreshMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid, selected?.uid]);
+
+  const unreadCount = useMemo(() => messages.filter((m) => selected && m.to === user?.uid && m.from === selected.uid && !m.read).length, [messages, selected, user?.uid]);
 
   if (!user) return null;
 
@@ -95,8 +156,41 @@ export default function FriendsPage() {
     try {
       await createChallenge(user.uid, target.uid);
       toast.success("Challenge sent");
+      setMenu({ uid: "", open: false });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Challenge failed");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const unfriend = async (target: PublicUserResult) => {
+    if (!confirm(`Unfriend ${target.displayName}?`)) return;
+    setBusyId(target.uid);
+    try {
+      await unfriendUser(user.uid, target.uid);
+      toast.success("Unfriended");
+      setSelected(null);
+      setMenu({ uid: "", open: false });
+      await load();
     } catch {
-      toast.error("Challenge failed");
+      toast.error("Unfriend failed");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const block = async (target: PublicUserResult) => {
+    if (!confirm(`Block ${target.displayName}? Messages and challenges will stop.`)) return;
+    setBusyId(target.uid);
+    try {
+      await blockUser(user.uid, target.uid);
+      toast.success("Student blocked");
+      setSelected(null);
+      setMenu({ uid: "", open: false });
+      await load();
+    } catch {
+      toast.error("Block failed");
     } finally {
       setBusyId(null);
     }
@@ -109,38 +203,54 @@ export default function FriendsPage() {
     try {
       await sendQuickMessage(user.uid, selected.uid, body);
       setText("");
-      setMessages(await getMessagesWithFriend(user.uid, selected.uid));
-    } catch {
-      toast.error("Message failed");
+      await refreshMessages(selected);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Message failed");
     } finally {
       setBusyId(null);
     }
   };
 
   if (selected) {
+    const active = activityText(selected);
     return (
       <div className="space-y-4 animate-card-in">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 sticky top-[68px] z-20 bg-[#050505]/95 backdrop-blur-xl py-2">
           <button onClick={() => setSelected(null)} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 tap-bounce">
             <ChevronLeft className="w-5 h-5" />
           </button>
           <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-11 h-11" iconClassName="w-5 h-5" />
           <div className="min-w-0 flex-1">
             <h1 className="text-lg font-black text-white truncate">{selected.displayName}</h1>
-            <p className="text-xs text-gray-500 truncate">@{selected.username} · ID {selected.studentId}</p>
+            <p className="text-xs text-gray-500 truncate">@{selected.username} · {active}</p>
           </div>
-          <Button size="sm" variant="gold" onClick={() => challenge(selected)} disabled={busyId === selected.uid}><Swords className="w-4 h-4" /></Button>
+          <button onClick={() => setMenu({ uid: selected.uid, open: !menu.open })} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce"><MoreVertical className="w-4 h-4" /></button>
+          {menu.open && menu.uid === selected.uid && (
+            <div className="absolute right-0 top-14 z-30 w-48 rounded-2xl border border-white/10 bg-[#101010] shadow-2xl overflow-hidden">
+              <button onClick={() => challenge(selected)} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2"><Swords className="w-4 h-4" />Challenge</button>
+              <button onClick={() => unfriend(selected)} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2"><UserMinus className="w-4 h-4" />Unfriend</button>
+              <button onClick={() => block(selected)} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2"><Ban className="w-4 h-4" />Block</button>
+            </div>
+          )}
         </div>
 
-        <Card className="min-h-[65vh] flex flex-col p-0 overflow-hidden">
-          <div className="flex-1 p-4 space-y-2 overflow-y-auto max-h-[65vh]">
-            {messages.length === 0 && <p className="text-sm text-gray-500 text-center mt-10">No messages yet.</p>}
+        <Card className="min-h-[68vh] flex flex-col p-0 overflow-hidden">
+          <div className="px-4 py-2 border-b border-white/5 text-xs text-gray-500 flex items-center justify-between">
+            <span className="inline-flex items-center gap-1"><Clock3 className="w-3 h-3" /> {active}</span>
+            {unreadCount > 0 && <span className="text-secondary font-bold">{unreadCount} new</span>}
+          </div>
+          <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[68vh]">
+            {messages.length === 0 && <p className="text-sm text-gray-500 text-center mt-10">No messages yet. Start the conversation.</p>}
             {messages.map((msg) => {
               const mine = msg.from === user.uid;
               return (
                 <div key={msg.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-[78%] rounded-2xl px-4 py-2 text-sm ${mine ? "bg-primary text-black font-semibold" : "bg-white/7 border border-white/10 text-gray-200"}`}>
-                    {msg.content}
+                    <p className="whitespace-pre-wrap break-words">{msg.content}</p>
+                    <div className={`mt-1 text-[10px] flex items-center gap-1 ${mine ? "text-black/55 justify-end" : "text-gray-500"}`}>
+                      <span>{messageTime(msg)}</span>
+                      {mine && <span className="inline-flex items-center gap-0.5"><CheckCheck className="w-3 h-3" />{msg.read ? "Seen" : "Sent"}</span>}
+                    </div>
                   </div>
                 </div>
               );
@@ -164,7 +274,7 @@ export default function FriendsPage() {
           </div>
           <div>
             <h1 className="text-2xl font-black text-white">{language === "bn" ? "ফ্রেন্ডস" : "Friends"}</h1>
-            <p className="text-sm text-gray-500">Friends, messages and quiz challenges</p>
+            <p className="text-sm text-gray-500">Friend list, messages and quiz challenges</p>
           </div>
         </div>
         <Button variant="ghost" size="sm" onClick={load} isLoading={loading}><RefreshCw className="w-4 h-4" />Refresh</Button>
@@ -191,11 +301,24 @@ export default function FriendsPage() {
       )}
 
       <Card>
-        <p className="text-sm font-bold text-white mb-3">My Friends</p>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-sm font-bold text-white">My Friends</p>
+          <p className="text-xs text-gray-500">{friends.length} added</p>
+        </div>
         <div className="space-y-2">
           {friends.length === 0 && <p className="text-sm text-gray-500">No friends yet. Use the top search bar to add students.</p>}
           {friends.map((person) => (
-            <PersonRow key={person.uid} person={person} busy={busyId === person.uid} onMessage={() => setSelected(person)} onChallenge={() => challenge(person)} />
+            <FriendRow
+              key={person.uid}
+              person={person}
+              menu={menu}
+              setMenu={setMenu}
+              busy={busyId === person.uid}
+              onMessage={() => { setSelected(person); setMenu({ uid: "", open: false }); }}
+              onChallenge={() => challenge(person)}
+              onBlock={() => block(person)}
+              onUnfriend={() => unfriend(person)}
+            />
           ))}
         </div>
       </Card>

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { getLeaderboard, sendFriendRequest } from "@/lib/firebase";
+import { cancelFriendRequest, getFriendRelationState, getLeaderboard, sendFriendRequest, type FriendStatus } from "@/lib/firebase";
 import { RANK_COLORS, type Rank } from "@/types";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
@@ -41,6 +41,7 @@ export default function LeaderboardPage() {
   const [selected, setSelected] = useState<LeaderEntry | null>(null);
   const [loading, setLoading] = useState(true);
   const [busyAdd, setBusyAdd] = useState<string | null>(null);
+  const [friendStates, setFriendStates] = useState<Record<string, FriendStatus>>({});
 
   useEffect(() => {
     setLoading(true);
@@ -81,14 +82,36 @@ export default function LeaderboardPage() {
   const topThree = visibleEntries.slice(0, 3);
   const rest = visibleEntries.slice(3);
 
+  useEffect(() => {
+    if (!selected || !user || selected.userId === user.uid) return;
+    getFriendRelationState(user.uid, selected.userId)
+      .then((state) => setFriendStates((prev) => ({ ...prev, [selected.userId]: state.status })))
+      .catch(() => undefined);
+  }, [selected?.userId, user?.uid]);
+
   const addFromLeaderboard = async (entry: LeaderEntry) => {
     if (!user || user.uid === entry.userId) return;
     setBusyAdd(entry.userId);
     try {
       await sendFriendRequest(user.uid, entry.userId);
+      setFriendStates((prev) => ({ ...prev, [entry.userId]: "pending" }));
       toast.success("Friend request sent");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Request failed");
+    } finally {
+      setBusyAdd(null);
+    }
+  };
+
+  const cancelLeaderboardRequest = async (entry: LeaderEntry) => {
+    if (!user || user.uid === entry.userId) return;
+    setBusyAdd(entry.userId);
+    try {
+      await cancelFriendRequest(user.uid, entry.userId);
+      setFriendStates((prev) => ({ ...prev, [entry.userId]: "none" }));
+      toast.success("Request cancelled");
     } catch {
-      toast.error("Request failed");
+      toast.error("Cancel failed");
     } finally {
       setBusyAdd(null);
     }
@@ -197,11 +220,15 @@ export default function LeaderboardPage() {
               <InfoRow icon={<MapPin className="w-4 h-4" />} label="District" value={selected.district || "Not added"} />
               <InfoRow icon={<Trophy className="w-4 h-4" />} label="Class / Level" value={`${selected.className || "Student"} · LV.${selected.level}`} />
             </div>
-            {user && selected.userId !== user.uid && (
-              <Button className="w-full mt-4" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>
+            {user && selected.userId !== user.uid && (() => {
+              const state = friendStates[selected.userId] || "none";
+              if (state === "accepted") return <Button className="w-full mt-4" variant="secondary" disabled>Friend</Button>;
+              if (state === "pending") return <Button className="w-full mt-4" variant="gold" onClick={() => cancelLeaderboardRequest(selected)} disabled={busyAdd === selected.userId}>Cancel Request</Button>;
+              if (state === "blocked_by_me" || state === "blocked_me") return <Button className="w-full mt-4" variant="danger" disabled>Unavailable</Button>;
+              return <Button className="w-full mt-4" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>
                 <UserPlus className="w-4 h-4" /> Add Friend
-              </Button>
-            )}
+              </Button>;
+            })()}
           </div>
         </div>
       )}

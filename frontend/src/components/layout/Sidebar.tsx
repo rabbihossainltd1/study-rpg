@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { logOut, searchUsers, sendFriendRequest, type PublicUserResult } from "@/lib/firebase";
+import { logOut, searchUsers, sendFriendRequest, cancelFriendRequest, acceptFriendRequest, type PublicUserResult } from "@/lib/firebase";
 import { navigate } from "@/lib/navigate";
 import { XpBar } from "@/components/ui/XpBar";
 import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { RANK_COLORS } from "@/types";
 import {
   LayoutDashboard, BookOpen, Trophy, Bot,
-  Target, User, LogOut, Zap, Menu, X, ChevronRight, Users, Search, UserPlus, Coins, Gem, Flame,
+  Target, User, LogOut, Zap, Menu, X, ChevronRight, Users, Search, UserPlus, Coins, Gem, Flame, XCircle, CheckCircle2,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -47,18 +47,59 @@ function HeaderSearch() {
     return () => clearTimeout(timer);
   }, [term, user]);
 
+  const updateStatus = (uid: string, friendStatus: PublicUserResult["friendStatus"]) => {
+    setResults((items) => items.map((i) => i.uid === uid ? { ...i, friendStatus } : i));
+  };
+
   const add = async (target: PublicUserResult) => {
     if (!user || user.uid.startsWith("guest_")) return toast.error("Login required");
     setBusy(target.uid);
     try {
       await sendFriendRequest(user.uid, target.uid);
-      setResults((items) => items.map((i) => i.uid === target.uid ? { ...i, friendStatus: "pending" } : i));
+      updateStatus(target.uid, "pending");
       toast.success("Friend request sent");
-    } catch {
-      toast.error("Request failed");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Request failed");
     } finally {
       setBusy(null);
     }
+  };
+
+  const cancel = async (target: PublicUserResult) => {
+    if (!user) return;
+    setBusy(target.uid);
+    try {
+      await cancelFriendRequest(user.uid, target.uid);
+      updateStatus(target.uid, "none");
+      toast.success("Request cancelled");
+    } catch {
+      toast.error("Cancel failed");
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const accept = async (target: PublicUserResult) => {
+    if (!target.requestId) return;
+    setBusy(target.uid);
+    try {
+      await acceptFriendRequest(target.requestId);
+      updateStatus(target.uid, "accepted");
+      toast.success("Friend added");
+    } catch {
+      toast.error("Accept failed");
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const ActionButton = ({ person }: { person: PublicUserResult }) => {
+    if (person.friendStatus === "accepted") return <span style={{ color: "#39FF14", fontSize: 10, fontWeight: 900 }}>Friend</span>;
+    if (person.friendStatus === "pending") return <button onClick={() => cancel(person)} disabled={busy === person.uid} style={{ border: "1px solid rgba(255,215,0,.3)", background: "rgba(255,215,0,.12)", color: "#FFD700", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><XCircle size={13} />Cancel</button>;
+    if (person.friendStatus === "incoming") return <button onClick={() => accept(person)} disabled={busy === person.uid} style={{ border: 0, background: "#00F0FF", color: "#000", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><CheckCircle2 size={13} />Accept</button>;
+    if (person.friendStatus === "blocked_by_me") return <span style={{ color: "#EF4444", fontSize: 10, fontWeight: 900 }}>Blocked</span>;
+    if (person.friendStatus === "blocked_me") return <span style={{ color: "#6B7280", fontSize: 10, fontWeight: 900 }}>Unavailable</span>;
+    return <button onClick={() => add(person)} disabled={busy === person.uid} style={{ border: 0, background: "#39FF14", color: "#000", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><UserPlus size={13} />Add</button>;
   };
 
   return (
@@ -79,7 +120,7 @@ function HeaderSearch() {
                 <p style={{ margin: 0, color: "white", fontSize: 12, fontWeight: 800, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{person.displayName}</p>
                 <p style={{ margin: 0, color: "#6B7280", fontSize: 10, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{person.username} · ID {person.studentId}</p>
               </div>
-              {person.friendStatus === "pending" ? <span style={{ color: "#FFD700", fontSize: 10, fontWeight: 800 }}>Pending</span> : person.friendStatus === "accepted" ? <span style={{ color: "#39FF14", fontSize: 10, fontWeight: 800 }}>Friend</span> : <button onClick={() => add(person)} disabled={busy === person.uid} style={{ border: 0, background: "#39FF14", color: "#000", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><UserPlus size={13} />Add</button>}
+              <ActionButton person={person} />
             </div>
           ))}
         </div>

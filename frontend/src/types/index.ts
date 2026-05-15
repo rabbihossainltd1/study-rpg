@@ -27,6 +27,7 @@ export interface User {
   frame: string;
   createdAt: Date;
   lastLoginAt: Date;
+  lastActiveAt?: Date;
   isGuest: boolean;
   language: "bn" | "en";
 }

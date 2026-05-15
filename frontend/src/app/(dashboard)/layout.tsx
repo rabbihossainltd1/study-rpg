@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, getUserProfile, updateStreak, createUserProfile } from "@/lib/firebase";
+import { auth, getUserProfile, updateStreak, createUserProfile, touchUserPresence } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { LevelUpModal } from "@/components/gamification/LevelUpModal";
@@ -68,6 +68,24 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       clearTimeout(failsafe);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+
+  useEffect(() => {
+    if (!user || user.uid.startsWith("guest_")) return;
+    touchUserPresence(user.uid).catch(() => undefined);
+    const interval = window.setInterval(() => touchUserPresence(user.uid).catch(() => undefined), 45000);
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") touchUserPresence(user.uid).catch(() => undefined);
+    };
+    window.addEventListener("focus", onVisibility);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", onVisibility);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [user?.uid]);
 
   if (isLoading && !user) {
     return (
