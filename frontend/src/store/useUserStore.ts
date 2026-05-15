@@ -50,7 +50,7 @@ export const useUserStore = create<UserStore>()(
       newLevel: 1,
       xpPopups: [],
       language: "bn",
-      theme: "dark",
+      theme: "light",
       missions: [],
       achievements: [],
 

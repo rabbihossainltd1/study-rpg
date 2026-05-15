@@ -366,7 +366,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
 
       {proofLesson && (
         <div className="modal-backdrop fixed inset-0 z-[260] flex items-center justify-center p-4 animate-fade-in overflow-hidden">
-          <div className="glass-card w-full max-w-md p-5 border border-primary/25 animate-card-in">
+          <div className="glass-card modal-compact-card w-full max-w-md p-5 border border-primary/25 animate-card-in">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
@@ -397,8 +397,8 @@ export default function SubjectDetailClient({ id }: { id: string }) {
       )}
 
       {quizActive && (
-        <div className="modal-backdrop fixed inset-0 z-[250] flex items-start justify-center p-3 pt-[72px] overflow-hidden animate-fade-in">
-          <div className="glass-card w-full max-w-lg p-4 sm:p-5 border border-secondary/30 animate-card-in max-h-[calc(100dvh-84px)] overflow-y-auto shadow-[0_0_46px_rgba(0,240,255,0.12)]">
+        <div className="modal-backdrop fixed inset-0 z-[250] flex items-center justify-center p-3 overflow-hidden animate-fade-in">
+          <div className="glass-card quiz-modal-card w-full max-w-lg p-4 sm:p-5 border border-secondary/30 animate-card-in overflow-y-auto shadow-[0_0_46px_rgba(0,240,255,0.12)]">
             {!quizDone ? (
               currentQ ? <>
                 <div className="flex items-center justify-between mb-5">
@@ -416,7 +416,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                     const isCorrect = currentQ.correctAnswer === idx;
                     const isSelected = selected === idx;
                     return (
-                      <button key={idx} onClick={() => handleAnswer(idx)} disabled={answered} className={`w-full text-left p-4 rounded-2xl border text-base transition-all font-bold tap-bounce shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] ${
+                      <button key={idx} onClick={() => handleAnswer(idx)} disabled={answered} className={`quiz-option-btn w-full text-left p-4 rounded-2xl border text-base transition-all font-bold tap-bounce shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] ${
                         !answered ? "border-white/15 bg-white/[0.03] hover:border-secondary/60 hover:bg-secondary/10 text-white" :
                         isCorrect ? "border-primary bg-primary/15 text-primary shadow-[0_0_20px_rgba(57,255,20,0.15)]" :
                         isSelected && !isCorrect ? "border-accent bg-accent/15 text-accent" :

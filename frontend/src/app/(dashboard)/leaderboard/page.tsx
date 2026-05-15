@@ -234,7 +234,7 @@ export default function LeaderboardPage() {
 
       {selected && (
         <div className="modal-backdrop fixed inset-0 z-[200] flex items-center justify-center p-3 animate-fade-in overflow-hidden" onClick={() => setSelected(null)}>
-          <div className="glass-card w-full max-w-[340px] p-4 border border-gold/30 shadow-[0_0_50px_rgba(255,215,0,0.16)] animate-card-in max-h-[calc(100dvh-34px)] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="glass-card modal-compact-card w-full max-w-[360px] p-4 border border-gold/30 shadow-[0_0_50px_rgba(255,215,0,0.16)] animate-card-in overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-base font-black text-white">Student Profile</h2>
               <button type="button" onClick={() => setSelected(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>

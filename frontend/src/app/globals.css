@@ -331,3 +331,51 @@ html[data-theme="light"] .bg-black\/92 { background-color: rgba(15,23,42,0.46) !
 html[data-theme="light"] .bottom-nav-shell button:not(.bg-primary),
 html[data-theme="light"] .sidebar-panel button:not(.bg-primary) { color: #4B5563; }
 html[data-theme="light"] .shadow-neon-primary { box-shadow: 0 10px 30px rgba(57,255,20,0.22) !important; }
+
+/* v10: all popups stay centered and compact while background is locked */
+.modal-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 250 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 12px !important;
+  padding-top: 12px !important;
+  overflow: hidden !important;
+  overscroll-behavior: contain !important;
+  touch-action: none !important;
+}
+.modal-backdrop > .glass-card,
+.modal-backdrop > .app-panel {
+  width: min(100%, 430px) !important;
+  max-height: min(82dvh, 680px) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  margin: auto !important;
+  overscroll-behavior: contain !important;
+}
+.modal-backdrop .glass-card h3,
+.modal-backdrop .glass-card h2 {
+  line-height: 1.2;
+}
+.modal-compact-card {
+  width: min(100%, 380px) !important;
+  max-height: min(80dvh, 620px) !important;
+  overflow-y: auto !important;
+}
+.quiz-modal-card {
+  width: min(100%, 430px) !important;
+  max-height: min(82dvh, 650px) !important;
+}
+.quiz-modal-card h3 {
+  font-size: 1.05rem !important;
+  line-height: 1.65 !important;
+}
+.quiz-modal-card .quiz-option-btn {
+  padding: 0.9rem !important;
+}
+body.modal-scroll-lock, html.modal-scroll-lock {
+  overflow: hidden !important;
+  height: 100% !important;
+}

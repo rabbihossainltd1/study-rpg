@@ -89,7 +89,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   }, [user?.uid]);
 
   useEffect(() => {
-    if (typeof document !== "undefined") document.documentElement.dataset.theme = theme || "dark";
+    if (typeof document !== "undefined") document.documentElement.dataset.theme = theme || "light";
   }, [theme]);
 
   if (isLoading && !user) {

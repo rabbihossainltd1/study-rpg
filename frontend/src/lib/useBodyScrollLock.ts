@@ -22,6 +22,7 @@ export function useBodyScrollLock(active: boolean) {
       html.style.overflow = "hidden";
       body.style.overscrollBehavior = "contain";
       body.classList.add("modal-scroll-lock");
+      html.classList.add("modal-scroll-lock");
     }
 
     activeLocks += 1;
@@ -33,6 +34,7 @@ export function useBodyScrollLock(active: boolean) {
         html.style.overflow = previousHtmlOverflow;
         body.style.overscrollBehavior = previousOverscroll;
         body.classList.remove("modal-scroll-lock");
+        html.classList.remove("modal-scroll-lock");
       }
     };
   }, [active]);
