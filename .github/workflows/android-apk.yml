@@ -48,6 +48,12 @@ jobs:
           NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
           ENVEOF
 
+      - name: Remove static-export incompatible dynamic profile route
+        working-directory: frontend
+        run: |
+          rm -rf 'src/app/(dashboard)/profile/[userId]'
+          test ! -d 'src/app/(dashboard)/profile/[userId]'
+
       - name: Build Next.js + fix asset paths
         working-directory: frontend
         run: npm run build
