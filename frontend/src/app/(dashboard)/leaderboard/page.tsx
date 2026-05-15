@@ -232,36 +232,37 @@ export default function LeaderboardPage() {
         </div>
       </div>
 
-      {selected && (
+      {selected && (() => {
+        const state = user && selected.userId !== user.uid ? (friendStates[selected.userId] || "none") : "accepted";
+        const canSeeFull = selected.userId === user?.uid || state === "accepted";
+        return (
         <div className="modal-backdrop fixed inset-0 z-[200] flex items-center justify-center p-3 animate-fade-in overflow-hidden" onClick={() => setSelected(null)}>
-          <div className="glass-card modal-compact-card w-full max-w-[360px] p-4 border border-gold/30 shadow-[0_0_50px_rgba(255,215,0,0.16)] animate-card-in overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="glass-card modal-compact-card w-full max-w-[340px] p-4 border border-gold/30 shadow-[0_0_50px_rgba(255,215,0,0.16)] animate-card-in overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base font-black text-white">Student Profile</h2>
+              <h2 className="text-base font-black text-white">View Profile</h2>
               <button type="button" onClick={() => setSelected(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>
             </div>
             <div className="text-center mb-4">
               <div className="flex justify-center mb-2"><Avatar entry={selected} size="md" /></div>
               <p className="text-lg font-black text-white">{selected.displayName || selected.username}</p>
-              <p className="text-xs text-gray-500">@{selected.username} · ID {selected.studentId || selected.userId.slice(0, 8)}</p>
+              {canSeeFull ? <p className="text-xs text-gray-500">@{selected.username} · ID {selected.studentId || selected.userId.slice(0, 8)}</p> : <p className="text-xs text-gray-500">Basic public profile</p>}
             </div>
             <div className="space-y-2">
               <InfoRow icon={<UserRound className="w-4 h-4" />} label="Student Name" value={selected.displayName || selected.username} />
               <InfoRow icon={<School className="w-4 h-4" />} label="School / University" value={selected.school || selected.college || "Not added"} />
               <InfoRow icon={<MapPin className="w-4 h-4" />} label="District" value={selected.district || "Not added"} />
-              <InfoRow icon={<Trophy className="w-4 h-4" />} label="Class / Level" value={`${selected.className || "Student"} · LV.${selected.level}`} />
+              {canSeeFull && <InfoRow icon={<Trophy className="w-4 h-4" />} label="Class / Level" value={`${selected.className || "Student"} · LV.${selected.level}`} />}
+              {!canSeeFull && <p className="text-[11px] text-gray-500 text-center pt-1">Friend হলে full information দেখা যাবে।</p>}
             </div>
             {user && selected.userId !== user.uid && (() => {
-              const state = friendStates[selected.userId] || "none";
               if (state === "accepted") return <div className="grid grid-cols-2 gap-2 mt-3"><Button variant="secondary" onClick={() => messageFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Message</Button><Button variant="gold" onClick={() => challengeFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Challenge</Button></div>;
               if (state === "pending") return <Button className="w-full mt-3" variant="gold" onClick={() => cancelLeaderboardRequest(selected)} disabled={busyAdd === selected.userId}>Cancel Request</Button>;
               if (state === "blocked_by_me" || state === "blocked_me") return <Button className="w-full mt-3" variant="danger" disabled>Unavailable</Button>;
-              return <Button className="w-full mt-3" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>
-                <UserPlus className="w-4 h-4" /> Add Friend
-              </Button>;
+              return <Button className="w-full mt-3" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}><UserPlus className="w-4 h-4" /> Add Friend</Button>;
             })()}
           </div>
-        </div>
-      )}
+        </div>);
+      })()}
     </div>
   );
 }

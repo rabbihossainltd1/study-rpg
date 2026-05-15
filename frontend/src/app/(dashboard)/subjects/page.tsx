@@ -2,105 +2,58 @@
 
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
-import { SUBJECTS } from "@/lib/subjects";
-import { BookOpen, ChevronRight, Zap, Star } from "lucide-react";
-import { useState } from "react";
+import { getSubjectsForUser } from "@/lib/subjects";
+import { BookOpen, ChevronRight, Star } from "lucide-react";
 import { AppIcon } from "@/components/ui/AppIcon";
-
-const FILTERS = ["All", "SSC", "HSC", "Admission", "University"];
-const FILTER_BN: Record<string,string> = { All: "সব", SSC: "SSC", HSC: "HSC", Admission: "ভর্তি", University: "বিশ্ববিদ্যালয়" };
 
 export default function SubjectsPage() {
   const { language, user } = useUserStore();
-  const [filter, setFilter] = useState("All");
-  const examMode = user?.examMode || "SSC";
-
-  const filtered = SUBJECTS.filter(
-    (s) => filter === "All" || s.examTypes.includes(filter)
-  );
+  const filtered = getSubjectsForUser(user);
+  const classLabel = `${user?.className || "SSC"}${user?.groupName && user.groupName !== "General" ? " · " + user.groupName : ""}`;
 
   return (
     <div className="space-y-6 animate-card-in">
-      {/* Header */}
       <div className="flex items-center gap-3 mb-1">
         <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
           <BookOpen className="w-5 h-5 text-primary" />
         </div>
         <div>
           <h1 className="text-2xl font-black text-white">{language === "bn" ? "বিষয়সমূহ" : "Subjects"}</h1>
-          <p className="text-sm text-gray-500">{language === "bn" ? "তোমার ক্লাস অনুযায়ী বাংলা MCQ প্র্যাকটিস করো" : "Practice Bangla MCQ by exam mode"}</p>
+          <p className="text-sm text-gray-500">{language === "bn" ? "তোমার ক্লাস অনুযায়ী বাংলা MCQ" : "Class-wise Bangla MCQ"}</p>
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-        {FILTERS.map((f) => (
-          <button
-            key={language === "bn" ? FILTER_BN[f] : f}
-            onClick={() => setFilter(f)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-              filter === f ? "bg-primary text-black font-bold shadow-neon-primary" : "glass border border-white/10 text-gray-400 hover:text-white"
-            }`}
-          >
-            {language === "bn" ? FILTER_BN[f] : f}
-          </button>
-        ))}
+      <div className="glass-card p-3 text-sm text-gray-500 border border-primary/10">
+        {language === "bn" ? `${classLabel} অনুযায়ী বিষয় দেখানো হচ্ছে` : `Showing subjects for ${classLabel}`}
       </div>
 
-      {/* Subjects Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filtered.map((subject) => (
-          <button
-            key={subject.id}
-            onClick={() => navigate(`/subjects/${subject.id}`)}
-            style={{ background: "none", border: "none", cursor: "pointer", display: "block", width: "100%", textAlign: "left", padding: 0 }}
-          >
-            <div className="glass-card p-5 border transition-all duration-300 hover:shadow-lg hover-lift overflow-hidden min-h-[220px]" style={{ borderColor: `${subject.color}25` }}>
+          <button key={subject.id} onClick={() => navigate(`/subjects/${subject.id}`)} className="block w-full text-left bg-transparent border-0 p-0 tap-bounce">
+            <div className="glass-card p-5 border transition-all duration-300 hover:shadow-lg hover-lift overflow-hidden min-h-[210px]" style={{ borderColor: `${subject.color}25` }}>
               <div className="flex items-start justify-between gap-3 mb-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${subject.color}15`, boxShadow: `0 0 20px ${subject.color}20`, color: subject.color }}>
                   <AppIcon name={subject.icon} className="w-7 h-7" />
                 </div>
                 <div className="flex flex-col items-end gap-1">
-                  <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: `${subject.color}20`, color: subject.color }}>
-                    {subject.difficulty}
-                  </span>
+                  <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: `${subject.color}20`, color: subject.color }}>{subject.difficulty}</span>
                   <span className="text-xs text-gray-600">{subject.xpReward} XP/ch</span>
                 </div>
               </div>
               <h3 className="font-black text-white text-xl leading-tight mb-1 break-words whitespace-normal">{language === "bn" ? subject.nameBn : subject.name}</h3>
-              <p className="text-xs text-gray-500 mb-3 leading-relaxed">{subject.completedChapters}/{subject.totalChapters} {language === "bn" ? "অধ্যায়" : "chapters"} · {language === "bn" ? "বাংলা MCQ" : "Bangla MCQ"}</p>
-              <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
-                <div className="h-full rounded-full transition-all duration-700" style={{ background: subject.color, width: `${subject.progress}%` }} />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500">{subject.progress}%</span>
-                <div className="flex items-center gap-1 text-xs" style={{ color: subject.color }}>
-                  {language === "bn" ? "শুরু করো" : "Start Learning"} <ChevronRight className="w-3 h-3" />
-                </div>
-              </div>
-              <div className="flex gap-1 mt-3 flex-wrap">
-                {subject.examTypes.map((exam) => (
-                  <span key={exam} className={`text-xs px-1.5 py-0.5 rounded font-medium ${exam === examMode ? "bg-primary/20 text-primary" : "bg-white/5 text-gray-600"}`}>
-                    {exam}
-                  </span>
-                ))}
-              </div>
+              <p className="text-xs text-gray-500 mb-3 leading-relaxed">{subject.totalChapters} {language === "bn" ? "অধ্যায়" : "chapters"} · {language === "bn" ? "বাংলা MCQ" : "Bangla MCQ"}</p>
+              <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2"><div className="h-full rounded-full transition-all duration-700" style={{ background: subject.color, width: `${subject.progress}%` }} /></div>
+              <div className="flex items-center justify-between"><span className="text-xs text-gray-500">{subject.progress}%</span><div className="flex items-center gap-1 text-xs" style={{ color: subject.color }}>{language === "bn" ? "শুরু করো" : "Start"} <ChevronRight className="w-3 h-3" /></div></div>
             </div>
           </button>
         ))}
       </div>
 
-      {/* Recommended banner */}
       <div className="glass-card p-5 border border-gold/20 flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0"><Star className="w-6 h-6 text-gold fill-gold" /></div>
+        <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0"><Star className="w-6 h-6 text-gold" /></div>
         <div className="flex-1">
-          <p className="font-bold text-white text-sm">{language === "bn" ? `${examMode} প্রস্তুতি` : `Recommended for ${examMode}`}</p>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {language === "bn" ? "তোমার মোড অনুযায়ী বিষয়গুলো সাজানো হয়েছে।" : `Focus on ${examMode === "SSC" ? "Math, Physics & Chemistry" : examMode === "HSC" ? "Physics, Chemistry & Biology" : "All subjects"} for maximum score.`}
-          </p>
-        </div>
-        <div className="flex-shrink-0">
-          <Zap className="w-6 h-6 text-gold" />
+          <p className="font-bold text-white text-sm">{language === "bn" ? "ক্লাস-ভিত্তিক MCQ" : "Class-wise MCQ"}</p>
+          <p className="text-xs text-gray-500 mt-0.5">{language === "bn" ? "তোমার প্রোফাইলে সেট করা ক্লাস/গ্রুপ অনুযায়ী বিষয় ও প্রশ্ন দেখানো হচ্ছে।" : "Subjects and questions are filtered by your class and group."}</p>
         </div>
       </div>
     </div>

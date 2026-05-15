@@ -34,6 +34,7 @@ import {
   where,
   addDoc,
   deleteDoc,
+  runTransaction,
 } from "firebase/firestore";
 import { calculateLevel, calculateXpToNextLevel, getRankFromXp, type User } from "@/types";
 
@@ -132,6 +133,34 @@ function normalizeUsername(value: string) {
   return value.trim().toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_.-]/g, "").slice(0, 24);
 }
 
+
+export function normalizePublicUsername(value: string) {
+  return normalizeUsername(value);
+}
+
+export async function isUsernameAvailable(username: string, currentUid?: string) {
+  const clean = normalizeUsername(username);
+  if (!/^[a-z0-9_.-]{3,24}$/.test(clean)) return false;
+  const indexSnap = await getDoc(doc(db, "usernameIndex", clean));
+  if (indexSnap.exists()) return Boolean(currentUid && (indexSnap.data() as any).uid === currentUid);
+  const existingUsers = await getDocs(query(collection(db, "users"), where("username", "==", clean), limit(1))).catch(() => null);
+  if (!existingUsers || existingUsers.empty) return true;
+  return Boolean(currentUid && existingUsers.docs[0].id === currentUid);
+}
+
+async function reserveUsernameTx(uid: string, username: string) {
+  const clean = normalizeUsername(username);
+  const indexRef = doc(db, "usernameIndex", clean);
+  await runTransaction(db, async (tx) => {
+    const existing = await tx.get(indexRef);
+    if (existing.exists() && (existing.data() as any).uid !== uid) {
+      throw new Error("username-already-used");
+    }
+    tx.set(indexRef, { uid, username: clean, updatedAt: serverTimestamp() }, { merge: true });
+  });
+  return clean;
+}
+
 function isNumericStudentId(value: unknown): value is string {
   return typeof value === "string" && /^\d{6,12}$/.test(value);
 }
@@ -157,7 +186,7 @@ function buildProfilePatch(uid: string, data: Partial<User>) {
 
 export async function createUserProfile(
   firebaseUser: FirebaseUser,
-  extra?: { username?: string; displayName?: string; examMode?: string; district?: string; school?: string; college?: string; className?: string; thana?: string; avatar?: string; photoURL?: string; studentId?: string; language?: "bn" | "en" }
+  extra?: { username?: string; displayName?: string; examMode?: string; division?: string; zila?: string; district?: string; school?: string; college?: string; className?: string; groupName?: string; thana?: string; avatar?: string; photoURL?: string; studentId?: string; language?: "bn" | "en" }
 ) {
   const ref = doc(db, "users", firebaseUser.uid);
   const snap = await getDoc(ref);
@@ -169,11 +198,12 @@ export async function createUserProfile(
   }
 
   const baseName = extra?.username || firebaseUser.displayName?.split(" ")[0] || `player_${Date.now()}`;
+  const reservedUsername = await reserveUsernameTx(firebaseUser.uid, baseName);
   const newUser = stripUndefined({
     uid: firebaseUser.uid,
     studentId: extra?.studentId || generateStudentId(firebaseUser.uid),
     email: firebaseUser.email || "",
-    username: normalizeUsername(baseName) || `player_${Date.now()}`,
+    username: reservedUsername || `player_${Date.now()}`,
     displayName: extra?.displayName || firebaseUser.displayName || extra?.username || "Student",
     photoURL: extra?.photoURL || firebaseUser.photoURL || "",
     level: 1,
@@ -188,10 +218,13 @@ export async function createUserProfile(
     achievements: [] as string[],
     badges: [] as string[],
     friends: [] as string[],
-    district: extra?.district || "Dhaka",
+    division: extra?.division || "Dhaka",
+    zila: extra?.zila || extra?.district || "Dhaka",
+    district: extra?.zila || extra?.district || "Dhaka",
     school: extra?.school || extra?.college || "",
     college: extra?.college || extra?.school || "",
     className: extra?.className || "",
+    groupName: extra?.groupName || "General",
     thana: extra?.thana || "",
     examMode: (extra?.examMode || "SSC") as User["examMode"],
     avatar: extra?.avatar || randomAvatar(),
@@ -221,7 +254,7 @@ export async function getUserProfile(uid: string): Promise<User | null> {
   } as User;
 }
 
-export async function updateUserProfile(uid: string, updates: Partial<Pick<User, "username" | "displayName" | "photoURL" | "district" | "school" | "college" | "className" | "thana" | "examMode" | "avatar" | "language">>) {
+export async function updateUserProfile(uid: string, updates: Partial<Pick<User, "username" | "displayName" | "photoURL" | "division" | "zila" | "district" | "school" | "college" | "className" | "groupName" | "thana" | "examMode" | "avatar" | "language">>) {
   const clean = stripUndefined({ ...updates, username: updates.username ? normalizeUsername(updates.username) : undefined, updatedAt: serverTimestamp() });
   await updateDoc(doc(db, "users", uid), clean);
   return clean;
@@ -359,10 +392,13 @@ export async function getLeaderboard(_type: "global" | "weekly" = "global", coun
       level: data.level || 1,
       xp: data.xp || 0,
       streak: data.streak || 0,
-      district: data.district || "Unknown",
+      district: data.district || data.zila || "Unknown",
+      zila: data.zila || data.district || "Unknown",
+      division: data.division || "",
       school: data.school || data.college || "",
       college: data.college || data.school || "",
       className: data.className || "",
+      groupName: data.groupName || "General",
       thana: data.thana || "",
     };
   });
@@ -381,10 +417,14 @@ export type PublicUserResult = {
   displayName: string;
   photoURL?: string;
   avatar?: string;
+  division?: string;
+  zila?: string;
   district?: string;
   school?: string;
   college?: string;
   className?: string;
+  groupName?: string;
+  thana?: string;
   level?: number;
   xp?: number;
   friendStatus?: FriendStatus;
@@ -444,10 +484,14 @@ function toPublicUser(u: User & { uid: string }, relation?: any, currentUid?: st
     displayName: u.displayName || u.username || "Student",
     photoURL: u.photoURL || "",
     avatar: u.avatar || "zap",
-    district: u.district || "",
+    division: u.division || "",
+    zila: u.zila || u.district || "",
+    district: u.district || u.zila || "",
     school: u.school || u.college || "",
     college: u.college || u.school || "",
     className: u.className || "",
+    groupName: u.groupName || "General",
+    thana: u.thana || "",
     level: u.level || 1,
     xp: u.xp || 0,
     friendStatus: currentUid ? mapRelationStatus(relation, currentUid) : "none",
@@ -472,7 +516,7 @@ export async function searchUsers(term: string, currentUid: string): Promise<Pub
     .filter((d) => d.id !== currentUid)
     .map((d) => ({ ...(d.data() as User), uid: d.id }))
     .filter((u) => {
-      const hay = [u.studentId, u.username, u.displayName, u.district, u.school, u.college, u.className, u.uid]
+      const hay = [u.studentId, u.username, u.displayName, u.division, u.zila, u.district, u.school, u.college, u.className, u.groupName, u.thana, u.uid]
         .filter(Boolean).join(" ").toLowerCase();
       return hay.includes(q);
     })
@@ -659,11 +703,14 @@ export function createLocalGuestProfile(options?: { username?: string; language?
     achievements: [],
     badges: [],
     friends: [],
+    division: "Dhaka",
+    zila: "Dhaka",
     district: "Dhaka",
     school: "",
     college: "",
-    className: "",
-    thana: "",
+    className: "SSC",
+    groupName: "General",
+    thana: "Dhaka Sadar",
     examMode: "SSC",
     avatar: randomAvatar(),
     frame: "default",

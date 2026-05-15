@@ -74,3 +74,39 @@ export const DISTRICTS = Object.keys(BD_ADDRESS).sort((a, b) => a.localeCompare(
 export function getThanasForDistrict(district: string) {
   return BD_ADDRESS[district] || [];
 }
+
+
+export const DIVISION_DISTRICTS: Record<string, string[]> = {
+  "Barishal": ["Barguna", "Barishal", "Bhola", "Jhalokati", "Patuakhali", "Pirojpur"],
+  "Chattogram": ["Bandarban", "Brahmanbaria", "Chandpur", "Chattogram", "Cox's Bazar", "Cumilla", "Feni", "Khagrachhari", "Lakshmipur", "Noakhali", "Rangamati"],
+  "Dhaka": ["Dhaka", "Faridpur", "Gazipur", "Gopalganj", "Kishoreganj", "Madaripur", "Manikganj", "Munshiganj", "Narayanganj", "Narsingdi", "Rajbari", "Shariatpur", "Tangail"],
+  "Khulna": ["Bagerhat", "Chuadanga", "Jashore", "Jhenaidah", "Khulna", "Kushtia", "Magura", "Meherpur", "Narail", "Satkhira"],
+  "Mymensingh": ["Jamalpur", "Mymensingh", "Netrokona", "Sherpur"],
+  "Rajshahi": ["Bogura", "Chapainawabganj", "Joypurhat", "Naogaon", "Natore", "Pabna", "Rajshahi", "Sirajganj"],
+  "Rangpur": ["Dinajpur", "Gaibandha", "Kurigram", "Lalmonirhat", "Nilphamari", "Panchagarh", "Rangpur", "Thakurgaon"],
+  "Sylhet": ["Habiganj", "Moulvibazar", "Sunamganj", "Sylhet"]
+};
+
+export const DIVISIONS = Object.keys(DIVISION_DISTRICTS);
+export const EDUCATION_GROUPS = ["General", "Science", "Humanities", "Business Studies"] as const;
+
+export function getDistrictsForDivision(division: string) {
+  return [...(DIVISION_DISTRICTS[division] || [])].sort((a, b) => a.localeCompare(b));
+}
+
+export function getThanasForZila(zila: string) {
+  return getThanasForDistrict(zila);
+}
+
+export function needsEducationGroup(className: string) {
+  const value = className.toLowerCase();
+  return value.includes("class 9") || value.includes("class 10") || value.includes("ssc") || value.includes("hsc");
+}
+
+export function deriveExamModeFromClass(className: string): "SSC" | "HSC" | "Admission" | "University" {
+  const value = className.toLowerCase();
+  if (value.includes("hsc")) return "HSC";
+  if (value.includes("admission")) return "Admission";
+  if (value.includes("university") || value.includes("honours") || value.includes("degree") || value.includes("masters")) return "University";
+  return "SSC";
+}

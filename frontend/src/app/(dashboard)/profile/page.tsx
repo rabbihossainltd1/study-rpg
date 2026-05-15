@@ -11,10 +11,11 @@ import { getRarityColor, formatDuration } from "@/lib/utils";
 import { updateUserProfile, logOut, bindGuestAccountToEmail, getLeaderboard, deleteCurrentAccount } from "@/lib/firebase";
 import {
   Edit3, Trophy, Zap, Flame, Clock, Star, Shield, LogOut, Copy, Check,
-  Camera, Save, X, User, School, MapPin, Home, GraduationCap, Languages, Coins, Gem, Award, Mail, Lock, Crown, SunMoon, Trash2,
+  Camera, Save, X, User, School, MapPin, Home, GraduationCap, Languages, Coins, Gem, Award, Mail, Lock, Crown, SunMoon, Trash2, Building2,
 } from "lucide-react";
 import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
+import { CLASS_OPTIONS, DIVISIONS, EDUCATION_GROUPS, deriveExamModeFromClass, getDistrictsForDivision, getThanasForZila, needsEducationGroup } from "@/lib/bdAddress";
 import toast from "react-hot-toast";
 
 const RANK_ORDER: Rank[] = ["Novice", "Apprentice", "Scholar", "Expert", "Master", "Grandmaster", "Legend"];
@@ -75,8 +76,11 @@ export default function ProfilePage() {
     avatar: "zap",
     school: "",
     college: "",
-    className: "",
-    district: "",
+    className: "Class 9",
+    groupName: "Science",
+    division: "Khulna",
+    zila: "Jhenaidah",
+    district: "Jhenaidah",
     thana: "",
     examMode: "SSC" as "SSC" | "HSC" | "Admission" | "University",
   });
@@ -94,10 +98,13 @@ export default function ProfilePage() {
       avatar: user.avatar || "zap",
       school: user.school || user.college || "",
       college: user.college || user.school || "",
-      className: user.className || "",
-      district: user.district || "",
+      className: user.className || "Class 9",
+      groupName: user.groupName || "Science",
+      division: user.division || "Khulna",
+      zila: user.zila || user.district || "Jhenaidah",
+      district: user.district || user.zila || "Jhenaidah",
       thana: user.thana || "",
-      examMode: user.examMode || "SSC",
+      examMode: user.examMode || deriveExamModeFromClass(user.className || "Class 9"),
     });
   }, [user]);
 
@@ -107,6 +114,10 @@ export default function ProfilePage() {
   );
 
   useBodyScrollLock(editing);
+
+  const editZilaOptions = useMemo(() => getDistrictsForDivision(form.division), [form.division]);
+  const editThanaOptions = useMemo(() => getThanasForZila(form.zila), [form.zila]);
+  const editNeedsGroup = needsEducationGroup(form.className);
 
   if (!user) return null;
 
@@ -167,6 +178,10 @@ export default function ProfilePage() {
       toast.error("Name and username required");
       return;
     }
+    if (!editZilaOptions.includes(form.zila) || !form.thana || !editThanaOptions.includes(form.thana)) {
+      toast.error("Select valid district and thana");
+      return;
+    }
     setSaving(true);
     const updates = {
       username: form.username.trim(),
@@ -175,10 +190,13 @@ export default function ProfilePage() {
       avatar: form.avatar,
       school: form.school.trim() || form.college.trim(),
       college: form.college.trim() || form.school.trim(),
-      className: form.className.trim(),
-      district: form.district.trim(),
-      thana: form.thana.trim(),
-      examMode: form.examMode,
+      className: form.className,
+      groupName: editNeedsGroup ? form.groupName : "General",
+      division: form.division,
+      zila: form.zila,
+      district: form.zila,
+      thana: form.thana,
+      examMode: deriveExamModeFromClass(form.className),
     };
     try {
       if (!user.isGuest || !user.uid.startsWith("guest_")) {
@@ -365,17 +383,13 @@ export default function ProfilePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <EditInput label="Student Name" icon={<User className="w-4 h-4" />} value={form.displayName} onChange={(v) => setForm((p) => ({ ...p, displayName: v }))} />
-              <EditInput label="Username" icon={<User className="w-4 h-4" />} value={form.username} onChange={(v) => setForm((p) => ({ ...p, username: v }))} />
-              <EditInput label="Class" icon={<GraduationCap className="w-4 h-4" />} value={form.className} onChange={(v) => setForm((p) => ({ ...p, className: v }))} />
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">Mode</label>
-                <select value={form.examMode} onChange={(e) => setForm((p) => ({ ...p, examMode: e.target.value as typeof form.examMode }))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-primary/50">
-                  {(["SSC", "HSC", "Admission", "University"] as const).map((m) => <option key={m} value={m} className="bg-surface">{m}</option>)}
-                </select>
-              </div>
+              <EditInput label="Username" icon={<User className="w-4 h-4" />} value={form.username} onChange={(v) => setForm((p) => ({ ...p, username: v.toLowerCase().replace(/\s+/g, "") }))} />
+              <ProfileSelect label="Class" icon={<GraduationCap className="w-4 h-4" />} value={form.className} onChange={(v) => setForm((p) => ({ ...p, className: v, groupName: needsEducationGroup(v) ? (p.groupName === "General" ? "Science" : p.groupName) : "General" }))} options={[...CLASS_OPTIONS]} />
+              {editNeedsGroup && <ProfileSelect label="Group" icon={<GraduationCap className="w-4 h-4" />} value={form.groupName} onChange={(v) => setForm((p) => ({ ...p, groupName: v }))} options={EDUCATION_GROUPS.filter((g) => g !== "General")} />}
               <EditInput label="School / College / University" icon={<School className="w-4 h-4" />} value={form.school || form.college} onChange={(v) => setForm((p) => ({ ...p, school: v, college: v }))} />
-              <EditInput label="District" icon={<MapPin className="w-4 h-4" />} value={form.district} onChange={(v) => setForm((p) => ({ ...p, district: v }))} />
-              <EditInput label="Thana" icon={<Home className="w-4 h-4" />} value={form.thana} onChange={(v) => setForm((p) => ({ ...p, thana: v }))} />
+              <ProfileSelect label="Division" icon={<MapPin className="w-4 h-4" />} value={form.division} onChange={(v) => { const first = getDistrictsForDivision(v)[0] || ""; setForm((p) => ({ ...p, division: v, zila: first, district: first, thana: "" })); }} options={DIVISIONS} />
+              <ProfileSelect label="District" icon={<Building2 className="w-4 h-4" />} value={form.zila} onChange={(v) => setForm((p) => ({ ...p, zila: v, district: v, thana: "" }))} options={editZilaOptions} />
+              <ProfileSelect label="Thana / Upazila" icon={<Home className="w-4 h-4" />} value={form.thana} onChange={(v) => setForm((p) => ({ ...p, thana: v }))} options={["", ...editThanaOptions]} />
             </div>
 
             <div className="flex gap-3 mt-5">
@@ -387,6 +401,18 @@ export default function ProfilePage() {
       )}
     </div>
   );
+}
+
+function ProfileSelect({ label, icon, value, onChange, options }: { label: string; icon: ReactNode; value: string; onChange: (value: string) => void; options: readonly string[] }) {
+  return <div>
+    <label className="block text-xs text-gray-500 mb-1">{label}</label>
+    <div className="relative">
+      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600">{icon}</span>
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="app-input w-full rounded-xl pl-10 pr-3 py-3 text-sm outline-none border">
+        {options.map((op) => <option key={op || "empty"} value={op} className="bg-surface text-white">{op || "Select"}</option>)}
+      </select>
+    </div>
+  </div>;
 }
 
 function EditInput({ label, icon, value, onChange }: { label: string; icon: ReactNode; value: string; onChange: (value: string) => void }) {

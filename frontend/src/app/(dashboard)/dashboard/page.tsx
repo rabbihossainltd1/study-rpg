@@ -6,7 +6,7 @@ import { useUserStore } from "@/store/useUserStore";
 import { XpBar } from "@/components/ui/XpBar";
 import { Card, StatCard } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { SUBJECTS } from "@/lib/subjects";
+import { getSubjectsForUser } from "@/lib/subjects";
 import { DAILY_MISSIONS } from "@/lib/missions";
 import { getGreeting, formatDuration } from "@/lib/utils";
 import { RANK_COLORS } from "@/types";
@@ -47,7 +47,7 @@ export default function DashboardPage() {
 
   const rankColor = RANK_COLORS[user.rank];
   const todayMissions = DAILY_MISSIONS.slice(0, 3);
-  const topSubjects = SUBJECTS.slice(0, 4);
+  const topSubjects = getSubjectsForUser(user).slice(0, 4);
   const previewLeaders = leaders.length ? leaders : [{ rank: 1, username: user.username, displayName: user.displayName, avatar: user.avatar, photoURL: user.photoURL, xp: user.xp, level: user.level, userId: user.uid }];
 
   return (
@@ -65,7 +65,7 @@ export default function DashboardPage() {
             <p className="text-xs text-gray-500 mt-1 truncate">@{user.username} · Student ID {user.studentId || "—"}</p>
             <div className="flex items-center gap-2 mt-2 flex-wrap">
               <span className="px-2.5 py-1 rounded-lg text-xs font-bold border" style={{ color: rankColor, borderColor: `${rankColor}35`, background: `${rankColor}12` }}>{user.rank}</span>
-              <span className="px-2.5 py-1 rounded-lg text-xs text-gray-400 bg-white/5 border border-white/10">{user.examMode} Mode</span>
+              <span className="px-2.5 py-1 rounded-lg text-xs text-gray-400 bg-white/5 border border-white/10">{user.className || user.examMode}{user.groupName && user.groupName !== "General" ? ` · ${user.groupName}` : ""}</span>
               <span className="px-2.5 py-1 rounded-lg text-xs text-gold bg-gold/5 border border-gold/10 inline-flex items-center gap-1"><Coins className="w-3.5 h-3.5" />{user.coins}</span>
               <span className="px-2.5 py-1 rounded-lg text-xs text-orange-400 bg-orange-500/5 border border-orange-500/10 inline-flex items-center gap-1"><Flame className="w-3.5 h-3.5" />{user.streak}</span>
             </div>

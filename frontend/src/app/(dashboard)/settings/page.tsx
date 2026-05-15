@@ -1,26 +1,52 @@
+
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { bindGuestAccountToEmail, deleteCurrentAccount, logOut } from "@/lib/firebase";
+import { bindGuestAccountToEmail, deleteCurrentAccount, logOut, updateUserProfile } from "@/lib/firebase";
 import { navigate } from "@/lib/navigate";
 import { Button } from "@/components/ui/Button";
 import { UserAvatar } from "@/components/ui/AppIcon";
+import { CLASS_OPTIONS, DIVISIONS, EDUCATION_GROUPS, deriveExamModeFromClass, getDistrictsForDivision, getThanasForZila, needsEducationGroup } from "@/lib/bdAddress";
 import toast from "react-hot-toast";
 import {
   Settings, SunMoon, Languages, LogOut, Trash2, Mail, Lock, UserRound,
-  Shield, Moon, Sun, Link as LinkIcon, Edit3,
+  Shield, Moon, Sun, Link as LinkIcon, Edit3, Save, GraduationCap, MapPin, Home, Building2, School,
 } from "lucide-react";
 
 export default function SettingsPage() {
-  const { user, language, theme, setTheme, setLanguage, reset } = useUserStore();
+  const { user, language, theme, setTheme, setLanguage, setUser, reset } = useUserStore();
   const [bindEmail, setBindEmail] = useState("");
   const [bindPassword, setBindPassword] = useState("");
   const [binding, setBinding] = useState(false);
-
-  if (!user) return null;
+  const [savingStudent, setSavingStudent] = useState(false);
+  const [studentForm, setStudentForm] = useState(() => ({
+    className: user?.className || "Class 9",
+    groupName: user?.groupName || "Science",
+    school: user?.school || user?.college || "",
+    division: user?.division || "Khulna",
+    zila: user?.zila || user?.district || "Jhenaidah",
+    thana: user?.thana || "",
+  }));
 
   const isBn = language === "bn";
+  const zilaOptions = useMemo(() => getDistrictsForDivision(studentForm.division), [studentForm.division]);
+  const thanaOptions = useMemo(() => getThanasForZila(studentForm.zila), [studentForm.zila]);
+  const showGroup = needsEducationGroup(studentForm.className);
+
+  useEffect(() => {
+    if (!user) return;
+    setStudentForm({
+      className: user.className || "Class 9",
+      groupName: user.groupName || "Science",
+      school: user.school || user.college || "",
+      division: user.division || "Khulna",
+      zila: user.zila || user.district || "Jhenaidah",
+      thana: user.thana || "",
+    });
+  }, [user?.uid]);
+
+  if (!user) return null;
 
   const handleLogout = async () => {
     await logOut().catch(() => undefined);
@@ -59,6 +85,42 @@ export default function SettingsPage() {
     }
   };
 
+  const saveStudentInfo = async () => {
+    if (!studentForm.school.trim()) {
+      toast.error(isBn ? "প্রতিষ্ঠানের নাম দাও" : "Enter institution name");
+      return;
+    }
+    if (!zilaOptions.includes(studentForm.zila)) {
+      toast.error(isBn ? "সঠিক জেলা সিলেক্ট করো" : "Select a valid district");
+      return;
+    }
+    if (!studentForm.thana || !thanaOptions.includes(studentForm.thana)) {
+      toast.error(isBn ? "সঠিক থানা/উপজেলা সিলেক্ট করো" : "Select a valid thana/upazila");
+      return;
+    }
+    const updates = {
+      className: studentForm.className,
+      groupName: showGroup ? studentForm.groupName : "General",
+      examMode: deriveExamModeFromClass(studentForm.className),
+      school: studentForm.school.trim(),
+      college: studentForm.school.trim(),
+      division: studentForm.division,
+      zila: studentForm.zila,
+      district: studentForm.zila,
+      thana: studentForm.thana,
+    };
+    setSavingStudent(true);
+    try {
+      if (!user.isGuest || !user.uid.startsWith("guest_")) await updateUserProfile(user.uid, updates);
+      setUser({ ...user, ...updates });
+      toast.success(isBn ? "স্টুডেন্ট ইনফো আপডেট হয়েছে" : "Student info updated");
+    } catch {
+      toast.error(isBn ? "আপডেট হয়নি" : "Update failed");
+    } finally {
+      setSavingStudent(false);
+    }
+  };
+
   return (
     <div className="space-y-5 max-w-2xl mx-auto animate-card-in">
       <div className="flex items-center gap-3">
@@ -67,7 +129,7 @@ export default function SettingsPage() {
         </div>
         <div>
           <h1 className="text-2xl font-black text-white">{isBn ? "সেটিংস" : "Settings"}</h1>
-          <p className="text-sm text-gray-500">{isBn ? "অ্যাকাউন্ট, থিম, ভাষা ও সিকিউরিটি" : "Account, theme, language and security"}</p>
+          <p className="text-sm text-gray-500">{isBn ? "অ্যাকাউন্ট, পড়াশোনা, থিম ও ভাষা" : "Account, study, theme and language"}</p>
         </div>
       </div>
 
@@ -78,6 +140,20 @@ export default function SettingsPage() {
           <p className="text-sm text-gray-500 truncate">@{user.username} · ID {user.studentId || "—"}</p>
           <p className="text-xs text-primary font-bold mt-1">LV.{user.level} · {user.rank}</p>
         </div>
+      </div>
+
+      <div className="glass-card p-5 space-y-4">
+        <SectionTitle icon={<GraduationCap className="w-4 h-4" />} title={isBn ? "স্টুডেন্ট ইনফো" : "Student info"} />
+        <p className="text-xs text-gray-500">{isBn ? "ক্লাস পরিবর্তন করলে MCQ ও subject list সেই অনুযায়ী বদলাবে।" : "Changing class updates MCQ and subject list automatically."}</p>
+        <SelectBox label={isBn ? "ক্লাস" : "Class"} icon={<GraduationCap className="w-4 h-4" />} value={studentForm.className} onChange={(v) => setStudentForm((p) => ({ ...p, className: v, groupName: needsEducationGroup(v) ? (p.groupName === "General" ? "Science" : p.groupName) : "General" }))} options={[...CLASS_OPTIONS]} />
+        {showGroup && <SelectBox label={isBn ? "গ্রুপ" : "Group"} icon={<GraduationCap className="w-4 h-4" />} value={studentForm.groupName} onChange={(v) => setStudentForm((p) => ({ ...p, groupName: v }))} options={EDUCATION_GROUPS.filter((g) => g !== "General")} />}
+        <TextInput label={isBn ? "স্কুল/কলেজ/ইউনিভার্সিটি" : "School / College / University"} icon={<School className="w-4 h-4" />} value={studentForm.school} onChange={(v) => setStudentForm((p) => ({ ...p, school: v }))} />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <SelectBox label={isBn ? "বিভাগ" : "Division"} icon={<MapPin className="w-4 h-4" />} value={studentForm.division} onChange={(v) => { const first = getDistrictsForDivision(v)[0] || ""; setStudentForm((p) => ({ ...p, division: v, zila: first, thana: "" })); }} options={DIVISIONS} />
+          <SelectBox label={isBn ? "জেলা" : "District"} icon={<Building2 className="w-4 h-4" />} value={studentForm.zila} onChange={(v) => setStudentForm((p) => ({ ...p, zila: v, thana: "" }))} options={zilaOptions} />
+          <SelectBox label={isBn ? "থানা/উপজেলা" : "Thana / Upazila"} icon={<Home className="w-4 h-4" />} value={studentForm.thana} onChange={(v) => setStudentForm((p) => ({ ...p, thana: v }))} options={["", ...thanaOptions]} />
+        </div>
+        <Button onClick={saveStudentInfo} isLoading={savingStudent} className="w-full" leftIcon={<Save className="w-4 h-4" />}>{isBn ? "স্টুডেন্ট ইনফো সেভ" : "Save student info"}</Button>
       </div>
 
       <div className="glass-card p-5 space-y-4">
@@ -133,4 +209,12 @@ export default function SettingsPage() {
 
 function SectionTitle({ icon, title }: { icon: ReactNode; title: string }) {
   return <div className="flex items-center gap-2 text-white font-black">{icon}<span>{title}</span></div>;
+}
+
+function SelectBox({ label, icon, value, onChange, options }: { label: string; icon: ReactNode; value: string; onChange: (value: string) => void; options: readonly string[] }) {
+  return <div><label className="block text-xs text-gray-500 mb-1 font-bold">{label}</label><div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600">{icon}</span><select required value={value} onChange={(e) => onChange(e.target.value)} className="app-input w-full rounded-xl pl-10 pr-3 py-3 text-sm outline-none border">{options.map((op) => <option key={op || "empty"} value={op} className="bg-surface text-white">{op || "Select"}</option>)}</select></div></div>;
+}
+
+function TextInput({ label, icon, value, onChange }: { label: string; icon: ReactNode; value: string; onChange: (value: string) => void }) {
+  return <div><label className="block text-xs text-gray-500 mb-1 font-bold">{label}</label><div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600">{icon}</span><input value={value} onChange={(e) => onChange(e.target.value)} className="app-input w-full rounded-xl pl-10 pr-3 py-3 text-sm outline-none border" /></div></div>;
 }

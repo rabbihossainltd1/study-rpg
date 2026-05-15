@@ -17,10 +17,13 @@ export interface User {
   achievements: string[];
   badges: string[];
   friends: string[];
+  division?: string;
+  zila?: string;
   district: string;
   school: string;
   college?: string;
   className?: string;
+  groupName?: "General" | "Science" | "Humanities" | "Business Studies" | string;
   thana?: string;
   examMode: "SSC" | "HSC" | "Admission" | "University";
   avatar: string;
@@ -73,6 +76,8 @@ export interface Subject {
   xpReward: number;
   difficulty: "easy" | "medium" | "hard";
   examTypes: string[];
+  classLevels?: string[];
+  groups?: string[];
 }
 
 export interface Chapter {
@@ -157,6 +162,9 @@ export interface LeaderboardEntry {
   school?: string;
   college?: string;
   className?: string;
+  groupName?: string;
+  division?: string;
+  zila?: string;
   thana?: string;
   district: string;
   level: number;

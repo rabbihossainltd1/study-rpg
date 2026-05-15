@@ -1,95 +1,32 @@
-import type { Chapter, Subject } from "@/types";
+import type { Chapter, Subject, User } from "@/types";
+import { CURRICULUM_SUBJECTS, getCurriculumSubjectsFor } from "@/lib/curriculum";
 import { QUIZ_TOPICS, getQuizCount } from "@/lib/quizData";
 
-const SUBJECT_BASE: Array<Omit<Subject, "totalChapters" | "completedChapters" | "progress">> = [
-  {
-    id: "math",
-    name: "Mathematics",
-    nameBn: "গণিত",
-    icon: "calculator",
-    color: "#00F0FF",
-    xpReward: 150,
-    difficulty: "hard",
-    examTypes: ["SSC", "HSC", "Admission"],
-  },
-  {
-    id: "physics",
-    name: "Physics",
-    nameBn: "পদার্থবিজ্ঞান",
-    icon: "atom",
-    color: "#BF5FFF",
-    xpReward: 140,
-    difficulty: "hard",
-    examTypes: ["SSC", "HSC", "Admission"],
-  },
-  {
-    id: "chemistry",
-    name: "Chemistry",
-    nameBn: "রসায়ন",
-    icon: "flask",
-    color: "#39FF14",
-    xpReward: 140,
-    difficulty: "hard",
-    examTypes: ["SSC", "HSC", "Admission"],
-  },
-  {
-    id: "biology",
-    name: "Biology",
-    nameBn: "জীববিজ্ঞান",
-    icon: "dna",
-    color: "#FF8C00",
-    xpReward: 130,
-    difficulty: "medium",
-    examTypes: ["SSC", "HSC", "Admission"],
-  },
-  {
-    id: "english",
-    name: "English",
-    nameBn: "ইংরেজি",
-    icon: "book",
-    color: "#FFD700",
-    xpReward: 100,
-    difficulty: "medium",
-    examTypes: ["SSC", "HSC", "Admission", "University"],
-  },
-  {
-    id: "bangla",
-    name: "Bangla",
-    nameBn: "বাংলা",
-    icon: "language",
-    color: "#FF003C",
-    xpReward: 100,
-    difficulty: "medium",
-    examTypes: ["SSC", "HSC"],
-  },
-  {
-    id: "ict",
-    name: "ICT",
-    nameBn: "তথ্য ও যোগাযোগ প্রযুক্তি",
-    icon: "bot",
-    color: "#00F0FF",
-    xpReward: 120,
-    difficulty: "medium",
-    examTypes: ["SSC", "HSC"],
-  },
-  {
-    id: "gk",
-    name: "General Knowledge",
-    nameBn: "সাধারণ জ্ঞান",
-    icon: "globe",
-    color: "#39FF14",
-    xpReward: 80,
-    difficulty: "easy",
-    examTypes: ["Admission", "University"],
-  },
-];
+function toSubject(subject: typeof CURRICULUM_SUBJECTS[number]): Subject {
+  return {
+    id: subject.id,
+    name: subject.name,
+    nameBn: subject.nameBn,
+    icon: subject.icon,
+    color: subject.color,
+    xpReward: subject.xpReward,
+    difficulty: subject.difficulty,
+    examTypes: subject.examTypes,
+    classLevels: subject.classLevels,
+    groups: subject.groups,
+    totalChapters: Math.max(1, QUIZ_TOPICS[subject.id]?.length || subject.topics.length || 1),
+    completedChapters: 0,
+    progress: 0,
+  };
+}
 
-export const SUBJECTS: Subject[] = SUBJECT_BASE.map((subject) => ({
-  ...subject,
-  totalChapters: Math.max(1, QUIZ_TOPICS[subject.id]?.length || 1),
-  completedChapters: 0,
-  progress: 0,
-}));
+export const SUBJECTS: Subject[] = CURRICULUM_SUBJECTS.map(toSubject);
+export const ALL_SUBJECTS = SUBJECTS;
+
+export function getSubjectsForUser(user?: Pick<User, "className" | "groupName" | "examMode"> | null): Subject[] {
+  if (!user?.className) return SUBJECTS.filter((s) => s.classLevels?.includes("SSC"));
+  return getCurriculumSubjectsFor(user.className, user.groupName).map(toSubject);
+}
 
 const makeId = (value: string) =>
   value
@@ -105,7 +42,7 @@ function createChapters(subject: Subject): Chapter[] {
     subjectId: subject.id,
     title: topic,
     titleBn: topic,
-    description: `${subject.name} ${topic} concept, practice and quiz set`,
+    description: `${subject.nameBn || subject.name} অধ্যায়ভিত্তিক কনসেপ্ট, প্র্যাকটিস ও MCQ`,
     order: index + 1,
     isLocked: false,
     isCompleted: false,
