@@ -30,7 +30,7 @@ service cloud.firestore {
       allow read: if isAuthenticated();
       allow create: if isOwner(userId);
       allow update: if isOwner(userId) && isValidXpUpdate();
-      allow delete: if false;
+      allow delete: if isOwner(userId);
     }
 
     match /userProgress/{progressId} {

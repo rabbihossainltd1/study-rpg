@@ -14,6 +14,7 @@ import {
   onAuthStateChanged,
   browserLocalPersistence,
   setPersistence,
+  deleteUser,
   type User as FirebaseUser,
 } from "firebase/auth";
 import {
@@ -32,6 +33,7 @@ import {
   Timestamp,
   where,
   addDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { calculateLevel, calculateXpToNextLevel, getRankFromXp, type User } from "@/types";
 
@@ -112,6 +114,12 @@ export const signInGuest = async () => {
   return signInAnonymously(auth);
 };
 export const logOut = () => signOut(auth);
+
+export async function deleteCurrentAccount(uid: string) {
+  await deleteDoc(doc(db, "users", uid)).catch(() => undefined);
+  if (auth.currentUser) await deleteUser(auth.currentUser);
+}
+
 export { onAuthStateChanged };
 
 function stripUndefined<T extends object>(obj: T): T {

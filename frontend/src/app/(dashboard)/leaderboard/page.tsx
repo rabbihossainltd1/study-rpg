@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { cancelFriendRequest, getFriendRelationState, getLeaderboard, sendFriendRequest, type FriendStatus } from "@/lib/firebase";
+import { cancelFriendRequest, getFriendRelationState, getLeaderboard, sendFriendRequest, createChallenge, sendQuickMessage, type FriendStatus } from "@/lib/firebase";
 import { RANK_COLORS, type Rank } from "@/types";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
@@ -117,6 +117,33 @@ export default function LeaderboardPage() {
     }
   };
 
+
+  const messageFromLeaderboard = async (entry: LeaderEntry) => {
+    if (!user || user.uid === entry.userId) return;
+    setBusyAdd(entry.userId);
+    try {
+      await sendQuickMessage(user.uid, entry.userId, "Hi");
+      toast.success("Message sent");
+    } catch {
+      toast.error("Message failed");
+    } finally {
+      setBusyAdd(null);
+    }
+  };
+
+  const challengeFromLeaderboard = async (entry: LeaderEntry) => {
+    if (!user || user.uid === entry.userId) return;
+    setBusyAdd(entry.userId);
+    try {
+      await createChallenge(user.uid, entry.userId);
+      toast.success("Challenge sent");
+    } catch {
+      toast.error("Challenge failed");
+    } finally {
+      setBusyAdd(null);
+    }
+  };
+
   const RankBadge = ({ rank }: { rank: number }) => {
     if (rank <= 3) return <CrownBadge rank={rank} className="w-5 h-5" />;
     return <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">{rank}</span>;
@@ -125,7 +152,7 @@ export default function LeaderboardPage() {
   const Avatar = ({ entry, size = "md", showCrown = true }: { entry: LeaderEntry; size?: "sm" | "md" | "lg"; showCrown?: boolean }) => {
     const cls = size === "lg" ? "w-16 h-16 text-3xl" : size === "sm" ? "w-9 h-9 text-lg" : "w-12 h-12 text-2xl";
     const rankColor = RANK_COLORS[(entry.rank_title || entry.userRank || "Novice") as Rank] || "#9CA3AF";
-    return <UserAvatar photoURL={entry.photoURL} avatar={entry.avatar} name={entry.displayName || entry.username} sizeClass={cls} iconClassName={size === "lg" ? "w-8 h-8" : "w-5 h-5"} borderColor={rankColor} rank={showCrown && entry.rank <= 3 ? entry.rank : undefined} />;
+    return <UserAvatar photoURL={entry.photoURL} avatar={entry.avatar} name={entry.displayName || entry.username} sizeClass={cls} iconClassName={size === "lg" ? "w-8 h-8" : "w-5 h-5"} borderColor={rankColor} rank={showCrown && entry.rank <= 3 ? entry.rank : undefined} vipFrame={entry.rank <= 3} />;
   };
 
   return (
@@ -222,7 +249,7 @@ export default function LeaderboardPage() {
             </div>
             {user && selected.userId !== user.uid && (() => {
               const state = friendStates[selected.userId] || "none";
-              if (state === "accepted") return <Button className="w-full mt-4" variant="secondary" disabled>Friend</Button>;
+              if (state === "accepted") return <div className="grid grid-cols-2 gap-2 mt-4"><Button variant="secondary" onClick={() => messageFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Message</Button><Button variant="gold" onClick={() => challengeFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Challenge</Button></div>;
               if (state === "pending") return <Button className="w-full mt-4" variant="gold" onClick={() => cancelLeaderboardRequest(selected)} disabled={busyAdd === selected.userId}>Cancel Request</Button>;
               if (state === "blocked_by_me" || state === "blocked_me") return <Button className="w-full mt-4" variant="danger" disabled>Unavailable</Button>;
               return <Button className="w-full mt-4" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>

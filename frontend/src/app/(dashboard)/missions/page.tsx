@@ -12,7 +12,7 @@ import { getRarityColor } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { calculateLevel, type Mission } from "@/types";
 
-const TABS = ["Daily", "Weekly", "Achievements"];
+const TABS = ["Daily"];
 function missionHref(id: string) {
   if (id.includes("study") || id.includes("streak")) return "/focus";
   if (id.includes("quiz") || id.includes("lesson") || id.includes("subject")) return "/subjects";
@@ -155,7 +155,7 @@ export default function MissionsPage() {
           </div>
           <div>
             <h1 className="text-2xl font-black text-white">{language === "bn" ? "মিশন" : "Missions"}</h1>
-            <p className="text-sm text-gray-500">Complete missions to earn XP and coins</p>
+            <p className="text-sm text-gray-500">{language === "bn" ? "শুধু কাজ করে এমন দৈনিক মিশন" : "Only useful daily missions"}</p>
           </div>
         </div>
       </div>

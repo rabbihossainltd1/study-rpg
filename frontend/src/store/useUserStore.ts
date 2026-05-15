@@ -16,12 +16,14 @@ interface UserStore {
   newLevel: number;
   xpPopups: XpPopup[];
   language: "bn" | "en";
+  theme: "dark" | "light";
   missions: Mission[];
   achievements: Achievement[];
 
   setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
   setLanguage: (lang: "bn" | "en") => void;
+  setTheme: (theme: "dark" | "light") => void;
 
   triggerLevelUp: (level: number) => void;
   dismissLevelUp: () => void;
@@ -48,12 +50,17 @@ export const useUserStore = create<UserStore>()(
       newLevel: 1,
       xpPopups: [],
       language: "bn",
+      theme: "dark",
       missions: [],
       achievements: [],
 
       setUser: (user) => set({ user }),
       setLoading: (isLoading) => set({ isLoading }),
       setLanguage: (language) => set({ language }),
+      setTheme: (theme) => {
+        if (typeof document !== "undefined") document.documentElement.dataset.theme = theme;
+        set({ theme });
+      },
 
       triggerLevelUp: (level) =>
         set({ showLevelUpModal: true, newLevel: level }),
@@ -104,7 +111,7 @@ export const useUserStore = create<UserStore>()(
     }),
     {
       name: "study-rpg-user",
-      partialize: (state) => ({ user: state.user, language: state.language }),
+      partialize: (state) => ({ user: state.user, language: state.language, theme: state.theme }),
     }
   )
 );

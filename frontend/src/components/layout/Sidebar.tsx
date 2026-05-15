@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { logOut, searchUsers, sendFriendRequest, cancelFriendRequest, acceptFriendRequest, type PublicUserResult } from "@/lib/firebase";
+import { logOut, searchUsers, sendFriendRequest, cancelFriendRequest, acceptFriendRequest, createChallenge, sendQuickMessage, type PublicUserResult } from "@/lib/firebase";
 import { navigate } from "@/lib/navigate";
 import { XpBar } from "@/components/ui/XpBar";
 import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
@@ -94,7 +94,7 @@ function HeaderSearch() {
   };
 
   const ActionButton = ({ person }: { person: PublicUserResult }) => {
-    if (person.friendStatus === "accepted") return <span style={{ color: "#39FF14", fontSize: 10, fontWeight: 900 }}>Friend</span>;
+    if (person.friendStatus === "accepted") return <div style={{ display: "flex", gap: 5 }}><button onClick={() => { sendQuickMessage(user!.uid, person.uid, "Hi").then(() => toast.success("Message sent")); }} style={{ border: "1px solid rgba(0,240,255,.3)", background: "rgba(0,240,255,.12)", color: "#00F0FF", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Msg</button><button onClick={() => { createChallenge(user!.uid, person.uid).then(() => toast.success("Challenge sent")); }} style={{ border: "1px solid rgba(255,215,0,.3)", background: "rgba(255,215,0,.12)", color: "#FFD700", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Challenge</button></div>;
     if (person.friendStatus === "pending") return <button onClick={() => cancel(person)} disabled={busy === person.uid} style={{ border: "1px solid rgba(255,215,0,.3)", background: "rgba(255,215,0,.12)", color: "#FFD700", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><XCircle size={13} />Cancel</button>;
     if (person.friendStatus === "incoming") return <button onClick={() => accept(person)} disabled={busy === person.uid} style={{ border: 0, background: "#00F0FF", color: "#000", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><CheckCircle2 size={13} />Accept</button>;
     if (person.friendStatus === "blocked_by_me") return <span style={{ color: "#EF4444", fontSize: 10, fontWeight: 900 }}>Blocked</span>;

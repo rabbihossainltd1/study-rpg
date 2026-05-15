@@ -8,10 +8,10 @@ import { StatCard } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { RANK_COLORS, RANK_THRESHOLDS, type Rank, type Achievement } from "@/types";
 import { getRarityColor, formatDuration } from "@/lib/utils";
-import { updateUserProfile, logOut, bindGuestAccountToEmail } from "@/lib/firebase";
+import { updateUserProfile, logOut, bindGuestAccountToEmail, getLeaderboard, deleteCurrentAccount } from "@/lib/firebase";
 import {
   Edit3, Trophy, Zap, Flame, Clock, Star, Shield, LogOut, Copy, Check,
-  Camera, Save, X, User, School, MapPin, Home, GraduationCap, Languages, Coins, Gem, Award, Mail, Lock, Crown,
+  Camera, Save, X, User, School, MapPin, Home, GraduationCap, Languages, Coins, Gem, Award, Mail, Lock, Crown, SunMoon, Trash2,
 } from "lucide-react";
 import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
 import toast from "react-hot-toast";
@@ -58,7 +58,7 @@ async function compressImage(file: File): Promise<string> {
 }
 
 export default function ProfilePage() {
-  const { user, language, setUser, setLanguage, reset } = useUserStore();
+  const { user, language, theme, setUser, setLanguage, setTheme, reset } = useUserStore();
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState("stats");
   const [editing, setEditing] = useState(false);
@@ -66,6 +66,7 @@ export default function ProfilePage() {
   const [bindEmail, setBindEmail] = useState("");
   const [bindPassword, setBindPassword] = useState("");
   const [binding, setBinding] = useState(false);
+  const [podiumRank, setPodiumRank] = useState<number | undefined>(undefined);
   const [form, setForm] = useState({
     username: "",
     displayName: "",
@@ -81,6 +82,10 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!user) return;
+    getLeaderboard("global", 100).then((rows: any[]) => {
+      const found = rows.find((r) => r.userId === user.uid);
+      setPodiumRank(found?.rank && found.rank <= 3 ? found.rank : undefined);
+    }).catch(() => setPodiumRank(undefined));
     setForm({
       username: user.username || "",
       displayName: user.displayName || user.username || "",
@@ -186,6 +191,18 @@ export default function ProfilePage() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (!confirm(language === "bn" ? "অ্যাকাউন্ট ডিলিট করতে চান? এই কাজ ফেরত আনা যাবে না।" : "Delete account? This cannot be undone.")) return;
+    try {
+      await deleteCurrentAccount(user.uid);
+      reset();
+      toast.success(language === "bn" ? "অ্যাকাউন্ট ডিলিট হয়েছে" : "Account deleted");
+      navigate("/login");
+    } catch {
+      toast.error(language === "bn" ? "ডিলিট করা যায়নি। আবার লগইন করে চেষ্টা করো।" : "Delete failed. Re-login and try again.");
+    }
+  };
+
   const toggleLanguage = () => {
     const newLang = language === "bn" ? "en" : "bn";
     setLanguage(newLang);
@@ -198,9 +215,7 @@ export default function ProfilePage() {
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full opacity-10 blur-3xl pointer-events-none" style={{ background: rankColor }} />
         <div className="flex items-start gap-4 relative">
           <div className="relative flex-shrink-0">
-            <div className="w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center text-4xl border-2" style={{ borderColor: rankColor, background: `${rankColor}15`, boxShadow: `0 0 30px ${rankColor}30` }}>
-              {displayPhoto ? <img src={displayPhoto} alt="Profile" className="w-full h-full object-cover" /> : <AppIcon name={user.avatar || "zap"} className="w-9 h-9" color={rankColor} />}
-            </div>
+            <UserAvatar photoURL={displayPhoto} avatar={user.avatar} name={user.displayName} sizeClass="w-20 h-20 rounded-2xl" iconClassName="w-9 h-9" borderColor={rankColor} rank={podiumRank} vipFrame={Boolean(podiumRank)} />
             <div className="absolute -bottom-1 -right-1 text-xs font-black px-1.5 py-0.5 rounded-md" style={{ background: rankColor, color: "#000" }}>
               {user.level}
             </div>
@@ -314,9 +329,11 @@ export default function ProfilePage() {
               <Button onClick={bindGuestEmail} isLoading={binding} className="w-full" size="sm">Bind Email</Button>
             </div>
           )}
-          <Button variant="ghost" className="w-full justify-start" onClick={toggleLanguage} leftIcon={<Languages className="w-4 h-4" />}>Language: {language === "bn" ? "বাংলা" : "English"}</Button>
+          <Button variant="ghost" className="w-full justify-start" onClick={toggleLanguage} leftIcon={<Languages className="w-4 h-4" />}>{language === "bn" ? "ভাষা: বাংলা" : "Language: English"}</Button>
+          <Button variant="ghost" className="w-full justify-start" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} leftIcon={<SunMoon className="w-4 h-4" />}>{language === "bn" ? `থিম: ${theme === "dark" ? "ডার্ক" : "লাইট"}` : `Theme: ${theme === "dark" ? "Dark" : "Light"}`}</Button>
           <Button variant="ghost" className="w-full justify-start" onClick={() => setEditing(true)} leftIcon={<Edit3 className="w-4 h-4" />}>Edit profile info</Button>
-          <Button variant="danger" className="w-full justify-start" onClick={handleLogout} leftIcon={<LogOut className="w-4 h-4" />}>Log out</Button>
+          <Button variant="danger" className="w-full justify-start" onClick={handleLogout} leftIcon={<LogOut className="w-4 h-4" />}>{language === "bn" ? "লগ আউট" : "Log out"}</Button>
+          <button onClick={handleDeleteAccount} className="w-full flex items-center gap-2 px-4 py-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-400 font-bold text-sm tap-bounce"><Trash2 className="w-4 h-4" />{language === "bn" ? "অ্যাকাউন্ট ডিলিট" : "Delete account"}</button>
         </div>
       )}
 

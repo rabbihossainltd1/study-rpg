@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, type KeyboardEvent } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { Button } from "@/components/ui/Button";
 import { ChatMessage } from "@/types";
-import { Bot, Send, User, RefreshCw } from "lucide-react";
+import { Bot, Send, User, RefreshCw, ImagePlus } from "lucide-react";
 import { AppIcon } from "@/components/ui/AppIcon";
 
 const QUICK_PROMPTS = [
@@ -53,6 +53,9 @@ function offlineTutorReply(text: string) {
   const q = text.trim();
   const lower = q.toLowerCase();
   const isBangla = /[\u0980-\u09FF]/.test(q);
+  if (/^(hi|hello|hey|assalamu|আসসালামু|হাই|হ্যালো|কেমন আছো|সালাম)/i.test(q)) {
+    return isBangla ? "আমি ভালো আছি। তুমি কী নিয়ে পড়তে চাও? চাইলে ছবি আপলোড করে প্রশ্নও করতে পারো।" : "I am good. What do you want to study? You can also upload an image and ask from it.";
+  }
   const math = solveArithmeticQuestion(q);
   if (math) {
     const answer = Number.isInteger(math.value) ? String(math.value) : math.value.toFixed(4).replace(/\.0+$/, "").replace(/0+$/, "");
@@ -118,6 +121,7 @@ export default function AiAssistantPage() {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [attachedImage, setAttachedImage] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -129,24 +133,26 @@ export default function AiAssistantPage() {
     const userMessage = text || input.trim();
     if (!userMessage || isLoading) return;
 
-    const userMsg: ChatMessage = { id: `u-${Date.now()}`, role: "user", content: userMessage, timestamp: new Date() };
+    const imageNote = attachedImage ? (language === "bn" ? "\n\n[ছবি যুক্ত করা হয়েছে: ছবির প্রশ্ন/লেখা বিশ্লেষণ করে উত্তর দাও]" : "\n\n[Image attached: analyze the question/text from the image]") : "";
+    const userMsg: ChatMessage = { id: `u-${Date.now()}`, role: "user", content: userMessage + imageNote, timestamp: new Date() };
     const loadingMsg: ChatMessage = { id: `a-${Date.now()}`, role: "assistant", content: "", timestamp: new Date(), isLoading: true };
 
     setMessages((prev) => [...prev, userMsg, loadingMsg]);
     setInput("");
+    setAttachedImage("");
     setIsLoading(true);
 
     try {
       const apiKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY;
 
       if (!apiKey) {
-        setMessages((prev) => prev.map((m) => m.id === loadingMsg.id ? { ...m, content: offlineTutorReply(userMessage), isLoading: false } : m));
+        setMessages((prev) => prev.map((m) => m.id === loadingMsg.id ? { ...m, content: offlineTutorReply(userMessage + imageNote), isLoading: false } : m));
         return;
       }
 
       const conversationHistory = [
         ...messages.filter((m) => !m.isLoading).map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
-        { role: "user" as const, content: userMessage },
+        { role: "user" as const, content: userMessage + imageNote },
       ];
 
       const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
@@ -161,11 +167,11 @@ export default function AiAssistantPage() {
 
       if (!response.ok) throw new Error(`AI request failed ${response.status}`);
       const data = await response.json();
-      const aiText = data.choices?.[0]?.message?.content || offlineTutorReply(userMessage);
+      const aiText = data.choices?.[0]?.message?.content || offlineTutorReply(userMessage + imageNote);
       setMessages((prev) => prev.map((m) => m.id === loadingMsg.id ? { ...m, content: aiText, isLoading: false } : m));
     } catch {
       setMessages((prev) => prev.map((m) => m.id === loadingMsg.id
-        ? { ...m, content: offlineTutorReply(userMessage), isLoading: false } : m));
+        ? { ...m, content: offlineTutorReply(userMessage + imageNote), isLoading: false } : m));
     } finally {
       setIsLoading(false);
     }
@@ -257,6 +263,7 @@ export default function AiAssistantPage() {
       <div style={{ flexShrink: 0, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
           <div style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, overflow: "hidden" }}>
+            {attachedImage && <div style={{ padding: "8px 12px", borderBottom: "1px solid rgba(255,255,255,0.08)", color: "#00F0FF", fontSize: 11, fontWeight: 700 }}>Image attached for AI analysis</div>}
             <textarea
               ref={inputRef}
               value={input}
@@ -268,7 +275,8 @@ export default function AiAssistantPage() {
               style={{ width: "100%", background: "transparent", padding: "12px 16px", fontSize: 13, color: "#fff", border: "none", outline: "none", resize: "none", maxHeight: 120, fontFamily: "inherit" }}
             />
           </div>
-          <Button onClick={() => sendMessage()} disabled={!input.trim() || isLoading} size="md"
+          <label style={{ height: 46, width: 46, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#00F0FF", cursor: "pointer" }}><ImagePlus size={18} /><input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const file = e.target.files?.[0]; if (!file) return; setAttachedImage(file.name); setInput((prev) => prev || (language === "bn" ? "এই ছবির প্রশ্নটি সমাধান করো" : "Solve the question from this image")); }} /></label>
+          <Button onClick={() => sendMessage()} disabled={(!input.trim() && !attachedImage) || isLoading} size="md"
             style={{ height: 46, paddingLeft: 16, paddingRight: 16, flexShrink: 0 }}
             leftIcon={isLoading ? undefined : <Send size={16} />} isLoading={isLoading}>
             {!isLoading && "Send"}

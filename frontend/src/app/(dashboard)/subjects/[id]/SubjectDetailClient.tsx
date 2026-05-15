@@ -122,7 +122,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
 
   const subject = SUBJECTS.find((s) => s.id === id);
   const chapters = CHAPTERS[id] || [];
-  const quizQuestions = useMemo(() => getSubjectQuizQuestions(id, quizDifficulty, 10), [id, quizDifficulty]);
+  const quizQuestions = useMemo(() => getSubjectQuizQuestions(id, quizDifficulty, 10, user?.examMode), [id, quizDifficulty, user?.examMode]);
   const currentQ = quizQuestions[quizIndex];
   const difficultyBonus = quizDifficulty === "hard" ? 15 : quizDifficulty === "medium" ? 8 : 0;
   const quizRewardXp = score * 30 + (score === quizQuestions.length ? 50 : 0) + difficultyBonus;
@@ -284,7 +284,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
             </div>
             <div className="flex-1 min-w-0">
               <h1 className="text-2xl font-black text-white truncate">{language === "bn" ? subject.nameBn : subject.name}</h1>
-              <p className="text-sm text-gray-500 mt-0.5">{subject.totalChapters} chapters · 120 real quizzes</p>
+              <p className="text-sm text-gray-500 mt-0.5">{subject.totalChapters} chapters · Bangla MCQ bank</p>
               <div className="flex items-center gap-3 mt-2">
                 <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
                   <div className="h-full rounded-full transition-all duration-700" style={{ width: `${subject.progress}%`, background: subject.color }} />
@@ -296,10 +296,10 @@ export default function SubjectDetailClient({ id }: { id: string }) {
           <div className="mt-4 flex flex-wrap gap-2">
             {DIFFICULTIES.map((d) => (
               <button key={d.id} onClick={() => setQuizDifficulty(d.id)} className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${quizDifficulty === d.id ? "text-black" : "text-gray-400 bg-white/5 border-white/10"}`} style={quizDifficulty === d.id ? { background: d.color, borderColor: d.color } : {}}>
-                {d.label}
+                {language === "bn" ? (d.id === "easy" ? "সহজ" : d.id === "medium" ? "মাঝারি" : "কঠিন") : d.label}
               </button>
             ))}
-            <Button onClick={() => startQuiz(quizDifficulty)} variant="secondary" size="sm" leftIcon={<HelpCircle className="w-4 h-4" />}>Take Quiz</Button>
+            <Button onClick={() => startQuiz(quizDifficulty)} variant="secondary" size="sm" leftIcon={<HelpCircle className="w-4 h-4" />}>{language === "bn" ? "MCQ শুরু" : "Take MCQ"}</Button>
             <div className="flex items-center gap-1 px-3 py-1.5 glass rounded-lg text-xs" style={{ color: subject.color }}>
               <Zap className="w-3 h-3" /> {subject.xpReward} XP/chapter
             </div>
@@ -310,7 +310,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
       <div>
         <div className="flex items-center gap-2 mb-3">
           <BookOpen className="w-5 h-5" style={{ color: subject.color }} />
-          <h2 className="font-bold text-white">Chapters</h2>
+          <h2 className="font-bold text-white">{language === "bn" ? "অধ্যায়" : "Chapters"}</h2>
         </div>
         <div className="space-y-2">
           {chapters.map((chapter, i) => (

@@ -75,6 +75,13 @@ export function IconBadge({ name, color = "#39FF14", className = "w-11 h-11 roun
   );
 }
 
+export function getPodiumColor(rank?: number) {
+  if (rank === 1) return "#FFD700";
+  if (rank === 2) return "#C0C0C0";
+  if (rank === 3) return "#CD7F32";
+  return "#39FF14";
+}
+
 export function CrownBadge({ rank, className = "w-6 h-6" }: { rank?: number; className?: string }) {
   if (rank === 1) return <Crown className={className} style={{ color: "#FFD700" }} />;
   if (rank === 2) return <Crown className={className} style={{ color: "#C0C0C0" }} />;
@@ -90,6 +97,7 @@ export function UserAvatar({
   iconClassName = "w-5 h-5",
   rank,
   borderColor = "#39FF14",
+  vipFrame,
 }: {
   photoURL?: string;
   avatar?: string;
@@ -98,10 +106,14 @@ export function UserAvatar({
   iconClassName?: string;
   rank?: number;
   borderColor?: string;
+  vipFrame?: boolean;
 }) {
+  const frameColor = getPodiumColor(rank);
+  const isVip = Boolean(vipFrame || (rank && rank <= 3));
   return (
     <div className="relative inline-flex flex-shrink-0">
-      <div className={`${sizeClass} rounded-full bg-primary/10 border flex items-center justify-center overflow-hidden`} style={{ borderColor: `${borderColor}70` }}>
+      {isVip && <div className="absolute -inset-1.5 rounded-full opacity-75 blur-sm" style={{ background: `linear-gradient(135deg, ${frameColor}, transparent 55%, ${frameColor})` }} />}
+      <div className={`${sizeClass} rounded-full bg-primary/10 border-2 flex items-center justify-center overflow-hidden relative z-10`} style={{ borderColor: isVip ? frameColor : `${borderColor}70`, boxShadow: isVip ? `0 0 22px ${frameColor}55` : undefined }}>
         {photoURL ? <img src={photoURL} alt={name || "User"} className="w-full h-full object-cover" /> : <AppIcon name={avatar || "zap"} className={iconClassName} color={borderColor} />}
       </div>
       {rank && rank <= 3 && (

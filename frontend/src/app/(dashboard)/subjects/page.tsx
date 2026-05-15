@@ -8,6 +8,7 @@ import { useState } from "react";
 import { AppIcon } from "@/components/ui/AppIcon";
 
 const FILTERS = ["All", "SSC", "HSC", "Admission", "University"];
+const FILTER_BN: Record<string,string> = { All: "সব", SSC: "SSC", HSC: "HSC", Admission: "ভর্তি", University: "বিশ্ববিদ্যালয়" };
 
 export default function SubjectsPage() {
   const { language, user } = useUserStore();
@@ -27,7 +28,7 @@ export default function SubjectsPage() {
         </div>
         <div>
           <h1 className="text-2xl font-black text-white">{language === "bn" ? "বিষয়সমূহ" : "Subjects"}</h1>
-          <p className="text-sm text-gray-500">Choose a subject to start learning</p>
+          <p className="text-sm text-gray-500">{language === "bn" ? "তোমার ক্লাস অনুযায়ী বাংলা MCQ প্র্যাকটিস করো" : "Practice Bangla MCQ by exam mode"}</p>
         </div>
       </div>
 
@@ -35,13 +36,13 @@ export default function SubjectsPage() {
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
         {FILTERS.map((f) => (
           <button
-            key={f}
+            key={language === "bn" ? FILTER_BN[f] : f}
             onClick={() => setFilter(f)}
             className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
               filter === f ? "bg-primary text-black font-bold shadow-neon-primary" : "glass border border-white/10 text-gray-400 hover:text-white"
             }`}
           >
-            {f}
+            {language === "bn" ? FILTER_BN[f] : f}
           </button>
         ))}
       </div>
@@ -66,15 +67,15 @@ export default function SubjectsPage() {
                   <span className="text-xs text-gray-600">{subject.xpReward} XP/ch</span>
                 </div>
               </div>
-              <h3 className="font-black text-white text-lg leading-tight mb-1 break-words">{language === "bn" ? subject.nameBn : subject.name}</h3>
-              <p className="text-xs text-gray-500 mb-3 leading-relaxed">{subject.completedChapters}/{subject.totalChapters} chapters · 120 quizzes</p>
+              <h3 className="font-black text-white text-xl leading-tight mb-1 break-words whitespace-normal">{language === "bn" ? subject.nameBn : subject.name}</h3>
+              <p className="text-xs text-gray-500 mb-3 leading-relaxed">{subject.completedChapters}/{subject.totalChapters} {language === "bn" ? "অধ্যায়" : "chapters"} · {language === "bn" ? "বাংলা MCQ" : "Bangla MCQ"}</p>
               <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
                 <div className="h-full rounded-full transition-all duration-700" style={{ background: subject.color, width: `${subject.progress}%` }} />
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-500">{subject.progress}%</span>
                 <div className="flex items-center gap-1 text-xs" style={{ color: subject.color }}>
-                  Start Learning <ChevronRight className="w-3 h-3" />
+                  {language === "bn" ? "শুরু করো" : "Start Learning"} <ChevronRight className="w-3 h-3" />
                 </div>
               </div>
               <div className="flex gap-1 mt-3 flex-wrap">
@@ -93,9 +94,9 @@ export default function SubjectsPage() {
       <div className="glass-card p-5 border border-gold/20 flex items-center gap-4">
         <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0"><Star className="w-6 h-6 text-gold fill-gold" /></div>
         <div className="flex-1">
-          <p className="font-bold text-white text-sm">Recommended for {examMode}</p>
+          <p className="font-bold text-white text-sm">{language === "bn" ? `${examMode} প্রস্তুতি` : `Recommended for ${examMode}`}</p>
           <p className="text-xs text-gray-500 mt-0.5">
-            Focus on {examMode === "SSC" ? "Math, Physics & Chemistry" : examMode === "HSC" ? "Physics, Chemistry & Biology" : "All subjects"} for maximum score.
+            {language === "bn" ? "তোমার মোড অনুযায়ী বিষয়গুলো সাজানো হয়েছে।" : `Focus on ${examMode === "SSC" ? "Math, Physics & Chemistry" : examMode === "HSC" ? "Physics, Chemistry & Biology" : "All subjects"} for maximum score.`}
           </p>
         </div>
         <div className="flex-shrink-0">
