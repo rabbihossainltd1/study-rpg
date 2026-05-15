@@ -197,7 +197,7 @@ export async function createUserProfile(
     avatar: extra?.avatar || randomAvatar(),
     frame: "default",
     isGuest: firebaseUser.isAnonymous,
-    language: options?.language || "bn",
+    language: extra?.language || "bn",
     createdAt: serverTimestamp(),
     lastLoginAt: serverTimestamp(),
   });
