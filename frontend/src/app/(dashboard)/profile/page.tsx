@@ -14,6 +14,7 @@ import {
   Camera, Save, X, User, School, MapPin, Home, GraduationCap, Languages, Coins, Gem, Award, Mail, Lock, Crown, SunMoon, Trash2,
 } from "lucide-react";
 import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
+import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 import toast from "react-hot-toast";
 
 const RANK_ORDER: Rank[] = ["Novice", "Apprentice", "Scholar", "Expert", "Master", "Grandmaster", "Legend"];
@@ -104,6 +105,8 @@ export default function ProfilePage() {
     () => ACHIEVEMENTS.filter((a) => user?.achievements?.includes(a.id)),
     [user?.achievements]
   );
+
+  useBodyScrollLock(editing);
 
   if (!user) return null;
 
@@ -338,7 +341,7 @@ export default function ProfilePage() {
       )}
 
       {editing && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-fade-in">
+        <div className="modal-backdrop fixed inset-0 z-50 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-fade-in overflow-hidden">
           <div className="glass-card w-full max-w-lg p-5 border border-primary/20 animate-drawer-up">
             <div className="flex items-center justify-between mb-4">
               <div><h2 className="text-lg font-black text-white">Edit Profile</h2><p className="text-xs text-gray-500">Name, photo and student info</p></div>

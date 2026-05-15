@@ -186,7 +186,7 @@ export default function AiAssistantPage() {
   };
 
   const formatMessage = (content: string) => content
-    .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#fff">$1</strong>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--app-text)">$1</strong>')
     .replace(/`(.*?)`/g, '<code style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:4px;color:#39FF14;font-size:12px">$1</code>')
     .replace(/\\n/g, "<br>")
     .replace(/\n/g, "<br>");
@@ -201,7 +201,7 @@ export default function AiAssistantPage() {
           </div>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <h1 style={{ fontSize: 18, fontWeight: 900, color: "#fff", margin: 0 }}>AI Study Tutor</h1>
+              <h1 style={{ fontSize: 18, fontWeight: 900, color: "var(--app-text)", margin: 0 }}>AI Study Tutor</h1>
               <span style={{ display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: "#39FF14" }} />
             </div>
             <p style={{ fontSize: 11, color: "#6B7280", margin: 0 }}>Powered by DeepSeek · Bangla & English</p>
@@ -215,7 +215,7 @@ export default function AiAssistantPage() {
         {QUICK_PROMPTS.map((p) => (
           <button key={p.labelEn} onClick={() => sendMessage(language === "bn" ? p.label : p.labelEn)} style={{
             display: "flex", alignItems: "center", gap: 6, padding: "6px 12px",
-            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+            background: "var(--app-surface-soft)", border: "1px solid var(--app-border)",
             borderRadius: 100, fontSize: 12, color: "#9CA3AF", whiteSpace: "nowrap", cursor: "pointer"
           }}>
             <AppIcon name={p.icon} className="w-4 h-4" /> {language === "bn" ? p.label : p.labelEn}
@@ -237,9 +237,9 @@ export default function AiAssistantPage() {
             </div>
             <div style={{
               maxWidth: "78%", borderRadius: 16, padding: "10px 14px", fontSize: 13, lineHeight: 1.6,
-              background: msg.role === "assistant" ? "rgba(18,18,18,0.98)" : "rgba(57,255,20,0.08)",
-              border: msg.role === "assistant" ? "1px solid rgba(255,255,255,0.07)" : "1px solid rgba(57,255,20,0.2)",
-              color: "#E5E7EB",
+              background: msg.role === "assistant" ? "var(--app-surface)" : "rgba(57,255,20,0.08)",
+              border: msg.role === "assistant" ? "1px solid var(--app-border)" : "1px solid rgba(57,255,20,0.2)",
+              color: "var(--app-text)",
               borderTopLeftRadius: msg.role === "assistant" ? 4 : 16,
               borderTopRightRadius: msg.role === "user" ? 4 : 16,
             }}>
@@ -250,7 +250,7 @@ export default function AiAssistantPage() {
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
               )}
-              <p style={{ fontSize: 10, marginTop: 6, opacity: 0.35, color: "#fff" }}>
+              <p style={{ fontSize: 10, marginTop: 6, opacity: 0.35, color: "var(--app-muted)" }}>
                 {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               </p>
             </div>
@@ -260,10 +260,10 @@ export default function AiAssistantPage() {
       </div>
 
       {/* Input */}
-      <div style={{ flexShrink: 0, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+      <div style={{ flexShrink: 0, paddingTop: 12, borderTop: "1px solid var(--app-border)" }}>
         <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
-          <div style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, overflow: "hidden" }}>
-            {attachedImage && <div style={{ padding: "8px 12px", borderBottom: "1px solid rgba(255,255,255,0.08)", color: "#00F0FF", fontSize: 11, fontWeight: 700 }}>Image attached for AI analysis</div>}
+          <div style={{ flex: 1, background: "var(--app-surface-soft)", border: "1px solid var(--app-border)", borderRadius: 16, overflow: "hidden" }}>
+            {attachedImage && <div style={{ padding: "8px 12px", borderBottom: "1px solid var(--app-border)", color: "#00F0FF", fontSize: 11, fontWeight: 700 }}>Image attached for AI analysis</div>}
             <textarea
               ref={inputRef}
               value={input}
@@ -272,10 +272,10 @@ export default function AiAssistantPage() {
               placeholder={language === "bn" ? "যেকোনো বিষয়ে জিজ্ঞেস করো..." : "Ask anything about your studies..."}
               disabled={isLoading}
               rows={1}
-              style={{ width: "100%", background: "transparent", padding: "12px 16px", fontSize: 13, color: "#fff", border: "none", outline: "none", resize: "none", maxHeight: 120, fontFamily: "inherit" }}
+              style={{ width: "100%", background: "transparent", padding: "12px 16px", fontSize: 13, color: "var(--app-text)", border: "none", outline: "none", resize: "none", maxHeight: 120, fontFamily: "inherit" }}
             />
           </div>
-          <label style={{ height: 46, width: 46, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#00F0FF", cursor: "pointer" }}><ImagePlus size={18} /><input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const file = e.target.files?.[0]; if (!file) return; setAttachedImage(file.name); setInput((prev) => prev || (language === "bn" ? "এই ছবির প্রশ্নটি সমাধান করো" : "Solve the question from this image")); }} /></label>
+          <label style={{ height: 46, width: 46, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", background: "var(--app-surface-soft)", border: "1px solid var(--app-border)", color: "#00F0FF", cursor: "pointer" }}><ImagePlus size={18} /><input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const file = e.target.files?.[0]; if (!file) return; setAttachedImage(file.name); setInput((prev) => prev || (language === "bn" ? "এই ছবির প্রশ্নটি সমাধান করো" : "Solve the question from this image")); }} /></label>
           <Button onClick={() => sendMessage()} disabled={(!input.trim() && !attachedImage) || isLoading} size="md"
             style={{ height: 46, paddingLeft: 16, paddingRight: 16, flexShrink: 0 }}
             leftIcon={isLoading ? undefined : <Send size={16} />} isLoading={isLoading}>

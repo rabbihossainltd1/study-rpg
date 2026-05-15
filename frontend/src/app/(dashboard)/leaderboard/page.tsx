@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
 import { Trophy, Globe, MapPin, TrendingUp, Crown, X, School, UserRound, UserPlus, Flame } from "lucide-react";
 import { AppIcon, UserAvatar, CrownBadge } from "@/components/ui/AppIcon";
+import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 
 const TABS = [
   { id: "global", label: "Global", labelBn: "গ্লোবাল", icon: Globe },
@@ -81,6 +82,8 @@ export default function LeaderboardPage() {
   const myRank = visibleEntries.find((entry) => entry.userId === user?.uid)?.rank;
   const topThree = visibleEntries.slice(0, 3);
   const rest = visibleEntries.slice(3);
+
+  useBodyScrollLock(Boolean(selected));
 
   useEffect(() => {
     if (!selected || !user || selected.userId === user.uid) return;
@@ -230,18 +233,18 @@ export default function LeaderboardPage() {
       </div>
 
       {selected && (
-        <div className="fixed inset-0 z-[200] bg-black/88 flex items-start justify-center p-4 pt-[76px] animate-fade-in overflow-y-auto" onClick={() => setSelected(null)}>
-          <div className="glass-card w-full max-w-sm p-5 border border-gold/30 shadow-[0_0_50px_rgba(255,215,0,0.16)] animate-card-in max-h-[calc(100dvh-92px)] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-black text-white">Student Profile</h2>
+        <div className="modal-backdrop fixed inset-0 z-[200] flex items-center justify-center p-3 animate-fade-in overflow-hidden" onClick={() => setSelected(null)}>
+          <div className="glass-card w-full max-w-[340px] p-4 border border-gold/30 shadow-[0_0_50px_rgba(255,215,0,0.16)] animate-card-in max-h-[calc(100dvh-34px)] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-base font-black text-white">Student Profile</h2>
               <button type="button" onClick={() => setSelected(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>
             </div>
-            <div className="text-center mb-5">
-              <div className="flex justify-center mb-3"><Avatar entry={selected} size="lg" /></div>
-              <p className="text-xl font-black text-white">{selected.displayName || selected.username}</p>
+            <div className="text-center mb-4">
+              <div className="flex justify-center mb-2"><Avatar entry={selected} size="md" /></div>
+              <p className="text-lg font-black text-white">{selected.displayName || selected.username}</p>
               <p className="text-xs text-gray-500">@{selected.username} · ID {selected.studentId || selected.userId.slice(0, 8)}</p>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2">
               <InfoRow icon={<UserRound className="w-4 h-4" />} label="Student Name" value={selected.displayName || selected.username} />
               <InfoRow icon={<School className="w-4 h-4" />} label="School / University" value={selected.school || selected.college || "Not added"} />
               <InfoRow icon={<MapPin className="w-4 h-4" />} label="District" value={selected.district || "Not added"} />
@@ -249,10 +252,10 @@ export default function LeaderboardPage() {
             </div>
             {user && selected.userId !== user.uid && (() => {
               const state = friendStates[selected.userId] || "none";
-              if (state === "accepted") return <div className="grid grid-cols-2 gap-2 mt-4"><Button variant="secondary" onClick={() => messageFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Message</Button><Button variant="gold" onClick={() => challengeFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Challenge</Button></div>;
-              if (state === "pending") return <Button className="w-full mt-4" variant="gold" onClick={() => cancelLeaderboardRequest(selected)} disabled={busyAdd === selected.userId}>Cancel Request</Button>;
-              if (state === "blocked_by_me" || state === "blocked_me") return <Button className="w-full mt-4" variant="danger" disabled>Unavailable</Button>;
-              return <Button className="w-full mt-4" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>
+              if (state === "accepted") return <div className="grid grid-cols-2 gap-2 mt-3"><Button variant="secondary" onClick={() => messageFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Message</Button><Button variant="gold" onClick={() => challengeFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>Challenge</Button></div>;
+              if (state === "pending") return <Button className="w-full mt-3" variant="gold" onClick={() => cancelLeaderboardRequest(selected)} disabled={busyAdd === selected.userId}>Cancel Request</Button>;
+              if (state === "blocked_by_me" || state === "blocked_me") return <Button className="w-full mt-3" variant="danger" disabled>Unavailable</Button>;
+              return <Button className="w-full mt-3" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId}>
                 <UserPlus className="w-4 h-4" /> Add Friend
               </Button>;
             })()}
@@ -265,9 +268,9 @@ export default function LeaderboardPage() {
 
 function InfoRow({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
-    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
-      <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">{icon}</div>
-      <div><p className="text-xs text-gray-500">{label}</p><p className="text-sm font-bold text-white">{value}</p></div>
+    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10">
+      <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center">{icon}</div>
+      <div className="min-w-0"><p className="text-[11px] text-gray-500">{label}</p><p className="text-sm font-bold text-white truncate">{value}</p></div>
     </div>
   );
 }

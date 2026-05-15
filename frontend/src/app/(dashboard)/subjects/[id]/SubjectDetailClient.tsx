@@ -14,6 +14,7 @@ import { addXp, addCoins, getSubjectProgress, markLessonRewardClaimed, markQuizR
 import toast from "react-hot-toast";
 import type { Lesson } from "@/types";
 import { AppIcon } from "@/components/ui/AppIcon";
+import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 
 const DIFFICULTIES: Array<{ id: QuizDifficulty; label: string; color: string }> = [
   { id: "easy", label: "Easy", color: "#39FF14" },
@@ -123,6 +124,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
   const subject = SUBJECTS.find((s) => s.id === id);
   const chapters = CHAPTERS[id] || [];
   const quizQuestions = useMemo(() => getSubjectQuizQuestions(id, quizDifficulty, 10, user?.examMode), [id, quizDifficulty, user?.examMode]);
+  useBodyScrollLock(Boolean(proofLesson) || quizActive);
   const currentQ = quizQuestions[quizIndex];
   const difficultyBonus = quizDifficulty === "hard" ? 15 : quizDifficulty === "medium" ? 8 : 0;
   const quizRewardXp = score * 30 + (score === quizQuestions.length ? 50 : 0) + difficultyBonus;
@@ -363,7 +365,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
 
 
       {proofLesson && (
-        <div className="fixed inset-0 bg-black/90 z-[260] flex items-center justify-center p-4 animate-fade-in">
+        <div className="modal-backdrop fixed inset-0 z-[260] flex items-center justify-center p-4 animate-fade-in overflow-hidden">
           <div className="glass-card w-full max-w-md p-5 border border-primary/25 animate-card-in">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -395,7 +397,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
       )}
 
       {quizActive && (
-        <div className="fixed inset-0 bg-black/92 z-[250] flex items-start justify-center p-3 pt-[72px] overflow-y-auto animate-fade-in">
+        <div className="modal-backdrop fixed inset-0 z-[250] flex items-start justify-center p-3 pt-[72px] overflow-hidden animate-fade-in">
           <div className="glass-card w-full max-w-lg p-4 sm:p-5 border border-secondary/30 animate-card-in max-h-[calc(100dvh-84px)] overflow-y-auto shadow-[0_0_46px_rgba(0,240,255,0.12)]">
             {!quizDone ? (
               currentQ ? <>

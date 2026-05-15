@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { RANK_COLORS } from "@/types";
 import {
   LayoutDashboard, BookOpen, Trophy, Bot,
-  Target, User, LogOut, Zap, Menu, X, ChevronRight, Users, Search, UserPlus, Coins, Gem, Flame, XCircle, CheckCircle2,
+  Target, User, LogOut, Zap, Menu, X, ChevronRight, Users, Search, UserPlus, Coins, Gem, Flame, XCircle, CheckCircle2, Settings,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { href: "/ai-assistant", label: "AI Tutor", labelBn: "এআই টিউটর", icon: Bot },
   { href: "/friends", label: "Friends", labelBn: "ফ্রেন্ডস", icon: Users },
   { href: "/profile", label: "Profile", labelBn: "প্রোফাইল", icon: User },
+  { href: "/settings", label: "Settings", labelBn: "সেটিংস", icon: Settings },
 ];
 
 
@@ -109,15 +110,15 @@ function HeaderSearch() {
         value={term}
         onChange={(e) => setTerm(e.target.value)}
         placeholder="Search ID/name"
-        style={{ width: "100%", border: "1px solid rgba(255,255,255,.09)", background: "rgba(255,255,255,.045)", color: "white", borderRadius: 13, padding: "9px 10px 9px 32px", fontSize: 12, outline: "none" }}
+        className="app-input" style={{ width: "100%", border: "1px solid var(--app-border)", background: "var(--app-input)", color: "var(--app-text)", borderRadius: 13, padding: "9px 10px 9px 32px", fontSize: 12, outline: "none" }}
       />
       {results.length > 0 && (
-        <div style={{ position: "absolute", top: 44, left: -42, right: -70, background: "rgba(10,10,10,.98)", border: "1px solid rgba(57,255,20,.22)", borderRadius: 16, padding: 8, boxShadow: "0 20px 50px rgba(0,0,0,.5)", zIndex: 80 }}>
+        <div style={{ position: "absolute", top: 44, left: -42, right: -70, background: "var(--app-surface-strong)", border: "1px solid rgba(57,255,20,.22)", borderRadius: 16, padding: 8, boxShadow: "0 20px 50px rgba(0,0,0,.5)", zIndex: 80 }}>
           {results.slice(0, 4).map((person) => (
-            <div key={person.uid} style={{ display: "flex", alignItems: "center", gap: 8, padding: 8, borderRadius: 12, background: "rgba(255,255,255,.035)", marginBottom: 6 }}>
+            <div key={person.uid} style={{ display: "flex", alignItems: "center", gap: 8, padding: 8, borderRadius: 12, background: "var(--app-surface-soft)", marginBottom: 6 }}>
               <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-9 h-9" iconClassName="w-4 h-4" />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ margin: 0, color: "white", fontSize: 12, fontWeight: 800, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{person.displayName}</p>
+                <p style={{ margin: 0, color: "var(--app-text)", fontSize: 12, fontWeight: 800, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{person.displayName}</p>
                 <p style={{ margin: 0, color: "#6B7280", fontSize: 10, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{person.username} · ID {person.studentId}</p>
               </div>
               <ActionButton person={person} />
@@ -151,7 +152,7 @@ export function Sidebar() {
             <Zap size={20} color="#39FF14" />
           </div>
           <div style={{ textAlign: "left" }}>
-            <p style={{ fontWeight: 900, color: "#fff", fontSize: 17, margin: 0, lineHeight: 1 }}>Study RPG</p>
+            <p style={{ fontWeight: 900, color: "var(--app-text)", fontSize: 17, margin: 0, lineHeight: 1 }}>Study RPG</p>
             <p style={{ fontSize: 11, color: "#6B7280", margin: 0 }}>Level Up Learning</p>
           </div>
         </button>
@@ -163,7 +164,7 @@ export function Sidebar() {
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
             <UserAvatar photoURL={user.photoURL} avatar={user.avatar} name={user.displayName} sizeClass="w-10 h-10" iconClassName="w-5 h-5" borderColor={rankColor} />
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontWeight: 700, color: "#fff", fontSize: 13, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.displayName || user.username}</p>
+              <p style={{ fontWeight: 700, color: "var(--app-text)", fontSize: 13, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.displayName || user.username}</p>
               <p style={{ fontSize: 11, color: "#9CA3AF", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{user.username} · ID {user.studentId || "—"}</p>
               <p style={{ fontSize: 11, color: rankColor, margin: 0 }}>{user.rank}</p>
             </div>
@@ -231,22 +232,22 @@ export function Sidebar() {
     <>
       {/* Desktop Sidebar */}
       <aside style={{
-        display: "none", width: 256, background: "rgba(10,10,10,0.98)", borderRight: "1px solid rgba(255,255,255,0.06)",
+        display: "none", width: 256, background: "var(--app-surface-strong)", borderRight: "1px solid var(--app-border)",
         position: "fixed", left: 0, top: 0, height: "100vh", zIndex: 40, flexDirection: "column"
-      }} className="lg:flex">
+      }} className="lg:flex sidebar-panel">
         <SidebarContent />
       </aside>
 
       {/* Mobile Header */}
       <div style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 40,
-        background: "rgba(5,5,5,0.97)", borderBottom: "1px solid rgba(255,255,255,0.06)",
+        background: "var(--app-surface-strong)", borderBottom: "1px solid var(--app-border)",
         backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)"
-      }} className="lg:hidden">
+      }} className="lg:hidden mobile-app-header">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <button onClick={() => setMobileOpen(true)} className="tap-bounce" style={{ padding: 8, borderRadius: 12, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", cursor: "pointer" }}>
-              <Menu size={21} color="#fff" />
+            <button onClick={() => setMobileOpen(true)} className="tap-bounce" style={{ padding: 8, borderRadius: 12, background: "var(--app-surface-soft)", border: "1px solid var(--app-border)", cursor: "pointer" }}>
+              <Menu size={21} color="var(--app-text)" />
             </button>
             <button onClick={() => navigate("/dashboard")} style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer" }}>
               <Zap size={22} color="#39FF14" />
@@ -265,13 +266,13 @@ export function Sidebar() {
       {/* Mobile Drawer */}
       {mobileOpen && (
         <>
-          <div onClick={() => setMobileOpen(false)} className="animate-fade-in" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 50 }} />
-          <aside className="animate-drawer-in" style={{
+          <div onClick={() => setMobileOpen(false)} className="animate-fade-in" style={{ position: "fixed", inset: 0, background: "var(--app-overlay)", zIndex: 50 }} />
+          <aside className="animate-drawer-in sidebar-panel" style={{
             position: "fixed", left: 0, top: 0, height: "100vh", width: 280, zIndex: 51,
-            background: "rgba(10,10,10,0.99)", borderRight: "1px solid rgba(255,255,255,0.07)", boxShadow: "20px 0 60px rgba(0,0,0,0.45)"
+            background: "var(--app-surface-strong)", borderRight: "1px solid var(--app-border)", boxShadow: "20px 0 60px var(--app-shadow)"
           }}>
             <button onClick={() => setMobileOpen(false)} className="tap-bounce" style={{ position: "absolute", top: 16, right: 16, padding: 6, borderRadius: 8, background: "rgba(255,255,255,0.05)", border: "none", cursor: "pointer" }}>
-              <X size={18} color="#fff" />
+              <X size={18} color="var(--app-text)" />
             </button>
             <SidebarContent />
           </aside>

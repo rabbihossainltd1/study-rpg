@@ -94,7 +94,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   if (isLoading && !user) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#050505" }}>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--app-bg)" }}>
         <div style={{ textAlign: "center" }}>
           <div style={{ width: 64, height: 64, borderRadius: 18, background: "rgba(57,255,20,0.1)", border: "1px solid rgba(57,255,20,0.3)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
             <Loader2 size={32} color="#39FF14" style={{ animation: "spin 1s linear infinite" }} />
@@ -109,9 +109,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   if (!user) return null;
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#050505" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "var(--app-bg)" }}>
       <Sidebar />
-      <main style={{ flex: 1, marginLeft: 0, paddingTop: 64, minHeight: "100vh", overflowX: "hidden" }} className="lg:ml-64 lg:pt-0">
+      <main className="lg:ml-64 lg:pt-0 app-shell" style={{ flex: 1, marginLeft: 0, paddingTop: 64, minHeight: "100vh", overflowX: "hidden", background: "var(--app-bg)" }} >
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "24px 16px 94px" }}>
           {children}
         </div>

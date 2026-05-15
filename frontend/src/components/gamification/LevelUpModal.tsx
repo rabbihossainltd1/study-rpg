@@ -5,6 +5,7 @@ import { useUserStore } from "@/store/useUserStore";
 import { Zap, X, Star, Coins, Gem, Unlock } from "lucide-react";
 import { RANK_COLORS } from "@/types";
 import { useEffect } from "react";
+import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 
 // Simple confetti without external dependency
 function fireConfetti() {
@@ -66,6 +67,8 @@ export function LevelUpModal() {
     }
   }, [showLevelUpModal]);
 
+  useBodyScrollLock(showLevelUpModal);
+
   const rankColor = user ? RANK_COLORS[user.rank] : "#39FF14";
 
   return (
@@ -75,7 +78,7 @@ export function LevelUpModal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+          className="modal-backdrop fixed inset-0 backdrop-blur-sm z-[100] flex items-center justify-center p-4 overflow-hidden"
           onClick={closeModal}
         >
           <motion.div
