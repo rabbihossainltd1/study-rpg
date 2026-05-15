@@ -8,10 +8,11 @@ import { navigate } from "@/lib/navigate";
 import { Button } from "@/components/ui/Button";
 import { UserAvatar } from "@/components/ui/AppIcon";
 import { CLASS_OPTIONS, DIVISIONS, EDUCATION_GROUPS, deriveExamModeFromClass, getDistrictsForDivision, getThanasForZila, needsEducationGroup } from "@/lib/bdAddress";
+import { APP_VERSION, UPDATE_API_URL, UPDATE_PACKAGE_URL, UPDATE_RELEASE_URL } from "@/lib/appVersion";
 import toast from "react-hot-toast";
 import {
   Settings, SunMoon, Languages, LogOut, Trash2, Mail, Lock, UserRound,
-  Shield, Moon, Sun, Link as LinkIcon, Edit3, Save, GraduationCap, MapPin, Home, Building2, School,
+  Shield, Moon, Sun, Link as LinkIcon, Edit3, Save, GraduationCap, MapPin, Home, Building2, School, DownloadCloud,
 } from "lucide-react";
 
 export default function SettingsPage() {
@@ -20,6 +21,7 @@ export default function SettingsPage() {
   const [bindPassword, setBindPassword] = useState("");
   const [binding, setBinding] = useState(false);
   const [savingStudent, setSavingStudent] = useState(false);
+  const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [studentForm, setStudentForm] = useState(() => ({
     className: user?.className || "Class 9",
     groupName: user?.groupName || "Science",
@@ -76,12 +78,52 @@ export default function SettingsPage() {
     }
     setBinding(true);
     try {
-      await bindGuestAccountToEmail(bindEmail.trim(), bindPassword);
+      const cleanEmail = bindEmail.trim().toLowerCase();
+      await bindGuestAccountToEmail(cleanEmail, bindPassword);
+      setUser({ ...user, email: cleanEmail, isGuest: false });
+      setBindEmail("");
+      setBindPassword("");
       toast.success(isBn ? "ইমেইল bind হয়েছে" : "Email linked");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : (isBn ? "Bind failed" : "Bind failed"));
     } finally {
       setBinding(false);
+    }
+  };
+
+  const compareVersion = (a: string, b: string) => {
+    const pa = a.replace(/^v/i, "").split(".").map((n) => Number(n) || 0);
+    const pb = b.replace(/^v/i, "").split(".").map((n) => Number(n) || 0);
+    for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+      if ((pa[i] || 0) > (pb[i] || 0)) return 1;
+      if ((pa[i] || 0) < (pb[i] || 0)) return -1;
+    }
+    return 0;
+  };
+
+  const checkForUpdate = async () => {
+    setCheckingUpdate(true);
+    try {
+      let latest = APP_VERSION;
+      let url = UPDATE_RELEASE_URL;
+      const release = await fetch(UPDATE_API_URL, { cache: "no-store" }).then((r) => r.ok ? r.json() : null).catch(() => null);
+      if (release?.tag_name) {
+        latest = String(release.tag_name).replace(/^v/i, "");
+        url = release.html_url || UPDATE_RELEASE_URL;
+      } else {
+        const pkg = await fetch(UPDATE_PACKAGE_URL, { cache: "no-store" }).then((r) => r.ok ? r.json() : null).catch(() => null);
+        if (pkg?.version) latest = String(pkg.version);
+      }
+      if (compareVersion(latest, APP_VERSION) > 0) {
+        toast.success(isBn ? `নতুন ভার্সন ${latest} পাওয়া গেছে` : `New version ${latest} available`);
+        if (confirm(isBn ? `নতুন ভার্সন ${latest} ডাউনলোড পেজ খুলবে?` : `Open download page for v${latest}?`)) window.open(url, "_blank");
+      } else {
+        toast.success(isBn ? `Latest version installed: v${APP_VERSION}` : `Latest version installed: v${APP_VERSION}`);
+      }
+    } catch {
+      toast.error(isBn ? "Update check failed" : "Update check failed");
+    } finally {
+      setCheckingUpdate(false);
     }
   };
 
@@ -140,6 +182,12 @@ export default function SettingsPage() {
           <p className="text-sm text-gray-500 truncate">@{user.username} · ID {user.studentId || "—"}</p>
           <p className="text-xs text-primary font-bold mt-1">LV.{user.level} · {user.rank}</p>
         </div>
+      </div>
+
+      <div className="glass-card p-5 space-y-3 border border-primary/15">
+        <SectionTitle icon={<DownloadCloud className="w-4 h-4" />} title={isBn ? "অ্যাপ আপডেট" : "App update"} />
+        <p className="text-sm text-gray-500">{isBn ? `ইনস্টলড ভার্সন: v${APP_VERSION}` : `Installed version: v${APP_VERSION}`}</p>
+        <Button onClick={checkForUpdate} isLoading={checkingUpdate} className="w-full" leftIcon={<DownloadCloud className="w-4 h-4" />}>{isBn ? "চেক আপডেট" : "Check update"}</Button>
       </div>
 
       <div className="glass-card p-5 space-y-4">

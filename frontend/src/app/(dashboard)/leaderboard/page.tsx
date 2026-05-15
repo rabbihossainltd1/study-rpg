@@ -2,13 +2,14 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { cancelFriendRequest, getFriendRelationState, getLeaderboard, sendFriendRequest, createChallenge, sendQuickMessage, type FriendStatus } from "@/lib/firebase";
+import { cancelFriendRequest, getFriendRelationState, getLeaderboard, sendFriendRequest, createChallenge, type FriendStatus } from "@/lib/firebase";
 import { RANK_COLORS, type Rank } from "@/types";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
 import { Trophy, Globe, MapPin, TrendingUp, Crown, X, School, UserRound, UserPlus, Flame } from "lucide-react";
 import { AppIcon, UserAvatar, CrownBadge } from "@/components/ui/AppIcon";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
+import { navigate } from "@/lib/navigate";
 
 const TABS = [
   { id: "global", label: "Global", labelBn: "গ্লোবাল", icon: Globe },
@@ -123,15 +124,7 @@ export default function LeaderboardPage() {
 
   const messageFromLeaderboard = async (entry: LeaderEntry) => {
     if (!user || user.uid === entry.userId) return;
-    setBusyAdd(entry.userId);
-    try {
-      await sendQuickMessage(user.uid, entry.userId, "Hi");
-      toast.success("Message sent");
-    } catch {
-      toast.error("Message failed");
-    } finally {
-      setBusyAdd(null);
-    }
+    navigate(`/friends?chat=${entry.userId}`);
   };
 
   const challengeFromLeaderboard = async (entry: LeaderEntry) => {

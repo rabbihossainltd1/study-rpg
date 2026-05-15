@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { logOut, searchUsers, sendFriendRequest, cancelFriendRequest, acceptFriendRequest, createChallenge, sendQuickMessage, type PublicUserResult } from "@/lib/firebase";
 import { navigate } from "@/lib/navigate";
 import { XpBar } from "@/components/ui/XpBar";
 import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
+import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 import toast from "react-hot-toast";
 import { RANK_COLORS } from "@/types";
 import {
@@ -30,6 +31,9 @@ function HeaderSearch() {
   const [term, setTerm] = useState("");
   const [results, setResults] = useState<PublicUserResult[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
+  const [selected, setSelected] = useState<PublicUserResult | null>(null);
+  const boxRef = useRef<HTMLDivElement | null>(null);
+  useBodyScrollLock(Boolean(selected));
 
   useEffect(() => {
     if (!user || user.uid.startsWith("guest_")) return;
@@ -47,6 +51,17 @@ function HeaderSearch() {
     }, 300);
     return () => clearTimeout(timer);
   }, [term, user]);
+
+  useEffect(() => {
+    const onDown = (e: MouseEvent) => {
+      if (!boxRef.current) return;
+      if (!boxRef.current.contains(e.target as Node)) {
+        setResults([]);
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, []);
 
   const updateStatus = (uid: string, friendStatus: PublicUserResult["friendStatus"]) => {
     setResults((items) => items.map((i) => i.uid === uid ? { ...i, friendStatus } : i));
@@ -95,7 +110,7 @@ function HeaderSearch() {
   };
 
   const ActionButton = ({ person }: { person: PublicUserResult }) => {
-    if (person.friendStatus === "accepted") return <div style={{ display: "flex", gap: 5 }}><button onClick={() => { sendQuickMessage(user!.uid, person.uid, "Hi").then(() => toast.success("Message sent")); }} style={{ border: "1px solid rgba(0,240,255,.3)", background: "rgba(0,240,255,.12)", color: "#00F0FF", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Msg</button><button onClick={() => { createChallenge(user!.uid, person.uid).then(() => toast.success("Challenge sent")); }} style={{ border: "1px solid rgba(255,215,0,.3)", background: "rgba(255,215,0,.12)", color: "#FFD700", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Challenge</button></div>;
+    if (person.friendStatus === "accepted") return <div style={{ display: "flex", gap: 5 }}><button onClick={() => { navigate(`/friends?chat=${person.uid}`); setResults([]); }} style={{ border: "1px solid rgba(0,240,255,.3)", background: "rgba(0,240,255,.12)", color: "#00F0FF", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Msg</button><button onClick={() => { createChallenge(user!.uid, person.uid).then(() => toast.success("Challenge sent")); }} style={{ border: "1px solid rgba(255,215,0,.3)", background: "rgba(255,215,0,.12)", color: "#FFD700", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Challenge</button></div>;
     if (person.friendStatus === "pending") return <button onClick={() => cancel(person)} disabled={busy === person.uid} style={{ border: "1px solid rgba(255,215,0,.3)", background: "rgba(255,215,0,.12)", color: "#FFD700", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><XCircle size={13} />Cancel</button>;
     if (person.friendStatus === "incoming") return <button onClick={() => accept(person)} disabled={busy === person.uid} style={{ border: 0, background: "#00F0FF", color: "#000", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><CheckCircle2 size={13} />Accept</button>;
     if (person.friendStatus === "blocked_by_me") return <span style={{ color: "#EF4444", fontSize: 10, fontWeight: 900 }}>Blocked</span>;
@@ -104,7 +119,7 @@ function HeaderSearch() {
   };
 
   return (
-    <div style={{ flex: 1, maxWidth: 260, position: "relative", margin: "0 8px" }}>
+    <div ref={boxRef} style={{ flex: 1, maxWidth: 260, position: "relative", margin: "0 8px" }}>
       <Search size={14} color="#6B7280" style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", zIndex: 2 }} />
       <input
         value={term}
@@ -117,13 +132,24 @@ function HeaderSearch() {
           {results.slice(0, 4).map((person) => (
             <div key={person.uid} style={{ display: "flex", alignItems: "center", gap: 8, padding: 8, borderRadius: 12, background: "var(--app-surface-soft)", marginBottom: 6 }}>
               <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-9 h-9" iconClassName="w-4 h-4" />
-              <div style={{ flex: 1, minWidth: 0 }}>
+              <button type="button" onClick={() => { setSelected(person); setResults([]); }} style={{ flex: 1, minWidth: 0, background: "transparent", border: 0, textAlign: "left", padding: 0, cursor: "pointer" }}>
                 <p style={{ margin: 0, color: "var(--app-text)", fontSize: 12, fontWeight: 800, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{person.displayName}</p>
-                <p style={{ margin: 0, color: "#6B7280", fontSize: 10, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{person.username} · ID {person.studentId}</p>
-              </div>
+                <p style={{ margin: 0, color: "#6B7280", fontSize: 10, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{person.username} · {person.district || ""}</p>
+              </button>
               <ActionButton person={person} />
             </div>
           ))}
+        </div>
+      )}
+      {selected && (
+        <div className="modal-backdrop fixed inset-0 z-[300] flex items-center justify-center p-4" onClick={() => setSelected(null)}>
+          <div className="glass-card w-full max-w-[330px] p-4" onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}><b style={{ color: "var(--app-text)" }}>View Profile</b><button onClick={() => setSelected(null)} style={{ background: "transparent", border: 0, color: "#9CA3AF", fontSize: 22 }}>×</button></div>
+            <div style={{ textAlign: "center" }}><UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-16 h-16 mx-auto" iconClassName="w-8 h-8" /><h3 style={{ color: "var(--app-text)", fontWeight: 900, margin: "10px 0 2px" }}>{selected.displayName}</h3><p style={{ color: "#6B7280", fontSize: 12, margin: 0 }}>{selected.school || selected.college || "School not added"}</p><p style={{ color: "#6B7280", fontSize: 12, margin: 0 }}>{selected.district || "District not added"}</p></div>
+            {selected.friendStatus === "accepted" && <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 14 }}><Button variant="secondary" onClick={() => { navigate(`/friends?chat=${selected.uid}`); setSelected(null); }}>Message</Button><Button variant="gold" onClick={() => createChallenge(user!.uid, selected.uid).then(() => toast.success("Challenge sent"))}>Challenge</Button></div>}
+            {selected.friendStatus !== "accepted" && selected.friendStatus !== "pending" && <Button className="w-full mt-3" onClick={() => add(selected)}>Add Friend</Button>}
+            {selected.friendStatus === "pending" && <Button className="w-full mt-3" variant="gold" onClick={() => cancel(selected)}>Cancel Request</Button>}
+          </div>
         </div>
       )}
     </div>

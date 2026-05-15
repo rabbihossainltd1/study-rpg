@@ -137,8 +137,9 @@ export default function ProfilePage() {
     if (!bindEmail || bindPassword.length < 6) return toast.error("Valid email and 6+ digit password required");
     setBinding(true);
     try {
-      await bindGuestAccountToEmail(bindEmail, bindPassword);
-      setUser({ ...user, email: bindEmail, isGuest: false });
+      const cleanEmail = bindEmail.trim().toLowerCase();
+      await bindGuestAccountToEmail(cleanEmail, bindPassword);
+      setUser({ ...user, email: cleanEmail, isGuest: false });
       toast.success("Guest account linked with email");
       setBindEmail("");
       setBindPassword("");

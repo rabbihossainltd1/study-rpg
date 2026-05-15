@@ -374,15 +374,16 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                 </div>
                 <div>
                   <h3 className="text-lg font-black text-white">AI Proof Check</h3>
-                  <p className="text-xs text-gray-500">Upload study proof to collect once</p>
+                  <p className="text-xs text-gray-500">Solve the question, then upload proof</p>
                 </div>
               </div>
               <button onClick={() => setProofLesson(null)} className="p-2 rounded-lg hover:bg-white/10 text-gray-500"><X className="w-5 h-5" /></button>
             </div>
             <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.03] p-5 text-center">
               <UploadCloud className="w-8 h-8 text-secondary mx-auto mb-2" />
-              <p className="text-sm text-white font-bold mb-1">{language === "bn" ? proofLesson.titleBn : proofLesson.title}</p>
-              <p className="text-xs text-gray-500 mb-4">Notebook, textbook, solved work, or study screen upload korle AI-style check approve korbe.</p>
+              <p className="text-sm text-white font-bold mb-2">{language === "bn" ? proofLesson.titleBn : proofLesson.title}</p>
+              {proofLesson.content && <div className="text-left rounded-xl border border-primary/20 bg-primary/5 p-3 mb-3"><p className="text-xs text-gray-500 mb-1">Question to solve</p><p className="text-sm font-bold text-white leading-relaxed">{proofLesson.content}</p></div>}
+              <p className="text-xs text-gray-500 mb-4">এই প্রশ্নটি খাতায় solve করে clear photo upload করো। Random image approve হবে না।</p>
               <label className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-white cursor-pointer hover:border-primary/40">
                 <UploadCloud className="w-4 h-4" /> Choose Image
                 <input type="file" accept="image/*" className="hidden" onChange={(e) => setProofFile(e.target.files?.[0] || null)} />

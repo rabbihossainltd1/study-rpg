@@ -53,19 +53,8 @@ export default function LoginPage() {
 
   const handleGuestLogin = async () => {
     setGuestLoading(true);
-    const username = `Guest_${Math.floor(Math.random() * 9999)}`;
     try {
-      const cred = await signInGuest();
-      const profile = await createUserProfile(cred.user, { username });
-      setUser(profile);
-      toast.success("Playing as Guest");
-      navigate("/dashboard");
-    } catch (err: unknown) {
-      console.warn("Guest login failed, using offline guest", err);
-      const profile = createLocalGuestProfile({ username });
-      setUser(profile);
-      toast.success("Playing as Guest");
-      navigate("/dashboard");
+      navigate("/signup?guest=1");
     } finally {
       setGuestLoading(false);
     }

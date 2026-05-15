@@ -18,7 +18,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { UserAvatar } from "@/components/ui/AppIcon";
-import { MessageCircle, Swords, Users, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, CheckCheck } from "lucide-react";
+import { MessageCircle, Swords, Users, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, CheckCheck, UserRound } from "lucide-react";
 import toast from "react-hot-toast";
 
 type MenuState = { uid: string; open: boolean };
@@ -49,11 +49,12 @@ function messageTime(msg: FriendMessage) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-function FriendRow({ person, menu, setMenu, onMessage, onChallenge, onBlock, onUnfriend, busy }: {
+function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onChallenge, onBlock, onUnfriend, busy }: {
   person: PublicUserResult;
   menu: MenuState;
   setMenu: (menu: MenuState) => void;
   onMessage: () => void;
+  onViewProfile: () => void;
   onChallenge: () => void;
   onBlock: () => void;
   onUnfriend: () => void;
@@ -77,8 +78,8 @@ function FriendRow({ person, menu, setMenu, onMessage, onChallenge, onBlock, onU
         <MoreVertical className="w-4 h-4" />
       </button>
       {menu.open && menu.uid === person.uid && (
-        <div className="absolute right-3 top-14 z-20 w-48 rounded-2xl border border-white/10 bg-[#101010] shadow-2xl overflow-hidden animate-card-in">
-          <button onClick={onChallenge} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><Swords className="w-4 h-4" />Challenge</button>
+        <div className="absolute right-3 top-14 z-20 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden animate-card-in">
+          <button onClick={onViewProfile} className="w-full px-4 py-3 text-left text-sm text-secondary hover:bg-white/5 flex items-center gap-2"><UserRound className="w-4 h-4" />View profile</button><button onClick={onChallenge} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><Swords className="w-4 h-4" />Challenge</button>
           <button onClick={onUnfriend} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><UserMinus className="w-4 h-4" />Unfriend</button>
           <button onClick={onBlock} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2 disabled:opacity-50"><Ban className="w-4 h-4" />Block</button>
         </div>
@@ -97,6 +98,7 @@ export default function FriendsPage() {
   const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [menu, setMenu] = useState<MenuState>({ uid: "", open: false });
+  const [profileView, setProfileView] = useState<PublicUserResult | null>(null);
 
   const load = async () => {
     if (!user || user.uid.startsWith("guest_")) return;
@@ -132,6 +134,15 @@ export default function FriendsPage() {
     refreshMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid, selected?.uid]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !friends.length) return;
+    const chatUid = new URLSearchParams(window.location.search).get("chat");
+    if (!chatUid) return;
+    const found = friends.find((f) => f.uid === chatUid);
+    if (found) setSelected(found);
+  }, [friends]);
+
 
   const unreadCount = useMemo(() => messages.filter((m) => selected && m.to === user?.uid && m.from === selected.uid && !m.read).length, [messages, selected, user?.uid]);
 
@@ -215,18 +226,18 @@ export default function FriendsPage() {
     const active = activityText(selected);
     return (
       <div className="space-y-4 animate-card-in">
-        <div className="flex items-center gap-3 sticky top-[68px] z-20 bg-[#050505]/95 backdrop-blur-xl py-2">
+        <div className="flex items-center gap-3 sticky top-[68px] z-20 bg-[var(--app-surface-strong)] backdrop-blur-xl py-2">
           <button onClick={() => setSelected(null)} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 tap-bounce">
             <ChevronLeft className="w-5 h-5" />
           </button>
           <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-11 h-11" iconClassName="w-5 h-5" />
           <div className="min-w-0 flex-1">
-            <h1 className="text-lg font-black text-white truncate">{selected.displayName}</h1>
+            <h1 className="text-lg font-black text-[var(--app-text)] truncate">{selected.displayName}</h1>
             <p className="text-xs text-gray-500 truncate">@{selected.username} · {active}</p>
           </div>
           <button onClick={() => setMenu({ uid: selected.uid, open: !menu.open })} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce"><MoreVertical className="w-4 h-4" /></button>
           {menu.open && menu.uid === selected.uid && (
-            <div className="absolute right-0 top-14 z-30 w-48 rounded-2xl border border-white/10 bg-[#101010] shadow-2xl overflow-hidden">
+            <div className="absolute right-0 top-14 z-30 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden">
               <button onClick={() => challenge(selected)} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2"><Swords className="w-4 h-4" />Challenge</button>
               <button onClick={() => unfriend(selected)} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2"><UserMinus className="w-4 h-4" />Unfriend</button>
               <button onClick={() => block(selected)} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2"><Ban className="w-4 h-4" />Block</button>
@@ -245,7 +256,7 @@ export default function FriendsPage() {
               const mine = msg.from === user.uid;
               return (
                 <div key={msg.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[78%] rounded-2xl px-4 py-2 text-sm ${mine ? "bg-primary text-black font-semibold" : "bg-white/7 border border-white/10 text-gray-200"}`}>
+                  <div className={`max-w-[78%] rounded-2xl px-4 py-2 text-sm ${mine ? "bg-primary text-black font-semibold" : "bg-white/7 border border-white/10 text-[var(--app-text)]"}`}>
                     <p className="whitespace-pre-wrap break-words">{msg.content}</p>
                     <div className={`mt-1 text-[10px] flex items-center gap-1 ${mine ? "text-black/55 justify-end" : "text-gray-500"}`}>
                       <span>{messageTime(msg)}</span>
@@ -315,6 +326,7 @@ export default function FriendsPage() {
               setMenu={setMenu}
               busy={busyId === person.uid}
               onMessage={() => { setSelected(person); setMenu({ uid: "", open: false }); }}
+              onViewProfile={() => { setProfileView(person); setMenu({ uid: "", open: false }); }}
               onChallenge={() => challenge(person)}
               onBlock={() => block(person)}
               onUnfriend={() => unfriend(person)}
@@ -322,6 +334,15 @@ export default function FriendsPage() {
           ))}
         </div>
       </Card>
+      {profileView && (
+        <div className="modal-backdrop fixed inset-0 z-[260] flex items-center justify-center p-4" onClick={() => setProfileView(null)}>
+          <div className="glass-card w-full max-w-[330px] p-4" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-3"><b className="text-white">Friend Profile</b><button onClick={() => setProfileView(null)} className="text-gray-400 bg-transparent border-0 text-2xl">×</button></div>
+            <div className="text-center"><UserAvatar photoURL={profileView.photoURL} avatar={profileView.avatar} name={profileView.displayName} sizeClass="w-16 h-16 mx-auto" iconClassName="w-8 h-8" /><h3 className="text-lg font-black text-white mt-2">{profileView.displayName}</h3><p className="text-xs text-gray-500">@{profileView.username} · ID {profileView.studentId}</p></div>
+            <div className="mt-4 space-y-2 text-sm"><p className="text-gray-400"><b className="text-white">School:</b> {profileView.school || profileView.college || "Not added"}</p><p className="text-gray-400"><b className="text-white">District:</b> {profileView.district}</p><p className="text-gray-400"><b className="text-white">Class:</b> {profileView.className || "Student"}</p><p className="text-gray-400"><b className="text-white">Group:</b> {profileView.groupName || "General"}</p><p className="text-gray-400"><b className="text-white">Thana:</b> {profileView.thana || "Not added"}</p></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

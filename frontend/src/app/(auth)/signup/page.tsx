@@ -1,11 +1,11 @@
 "use client";
 
-import { useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useMemo, useState, useEffect, type FormEvent, type ReactNode } from "react";
 import { navigate } from "@/lib/navigate";
 import { Zap, Mail, Lock, User, Eye, EyeOff, MapPin, GraduationCap, ChevronRight, School, Home, ImagePlus, Languages, SunMoon, CheckCircle2, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { AppIcon } from "@/components/ui/AppIcon";
-import { signUpEmail, createUserProfile, isUsernameAvailable, normalizePublicUsername } from "@/lib/firebase";
+import { signUpEmail, signInGuest, createUserProfile, isUsernameAvailable, normalizePublicUsername } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
 import { CLASS_OPTIONS, DIVISIONS, getDistrictsForDivision, getThanasForZila, deriveExamModeFromClass, needsEducationGroup, EDUCATION_GROUPS } from "@/lib/bdAddress";
 import toast from "react-hot-toast";
@@ -44,7 +44,8 @@ async function compressProfileImage(file: File): Promise<string> {
 
 export default function SignupPage() {
   const { setUser, setTheme, setLanguage } = useUserStore();
-  const [step, setStep] = useState(1);
+  const isGuestSignup = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("guest") === "1";
+  const [step, setStep] = useState(isGuestSignup ? 2 : 1);
   const [isLoading, setIsLoading] = useState(false);
   const [checkingUsername, setCheckingUsername] = useState(false);
   const [email, setEmail] = useState("");
@@ -62,6 +63,14 @@ export default function SignupPage() {
   const [photoURL, setPhotoURL] = useState("");
   const [themeChoice, setThemeChoice] = useState<ThemeChoice>("light");
   const [languageChoice, setLanguageChoice] = useState<LangChoice>("bn");
+
+  useEffect(() => {
+    if (isGuestSignup) {
+      const n = Math.floor(1000 + Math.random() * 9000);
+      setUsername(`guest_${n}`);
+      setDisplayName((v) => v || `Guest Student ${n}`);
+    }
+  }, [isGuestSignup]);
 
   const zilaOptions = useMemo(() => getDistrictsForDivision(division), [division]);
   const thanaOptions = useMemo(() => getThanasForZila(zila), [zila]);
@@ -144,10 +153,11 @@ export default function SignupPage() {
       setTheme(themeChoice);
       setLanguage(languageChoice);
       const examMode = deriveExamModeFromClass(className);
-      const cred = await signUpEmail(cleanEmail, password);
+      const cred = isGuestSignup ? await signInGuest() : await signUpEmail(cleanEmail, password);
+      const guestUsername = cleanUsername || `guest_${Math.floor(1000 + Math.random() * 9000)}`;
       const profile = await createUserProfile(cred.user, {
-        username: cleanUsername,
-        displayName: displayName.trim(),
+        username: isGuestSignup ? guestUsername : cleanUsername,
+        displayName: displayName.trim() || (isGuestSignup ? "Guest Student" : cleanUsername),
         examMode,
         division,
         zila,
@@ -185,8 +195,8 @@ export default function SignupPage() {
             <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center animate-float-soft"><Zap className="w-6 h-6 text-primary" /></div>
             <span className="font-black text-2xl text-white">Study RPG</span>
           </button>
-          <h1 className="text-3xl font-black text-white mb-1">Create Account</h1>
-          <p className="text-gray-500 text-sm">Secure account → student profile → avatar → interface</p>
+          <h1 className="text-3xl font-black text-white mb-1">{isGuestSignup ? "Create Guest Profile" : "Create Account"}</h1>
+          <p className="text-gray-500 text-sm">{isGuestSignup ? "student profile → avatar → interface" : "Secure account → student profile → avatar → interface"}</p>
         </div>
 
         <div className="flex items-center justify-center gap-3 mb-5">
@@ -198,7 +208,7 @@ export default function SignupPage() {
         </div>
 
         <div className="glass-card p-5 sm:p-6 hover-lift">
-          {step === 1 && (
+          {!isGuestSignup && step === 1 && (
             <form onSubmit={handleStep1} className="space-y-4 animate-card-in">
               <Input label="Username" icon={<User className="w-4 h-4" />} value={username} onChange={(v) => setUsername(v.toLowerCase().replace(/\s+/g, ""))} placeholder="rabbihossain" minLength={3} />
               <p className="text-[11px] text-gray-600 -mt-2">One username can be used by one student only.</p>
@@ -226,7 +236,7 @@ export default function SignupPage() {
                 <SelectBox label="Zila / District" icon={<Building2 className="w-4 h-4" />} value={zila} onChange={(v) => { setZila(v); setThana(""); }} options={zilaOptions} />
                 <SelectBox label="Thana / Upazila" icon={<Home className="w-4 h-4" />} value={thana} onChange={setThana} options={["", ...thanaOptions]} />
               </div>
-              <div className="flex gap-3 pt-1"><Button variant="ghost" className="flex-1" onClick={() => setStep(1)}>Back</Button><Button type="submit" className="flex-1" rightIcon={<ChevronRight className="w-4 h-4" />}>Next</Button></div>
+              <div className="flex gap-3 pt-1"><Button variant="ghost" className="flex-1" onClick={() => isGuestSignup ? navigate("/login") : setStep(1)}>Back</Button><Button type="submit" className="flex-1" rightIcon={<ChevronRight className="w-4 h-4" />}>Next</Button></div>
             </form>
           )}
 

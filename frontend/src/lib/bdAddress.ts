@@ -69,10 +69,42 @@ export const BD_ADDRESS: Record<string, string[]> = {
   "Thakurgaon": ["Baliadangi", "Haripur", "Pirganj", "Ranisankail", "Thakurgaon Sadar"]
 };
 
+
+
+export const CITY_THANA_ADDITIONS: Record<string, string[]> = {
+  "Dhaka": [
+    "Adabor", "Airport", "Badda", "Banani", "Bangshal", "Bhashantek", "Cantonment", "Chawkbazar", "Dakshinkhan", "Darus Salam", "Demra", "Dhanmondi", "Gendaria", "Gulshan", "Hazaribagh", "Jatrabari", "Kadamtali", "Kafrul", "Kalabagan", "Kamrangirchar", "Khilgaon", "Khilkhet", "Kotwali", "Lalbagh", "Mirpur Model", "Mohammadpur", "Motijheel", "Mugda", "New Market", "Pallabi", "Paltan", "Ramna", "Rampura", "Rupnagar", "Sabujbagh", "Shah Ali", "Shahbagh", "Sher-e-Bangla Nagar", "Shyampur", "Sutrapur", "Tejgaon Industrial Area", "Tejgaon", "Turag", "Uttara East", "Uttara West", "Vatara", "Wari"
+  ],
+  "Chattogram": [
+    "Akbar Shah", "Bakalia", "Bandar", "Bayezid Bostami", "Chandgaon", "Chawkbazar", "Double Mooring", "EPZ", "Halishahar", "Karnaphuli", "Khulshi", "Kotwali", "Pahartali", "Panchlaish", "Patenga", "Sadarghat"
+  ],
+  "Khulna": [
+    "Aranghata", "Daulatpur", "Harintana", "Khalishpur", "Khan Jahan Ali", "Khulna Sadar", "Labanchara", "KMP Kotwali", "Sonadanga"
+  ],
+  "Rajshahi": [
+    "Boalia", "Chandrima", "Kashiadanga", "Katakhali", "Motihar", "Rajpara", "Shah Makhdum"
+  ],
+  "Sylhet": [
+    "Airport", "Jalalabad", "Kotwali", "Moglabazar", "Shah Paran", "South Surma"
+  ],
+  "Barishal": ["Kotwali Model", "Bandar", "Kawnia"],
+  "Rangpur": ["Kotwali", "Tajhat", "Mahiganj", "Haragachh"],
+  "Gazipur": ["Basana", "Gacha", "Kashimpur", "Konabari", "Sadar Metropolitan", "Tongi East", "Tongi West"],
+  "Narayanganj": ["Fatullah", "Siddhirganj", "Narayanganj Sadar Model"],
+  "Cumilla": ["Cumilla Kotwali Model", "Chandina", "Daudkandi", "Laksam"],
+  "Mymensingh": ["Kotwali", "Tarakanda"],
+  "Jashore": ["Kotwali", "Benapole Port"],
+  "Cox's Bazar": ["Cox's Bazar Sadar Model"],
+};
+
+export function uniqueSortedAddress(items: string[]) {
+  return Array.from(new Set(items.filter(Boolean).map((x) => x.trim()))).sort((a, b) => a.localeCompare(b));
+}
+
 export const DISTRICTS = Object.keys(BD_ADDRESS).sort((a, b) => a.localeCompare(b));
 
 export function getThanasForDistrict(district: string) {
-  return BD_ADDRESS[district] || [];
+  return uniqueSortedAddress([...(BD_ADDRESS[district] || []), ...(CITY_THANA_ADDITIONS[district] || [])]);
 }
 
 
