@@ -12,14 +12,11 @@ android {
         targetSdkVersion 34
         versionCode 14
         versionName "1.3.1"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     aaptOptions {
-        // Don't compress these file types (avoids 1MB asset limit issues)
         noCompress 'js', 'css', 'html', 'map', 'json', 'txt', 'woff', 'woff2', 'ttf'
-        // CRITICAL: Do NOT ignore assets - by default aapt ignores files/folders
-        // starting with underscore (_). We rename _next -> next in the build script
-        // so this is a safety net.
         ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }
 
@@ -56,6 +53,7 @@ android {
 repositories {
     google()
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
