@@ -87,17 +87,15 @@ jobs:
             -validity 10000 \
             -dname "CN=Study RPG,O=Rabbi Hossain,C=BD"
 
-      - name: Restore Gradle wrapper jar if missing
-        working-directory: frontend/android
-        run: |
-          if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
-            gradle wrapper --gradle-version 8.4
-          fi
-          chmod +x ./gradlew
-
       - name: Build APK
         working-directory: frontend/android
-        run: ./gradlew assembleDebug --stacktrace
+        run: |
+          if [ -f ./gradlew ] && [ -f gradle/wrapper/gradle-wrapper.jar ]; then
+            chmod +x ./gradlew
+            ./gradlew assembleDebug --stacktrace
+          else
+            gradle assembleDebug --stacktrace
+          fi
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
