@@ -1,7 +1,6 @@
 import type { Chapter, Subject, User } from "@/types";
 import { CURRICULUM_SUBJECTS, getCurriculumSubjectsFor } from "@/lib/curriculum";
 import { QUIZ_TOPICS, getQuizCount } from "@/lib/quizData";
-import { getWrittenQuestionCount } from "@/lib/writtenQuestions";
 
 function toSubject(subject: typeof CURRICULUM_SUBJECTS[number]): Subject {
   return {
@@ -24,9 +23,14 @@ function toSubject(subject: typeof CURRICULUM_SUBJECTS[number]): Subject {
 export const SUBJECTS: Subject[] = CURRICULUM_SUBJECTS.map(toSubject);
 export const ALL_SUBJECTS = SUBJECTS;
 
+function hasDatasetContent(subject: Subject): boolean {
+  return getQuizCount(subject.id) > 0;
+}
+
 export function getSubjectsForUser(user?: Pick<User, "className" | "groupName" | "examMode"> | null): Subject[] {
-  if (!user?.className) return SUBJECTS.filter((s) => s.classLevels?.includes("SSC"));
-  return getCurriculumSubjectsFor(user.className, user.groupName).map(toSubject);
+  const list = !user?.className ? SUBJECTS.filter((s) => s.classLevels?.includes("SSC")) : getCurriculumSubjectsFor(user.className, user.groupName).map(toSubject);
+  const withContent = list.filter(hasDatasetContent);
+  return withContent.length ? withContent : list;
 }
 
 const makeId = (value: string) =>
@@ -57,7 +61,7 @@ function createChapters(subject: Subject): Chapter[] {
     subjectId: subject.id,
     title: topic,
     titleBn: topic,
-    description: `${subject.nameBn || subject.name} অধ্যায়ভিত্তিক লিখিত প্রশ্ন সমাধান`,
+    description: `${subject.nameBn || subject.name} অধ্যায়ভিত্তিক প্রশ্ন সমাধান ও MCQ`,
     order: index + 1,
     isLocked: false,
     isCompleted: false,
@@ -88,11 +92,11 @@ function createChapters(subject: Subject): Chapter[] {
       {
         id: `${subject.id}-${index + 1}-quiz`,
         chapterId: `${subject.id}-${makeId(topic)}-${index + 1}`,
-        title: `${topic} Written Task 3`,
-        titleBn: `${topic} প্রশ্ন সমাধান ৩`,
-        content: createChapterQuestion(subject, topic, index, 3),
-        type: "practice",
-        duration: 20,
+        title: `${topic} Quiz`,
+        titleBn: `${topic} MCQ`,
+        content: `${subject.nameBn || subject.name}: ${topic} থেকে MCQ solve করো।`,
+        type: "quiz",
+        duration: 10,
         isCompleted: false,
         xpReward: Math.max(25, Math.round(subject.xpReward * 0.4)),
       },
@@ -106,8 +110,8 @@ export const CHAPTERS: Record<string, Chapter[]> = Object.fromEntries(
 
 export const QUIZ_STATS = SUBJECTS.map((subject) => ({
   subjectId: subject.id,
-  total: getWrittenQuestionCount(subject.id),
-  easy: getWrittenQuestionCount(subject.id, "easy"),
-  medium: getWrittenQuestionCount(subject.id, "medium"),
-  hard: getWrittenQuestionCount(subject.id, "hard"),
+  total: getQuizCount(subject.id),
+  easy: getQuizCount(subject.id, "easy"),
+  medium: getQuizCount(subject.id, "medium"),
+  hard: getQuizCount(subject.id, "hard"),
 }));
