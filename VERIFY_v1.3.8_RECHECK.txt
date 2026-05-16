@@ -1,0 +1,5 @@
+Study RPG v1.3.8 recheck patch
+- Notification permission request strengthened in Android MainActivity and web boot bridge.
+- MCQ display now uses one shared cleaner across subject quizzes and mission quizzes.
+- Creator blue App Verified badge hard-coded for uid cx55DilhC6ZuYXJ6sL6Haq1huLt1 / rabbixofficial@gmail.com.
+- Version remains v1.3.8.

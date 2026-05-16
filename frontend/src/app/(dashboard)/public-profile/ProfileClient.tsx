@@ -7,8 +7,9 @@ import { useUserStore } from "@/store/useUserStore";
 import { cancelFriendRequest, createChallenge, getFriendRelationState, getUserProfile, sendFriendRequest, type FriendStatus } from "@/lib/firebase";
 import { normalizeClassName } from "@/lib/bdAddress";
 import { Button } from "@/components/ui/Button";
-import { UserAvatar } from "@/components/ui/AppIcon";
+import { UserAvatar, VerifiedBadge } from "@/components/ui/AppIcon";
 import { RANK_COLORS, type Rank, type User } from "@/types";
+import { isVerifiedUser } from "@/lib/verified";
 import { ArrowLeft, Building2, Eye, Flame, GraduationCap, MapPin, MessageCircle, School, Shield, Swords, Trophy, UserPlus, UserRound, XCircle, Zap } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -137,7 +138,7 @@ export default function PublicProfileClient() {
         <div className="relative flex items-center gap-4">
           <UserAvatar photoURL={profile.photoURL} avatar={profile.avatar} name={profile.displayName || profile.username} sizeClass="w-20 h-20" iconClassName="w-9 h-9" borderColor={rankColor} />
           <div className="min-w-0 flex-1">
-            <h1 className="text-2xl font-black text-white truncate">{profile.displayName || profile.username}</h1>
+            <div className="flex items-center gap-2 min-w-0"><h1 className="text-2xl font-black text-white truncate">{profile.displayName || profile.username}</h1>{isVerifiedUser(profile) && <VerifiedBadge className="w-5 h-5 flex-shrink-0" />}</div>
             <p className="text-sm text-gray-500 truncate">@{profile.username} · ID {profile.studentId || profile.uid.slice(0, 9)}</p>
             <div className="flex flex-wrap gap-2 mt-3">
               <span className="text-xs px-2.5 py-1 rounded-lg border font-bold" style={{ color: rankColor, borderColor: `${rankColor}40`, background: `${rankColor}14` }}><Trophy className="w-3 h-3 inline mr-1" />{rank}</span>

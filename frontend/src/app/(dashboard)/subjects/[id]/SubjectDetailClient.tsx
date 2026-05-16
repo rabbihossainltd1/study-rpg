@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import type { Lesson } from "@/types";
 import { AppIcon } from "@/components/ui/AppIcon";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
+import { cleanMcqQuestionText } from "@/lib/questionText";
 
 const DIFFICULTIES: Array<{ id: WrittenDifficulty; label: string; labelBn: string; color: string }> = [
   { id: "easy", label: "Easy", labelBn: "সহজ", color: "#39FF14" },
@@ -121,6 +122,11 @@ async function analyzeWrittenAnswerImage(file: File, question: WrittenQuestion):
   }
 }
 
+
+function guestQuizClaimKey(uid: string, subjectId: string) {
+  return `studyRpgQuizClaims_${uid}_${subjectId}`;
+}
+
 export default function SubjectDetailClient({ id }: { id: string }) {
   const { user, setUser, addXpPopup, triggerLevelUp, language } = useUserStore();
   const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
@@ -131,6 +137,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
   const [answered, setAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [quizDone, setQuizDone] = useState(false);
+  const [claimingQuizReward, setClaimingQuizReward] = useState(false);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [completedQuizzes, setCompletedQuizzes] = useState<Set<string>>(new Set());
   const [proofLesson, setProofLesson] = useState<Lesson | null>(null);
@@ -150,7 +157,13 @@ export default function SubjectDetailClient({ id }: { id: string }) {
   useBodyScrollLock(Boolean(proofLesson) || quizActive);
 
   useEffect(() => {
-    if (!user || !id || user.uid.startsWith("guest_")) return;
+    if (!user || !id) return;
+    if (user.uid.startsWith("guest_")) {
+      if (typeof window === "undefined") return;
+      const savedQuizzes = JSON.parse(localStorage.getItem(guestQuizClaimKey(user.uid, id)) || "[]") as string[];
+      setCompletedQuizzes(new Set(savedQuizzes));
+      return;
+    }
     getSubjectProgress(user.uid, id)
       .then((records) => {
         setCompletedLessons(new Set(records.filter((r) => r.kind === "lesson" && r.rewardClaimed).map((r) => r.itemId)));
@@ -227,29 +240,51 @@ export default function SubjectDetailClient({ id }: { id: string }) {
     }
   };
 
+  const saveGuestQuizClaim = (quizDifficulty: QuizDifficulty) => {
+    if (!user || !user.uid.startsWith("guest_") || typeof window === "undefined") return true;
+    const key = guestQuizClaimKey(user.uid, id);
+    const saved = JSON.parse(localStorage.getItem(key) || "[]") as string[];
+    if (saved.includes(quizDifficulty)) return false;
+    localStorage.setItem(key, JSON.stringify([...saved, quizDifficulty]));
+    return true;
+  };
+
   const handleFinishQuiz = async () => {
-    if (!user || quizQuestions.length === 0) return;
+    if (!user || quizQuestions.length === 0 || claimingQuizReward) return;
     const quizDifficulty = difficulty as QuizDifficulty;
-    const alreadyClaimed = completedQuizzes.has(quizDifficulty);
-    let firstClaim = !alreadyClaimed;
-    if (!alreadyClaimed && !user.uid.startsWith("guest_")) {
-      firstClaim = await markQuizRewardClaimed(user.uid, id, quizDifficulty, score).catch(() => false);
-    }
-    if (firstClaim) {
-      const xpEarned = quizRewardXp;
-      const coinsEarned = score * 5;
-      await updateLocalReward(xpEarned, coinsEarned);
-      setCompletedQuizzes((prev) => new Set([...prev, quizDifficulty]));
-      toast.success(`Quiz done! +${xpEarned} XP`);
-    } else {
+    if (completedQuizzes.has(quizDifficulty)) {
       toast("Quiz already solved. Reward not repeated.");
+      setQuizActive(false);
+      return;
     }
-    setQuizActive(false);
-    setQuizDone(false);
-    setQuizIndex(0);
-    setScore(0);
-    setSelected(null);
-    setAnswered(false);
+
+    setClaimingQuizReward(true);
+    try {
+      const firstClaim = user.uid.startsWith("guest_")
+        ? saveGuestQuizClaim(quizDifficulty)
+        : await markQuizRewardClaimed(user.uid, id, quizDifficulty, score);
+
+      if (firstClaim) {
+        const xpEarned = quizRewardXp;
+        const coinsEarned = score * 5;
+        await updateLocalReward(xpEarned, coinsEarned);
+        setCompletedQuizzes((prev) => new Set([...prev, quizDifficulty]));
+        toast.success(`Quiz done! +${xpEarned} XP`);
+      } else {
+        setCompletedQuizzes((prev) => new Set([...prev, quizDifficulty]));
+        toast("Quiz already solved. Reward not repeated.");
+      }
+      setQuizActive(false);
+      setQuizDone(false);
+      setQuizIndex(0);
+      setScore(0);
+      setSelected(null);
+      setAnswered(false);
+    } catch {
+      toast.error("Reward claim failed. Check connection and try again.");
+    } finally {
+      setClaimingQuizReward(false);
+    }
   };
 
   const openProof = (question: WrittenQuestion) => {
@@ -462,14 +497,13 @@ export default function SubjectDetailClient({ id }: { id: string }) {
               currentQ ? <>
                 <div className="flex items-center justify-between mb-5">
                   <div>
-                    <p className="text-xs text-gray-500 uppercase font-mono tracking-wider">{subject.name} · {difficulty}</p>
-                    <p className="text-lg font-bold text-white">Question {quizIndex + 1}/{quizQuestions.length}</p>
+                    <p className="text-xs text-gray-500 uppercase font-mono tracking-wider">Question {quizIndex + 1}/{quizQuestions.length}</p>
+                    <p className="text-lg font-bold text-white">{score}/{quizQuestions.length} correct</p>
                   </div>
                   <button onClick={() => setQuizActive(false)} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white transition-colors"><X className="w-5 h-5" /></button>
                 </div>
                 <div className="h-1.5 bg-white/5 rounded-full mb-5 overflow-hidden"><div className="h-full bg-secondary rounded-full transition-all" style={{ width: `${((quizIndex + 1) / quizQuestions.length) * 100}%` }} /></div>
-                <div className="mb-4"><span className="text-xs px-2 py-1 rounded-lg bg-white/5 text-gray-500">{currentQ.topic}</span></div>
-                <h3 className="text-xl font-black text-white mb-4 leading-relaxed scroll-mt-24">{currentQ.questionBn || currentQ.question}</h3>
+                <h3 className="text-xl font-black text-white mb-4 leading-relaxed scroll-mt-24">{cleanMcqQuestionText(currentQ.questionBn || currentQ.question)}</h3>
                 <div className="space-y-3 mb-5">
                   {currentQ.options.map((opt, idx) => {
                     const isCorrect = currentQ.correctAnswer === idx;
@@ -501,7 +535,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                   <div className="w-px bg-white/10" />
                   <div><p className="text-xl font-bold text-secondary">{Math.round((score / quizQuestions.length) * 100)}%</p><p className="text-xs text-gray-500">Accuracy</p></div>
                 </div>
-                <Button onClick={handleFinishQuiz} className="w-full" size="lg">Claim Rewards</Button>
+                <Button onClick={handleFinishQuiz} className="w-full" size="lg" isLoading={claimingQuizReward} disabled={claimingQuizReward || completedQuizzes.has(difficulty as QuizDifficulty)}>Claim Rewards</Button>
               </div>
             )}
           </div>

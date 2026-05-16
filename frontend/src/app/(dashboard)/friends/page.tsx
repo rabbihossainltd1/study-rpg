@@ -6,7 +6,6 @@ import { navigate } from "@/lib/navigate";
 import {
   acceptFriendRequest,
   blockUser,
-  createChallenge,
   getBlockedUsersForUser,
   getFriendsForUser,
   getIncomingFriendRequests,
@@ -20,9 +19,10 @@ import {
 } from "@/lib/firebase";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { UserAvatar } from "@/components/ui/AppIcon";
-import { Swords, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, Check, CheckCheck, UserRound, Trash2 } from "lucide-react";
+import { UserAvatar, VerifiedBadge } from "@/components/ui/AppIcon";
+import { CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, Check, CheckCheck, UserRound, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { isVerifiedUser } from "@/lib/verified";
 
 type MenuState = { uid: string; open: boolean };
 
@@ -161,7 +161,7 @@ function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onDeleteCh
         <span className={`absolute -right-0.5 -bottom-0.5 w-3 h-3 rounded-full border-2 border-[#101010] ${active === "Active now" ? "bg-primary" : "bg-gray-600"}`} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-black text-white truncate">{person.displayName}</p>
+        <div className="flex items-center gap-1.5 min-w-0"><p className="text-sm font-black text-white truncate">{person.displayName}</p>{isVerifiedUser(person) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}</div>
         <p className="text-xs text-gray-500 truncate">@{person.username} · LV.{person.level} · {active}</p>
       </div>
       {menu.open && menu.uid === person.uid && (
@@ -177,14 +177,13 @@ function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onDeleteCh
 }
 
 export default function FriendsPage() {
-  const { user, language } = useUserStore();
+  const { user } = useUserStore();
   const [friends, setFriends] = useState<PublicUserResult[]>([]);
   const [incoming, setIncoming] = useState<PublicUserResult[]>([]);
   const [blockedUsers, setBlockedUsers] = useState<PublicUserResult[]>([]);
   const [selected, setSelected] = useState<PublicUserResult | null>(null);
   const [messages, setMessages] = useState<FriendMessage[]>([]);
   const [text, setText] = useState("");
-  const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [menu, setMenu] = useState<MenuState>({ uid: "", open: false });
   const [profileView, setProfileView] = useState<PublicUserResult | null>(null);
@@ -194,7 +193,6 @@ export default function FriendsPage() {
 
   const load = async () => {
     if (!user || user.uid.startsWith("guest_")) return;
-    setLoading(true);
     try {
       const [friendList, requestList, blockedList] = await Promise.all([
         getFriendsForUser(user.uid).catch(() => []),
@@ -207,8 +205,6 @@ export default function FriendsPage() {
       if (selected && !friendList.some((f) => f.uid === selected.uid)) setSelected(null);
     } catch {
       toast.error("Friends load failed");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -300,19 +296,6 @@ export default function FriendsPage() {
       await load();
     } catch {
       toast.error("Accept failed");
-    } finally {
-      setBusyId(null);
-    }
-  };
-
-  const challenge = async (target: PublicUserResult) => {
-    setBusyId(target.uid);
-    try {
-      await createChallenge(user.uid, target.uid);
-      toast.success("Challenge sent");
-      setMenu({ uid: "", open: false });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Challenge failed");
     } finally {
       setBusyId(null);
     }
@@ -415,18 +398,11 @@ export default function FriendsPage() {
             <button onClick={() => navigate(`/public-profile?userId=${encodeURIComponent(selected.uid)}`)} className="min-w-0 flex flex-1 items-center gap-3 bg-transparent border-0 p-0 text-left tap-bounce" aria-label="View profile">
               <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-11 h-11" iconClassName="w-5 h-5" />
               <div className="min-w-0 flex-1">
-                <h1 className="text-base font-black text-white truncate">{selected.displayName}</h1>
+                <div className="flex items-center gap-1.5 min-w-0"><h1 className="text-base font-black text-white truncate">{selected.displayName}</h1>{isVerifiedUser(selected) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}</div>
                 <p className="text-[11px] text-gray-500 truncate">@{selected.username} · {active}</p>
               </div>
             </button>
-            <button onClick={() => setMenu({ uid: selected.uid, open: !menu.open })} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce" aria-label="Chat options"><MoreVertical className="w-4 h-4" /></button>
-            {menu.open && menu.uid === selected.uid && (
-              <div data-action-menu="true" className="absolute right-3 top-[calc(max(env(safe-area-inset-top),12px)+54px)] z-30 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden">
-                <button onClick={() => challenge(selected)} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2"><Swords className="w-4 h-4" />Challenge</button>
-                <button onClick={() => unfriend(selected)} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2"><UserMinus className="w-4 h-4" />Unfriend</button>
-                <button onClick={() => block(selected)} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2"><Ban className="w-4 h-4" />Block</button>
-              </div>
-            )}
+            <button onClick={() => navigate(`/public-profile?userId=${encodeURIComponent(selected.uid)}`)} className="h-10 rounded-xl bg-secondary/10 border border-secondary/20 px-3 text-secondary text-xs font-black flex items-center gap-2 tap-bounce" aria-label="View profile"><UserRound className="w-4 h-4" />Profile</button>
           </div>
           <div className="mt-2 flex items-center justify-between gap-2 text-[10px] text-gray-500">
             <span className="inline-flex items-center gap-1"><Clock3 className="w-3 h-3" /> {active}</span>
@@ -509,7 +485,7 @@ export default function FriendsPage() {
               <div key={person.uid} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
                 <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-10 h-10" iconClassName="w-4 h-4" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-white truncate">{person.displayName}</p>
+                  <div className="flex items-center gap-1.5 min-w-0"><p className="text-sm font-bold text-white truncate">{person.displayName}</p>{isVerifiedUser(person) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}</div>
                   <p className="text-xs text-gray-500 truncate">@{person.username}</p>
                 </div>
                 <Button size="sm" variant="secondary" onClick={() => unblock(person)} disabled={busyId === person.uid} className="px-3 py-1.5 text-xs">

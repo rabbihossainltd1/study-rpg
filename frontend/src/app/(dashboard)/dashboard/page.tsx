@@ -12,7 +12,8 @@ import { getGreeting, formatDuration } from "@/lib/utils";
 import { RANK_COLORS } from "@/types";
 import { normalizeClassName } from "@/lib/bdAddress";
 import { getLeaderboard } from "@/lib/firebase";
-import { AppIcon, IconBadge, UserAvatar, CrownBadge } from "@/components/ui/AppIcon";
+import { isVerifiedUser } from "@/lib/verified";
+import { AppIcon, IconBadge, UserAvatar, CrownBadge, VerifiedBadge } from "@/components/ui/AppIcon";
 import {
   Zap, Trophy, Target, BookOpen, Timer, Star, ChevronRight, Coins, Flame, ListChecks,
 } from "lucide-react";
@@ -62,6 +63,7 @@ export default function DashboardPage() {
             <p className="text-xs text-gray-500 mb-1">{getGreeting()}</p>
             <div className="flex items-center gap-2 min-w-0">
               <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight truncate">{user.displayName || user.username}</h1>
+              {isVerifiedUser(user) && <VerifiedBadge className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />}
               <span className="px-2 py-1 rounded-lg text-xs font-black bg-primary/15 text-primary border border-primary/30 flex-shrink-0">LV.{user.level}</span>
             </div>
             <p className="text-xs text-gray-500 mt-1 truncate">@{user.username} · Student ID {user.studentId || "—"}</p>

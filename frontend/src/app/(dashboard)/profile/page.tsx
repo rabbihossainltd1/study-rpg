@@ -12,10 +12,11 @@ import {
   Edit3, Trophy, Zap, Flame, Clock, Star, Shield, LogOut, Copy, Check,
   Camera, Save, X, User, School, MapPin, Home, GraduationCap, Languages, Coins, Gem, Award, Mail, Lock, Crown, SunMoon, Trash2, Building2,
 } from "lucide-react";
-import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
+import { AppIcon, UserAvatar, VerifiedBadge } from "@/components/ui/AppIcon";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 import { CLASS_OPTIONS, SSC_COMBINED_CLASS, DIVISIONS, EDUCATION_GROUPS, deriveExamModeFromClass, getDistrictsForDivision, getThanasForZila, needsEducationGroup, normalizeClassName } from "@/lib/bdAddress";
 import toast from "react-hot-toast";
+import { isVerifiedUser } from "@/lib/verified";
 
 const RANK_ORDER: Rank[] = ["Novice", "Apprentice", "Scholar", "Expert", "Master", "Grandmaster", "Legend"];
 
@@ -244,7 +245,7 @@ export default function ProfilePage() {
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <h1 className="text-xl font-black text-white truncate">{user.displayName || user.username}</h1>
+                <div className="flex items-center gap-2 min-w-0"><h1 className="text-xl font-black text-white truncate">{user.displayName || user.username}</h1>{isVerifiedUser(user) && <VerifiedBadge className="w-5 h-5 flex-shrink-0" />}</div>
                 <p className="text-sm font-semibold mt-0.5" style={{ color: rankColor }}>{user.rank}</p>
                 <p className="text-xs text-gray-500 mt-0.5 truncate">{user.examMode} · {user.school || user.college || "Institution not set"}</p>
                 <p className="text-xs text-gray-600 mt-0.5 truncate">{user.district}{user.thana ? ` · ${user.thana}` : ""}</p>

@@ -5,11 +5,12 @@ import { useUserStore } from "@/store/useUserStore";
 import { logOut, searchUsers, sendFriendRequest, cancelFriendRequest, acceptFriendRequest, createChallenge, sendQuickMessage, type PublicUserResult } from "@/lib/firebase";
 import { navigate } from "@/lib/navigate";
 import { XpBar } from "@/components/ui/XpBar";
-import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
+import { AppIcon, UserAvatar, VerifiedBadge } from "@/components/ui/AppIcon";
 import { Button } from "@/components/ui/Button";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 import toast from "react-hot-toast";
 import { RANK_COLORS } from "@/types";
+import { isVerifiedUser } from "@/lib/verified";
 import {
   LayoutDashboard, BookOpen, Trophy, Bot,
   Target, User, LogOut, Zap, Menu, X, ChevronRight, Users, Search, UserPlus, Coins, Gem, Flame, XCircle, CheckCircle2, Settings,
@@ -134,7 +135,7 @@ function HeaderSearch() {
             <div key={person.uid} style={{ display: "flex", alignItems: "center", gap: 8, padding: 8, borderRadius: 12, background: "var(--app-surface-soft)", marginBottom: 6 }}>
               <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-9 h-9" iconClassName="w-4 h-4" />
               <button type="button" onClick={() => { setSelected(person); setResults([]); }} style={{ flex: 1, minWidth: 0, background: "transparent", border: 0, textAlign: "left", padding: 0, cursor: "pointer" }}>
-                <p style={{ margin: 0, color: "var(--app-text)", fontSize: 12, fontWeight: 800, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{person.displayName}</p>
+                <p style={{ margin: 0, color: "var(--app-text)", fontSize: 12, fontWeight: 800, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4 }}>{person.displayName}{isVerifiedUser(person) && <VerifiedBadge className="w-3.5 h-3.5" />}</p>
                 <p style={{ margin: 0, color: "#6B7280", fontSize: 10, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{person.username} · {person.district || ""}</p>
               </button>
               <ActionButton person={person} />
@@ -146,7 +147,7 @@ function HeaderSearch() {
         <div className="modal-backdrop fixed inset-0 z-[300] flex items-center justify-center p-4" onClick={() => setSelected(null)}>
           <div className="glass-card w-full max-w-[330px] p-4" onClick={(e) => e.stopPropagation()}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}><b style={{ color: "var(--app-text)" }}>View Profile</b><button onClick={() => setSelected(null)} style={{ background: "transparent", border: 0, color: "#9CA3AF", fontSize: 22 }}>×</button></div>
-            <div style={{ textAlign: "center" }}><UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-16 h-16 mx-auto" iconClassName="w-8 h-8" /><h3 style={{ color: "var(--app-text)", fontWeight: 900, margin: "10px 0 2px" }}>{selected.displayName}</h3><p style={{ color: "#6B7280", fontSize: 12, margin: 0 }}>{selected.school || selected.college || "School not added"}</p><p style={{ color: "#6B7280", fontSize: 12, margin: 0 }}>{selected.district || "District not added"}</p></div>
+            <div style={{ textAlign: "center" }}><UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-16 h-16 mx-auto" iconClassName="w-8 h-8" /><h3 style={{ color: "var(--app-text)", fontWeight: 900, margin: "10px 0 2px", display: "inline-flex", alignItems: "center", gap: 6 }}>{selected.displayName}{isVerifiedUser(selected) && <VerifiedBadge className="w-4 h-4" />}</h3><p style={{ color: "#6B7280", fontSize: 12, margin: 0 }}>{selected.school || selected.college || "School not added"}</p><p style={{ color: "#6B7280", fontSize: 12, margin: 0 }}>{selected.district || "District not added"}</p></div>
             {selected.friendStatus === "accepted" && <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 14 }}><Button variant="secondary" onClick={() => { navigate(`/friends?chat=${selected.uid}`); setSelected(null); }}>Message</Button><Button variant="gold" onClick={() => createChallenge(user!.uid, selected.uid).then(() => toast.success("Challenge sent"))}>Challenge</Button></div>}
             {selected.friendStatus !== "accepted" && selected.friendStatus !== "pending" && <Button className="w-full mt-3" onClick={() => add(selected)}>Add Friend</Button>}
             {selected.friendStatus === "pending" && <Button className="w-full mt-3" variant="gold" onClick={() => cancel(selected)}>Cancel Request</Button>}
@@ -191,7 +192,7 @@ export function Sidebar() {
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
             <UserAvatar photoURL={user.photoURL} avatar={user.avatar} name={user.displayName} sizeClass="w-10 h-10" iconClassName="w-5 h-5" borderColor={rankColor} />
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontWeight: 700, color: "var(--app-text)", fontSize: 13, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.displayName || user.username}</p>
+              <p style={{ fontWeight: 700, color: "var(--app-text)", fontSize: 13, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4 }}>{user.displayName || user.username}{isVerifiedUser(user) && <VerifiedBadge className="w-3.5 h-3.5" />}</p>
               <p style={{ fontSize: 11, color: "#9CA3AF", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{user.username} · ID {user.studentId || "—"}</p>
               <p style={{ fontSize: 11, color: rankColor, margin: 0 }}>{user.rank}</p>
             </div>

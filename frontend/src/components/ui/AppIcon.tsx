@@ -124,6 +124,17 @@ export function UserAvatar({
   );
 }
 
+
+export function VerifiedBadge({ className = "w-5 h-5", label = "App verified" }: { className?: string; label?: string }) {
+  return (
+    <span title={label} aria-label={label} className={`inline-flex items-center justify-center rounded-full bg-[#1D9BF0] text-white shadow-[0_0_10px_rgba(29,155,240,0.55)] ${className}`}>
+      <svg viewBox="0 0 24 24" fill="none" className="w-full h-full p-[2px]" aria-hidden="true">
+        <path d="M9.4 16.7 5.8 13.1l1.6-1.6 2 2 7.2-7.2 1.6 1.6-8.8 8.8Z" fill="currentColor" />
+      </svg>
+    </span>
+  );
+}
+
 export function InlineIconText({ icon, children, className = "" }: { icon: AppIconName; children: ReactNode; className?: string }) {
   return <span className={`inline-flex items-center gap-1 ${className}`}><AppIcon name={icon} className="w-3.5 h-3.5" />{children}</span>;
 }

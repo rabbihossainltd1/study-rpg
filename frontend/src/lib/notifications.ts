@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import { savePushToken, type AppNotification } from "@/lib/firebase";
 
 let pushRegistrationListenerAttached = false;
+let pendingPushToken = "";
 
 function isNativeCapacitor() {
   if (typeof window === "undefined") return false;
@@ -68,11 +69,13 @@ export async function requestAppNotificationPermission(uid = ""): Promise<boolea
         if (!pushRegistrationListenerAttached) {
           pushRegistrationListenerAttached = true;
           PushNotifications.addListener("registration", (token) => {
-            if (uid && !uid.startsWith("guest_")) savePushToken(uid, token.value, "android").catch(() => undefined);
+            pendingPushToken = token.value || pendingPushToken;
+            if (uid && !uid.startsWith("guest_") && pendingPushToken) savePushToken(uid, pendingPushToken, "android").catch(() => undefined);
           }).catch(() => undefined);
         }
       }
 
+      if (uid && !uid.startsWith("guest_") && pendingPushToken) savePushToken(uid, pendingPushToken, "android").catch(() => undefined);
       return localPermission?.display === "granted" || pushPermission?.receive === "granted";
     }
 

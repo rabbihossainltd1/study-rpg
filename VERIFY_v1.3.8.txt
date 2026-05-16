@@ -1,0 +1,43 @@
+Study RPG v1.3.8 verification
+
+Updated from v1.3.7 final-reverified.
+
+Changes included:
+1. MCQ modal now shows only clean question text.
+   - Subject/difficulty/source/topic chips were removed from the quiz question display.
+   - Generated prefixes like "অধ্যায় 'Government' থেকে MCQ —" are hidden at render time.
+   - Daily mission GK quiz also uses the same clean question display.
+
+2. Reward repeat guard added.
+   - Subject quiz claim button now has claim-in-progress guard.
+   - Guest quiz claims are persisted locally by subject and difficulty.
+   - Mission claim button now has claim-in-progress guard.
+   - Firestore sync failure no longer grants repeated local mission rewards for signed-in users.
+
+3. Chat box header cleaned.
+   - Old chat-box three-dot menu removed.
+   - Clean profile action added in chat header.
+   - Friend list hold-menu remains for View profile, Delete chat, Unfriend, Block.
+
+Version check:
+- frontend/package.json: 1.3.8
+- frontend/src/lib/appVersion.ts: 1.3.8
+- frontend/src/lib/updateInfo.ts: 1.3.8
+- frontend/android/app/build.gradle versionName: 1.3.8
+- frontend/android/app/build.gradle versionCode: 21
+- GitHub Actions artifact: study-rpg-v1.3.8-debug-apk
+
+Dataset check:
+- Dataset files were not changed in v1.3.8.
+- MCQ total remains 15022.
+- Written total remains 6261.
+- No new dataset duplicate risk introduced.
+
+Static checks:
+- TypeScript/TSX parse check: PASS
+- ZIP integrity: checked after packaging
+- node_modules is intentionally not included.
+
+Firebase rules:
+- No new Firestore rules are required for v1.3.8.
+- Existing v1.3.7 Firestore rules already cover missionClaims, userProgress, messages, notifications, and pushTokens.

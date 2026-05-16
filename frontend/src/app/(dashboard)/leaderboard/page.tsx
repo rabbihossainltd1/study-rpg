@@ -7,9 +7,10 @@ import { RANK_COLORS, type Rank } from "@/types";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
 import { Trophy, Globe, MapPin, TrendingUp, Crown, X, School, UserRound, UserPlus, Flame, Eye, MessageCircle, Swords } from "lucide-react";
-import { AppIcon, UserAvatar, CrownBadge } from "@/components/ui/AppIcon";
+import { AppIcon, UserAvatar, CrownBadge, VerifiedBadge } from "@/components/ui/AppIcon";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 import { navigate } from "@/lib/navigate";
+import { isVerifiedUser } from "@/lib/verified";
 
 const TABS = [
   { id: "global", label: "Global", labelBn: "গ্লোবাল", icon: Globe },
@@ -185,7 +186,7 @@ export default function LeaderboardPage() {
               <div className={`glass-card p-3 text-center border hover-lift relative overflow-visible ${position === 0 ? "shadow-[0_0_44px_rgba(255,215,0,0.24)]" : "shadow-[0_0_24px_rgba(255,255,255,0.05)]"}`} style={{ borderColor: `${rankColor}70`, background: `linear-gradient(180deg, ${rankColor}12, rgba(255,255,255,0.025))` }}>
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full border px-2 py-0.5 text-[10px] font-black" style={{ borderColor: `${rankColor}60`, color: rankColor, background: "rgba(0,0,0,0.78)" }}>TOP {entry.rank}</div>
                 <div className="mx-auto mb-2 mt-3 flex justify-center"><Avatar entry={entry} size={position === 0 ? "lg" : "md"} /></div>
-                <p className="font-bold text-white text-xs truncate">{entry.displayName || entry.username}</p>
+                <div className="flex items-center justify-center gap-1 min-w-0"><p className="font-bold text-white text-xs truncate">{entry.displayName || entry.username}</p>{isVerifiedUser(entry) && <VerifiedBadge className="w-3.5 h-3.5 flex-shrink-0" />}</div>
                 <p className="text-xs" style={{ color: rankColor }}>LV.{entry.level}</p>
                 <p className="text-sm font-bold mt-1" style={{ color: rankColor }}>#{entry.rank}</p>
                 <p className="text-xs text-gray-500">{(entry.xp / 1000).toFixed(1)}K XP</p>
@@ -228,7 +229,7 @@ export default function LeaderboardPage() {
                 <div className="w-8 flex-shrink-0 flex items-center justify-center"><RankBadge rank={entry.rank} /></div>
                 <Avatar entry={entry} size="sm" showCrown={false} />
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2"><p className={`font-semibold text-sm truncate ${isCurrentUser ? "text-primary" : "text-white"}`}>{entry.displayName || entry.username}</p>{isCurrentUser && <span className="text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded font-bold">YOU</span>}</div>
+                  <div className="flex items-center gap-2"><p className={`font-semibold text-sm truncate ${isCurrentUser ? "text-primary" : "text-white"}`}>{entry.displayName || entry.username}</p>{isVerifiedUser(entry) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}{isCurrentUser && <span className="text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded font-bold">YOU</span>}</div>
                   <div className="flex items-center gap-2 mt-0.5"><span className="text-xs" style={{ color: rankColor }}>{entry.rank_title || entry.userRank || "Novice"}</span><span className="text-xs text-gray-600">·</span><span className="text-xs text-gray-600">{entry.district}</span><span className="text-xs text-gray-600">·</span><span className="text-xs text-orange-400 inline-flex items-center gap-1"><Flame className="w-3 h-3" />{entry.streak}</span></div>
                 </div>
                 <div className="text-right flex-shrink-0"><p className="text-sm font-bold text-primary">{(entry.xp / 1000).toFixed(1)}K</p><p className="text-xs text-gray-600">LV.{entry.level}</p></div>
@@ -250,7 +251,7 @@ export default function LeaderboardPage() {
             </div>
             <div className="text-center mb-4">
               <div className="flex justify-center mb-2"><Avatar entry={selected} size="md" /></div>
-              <p className="text-lg font-black text-white">{selected.displayName || selected.username}</p>
+              <div className="flex items-center justify-center gap-1.5"><p className="text-lg font-black text-white">{selected.displayName || selected.username}</p>{isVerifiedUser(selected) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}</div>
               {canSeeFull ? <p className="text-xs text-gray-500">@{selected.username} · ID {selected.studentId || selected.userId.slice(0, 8)}</p> : <p className="text-xs text-gray-500">Basic public profile</p>}
             </div>
             <div className="space-y-2">

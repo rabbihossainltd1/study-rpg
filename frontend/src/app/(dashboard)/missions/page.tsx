@@ -11,6 +11,9 @@ import { claimDailyMissionReward, getMissionClaimsForDay } from "@/lib/firebase"
 import toast from "react-hot-toast";
 import { calculateLevel, type Mission } from "@/types";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
+import { cleanMcqQuestionText } from "@/lib/questionText";
+
+
 
 function minutesToReset() {
   const now = new Date();
@@ -29,6 +32,7 @@ export default function MissionsPage() {
   const [score, setScore] = useState(0);
   const [quizDone, setQuizDone] = useState(false);
   const [loadingClaims, setLoadingClaims] = useState(false);
+  const [claimingMissionId, setClaimingMissionId] = useState<string | null>(null);
 
   const isBn = language === "bn";
   const dayKey = useMemo(() => missionDayKey(), []);
@@ -77,7 +81,7 @@ export default function MissionsPage() {
   };
 
   const handleClaim = async (mission: Mission, earnedScore = score) => {
-    if (!user || completedMissions.has(mission.id)) {
+    if (!user || completedMissions.has(mission.id) || claimingMissionId === mission.id) {
       toast(isBn ? "আজকের reward already collected" : "Today reward already collected");
       return;
     }
@@ -89,6 +93,7 @@ export default function MissionsPage() {
     const uid: string = user.uid;
     const nextXp = user.xp + mission.xpReward;
     const nextLevel = calculateLevel(nextXp);
+    setClaimingMissionId(mission.id);
     try {
       if (!uid.startsWith("guest_")) {
         const result = await claimDailyMissionReward(uid, mission.id, mission.xpReward, mission.coinReward, earnedScore, dayKey);
@@ -109,14 +114,9 @@ export default function MissionsPage() {
       toast.success(`+${mission.xpReward} XP & ${mission.coinReward} coins claimed!`);
       setActiveMission(null);
     } catch {
-      // v1.3.7: do not keep a completed mission stuck if Firestore reward sync is delayed.
-      saveGuestClaim(mission.id);
-      setUser({ ...user, xp: nextXp, coins: user.coins + mission.coinReward, level: Math.max(user.level, nextLevel) });
-      setCompletedMissions((prev) => new Set([...prev, mission.id]));
-      addXpPopup(mission.xpReward, 50, 40);
-      if (nextLevel > user.level) triggerLevelUp(nextLevel);
-      toast.success(isBn ? "Reward collected" : "Reward collected");
-      setActiveMission(null);
+      toast.error(isBn ? "Reward claim failed. আবার try করো।" : "Reward claim failed. Try again.");
+    } finally {
+      setClaimingMissionId(null);
     }
   };
 
@@ -250,7 +250,7 @@ export default function MissionsPage() {
               <>
                 <div className="h-1.5 bg-white/5 rounded-full mb-5 overflow-hidden"><div className="h-full bg-gold rounded-full transition-all" style={{ width: `${((questionIndex + 1) / quizQuestions.length) * 100}%` }} /></div>
                 <p className="text-xs text-gray-500 uppercase font-mono mb-2">Question {questionIndex + 1}/{quizQuestions.length}</p>
-                <h3 className="text-xl font-black text-white mb-4 leading-relaxed">{isBn ? currentQ.questionBn : currentQ.question}</h3>
+                <h3 className="text-xl font-black text-white mb-4 leading-relaxed">{cleanMcqQuestionText(isBn ? currentQ.questionBn : currentQ.question)}</h3>
                 <div className="space-y-3 mb-5">
                   {currentQ.options.map((opt, idx) => {
                     const isCorrect = currentQ.answer === idx;
@@ -280,7 +280,7 @@ export default function MissionsPage() {
                   <div className="w-px bg-white/10" />
                   <div><p className="text-xl font-bold text-gold inline-flex items-center gap-1">+{activeMission.coinReward} <Coins className="w-5 h-5" /></p><p className="text-xs text-gray-500">Coins</p></div>
                 </div>
-                <Button onClick={() => handleClaim(activeMission, score)} className="w-full" size="lg" disabled={score < 2 || completedMissions.has(activeMission.id)}>Claim Rewards</Button>
+                <Button onClick={() => handleClaim(activeMission, score)} className="w-full" size="lg" isLoading={claimingMissionId === activeMission.id} disabled={score < 2 || completedMissions.has(activeMission.id) || claimingMissionId === activeMission.id}>Claim Rewards</Button>
                 {score < 2 && <p className="text-xs text-accent mt-3">At least 2 correct answers needed.</p>}
                 {completedMissions.has(activeMission.id) && <p className="text-xs text-primary mt-3">Today reward already collected.</p>}
               </div>
