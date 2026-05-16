@@ -1,0 +1,62 @@
+Study RPG v1.3.3 Higher Education Final Verification
+======================================================
+MCQ total: 4963
+Written total: 5757
+Higher education MCQ added: 2268
+Higher education written added: 2268
+New higher education subjects: 42
+New higher education missing buckets: 0
+MCQ same-subject exact duplicate: 0
+MCQ same-subject cross-difficulty duplicate: 0
+MCQ bad structure: 0
+Written same-subject exact duplicate: 0
+Written same-subject cross-difficulty duplicate: 0
+Written bad structure: 0
+TS/TSX syntax check returncode: 0
+Gradle compileSdkVersion present: True
+APK workflow static profile route fix present: True
+Firestore rules brace structure OK: True
+
+Higher education bucket coverage:
+- university-1st-bangla: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-1st-english: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-1st-ethics: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-1st-political-science: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-1st-psychology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-1st-sociology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-2nd-bangla: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-2nd-english: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-2nd-ethics: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-2nd-political-science: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-2nd-psychology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-2nd-sociology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-3rd-bangla: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-3rd-english: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-3rd-ethics: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-3rd-political-science: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-3rd-psychology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-3rd-sociology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-4th-bangla: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-4th-english: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-4th-ethics: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-4th-political-science: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-4th-psychology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- university-4th-sociology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- degree-bangla: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- degree-english: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- degree-ethics: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- degree-political-science: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- degree-psychology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- degree-sociology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- honours-bangla: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- honours-english: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- honours-ethics: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- honours-political-science: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- honours-psychology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- honours-sociology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- masters-bangla: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- masters-english: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- masters-ethics: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- masters-political-science: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- masters-psychology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18
+- masters-sociology: MCQ E/M/H=18/18/18, Written E/M/H=18/18/18

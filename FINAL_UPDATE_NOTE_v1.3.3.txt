@@ -6,3 +6,5 @@ v1.3.3 final source-verified cleanup
 - Kept official source metadata for approved import.
 - Firebase rules tightened for users, friendRequests, missionClaims, userProgress, quizAttempts, challenges, and messages.
 - App remains on v1.3.3 / Android versionCode 16.
+
+Higher education dataset implemented: University 1st-4th Year, Degree, Honours, and Masters now have class-specific MCQ and written question banks from the uploaded dataset.

@@ -1,0 +1,19 @@
+Study RPG v1.3.3 Higher Education Dataset Implementation Report
+===============================================================
+Uploaded dataset rows parsed: 4536
+MCQ rows added: 2268
+Written rows added: 2268
+Skipped duplicate MCQ within same class-subject: 0
+Skipped duplicate written within same class-subject: 0
+Bad/skipped malformed rows: 0
+
+Implemented class levels:
+- University 1st Year: 6 subjects
+- University 2nd Year: 6 subjects
+- University 3rd Year: 6 subjects
+- University 4th Year: 6 subjects
+- Degree: 6 subjects
+- Honours: 6 subjects
+- Masters: 6 subjects
+
+Subject IDs are class-specific, so University 1st Year questions do not mix with Degree/Honours/Masters questions.
