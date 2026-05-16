@@ -76,6 +76,14 @@ service cloud.firestore {
         && signedInUid() in resource.data.participants;
     }
 
+    function hasFriendAccess() {
+      return isAuthenticated() && (
+        (resource.data.participants is list && signedInUid() in resource.data.participants) ||
+        resource.data.from == signedInUid() ||
+        resource.data.to == signedInUid()
+      );
+    }
+
     match /usernameIndex/{username} {
       allow read: if true;
       allow create: if isAuthenticated()
@@ -197,7 +205,7 @@ service cloud.firestore {
     }
 
     match /friendRequests/{requestId} {
-      allow read: if isFriendParticipant()
+      allow read: if hasFriendAccess()
         || (isAuthenticated() && requestId.matches('.*' + signedInUid() + '.*'));
 
       allow create: if isAuthenticated()
@@ -208,7 +216,7 @@ service cloud.firestore {
         && ((request.resource.data.status == "pending" && request.resource.data.blockedBy == null)
           || (request.resource.data.status == "blocked" && request.resource.data.blockedBy == signedInUid()));
 
-      allow update: if isFriendParticipant()
+      allow update: if hasFriendAccess()
         && unchangedFriendCore()
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["status", "updatedAt", "cancelledBy", "actionBy", "blockedBy"])
         && (

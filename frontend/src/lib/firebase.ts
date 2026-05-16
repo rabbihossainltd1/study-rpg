@@ -545,8 +545,24 @@ function mapRelationStatus(rel: any, currentUid: string): FriendStatus {
 }
 
 async function getRelationsForUser(uid: string) {
-  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(150)));
-  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }));
+  const relationMap = new Map<string, any>();
+  const queries = [
+    query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(150)),
+    query(collection(db, "friendRequests"), where("from", "==", uid), limit(150)),
+    query(collection(db, "friendRequests"), where("to", "==", uid), limit(150)),
+  ];
+
+  const snaps = await Promise.allSettled(queries.map((q) => getDocs(q)));
+  snaps.forEach((result) => {
+    if (result.status !== "fulfilled") return;
+    result.value.docs.forEach((d) => {
+      const data = { id: d.id, ...(d.data() as any) };
+      const hasUidInParticipants = Array.isArray(data.participants) && data.participants.includes(uid);
+      if (data.from === uid || data.to === uid || hasUidInParticipants) relationMap.set(d.id, data);
+    });
+  });
+
+  return Array.from(relationMap.values());
 }
 
 async function getRelation(currentUid: string, targetUid: string) {
@@ -620,9 +636,7 @@ export async function getFriendRelationState(currentUid: string, targetUid: stri
 }
 
 export async function getIncomingFriendRequests(uid: string): Promise<PublicUserResult[]> {
-  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(80)));
-  const incoming = snap.docs
-    .map((d) => ({ id: d.id, ...(d.data() as any) }))
+  const incoming = (await getRelationsForUser(uid))
     .filter((r: any) => r.to === uid && r.status === "pending");
   const results: PublicUserResult[] = [];
   for (const req of incoming.slice(0, 12)) {
@@ -717,15 +731,21 @@ export async function sendQuickMessage(currentUid: string, targetUid: string, co
 }
 
 export async function getFriendsForUser(uid: string): Promise<PublicUserResult[]> {
-  const snap = await getDocs(query(collection(db, "friendRequests"), where("participants", "array-contains", uid), limit(150)));
-  const accepted = snap.docs
-    .map((d) => ({ id: d.id, ...(d.data() as any) }))
-    .filter((r: any) => r.status === "accepted" && Array.isArray(r.participants));
+  const accepted = (await getRelationsForUser(uid))
+    .filter((r: any) => r.status === "accepted" && (r.from === uid || r.to === uid || (Array.isArray(r.participants) && r.participants.includes(uid))));
 
+  const seen = new Set<string>();
   const friends: PublicUserResult[] = [];
   for (const rel of accepted) {
-    const otherUid = rel.participants.find((id: string) => id !== uid);
-    if (!otherUid) continue;
+    const otherUid = rel.from === uid
+      ? rel.to
+      : rel.to === uid
+        ? rel.from
+        : Array.isArray(rel.participants)
+          ? rel.participants.find((id: string) => id !== uid)
+          : "";
+    if (!otherUid || seen.has(otherUid)) continue;
+    seen.add(otherUid);
     const userSnap = await getDoc(doc(db, "users", otherUid));
     if (!userSnap.exists()) continue;
     friends.push(toPublicUser({ ...(userSnap.data() as User), uid: otherUid }, rel, uid));
