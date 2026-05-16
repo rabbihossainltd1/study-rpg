@@ -53,7 +53,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [className, setClassName] = useState(SSC_COMBINED_CLASS);
+  const [className, setClassName] = useState<string>(SSC_COMBINED_CLASS);
   const [groupName, setGroupName] = useState("Science");
   const [college, setCollege] = useState("");
   const [division, setDivision] = useState("Khulna");
