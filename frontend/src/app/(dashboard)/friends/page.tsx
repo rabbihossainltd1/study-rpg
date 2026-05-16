@@ -49,6 +49,26 @@ function messageTime(msg: FriendMessage) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
+
+function mergeFriendMessages(existing: FriendMessage[], incoming: FriendMessage[]) {
+  const map = new Map<string, FriendMessage>();
+  const localKey = (m: FriendMessage) => [m.from, m.to, m.content].join("|");
+
+  existing.forEach((m) => map.set(m.id.startsWith("local-") ? localKey(m) : m.id, m));
+  incoming.forEach((m) => {
+    const key = m.id.startsWith("local-") ? localKey(m) : m.id;
+    const matchingLocalKey = localKey(m);
+    if (map.has(matchingLocalKey)) map.delete(matchingLocalKey);
+    map.set(key, m);
+  });
+
+  return Array.from(map.values()).sort((a, b) => {
+    const ta = dateFromUnknown(a.createdAt)?.getTime() || 0;
+    const tb = dateFromUnknown(b.createdAt)?.getTime() || 0;
+    return ta - tb;
+  });
+}
+
 function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onChallenge, onBlock, onUnfriend, busy }: {
   person: PublicUserResult;
   menu: MenuState;
@@ -122,7 +142,10 @@ export default function FriendsPage() {
     if (!user || !friend || user.uid.startsWith("guest_")) return;
     await markMessagesRead(user.uid, friend.uid).catch(() => undefined);
     const list = await getMessagesWithFriend(user.uid, friend.uid).catch(() => []);
-    setMessages(list);
+    setMessages((prev) => {
+      if (list.length === 0 && prev.length > 0) return prev;
+      return mergeFriendMessages(prev, list);
+    });
   };
 
   useEffect(() => {
@@ -140,7 +163,12 @@ export default function FriendsPage() {
     const loadThread = async () => {
       await markMessagesRead(user.uid, selected.uid).catch(() => undefined);
       const list = await getMessagesWithFriend(user.uid, selected.uid).catch(() => []);
-      if (alive) setMessages(list);
+      if (alive) {
+        setMessages((prev) => {
+          if (list.length === 0 && prev.length > 0) return prev;
+          return mergeFriendMessages(prev, list);
+        });
+      }
     };
 
     loadThread();
@@ -228,24 +256,28 @@ export default function FriendsPage() {
     const body = text.trim();
     if (!user || !selected || !body) return;
     const target = selected;
+    const localMessage: FriendMessage = {
+      id: `local-${Date.now()}`,
+      from: user.uid,
+      to: target.uid,
+      content: body,
+      createdAt: new Date() as any,
+      read: false,
+      participants: [user.uid, target.uid],
+    };
+
     setBusyId(target.uid);
+    setText("");
+    setMessages((prev) => mergeFriendMessages(prev, [localMessage]));
+
     try {
       await sendQuickMessage(user.uid, target.uid, body);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `local-${Date.now()}`,
-          from: user.uid,
-          to: target.uid,
-          content: body,
-          createdAt: new Date() as any,
-          read: false,
-          participants: [user.uid, target.uid],
-        },
-      ]);
-      setText("");
-      await refreshMessages(target);
+      window.setTimeout(() => {
+        refreshMessages(target).catch(() => undefined);
+      }, 800);
     } catch (error) {
+      setMessages((prev) => prev.filter((msg) => msg.id !== localMessage.id));
+      setText(body);
       toast.error(error instanceof Error ? error.message : "Message failed");
     } finally {
       setBusyId(null);

@@ -18,7 +18,9 @@ service cloud.firestore {
       return isAuthenticated() && (
         (resource.data.participants is list && signedInUid() in resource.data.participants) ||
         resource.data.from == signedInUid() ||
-        resource.data.to == signedInUid()
+        resource.data.to == signedInUid() ||
+        resource.data.senderId == signedInUid() ||
+        resource.data.receiverId == signedInUid()
       );
     }
 
@@ -262,7 +264,7 @@ service cloud.firestore {
         && willBeParticipant();
       allow update: if isParticipant()
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["read", "readAt"])
-        && resource.data.to == signedInUid();
+        && (resource.data.to == signedInUid() || resource.data.receiverId == signedInUid());
       allow delete: if false;
     }
 

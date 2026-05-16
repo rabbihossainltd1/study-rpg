@@ -758,28 +758,59 @@ export type FriendMessage = {
   from: string;
   to: string;
   content: string;
-  createdAt?: Timestamp;
+  createdAt?: Timestamp | Date | null;
   read?: boolean;
-  readAt?: Timestamp | null;
+  readAt?: Timestamp | Date | null;
   participants?: string[];
+  senderId?: string;
+  receiverId?: string;
+  text?: string;
+  message?: string;
+  body?: string;
 };
 
+function normalizedMessageText(data: any) {
+  const value = data?.content ?? data?.text ?? data?.message ?? data?.body ?? "";
+  return typeof value === "string" ? value : String(value || "");
+}
+
 function normalizeFriendMessage(id: string, data: any): FriendMessage {
-  const participants = Array.isArray(data.participants)
-    ? data.participants
-    : [data.from, data.to].filter((value: unknown): value is string => typeof value === "string" && value.length > 0);
-  return { id, ...data, participants } as FriendMessage;
+  const from = String(data?.from || data?.senderId || data?.sender || data?.userId || "");
+  const to = String(data?.to || data?.receiverId || data?.recipientId || data?.recipient || "");
+  const participants = Array.isArray(data?.participants)
+    ? data.participants.filter((value: unknown): value is string => typeof value === "string" && value.length > 0)
+    : [from, to].filter((value) => typeof value === "string" && value.length > 0);
+
+  return {
+    id,
+    ...data,
+    from,
+    to,
+    content: normalizedMessageText(data),
+    participants,
+  } as FriendMessage;
 }
 
 function isMessageBetween(message: FriendMessage, currentUid: string, targetUid: string) {
   const directPair =
     (message.from === currentUid && message.to === targetUid) ||
     (message.from === targetUid && message.to === currentUid);
+  const legacyDirectPair =
+    (message.senderId === currentUid && message.receiverId === targetUid) ||
+    (message.senderId === targetUid && message.receiverId === currentUid);
   const participantPair =
     Array.isArray(message.participants) &&
     message.participants.includes(currentUid) &&
     message.participants.includes(targetUid);
-  return directPair || participantPair;
+  return directPair || legacyDirectPair || participantPair;
+}
+
+function messageSortValue(message: FriendMessage) {
+  const date = timestampToDate(message.createdAt);
+  if (date) return date.getTime();
+  if ((message.createdAt as Timestamp | undefined)?.toMillis) return (message.createdAt as Timestamp).toMillis();
+  const idTime = String(message.id).match(/(\d{10,})/);
+  return idTime ? Number(idTime[1]) : 0;
 }
 
 export async function getMessagesWithFriend(currentUid: string, targetUid: string): Promise<FriendMessage[]> {
@@ -787,9 +818,11 @@ export async function getMessagesWithFriend(currentUid: string, targetUid: strin
 
   const messageMap = new Map<string, FriendMessage>();
   const messageQueries = [
-    query(collection(db, "messages"), where("participants", "array-contains", currentUid), limit(200)),
-    query(collection(db, "messages"), where("from", "==", currentUid), limit(200)),
-    query(collection(db, "messages"), where("to", "==", currentUid), limit(200)),
+    query(collection(db, "messages"), where("participants", "array-contains", currentUid), limit(250)),
+    query(collection(db, "messages"), where("from", "==", currentUid), limit(250)),
+    query(collection(db, "messages"), where("to", "==", currentUid), limit(250)),
+    query(collection(db, "messages"), where("senderId", "==", currentUid), limit(250)),
+    query(collection(db, "messages"), where("receiverId", "==", currentUid), limit(250)),
   ];
 
   const results = await Promise.allSettled(messageQueries.map((messageQuery) => getDocs(messageQuery)));
@@ -797,20 +830,19 @@ export async function getMessagesWithFriend(currentUid: string, targetUid: strin
     if (result.status !== "fulfilled") return;
     result.value.docs.forEach((messageDoc) => {
       const message = normalizeFriendMessage(messageDoc.id, messageDoc.data());
-      if (isMessageBetween(message, currentUid, targetUid)) messageMap.set(message.id, message);
+      if (message.content.trim().length > 0 && isMessageBetween(message, currentUid, targetUid)) messageMap.set(message.id, message);
     });
   });
 
-  return Array.from(messageMap.values()).sort((a, b) => {
-    const ta = timestampToDate(a.createdAt)?.getTime() || (a.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
-    const tb = timestampToDate(b.createdAt)?.getTime() || (b.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
-    return ta - tb;
-  });
+  return Array.from(messageMap.values()).sort((a, b) => messageSortValue(a) - messageSortValue(b));
 }
 
 export async function markMessagesRead(currentUid: string, targetUid: string) {
   const messages = await getMessagesWithFriend(currentUid, targetUid);
-  const unread = messages.filter((m) => m.to === currentUid && m.from === targetUid && !m.read);
+  const unread = messages.filter((m) =>
+    !m.read &&
+    ((m.to === currentUid && m.from === targetUid) || (m.receiverId === currentUid && m.senderId === targetUid))
+  );
   await Promise.all(unread.slice(0, 50).map((m) => updateDoc(doc(db, "messages", m.id), { read: true, readAt: serverTimestamp() }).catch(() => undefined)));
 }
 
