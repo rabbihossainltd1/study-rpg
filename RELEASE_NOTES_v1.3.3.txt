@@ -1,0 +1,8 @@
+Study RPG v1.3.3
+
+- Public profile Add Friend / Cancel Request added.
+- Friends load permission rules fixed.
+- MCQ Easy, Medium and Hard question banks separated.
+- Mission GK questions now rotate daily and are not repeated across mission cards.
+- Mission rewards are one-time per day and reset after 24 hours.
+- Firestore rules TXT included: firebase/firestore-rules-v1.3.3-full.txt

@@ -1,16 +1,23 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
-import { DAILY_MISSIONS, GENERAL_KNOWLEDGE_QUIZZES } from "@/lib/missions";
+import { DAILY_MISSIONS, getDailyGKQuestions, missionDayKey } from "@/lib/missions";
 import { AppIcon } from "@/components/ui/AppIcon";
 import { Button } from "@/components/ui/Button";
-import { Target, Zap, Trophy, CheckCircle2, X, Check, HelpCircle, BookOpen, Coins } from "lucide-react";
-import { addXp, addCoins } from "@/lib/firebase";
+import { Target, Trophy, CheckCircle2, X, Check, HelpCircle, BookOpen, Coins } from "lucide-react";
+import { claimDailyMissionReward, getMissionClaimsForDay } from "@/lib/firebase";
 import toast from "react-hot-toast";
 import { calculateLevel, type Mission } from "@/types";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
+
+function minutesToReset() {
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setHours(24, 0, 0, 0);
+  return Math.max(1, Math.ceil((tomorrow.getTime() - now.getTime()) / 60000));
+}
 
 export default function MissionsPage() {
   const { user, setUser, language, addXpPopup, triggerLevelUp } = useUserStore();
@@ -21,30 +28,75 @@ export default function MissionsPage() {
   const [answered, setAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [quizDone, setQuizDone] = useState(false);
+  const [loadingClaims, setLoadingClaims] = useState(false);
 
   const isBn = language === "bn";
-  const quizQuestions = useMemo(() => GENERAL_KNOWLEDGE_QUIZZES.slice(0, 3), []);
+  const dayKey = useMemo(() => missionDayKey(), []);
+  const resetMin = useMemo(() => minutesToReset(), []);
+  const quizQuestions = useMemo(() => activeMission ? getDailyGKQuestions(activeMission.id, dayKey, 3) : [], [activeMission?.id, dayKey]);
   const currentQ = quizQuestions[questionIndex];
   const totalDaily = DAILY_MISSIONS.length;
   const completedDaily = DAILY_MISSIONS.filter((m) => completedMissions.has(m.id)).length;
   const totalXp = DAILY_MISSIONS.reduce((sum, m) => sum + m.xpReward, 0);
   useBodyScrollLock(Boolean(activeMission));
 
+  useEffect(() => {
+    if (!user?.uid) return;
+    let active = true;
+    async function loadClaims() {
+      setLoadingClaims(true);
+      const localKey = `studyRpgMissionClaims_${user.uid}_${dayKey}`;
+      try {
+        if (user.uid.startsWith("guest_")) {
+          const saved = JSON.parse(localStorage.getItem(localKey) || "[]") as string[];
+          if (active) setCompletedMissions(new Set(saved));
+          return;
+        }
+        const claims = await getMissionClaimsForDay(user.uid, dayKey);
+        if (active) setCompletedMissions(new Set(claims.map((claim) => claim.missionId)));
+      } catch {
+        const saved = typeof window !== "undefined" ? JSON.parse(localStorage.getItem(localKey) || "[]") as string[] : [];
+        if (active) setCompletedMissions(new Set(saved));
+      } finally {
+        if (active) setLoadingClaims(false);
+      }
+    }
+    loadClaims();
+    return () => { active = false; };
+  }, [user?.uid, dayKey]);
+
+  const saveGuestClaim = (missionId: string) => {
+    if (!user?.uid || typeof window === "undefined") return;
+    const localKey = `studyRpgMissionClaims_${user.uid}_${dayKey}`;
+    const next = Array.from(new Set([...Array.from(completedMissions), missionId]));
+    localStorage.setItem(localKey, JSON.stringify(next));
+  };
+
   const handleClaim = async (mission: Mission, earnedScore = score) => {
-    if (!user || completedMissions.has(mission.id)) return;
+    if (!user || completedMissions.has(mission.id)) {
+      toast(isBn ? "আজকের reward already collected" : "Today reward already collected");
+      return;
+    }
     if (mission.id.startsWith("gk-") && earnedScore < 2) {
       toast.error(isBn ? "Reward নিতে অন্তত ২টি সঠিক উত্তর লাগবে" : "At least 2 correct answers are required");
       return;
     }
+
     const nextXp = user.xp + mission.xpReward;
     const nextLevel = calculateLevel(nextXp);
     try {
       if (!user.uid.startsWith("guest_")) {
-        const result = await addXp(user.uid, mission.xpReward);
-        await addCoins(user.uid, mission.coinReward);
+        const result = await claimDailyMissionReward(user.uid, mission.id, mission.xpReward, mission.coinReward, earnedScore, dayKey);
+        if (!result.claimed) {
+          setCompletedMissions((prev) => new Set([...prev, mission.id]));
+          toast(isBn ? "আজকের reward already collected" : "Today reward already collected");
+          setActiveMission(null);
+          return;
+        }
         if (result.leveledUp) triggerLevelUp(result.newLevel);
-      } else if (nextLevel > user.level) {
-        triggerLevelUp(nextLevel);
+      } else {
+        saveGuestClaim(mission.id);
+        if (nextLevel > user.level) triggerLevelUp(nextLevel);
       }
       setUser({ ...user, xp: nextXp, coins: user.coins + mission.coinReward, level: Math.max(user.level, nextLevel) });
       setCompletedMissions((prev) => new Set([...prev, mission.id]));
@@ -52,13 +104,17 @@ export default function MissionsPage() {
       toast.success(`+${mission.xpReward} XP & ${mission.coinReward} coins claimed!`);
       setActiveMission(null);
     } catch {
-      toast.error("Failed to claim reward");
+      toast.error(isBn ? "Reward claim failed" : "Reward claim failed");
     }
   };
 
   const openMission = (mission: Mission) => {
     if (mission.id === "daily-progress-subjects") {
       navigate("/subjects");
+      return;
+    }
+    if (completedMissions.has(mission.id)) {
+      toast(isBn ? "আজকের মিশন completed" : "Today mission completed");
       return;
     }
     if (mission.id.startsWith("gk-")) {
@@ -91,17 +147,14 @@ export default function MissionsPage() {
   const MissionCard = ({ mission, index }: { mission: Mission; index: number }) => {
     const isCompleted = completedMissions.has(mission.id);
     const isProgress = mission.id === "daily-progress-subjects";
-    const canClaim = mission.progress >= mission.requirement && !isCompleted && !mission.id.startsWith("gk-");
-    const progress = isCompleted ? 100 : isProgress ? 0 : Math.min(100, (mission.progress / mission.requirement) * 100);
+    const progress = isCompleted ? 100 : isProgress ? 0 : 0;
 
     return (
       <button
         type="button"
         onClick={() => openMission(mission)}
         className={`w-full text-left glass-card p-4 border transition-all hover-lift animate-card-in cursor-pointer tap-bounce ${
-          isCompleted ? "border-primary/20 bg-primary/3" :
-          canClaim ? "border-gold/30 bg-gold/3 shadow-[0_0_20px_rgba(255,215,0,0.1)]" :
-          "border-white/5"
+          isCompleted ? "border-primary/20 bg-primary/3" : "border-white/5"
         }`}
         style={{ animationDelay: `${index * 45}ms` }}
       >
@@ -117,6 +170,7 @@ export default function MissionsPage() {
               </div>
               {isProgress && <span className="text-xs text-secondary font-black">Open</span>}
               {mission.id.startsWith("gk-") && !isCompleted && <span className="text-xs text-gold font-black">Quiz</span>}
+              {isCompleted && <span className="text-xs text-primary font-black">Done</span>}
             </div>
             <div className="flex items-center gap-2 mt-2">
               <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden"><div className="h-full rounded-full bg-primary/60 transition-all duration-700" style={{ width: `${progress}%` }} /></div>
@@ -141,7 +195,7 @@ export default function MissionsPage() {
           </div>
           <div>
             <h1 className="text-2xl font-black text-white">{isBn ? "মিশন" : "Missions"}</h1>
-            <p className="text-sm text-gray-500">{isBn ? "দৈনিক প্রগ্রেস ও সাধারণ জ্ঞান কুইজ" : "Daily progress and general knowledge quizzes"}</p>
+            <p className="text-sm text-gray-500">{isBn ? "শুধু verified official-source content" : "Verified official-source content only"}</p>
           </div>
         </div>
       </div>
@@ -160,13 +214,13 @@ export default function MissionsPage() {
         </div>
         <div className="text-right flex-shrink-0">
           <p className="text-sm font-bold text-gold">{totalXp} XP</p>
-          <p className="text-xs text-gray-500">Available</p>
+          <p className="text-xs text-gray-500">Unlocked</p>
         </div>
       </button>
 
       <div className="space-y-3">
-        <div className="flex items-center justify-between"><p className="text-xs text-gray-600 uppercase tracking-wider font-mono">Daily missions</p><span className="text-xs text-primary font-bold">GK + Subjects</span></div>
-        {DAILY_MISSIONS.map((m, i) => <MissionCard key={m.id} mission={m} index={i} />)}
+        <div className="flex items-center justify-between"><p className="text-xs text-gray-600 uppercase tracking-wider font-mono">Resets in {Math.floor(resetMin / 60)}h {resetMin % 60}m</p><span className="text-xs text-primary font-bold">Official Sources</span></div>
+        {loadingClaims ? <div className="glass-card p-4 text-sm text-gray-500">Loading missions...</div> : DAILY_MISSIONS.map((m, i) => <MissionCard key={m.id} mission={m} index={i} />)}
       </div>
 
       {activeMission && (
@@ -214,8 +268,9 @@ export default function MissionsPage() {
                   <div className="w-px bg-white/10" />
                   <div><p className="text-xl font-bold text-gold inline-flex items-center gap-1">+{activeMission.coinReward} <Coins className="w-5 h-5" /></p><p className="text-xs text-gray-500">Coins</p></div>
                 </div>
-                <Button onClick={() => handleClaim(activeMission, score)} className="w-full" size="lg" disabled={score < 2}>Claim Rewards</Button>
+                <Button onClick={() => handleClaim(activeMission, score)} className="w-full" size="lg" disabled={score < 2 || completedMissions.has(activeMission.id)}>Claim Rewards</Button>
                 {score < 2 && <p className="text-xs text-accent mt-3">At least 2 correct answers needed.</p>}
+                {completedMissions.has(activeMission.id) && <p className="text-xs text-primary mt-3">Today reward already collected.</p>}
               </div>
             )}
           </div>

@@ -1,0 +1,8 @@
+v1.3.3 final source-verified cleanup
+
+- Removed fake/generated MCQ questions.
+- Removed fake/generated written questions.
+- Removed fake/generated mission GK questions.
+- Kept official source metadata for approved import.
+- Firebase rules tightened for users, friendRequests, missionClaims, userProgress, quizAttempts, challenges, and messages.
+- App remains on v1.3.3 / Android versionCode 16.

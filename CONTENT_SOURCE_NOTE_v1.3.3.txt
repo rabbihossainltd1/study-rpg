@@ -1,0 +1,12 @@
+Study RPG v1.3.3 source-verified content cleanup
+
+This patch removes all fake/generated MCQ, written, and mission GK question content.
+
+Official sources checked/linked for future approved import:
+- NCTB 2025 textbook list
+- NCTB 2025 class 9-10 textbook page
+- NCTB English sample question/guideline page
+- Dhaka Education Board SSC Corner
+
+No verbatim textbook or board-question text is bundled in this ZIP without an approved/licensed import file.
+Question-bank files are now source-verified only. They intentionally return empty data until approved official content is imported.

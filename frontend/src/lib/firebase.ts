@@ -422,6 +422,72 @@ export async function addCoins(uid: string, amount: number) {
   await updateDoc(doc(db, "users", uid), { coins: increment(amount) });
 }
 
+
+export function missionClaimDayKey(date = new Date()) {
+  return date.toISOString().slice(0, 10);
+}
+
+function missionClaimId(uid: string, missionId: string, dayKey: string) {
+  return `${uid}_${dayKey}_${missionId}`.replace(/[^A-Za-z0-9_-]/g, "_").slice(0, 240);
+}
+
+export type MissionClaimRecord = {
+  id: string;
+  userId: string;
+  missionId: string;
+  dayKey: string;
+  xpReward: number;
+  coinReward: number;
+  score?: number;
+};
+
+export async function getMissionClaimsForDay(uid: string, dayKey = missionClaimDayKey()): Promise<MissionClaimRecord[]> {
+  if (!uid || uid.startsWith("guest_")) return [];
+  const snap = await getDocs(query(collection(db, "missionClaims"), where("userId", "==", uid), where("dayKey", "==", dayKey), limit(30)));
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<MissionClaimRecord, "id">) }));
+}
+
+export async function claimDailyMissionReward(uid: string, missionId: string, xpAmount: number, coinAmount: number, score = 0, dayKey = missionClaimDayKey()) {
+  if (!uid || uid.startsWith("guest_")) return { claimed: true, leveledUp: false, newLevel: 1 };
+  const claimRef = doc(db, "missionClaims", missionClaimId(uid, missionId, dayKey));
+  const userRef = doc(db, "users", uid);
+
+  return runTransaction(db, async (tx) => {
+    const [claimSnap, userSnap] = await Promise.all([tx.get(claimRef), tx.get(userRef)]);
+    if (claimSnap.exists()) {
+      const userData = userSnap.exists() ? (userSnap.data() as User) : null;
+      return { claimed: false, leveledUp: false, newLevel: userData?.level || 1 };
+    }
+    if (!userSnap.exists()) throw new Error("User profile not found");
+    const userData = userSnap.data() as User;
+    const oldLevel = userData.level || 1;
+    const nextXp = (userData.xp || 0) + xpAmount;
+    const nextLevel = calculateLevel(nextXp);
+    const nextRank = getRankFromXp(nextXp);
+    const xpForNext = nextLevel ** 2 * 100;
+
+    tx.set(claimRef, stripUndefined({
+      userId: uid,
+      missionId,
+      dayKey,
+      xpReward: xpAmount,
+      coinReward: coinAmount,
+      score,
+      createdAt: serverTimestamp(),
+    }));
+    tx.update(userRef, {
+      xp: increment(xpAmount),
+      coins: increment(coinAmount),
+      level: nextLevel,
+      rank: nextRank,
+      xpToNextLevel: Math.max(0, xpForNext - nextXp),
+      lastLoginAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+    return { claimed: true, leveledUp: nextLevel > oldLevel, newLevel: nextLevel };
+  });
+}
+
 export type FriendStatus = "none" | "pending" | "incoming" | "accepted" | "blocked_by_me" | "blocked_me";
 
 export type PublicUserResult = {

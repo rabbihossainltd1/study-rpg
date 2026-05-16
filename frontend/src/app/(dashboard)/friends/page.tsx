@@ -105,8 +105,8 @@ export default function FriendsPage() {
     setLoading(true);
     try {
       const [friendList, requestList] = await Promise.all([
-        getFriendsForUser(user.uid),
-        getIncomingFriendRequests(user.uid),
+        getFriendsForUser(user.uid).catch(() => []),
+        getIncomingFriendRequests(user.uid).catch(() => []),
       ]);
       setFriends(friendList);
       setIncoming(requestList);

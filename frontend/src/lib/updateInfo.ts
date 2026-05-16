@@ -7,25 +7,23 @@ export type UpdateInfo = {
 };
 
 export const CURRENT_UPDATE_INFO: UpdateInfo = {
-  version: "1.3.2",
-  title: "Study RPG v1.3.2",
-  titleBn: "Study RPG v1.3.2 আপডেট",
+  version: "1.3.3",
+  title: "Study RPG v1.3.3",
+  titleBn: "Study RPG v1.3.3 আপডেট",
   notes: [
-    "Bottom navigation keeps the MCQ button like before.",
-    "Subject pages now include both class-wise MCQ and written questions.",
-    "Written questions are cleaner, subject-specific and separated by Easy, Medium and Hard.",
-    "Students must solve written questions in a notebook and upload solved proof for XP.",
-    "Leaderboard View Profile now opens a working profile page with friend-based full/basic information.",
-    "Question banks were regenerated to avoid repeated SSC/HSC prefix text and duplicate exact questions.",
-    "Firebase rules text file is included for deployment reference."
+    "Public profile now has Add Friend / Cancel Request actions.",
+    "Friends page rules and friend request permissions were fixed.",
+    "MCQ Easy, Medium and Hard banks now use separated question and option patterns.",
+    "Mission GK questions rotate daily and no longer reuse the same set in every mission.",
+    "Mission rewards can be collected once per day only, then reset after 24 hours.",
+    "Firestore rules TXT file is included for the new friend and mission claim flow."
   ],
   notesBn: [
-    "Bottom navigation-এ আগের মতো MCQ button রাখা হয়েছে।",
-    "Subject page-এ এখন class-wise MCQ এবং লিখিত প্রশ্ন দুইটাই থাকবে।",
-    "লিখিত প্রশ্নগুলো clean, subject-specific এবং Easy, Medium, Hard অনুযায়ী আলাদা করা হয়েছে।",
-    "লিখিত প্রশ্ন খাতায় solve করে solved proof upload করলে XP verification হবে।",
-    "Leaderboard View Profile এখন working profile page open করবে; friend হলে full info, না হলে basic info।",
-    "Repeated SSC/HSC prefix text ও exact duplicate question এড়াতে question bank regenerate করা হয়েছে।",
-    "Firebase rules deployment reference হিসেবে TXT file ZIP-এর ভিতরে দেওয়া হয়েছে।"
+    "Public profile-এ Add Friend / Cancel Request action add করা হয়েছে।",
+    "Friends page load এবং friend request permission rules fix করা হয়েছে।",
+    "MCQ Easy, Medium, Hard এখন আলাদা question এবং option pattern ব্যবহার করবে।",
+    "Mission GK questions প্রতিদিন rotate হবে এবং সব mission-এ একই set থাকবে না।",
+    "Mission reward দিনে একবারই collect করা যাবে, 24 hours পরে নতুন daily task আসবে।",
+    "নতুন friend ও mission claim flow-এর জন্য Firestore rules TXT file ZIP-এর ভিতরে দেওয়া হয়েছে।"
   ]
 };

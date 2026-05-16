@@ -4,11 +4,11 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
-import { createChallenge, getFriendRelationState, getUserProfile } from "@/lib/firebase";
+import { cancelFriendRequest, createChallenge, getFriendRelationState, getUserProfile, sendFriendRequest, type FriendStatus } from "@/lib/firebase";
 import { Button } from "@/components/ui/Button";
 import { UserAvatar } from "@/components/ui/AppIcon";
 import { RANK_COLORS, type Rank, type User } from "@/types";
-import { ArrowLeft, Building2, Eye, Flame, GraduationCap, MapPin, MessageCircle, School, Shield, Swords, Trophy, UserRound, Zap } from "lucide-react";
+import { ArrowLeft, Building2, Eye, Flame, GraduationCap, MapPin, MessageCircle, School, Shield, Swords, Trophy, UserPlus, UserRound, XCircle, Zap } from "lucide-react";
 import toast from "react-hot-toast";
 
 function InfoCard({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
@@ -29,7 +29,7 @@ export default function PublicProfileClient() {
   const { user, language } = useUserStore();
   const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isFriend, setIsFriend] = useState(false);
+  const [friendStatus, setFriendStatus] = useState<FriendStatus>("none");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -46,10 +46,10 @@ export default function PublicProfileClient() {
         if (!active) return;
         setProfile(found);
         if (user?.uid && targetId !== user.uid) {
-          const state = await getFriendRelationState(user.uid, targetId).catch(() => ({ status: "none" as const }));
-          if (active) setIsFriend(state.status === "accepted");
+          const state = await getFriendRelationState(user.uid, targetId).catch(() => ({ status: "none" as FriendStatus }));
+          if (active) setFriendStatus(state.status);
         } else {
-          setIsFriend(true);
+          setFriendStatus("accepted");
         }
       } catch {
         if (active) {
@@ -77,6 +77,35 @@ export default function PublicProfileClient() {
     }
   };
 
+
+  const addFriend = async () => {
+    if (!user?.uid || !profile?.uid || user.uid === profile.uid) return;
+    setBusy(true);
+    try {
+      await sendFriendRequest(user.uid, profile.uid);
+      setFriendStatus("pending");
+      toast.success(language === "bn" ? "Friend request sent" : "Friend request sent");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Add friend failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const cancelRequest = async () => {
+    if (!user?.uid || !profile?.uid || user.uid === profile.uid) return;
+    setBusy(true);
+    try {
+      await cancelFriendRequest(user.uid, profile.uid);
+      setFriendStatus("none");
+      toast.success("Request cancelled");
+    } catch {
+      toast.error("Cancel failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
   if (loading) return <div className="glass-card p-6 text-center text-gray-400">Loading profile...</div>;
 
   if (!profile) {
@@ -92,7 +121,7 @@ export default function PublicProfileClient() {
   }
 
   const own = user?.uid === profile.uid;
-  const canSeeFull = own || isFriend;
+  const canSeeFull = own || friendStatus === "accepted";
   const rank = (profile.rank || "Novice") as Rank;
   const rankColor = RANK_COLORS[rank] || "#39FF14";
 
@@ -139,9 +168,21 @@ export default function PublicProfileClient() {
       </div>
 
       {!own && (
-        <div className="grid grid-cols-2 gap-3">
-          <Button variant="secondary" onClick={() => navigate(`/friends?chat=${profile.uid}`)} className="min-h-[50px]" leftIcon={<MessageCircle className="w-4 h-4" />}>Message</Button>
-          <Button variant="gold" onClick={sendChallenge} disabled={busy} className="min-h-[50px]" leftIcon={<Swords className="w-4 h-4" />}>Challenge</Button>
+        <div className={friendStatus === "accepted" ? "grid grid-cols-2 gap-3" : "grid grid-cols-1 gap-3"}>
+          {friendStatus === "accepted" ? (
+            <>
+              <Button variant="secondary" onClick={() => navigate(`/friends?chat=${profile.uid}`)} className="min-h-[50px]" leftIcon={<MessageCircle className="w-4 h-4" />}>Message</Button>
+              <Button variant="gold" onClick={sendChallenge} disabled={busy} className="min-h-[50px]" leftIcon={<Swords className="w-4 h-4" />}>Challenge</Button>
+            </>
+          ) : friendStatus === "pending" ? (
+            <Button variant="gold" onClick={cancelRequest} disabled={busy} className="min-h-[52px]" leftIcon={<XCircle className="w-4 h-4" />}>Cancel Friend Request</Button>
+          ) : friendStatus === "incoming" ? (
+            <Button variant="secondary" onClick={() => navigate("/friends")} className="min-h-[52px]" leftIcon={<UserPlus className="w-4 h-4" />}>Respond in Friends</Button>
+          ) : friendStatus === "blocked_by_me" || friendStatus === "blocked_me" ? (
+            <Button variant="danger" disabled className="min-h-[52px]">Unavailable</Button>
+          ) : (
+            <Button onClick={addFriend} disabled={busy} className="min-h-[52px] shadow-neon-primary" leftIcon={<UserPlus className="w-4 h-4" />}>Add Friend</Button>
+          )}
         </div>
       )}
     </div>
