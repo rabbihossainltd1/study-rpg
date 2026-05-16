@@ -76,7 +76,7 @@ export default function ProfilePage() {
     avatar: "zap",
     school: "",
     college: "",
-    className: SSC_COMBINED_CLASS,
+    className: SSC_COMBINED_CLASS as string,
     groupName: "Science",
     division: "Khulna",
     zila: "Jhenaidah",
