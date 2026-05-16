@@ -1,0 +1,26 @@
+Study RPG v1.3.3 - Friend Message Thread Fix
+
+Scope:
+- Fixed only friend message/thread loading and message read rules.
+- Dataset, MCQ, written questions, missions, version, Gradle, and APK workflow were not changed.
+
+Fixes:
+1. Message fetch now supports both new and legacy message documents:
+   - participants array
+   - from/to fields
+2. Message fetch merges multiple safe queries and removes duplicates.
+3. Message thread refreshes while chat is open.
+4. Sent message appears immediately after send and then reloads from Firestore.
+5. Firestore message read rule now supports legacy from/to message docs.
+6. Message read-status update rule is stricter and only allows read/readAt changes by the receiver.
+
+Files changed:
+- frontend/src/lib/firebase.ts
+- frontend/src/app/(dashboard)/friends/page.tsx
+- firebase/firestore-rules-v1.3.3-full.txt
+- firestore.rules
+
+Verification:
+- ZIP integrity: OK
+- TypeScript/TSX transpile syntax: OK
+- Firebase rules brace structure: OK

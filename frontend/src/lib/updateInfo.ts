@@ -7,23 +7,25 @@ export type UpdateInfo = {
 };
 
 export const CURRENT_UPDATE_INFO: UpdateInfo = {
-  version: "1.3.3",
-  title: "Study RPG v1.3.3",
-  titleBn: "Study RPG v1.3.3 আপডেট",
+  version: "1.3.4",
+  title: "Study RPG v1.3.4",
+  titleBn: "Study RPG v1.3.4 আপডেট",
   notes: [
-    "Public profile now has Add Friend / Cancel Request actions.",
-    "Friends page rules and friend request permissions were fixed.",
-    "MCQ Easy, Medium and Hard banks now use separated question and option patterns.",
-    "Mission GK questions rotate daily and no longer reuse the same set in every mission.",
-    "Mission rewards can be collected once per day only, then reset after 24 hours.",
-    "Firestore rules TXT file is included for the new friend and mission claim flow."
+    "Android notification permission added for APK users.",
+    "Friend request and message notification records are created automatically.",
+    "In-app/mobile local notification bridge added for new friend requests and messages.",
+    "Message box UI is cleaner and Messenger-style.",
+    "Message status now shows single tick for sent, double tick for delivered, and colored double tick for seen.",
+    "Friends page now includes a compact Block list button with unblock support.",
+    "Update popup now shows release notes when a new GitHub Release is available."
   ],
   notesBn: [
-    "Public profile-এ Add Friend / Cancel Request action add করা হয়েছে।",
-    "Friends page load এবং friend request permission rules fix করা হয়েছে।",
-    "MCQ Easy, Medium, Hard এখন আলাদা question এবং option pattern ব্যবহার করবে।",
-    "Mission GK questions প্রতিদিন rotate হবে এবং সব mission-এ একই set থাকবে না।",
-    "Mission reward দিনে একবারই collect করা যাবে, 24 hours পরে নতুন daily task আসবে।",
-    "নতুন friend ও mission claim flow-এর জন্য Firestore rules TXT file ZIP-এর ভিতরে দেওয়া হয়েছে।"
+    "APK user-দের জন্য Android notification permission add করা হয়েছে।",
+    "Friend request এবং message পাঠালে notification record auto create হবে।",
+    "নতুন friend request/message-এর জন্য in-app/mobile local notification bridge add করা হয়েছে।",
+    "Message box UI আরও clean এবং Messenger-style করা হয়েছে।",
+    "Single tick = sent, double tick = delivered, colored double tick = seen status add করা হয়েছে।",
+    "Friends page-এ compact Block list button এবং unblock support add করা হয়েছে।",
+    "নতুন GitHub Release থাকলে update popup release notes সহ দেখাবে।"
   ]
 };

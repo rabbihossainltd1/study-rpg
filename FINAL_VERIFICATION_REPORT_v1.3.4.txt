@@ -1,0 +1,23 @@
+Study RPG v1.3.4 Verification Report
+
+Checked:
+- ZIP integrity target files prepared.
+- TS/TSX parse syntax checked: OK.
+- AndroidManifest XML parse checked: OK.
+- package.json parse checked: OK.
+- Firestore rules brace structure checked: OK.
+- Android compileSdkVersion remains 34.
+- Android versionName updated to 1.3.4.
+- Android versionCode updated to 17.
+- GitHub Actions APK artifact name updated to v1.3.4.
+- Static profile route workflow fix kept.
+- Dataset/MCQ/Written/Mission content files were not changed.
+- Friend message final fix kept.
+
+Changed only for v1.3.4:
+- Notifications permission + local notification bridge.
+- Friend request/message notification record creation.
+- Messenger-style chat UI and tick status.
+- Block list + unblock UI.
+- Update popup release-note text.
+- Firebase rules for notifications and push tokens.

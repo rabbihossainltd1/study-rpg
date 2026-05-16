@@ -6,11 +6,13 @@ import {
   acceptFriendRequest,
   blockUser,
   createChallenge,
+  getBlockedUsersForUser,
   getFriendsForUser,
   getIncomingFriendRequests,
   getMessagesWithFriend,
   markMessagesRead,
   sendQuickMessage,
+  unblockUser,
   unfriendUser,
   type FriendMessage,
   type PublicUserResult,
@@ -18,7 +20,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { UserAvatar } from "@/components/ui/AppIcon";
-import { MessageCircle, Swords, Users, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, CheckCheck, UserRound } from "lucide-react";
+import { MessageCircle, Swords, Users, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, Check, CheckCheck, UserRound } from "lucide-react";
 import toast from "react-hot-toast";
 
 type MenuState = { uid: string; open: boolean };
@@ -47,6 +49,17 @@ function messageTime(msg: FriendMessage) {
   const date = dateFromUnknown(msg.createdAt);
   if (!date) return "";
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function MessageStatus({ msg }: { msg: FriendMessage }) {
+  const isLocal = String(msg.id || "").startsWith("local-");
+  if (isLocal) {
+    return <span className="inline-flex items-center gap-0.5"><Check className="w-3 h-3" />Sent</span>;
+  }
+  if (msg.read) {
+    return <span className="inline-flex items-center gap-0.5 text-secondary font-black"><CheckCheck className="w-3.5 h-3.5" />Seen</span>;
+  }
+  return <span className="inline-flex items-center gap-0.5"><CheckCheck className="w-3.5 h-3.5" />Delivered</span>;
 }
 
 
@@ -112,6 +125,7 @@ export default function FriendsPage() {
   const { user, language } = useUserStore();
   const [friends, setFriends] = useState<PublicUserResult[]>([]);
   const [incoming, setIncoming] = useState<PublicUserResult[]>([]);
+  const [blockedUsers, setBlockedUsers] = useState<PublicUserResult[]>([]);
   const [selected, setSelected] = useState<PublicUserResult | null>(null);
   const [messages, setMessages] = useState<FriendMessage[]>([]);
   const [text, setText] = useState("");
@@ -119,17 +133,20 @@ export default function FriendsPage() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [menu, setMenu] = useState<MenuState>({ uid: "", open: false });
   const [profileView, setProfileView] = useState<PublicUserResult | null>(null);
+  const [showBlockedList, setShowBlockedList] = useState(false);
 
   const load = async () => {
     if (!user || user.uid.startsWith("guest_")) return;
     setLoading(true);
     try {
-      const [friendList, requestList] = await Promise.all([
+      const [friendList, requestList, blockedList] = await Promise.all([
         getFriendsForUser(user.uid).catch(() => []),
         getIncomingFriendRequests(user.uid).catch(() => []),
+        getBlockedUsersForUser(user.uid).catch(() => []),
       ]);
       setFriends(friendList);
       setIncoming(requestList);
+      setBlockedUsers(blockedList);
       if (selected && !friendList.some((f) => f.uid === selected.uid)) setSelected(null);
     } catch {
       toast.error("Friends load failed");
@@ -244,9 +261,23 @@ export default function FriendsPage() {
       toast.success("Student blocked");
       setSelected(null);
       setMenu({ uid: "", open: false });
+      setShowBlockedList(true);
       await load();
     } catch {
       toast.error("Block failed");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const unblock = async (target: PublicUserResult) => {
+    setBusyId(target.uid);
+    try {
+      await unblockUser(user.uid, target.uid);
+      toast.success("Student unblocked");
+      await load();
+    } catch {
+      toast.error("Unblock failed");
     } finally {
       setBusyId(null);
     }
@@ -307,31 +338,33 @@ export default function FriendsPage() {
           )}
         </div>
 
-        <Card className="min-h-[68vh] flex flex-col p-0 overflow-hidden">
-          <div className="px-4 py-2 border-b border-white/5 text-xs text-gray-500 flex items-center justify-between">
+        <Card className="min-h-[70vh] flex flex-col p-0 overflow-hidden border border-white/10 bg-gradient-to-b from-white/[0.045] to-black/20">
+          <div className="px-4 py-2 border-b border-white/5 text-xs text-gray-500 flex items-center justify-between bg-black/10">
             <span className="inline-flex items-center gap-1"><Clock3 className="w-3 h-3" /> {active}</span>
+            <span className="text-[10px] text-gray-600">✓ sent · ✓✓ delivered · <b className="text-secondary">✓✓ seen</b></span>
             {unreadCount > 0 && <span className="text-secondary font-bold">{unreadCount} new</span>}
           </div>
-          <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[68vh]">
+          <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[70vh] bg-[radial-gradient(circle_at_top_right,rgba(0,240,255,0.05),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(57,255,20,0.045),transparent_30%)]">
             {messages.length === 0 && <p className="text-sm text-gray-500 text-center mt-10">No messages yet. Start the conversation.</p>}
             {messages.map((msg) => {
               const mine = msg.from === user.uid;
               return (
-                <div key={msg.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[78%] rounded-2xl px-4 py-2 text-sm ${mine ? "bg-primary text-black font-semibold" : "bg-white/7 border border-white/10 text-[var(--app-text)]"}`}>
-                    <p className="whitespace-pre-wrap break-words">{msg.content}</p>
-                    <div className={`mt-1 text-[10px] flex items-center gap-1 ${mine ? "text-black/55 justify-end" : "text-gray-500"}`}>
+                <div key={msg.id} className={`flex items-end gap-2 ${mine ? "justify-end" : "justify-start"}`}>
+                  {!mine && <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-7 h-7" iconClassName="w-3 h-3" />}
+                  <div className={`max-w-[78%] rounded-[22px] px-4 py-2.5 text-sm shadow-lg ${mine ? "bg-primary text-black font-semibold rounded-br-md" : "bg-white/[0.075] border border-white/10 text-[var(--app-text)] rounded-bl-md"}`}>
+                    <p className="whitespace-pre-wrap break-words leading-relaxed">{msg.content}</p>
+                    <div className={`mt-1.5 text-[10px] flex items-center gap-1.5 ${mine ? "text-black/60 justify-end" : "text-gray-500"}`}>
                       <span>{messageTime(msg)}</span>
-                      {mine && <span className="inline-flex items-center gap-0.5"><CheckCheck className="w-3 h-3" />{msg.read ? "Seen" : "Sent"}</span>}
+                      {mine && <MessageStatus msg={msg} />}
                     </div>
                   </div>
                 </div>
               );
             })}
           </div>
-          <div className="p-3 border-t border-white/5 flex gap-2 bg-black/20">
-            <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Write message..." className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-secondary/50" />
-            <Button onClick={sendMessage} disabled={!text.trim() || busyId === selected.uid}><Send className="w-4 h-4" /></Button>
+          <div className="p-3 border-t border-white/5 flex gap-2 bg-black/25 backdrop-blur-xl">
+            <input value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) sendMessage(); }} placeholder="Write message..." className="flex-1 bg-white/[0.065] border border-white/10 rounded-2xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-secondary/50" />
+            <Button onClick={sendMessage} disabled={!text.trim() || busyId === selected.uid} className="rounded-2xl px-4"><Send className="w-4 h-4" /></Button>
           </div>
         </Card>
       </div>
@@ -350,8 +383,35 @@ export default function FriendsPage() {
             <p className="text-sm text-gray-500">Friend list, messages and quiz challenges</p>
           </div>
         </div>
-        <Button variant="ghost" size="sm" onClick={load} isLoading={loading}><RefreshCw className="w-4 h-4" />Refresh</Button>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" className="px-2.5 py-1 text-xs" onClick={() => setShowBlockedList((v) => !v)}><Ban className="w-3.5 h-3.5" />Block list</Button>
+          <Button variant="ghost" size="sm" onClick={load} isLoading={loading}><RefreshCw className="w-4 h-4" />Refresh</Button>
+        </div>
       </div>
+
+      {showBlockedList && (
+        <Card className="border border-red-500/20 bg-red-500/[0.035]">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-sm font-bold text-white">Blocked Students</p>
+            <p className="text-xs text-gray-500">{blockedUsers.length} blocked</p>
+          </div>
+          <div className="space-y-2">
+            {blockedUsers.length === 0 && <p className="text-sm text-gray-500">No blocked students.</p>}
+            {blockedUsers.map((person) => (
+              <div key={person.uid} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+                <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-10 h-10" iconClassName="w-4 h-4" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-white truncate">{person.displayName}</p>
+                  <p className="text-xs text-gray-500 truncate">@{person.username}</p>
+                </div>
+                <Button size="sm" variant="secondary" onClick={() => unblock(person)} disabled={busyId === person.uid} className="px-3 py-1.5 text-xs">
+                  Unblock
+                </Button>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
 
       {incoming.length > 0 && (
         <Card className="border border-secondary/20 bg-secondary/5">

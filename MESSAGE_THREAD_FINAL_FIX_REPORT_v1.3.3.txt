@@ -1,0 +1,24 @@
+Study RPG v1.3.3 Friend Message Final Fix
+
+Changed only:
+- frontend/src/app/(dashboard)/friends/page.tsx
+- frontend/src/lib/firebase.ts
+- firebase/firestore-rules-v1.3.3-full.txt
+- firestore.rules
+
+Fixes:
+- Old messages load from both new and legacy message document formats.
+- Supports content/text/message/body message fields.
+- Supports from/to and senderId/receiverId message fields.
+- New sent message stays visible immediately and is not cleared by slow/empty refresh.
+- Message refresh now merges server results with optimistic local messages instead of replacing the whole thread with an empty result.
+- Firestore message read permission supports legacy senderId/receiverId documents.
+
+Not changed:
+- Dataset
+- MCQ
+- Written questions
+- Missions
+- App version
+- Android Gradle config
+- Workflow

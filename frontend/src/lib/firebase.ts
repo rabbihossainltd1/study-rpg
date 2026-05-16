@@ -35,6 +35,8 @@ import {
   addDoc,
   deleteDoc,
   runTransaction,
+  onSnapshot,
+  type Unsubscribe,
 } from "firebase/firestore";
 import { calculateLevel, calculateXpToNextLevel, getRankFromXp, type User } from "@/types";
 
@@ -646,6 +648,75 @@ export async function getIncomingFriendRequests(uid: string): Promise<PublicUser
   return results;
 }
 
+
+export type AppNotification = {
+  id: string;
+  type: "friend_request" | "message" | "challenge" | "update";
+  from: string;
+  to: string;
+  title: string;
+  body: string;
+  link?: string;
+  shown?: boolean;
+  read?: boolean;
+  createdAt?: Timestamp | Date | null;
+};
+
+function safeNotificationText(value: string, fallback: string, max = 160) {
+  const clean = String(value || "").replace(/\s+/g, " ").trim();
+  return (clean || fallback).slice(0, max);
+}
+
+async function createUserNotification(
+  targetUid: string,
+  data: Omit<AppNotification, "id" | "to" | "shown" | "read" | "createdAt">
+) {
+  if (!targetUid || targetUid === data.from) return null;
+  return addDoc(collection(db, "notifications", targetUid, "items"), {
+    ...data,
+    to: targetUid,
+    title: safeNotificationText(data.title, "Study RPG"),
+    body: safeNotificationText(data.body, "New notification", 500),
+    shown: false,
+    read: false,
+    createdAt: serverTimestamp(),
+  }).catch(() => null);
+}
+
+function tokenDocumentId(token: string) {
+  const safe = String(token || "").replace(/[^A-Za-z0-9_-]/g, "_").slice(0, 180);
+  return safe || `token_${Date.now()}`;
+}
+
+export async function savePushToken(uid: string, token: string, platform = "android") {
+  if (!uid || uid.startsWith("guest_") || !token) return;
+  await setDoc(doc(db, "users", uid, "pushTokens", tokenDocumentId(token)), {
+    uid,
+    token,
+    platform,
+    enabled: true,
+    updatedAt: serverTimestamp(),
+  }, { merge: true }).catch(() => undefined);
+}
+
+export function subscribeUserNotifications(uid: string, onNew: (notification: AppNotification) => void): Unsubscribe | undefined {
+  if (!uid || uid.startsWith("guest_")) return undefined;
+  const q = query(collection(db, "notifications", uid, "items"), where("shown", "==", false), limit(25));
+  return onSnapshot(q, (snap) => {
+    snap.docChanges().forEach((change) => {
+      if (change.type !== "added" && change.type !== "modified") return;
+      const data = change.doc.data() as Omit<AppNotification, "id">;
+      if (!data || data.from === uid) return;
+      const notification = { id: change.doc.id, ...data } as AppNotification;
+      onNew(notification);
+      updateDoc(doc(db, "notifications", uid, "items", change.doc.id), {
+        shown: true,
+        shownAt: serverTimestamp(),
+      }).catch(() => undefined);
+    });
+  }, () => undefined);
+}
+
 export async function sendFriendRequest(currentUid: string, targetUid: string) {
   if (!currentUid || !targetUid || currentUid === targetUid) throw new Error("Invalid student");
   const id = relationId(currentUid, targetUid);
@@ -669,6 +740,13 @@ export async function sendFriendRequest(currentUid: string, targetUid: string) {
     updatedAt: serverTimestamp(),
   };
   await setDoc(ref, payload, { merge: true });
+  await createUserNotification(targetUid, {
+    type: "friend_request",
+    from: currentUid,
+    title: "New friend request",
+    body: "A student sent you a friend request.",
+    link: "/friends",
+  });
   return { id, ...payload };
 }
 
@@ -719,7 +797,7 @@ export async function createChallenge(currentUid: string, targetUid: string) {
 export async function sendQuickMessage(currentUid: string, targetUid: string, content: string) {
   const rel = await getRelation(currentUid, targetUid);
   if (mapRelationStatus(rel, currentUid) !== "accepted") throw new Error("Only friends can message");
-  return addDoc(collection(db, "messages"), {
+  const messageRef = await addDoc(collection(db, "messages"), {
     from: currentUid,
     to: targetUid,
     participants: [currentUid, targetUid],
@@ -728,6 +806,14 @@ export async function sendQuickMessage(currentUid: string, targetUid: string, co
     read: false,
     readAt: null,
   });
+  await createUserNotification(targetUid, {
+    type: "message",
+    from: currentUid,
+    title: "New message",
+    body: safeNotificationText(content, "You received a new message.", 120),
+    link: `/friends?chat=${currentUid}`,
+  });
+  return messageRef;
 }
 
 export async function getFriendsForUser(uid: string): Promise<PublicUserResult[]> {
@@ -751,6 +837,30 @@ export async function getFriendsForUser(uid: string): Promise<PublicUserResult[]
     friends.push(toPublicUser({ ...(userSnap.data() as User), uid: otherUid }, rel, uid));
   }
   return friends;
+}
+
+
+export async function getBlockedUsersForUser(uid: string): Promise<PublicUserResult[]> {
+  const blocked = (await getRelationsForUser(uid))
+    .filter((r: any) => r.status === "blocked" && r.blockedBy === uid);
+
+  const seen = new Set<string>();
+  const users: PublicUserResult[] = [];
+  for (const rel of blocked) {
+    const otherUid = rel.from === uid
+      ? rel.to
+      : rel.to === uid
+        ? rel.from
+        : Array.isArray(rel.participants)
+          ? rel.participants.find((id: string) => id !== uid)
+          : "";
+    if (!otherUid || seen.has(otherUid)) continue;
+    seen.add(otherUid);
+    const userSnap = await getDoc(doc(db, "users", otherUid));
+    if (!userSnap.exists()) continue;
+    users.push(toPublicUser({ ...(userSnap.data() as User), uid: otherUid }, rel, uid));
+  }
+  return users;
 }
 
 export type FriendMessage = {

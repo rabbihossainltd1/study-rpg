@@ -9,7 +9,11 @@ const config: CapacitorConfig = {
     androidScheme: 'https',
     allowNavigation: ['*']
   },
-  plugins: {}
+  plugins: {
+    PushNotifications: {
+      presentationOptions: ['badge', 'sound', 'alert']
+    }
+  }
 };
 
 export default config;
