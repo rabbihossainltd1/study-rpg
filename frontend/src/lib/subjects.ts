@@ -1,6 +1,7 @@
 import type { Chapter, Subject, User } from "@/types";
 import { CURRICULUM_SUBJECTS, getCurriculumSubjectsFor } from "@/lib/curriculum";
 import { QUIZ_TOPICS, getQuizCount } from "@/lib/quizData";
+import { WRITTEN_TOPICS, getWrittenQuestionCount } from "@/lib/writtenQuestions";
 
 function toSubject(subject: typeof CURRICULUM_SUBJECTS[number]): Subject {
   return {
@@ -14,7 +15,7 @@ function toSubject(subject: typeof CURRICULUM_SUBJECTS[number]): Subject {
     examTypes: subject.examTypes,
     classLevels: subject.classLevels,
     groups: subject.groups,
-    totalChapters: Math.max(1, QUIZ_TOPICS[subject.id]?.length || subject.topics.length || 1),
+    totalChapters: Math.max(1, WRITTEN_TOPICS[subject.id]?.length || QUIZ_TOPICS[subject.id]?.length || subject.topics.length || 1),
     completedChapters: 0,
     progress: 0,
   };
@@ -24,7 +25,7 @@ export const SUBJECTS: Subject[] = CURRICULUM_SUBJECTS.map(toSubject);
 export const ALL_SUBJECTS = SUBJECTS;
 
 function hasDatasetContent(subject: Subject): boolean {
-  return getQuizCount(subject.id) > 0;
+  return getQuizCount(subject.id) > 0 || getWrittenQuestionCount(subject.id) > 0;
 }
 
 export function getSubjectsForUser(user?: Pick<User, "className" | "groupName" | "examMode"> | null): Subject[] {
@@ -55,7 +56,7 @@ function createChapterQuestion(subject: Subject, topic: string, index: number, s
 }
 
 function createChapters(subject: Subject): Chapter[] {
-  const topics = QUIZ_TOPICS[subject.id] || [subject.name];
+  const topics = WRITTEN_TOPICS[subject.id]?.length ? WRITTEN_TOPICS[subject.id] : (QUIZ_TOPICS[subject.id] || [subject.name]);
   return topics.map((topic, index) => ({
     id: `${subject.id}-${makeId(topic)}-${index + 1}`,
     subjectId: subject.id,
