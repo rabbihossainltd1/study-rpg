@@ -10,8 +10,9 @@ import { LevelUpModal } from "@/components/gamification/LevelUpModal";
 import { XpFloatingPopups } from "@/components/gamification/XpFloating";
 import { navigate } from "@/lib/navigate";
 import { Loader2 } from "lucide-react";
-import { APP_VERSION, UPDATE_API_URL, UPDATE_RELEASE_URL } from "@/lib/appVersion";
+import { APP_VERSION, UPDATE_RELEASE_URL, compareVersion, fetchLatestUpdate } from "@/lib/appVersion";
 import { NotificationBridge } from "@/components/system/NotificationBridge";
+import { showDeviceNotification } from "@/lib/notifications";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { user, setUser, setLoading, isLoading, theme } = useUserStore();
@@ -96,35 +97,47 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const key = `study-rpg-update-dismissed-${APP_VERSION}`;
-    if (localStorage.getItem(key)) return;
-    const compareVersion = (a: string, b: string) => {
-      const pa = a.replace(/^v/i, "").split(".").map((n) => Number(n) || 0);
-      const pb = b.replace(/^v/i, "").split(".").map((n) => Number(n) || 0);
-      for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-        if ((pa[i] || 0) > (pb[i] || 0)) return 1;
-        if ((pa[i] || 0) < (pb[i] || 0)) return -1;
-      }
-      return 0;
-    };
-    fetch(UPDATE_API_URL, { cache: "no-store" })
-      .then((r) => r.ok ? r.json() : null)
-      .then((release) => {
-        const latest = release?.tag_name ? String(release.tag_name).replace(/^v/i, "") : "";
-        if (latest && compareVersion(latest, APP_VERSION) > 0) {
-          const notes = String(release?.body || "")
-            .split(/\r?\n/)
-            .map((line) => line.replace(/^[-*•\s]+/, "").trim())
-            .filter(Boolean)
-            .slice(0, 6);
-          const message = [`Study RPG v${latest} update available.`, "", ...notes, "", "Download now?"].join("\n");
-          const open = confirm(message);
-          if (open) window.open(release.html_url || UPDATE_RELEASE_URL, "_blank");
-          else localStorage.setItem(key, "1");
+
+    const dismissedKey = `study-rpg-update-dismissed-${APP_VERSION}`;
+    const notifiedKey = `study-rpg-update-notified-${APP_VERSION}`;
+    if (localStorage.getItem(dismissedKey)) return;
+
+    fetchLatestUpdate()
+      .then((latest) => {
+        if (!latest || compareVersion(latest.version, APP_VERSION) <= 0) return;
+
+        const downloadUrl = latest.apkUrl || latest.url || UPDATE_RELEASE_URL;
+        const notes = latest.notes.slice(0, 6);
+        const message = [
+          `${latest.title || `Study RPG v${latest.version}`} update available.`,
+          "",
+          ...notes,
+          "",
+          "Download now?",
+        ].join("\n");
+
+        if (!localStorage.getItem(notifiedKey)) {
+          localStorage.setItem(notifiedKey, "1");
+          showDeviceNotification({
+            id: `update-${latest.version}`,
+            type: "update",
+            from: "system",
+            to: user?.uid || "local",
+            title: latest.title || `Study RPG v${latest.version}`,
+            body: notes.slice(0, 2).join(" • ") || "New update is available. Tap the update popup to download.",
+            link: downloadUrl,
+            shown: false,
+            read: false,
+            createdAt: new Date() as any,
+          }).catch(() => undefined);
         }
+
+        const open = confirm(message);
+        if (open) window.open(downloadUrl, "_blank");
+        else localStorage.setItem(dismissedKey, "1");
       })
       .catch(() => undefined);
-  }, []);
+  }, [user?.uid]);
 
 
   if (isLoading && !user) {
@@ -151,6 +164,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           {children}
         </div>
       </main>
+      <NotificationBridge />
       <BottomNav />
       <LevelUpModal />
       <XpFloatingPopups />

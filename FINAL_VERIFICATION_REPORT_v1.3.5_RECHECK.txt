@@ -1,0 +1,19 @@
+Study RPG v1.3.5 Recheck Result
+
+Checked:
+- ZIP integrity: OK
+- TS/TSX parse syntax: OK
+- AndroidManifest notification permissions: OK
+- package.json Capacitor notification dependencies: OK
+- Dashboard NotificationBridge mounted: OK
+- Friend request/message notification records: OK, requires Firebase rules publish
+- Chat input fixed bottom full-screen UI: OK
+- Seen tick high-contrast blue/white pill: OK
+- GitHub release update popup: OK when app is opened and latest release version is higher
+- Update local notification on app open: added in this recheck fix
+- APK killed/fully closed remote push notification: requires Firebase Cloud Messaging backend/Cloud Functions, not guaranteed by client-only code
+
+Notes:
+- Publish firebase/firestore-rules-v1.3.5-full.txt after pushing.
+- Create GitHub Release tag v1.3.6 or higher for next update popup from v1.3.5 users.
+- Attach APK to the release for direct APK download URL.

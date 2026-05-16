@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import {
   acceptFriendRequest,
@@ -54,12 +54,12 @@ function messageTime(msg: FriendMessage) {
 function MessageStatus({ msg }: { msg: FriendMessage }) {
   const isLocal = String(msg.id || "").startsWith("local-");
   if (isLocal) {
-    return <span className="inline-flex items-center gap-0.5"><Check className="w-3 h-3" />Sent</span>;
+    return <span className="inline-flex items-center gap-0.5 rounded-full bg-black/10 px-1.5 py-0.5 text-[10px] font-bold text-black/65"><Check className="w-3 h-3" />Sent</span>;
   }
   if (msg.read) {
-    return <span className="inline-flex items-center gap-0.5 text-secondary font-black"><CheckCheck className="w-3.5 h-3.5" />Seen</span>;
+    return <span className="inline-flex items-center gap-0.5 rounded-full bg-white/95 px-1.5 py-0.5 text-[10px] font-black text-[#007AFF] shadow-sm ring-1 ring-[#007AFF]/25"><CheckCheck className="w-3.5 h-3.5 stroke-[3]" />Seen</span>;
   }
-  return <span className="inline-flex items-center gap-0.5"><CheckCheck className="w-3.5 h-3.5" />Delivered</span>;
+  return <span className="inline-flex items-center gap-0.5 rounded-full bg-black/10 px-1.5 py-0.5 text-[10px] font-bold text-black/65"><CheckCheck className="w-3.5 h-3.5" />Delivered</span>;
 }
 
 
@@ -134,6 +134,7 @@ export default function FriendsPage() {
   const [menu, setMenu] = useState<MenuState>({ uid: "", open: false });
   const [profileView, setProfileView] = useState<PublicUserResult | null>(null);
   const [showBlockedList, setShowBlockedList] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const load = async () => {
     if (!user || user.uid.startsWith("guest_")) return;
@@ -205,6 +206,14 @@ export default function FriendsPage() {
     if (found) setSelected(found);
   }, [friends]);
 
+
+  useEffect(() => {
+    if (!selected || typeof window === "undefined") return;
+    const frame = window.requestAnimationFrame(() => {
+      messagesEndRef.current?.scrollIntoView({ block: "end" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [messages.length, selected?.uid]);
 
   const unreadCount = useMemo(() => messages.filter((m) => selected && m.to === user?.uid && m.from === selected.uid && !m.read).length, [messages, selected, user?.uid]);
 
@@ -318,55 +327,71 @@ export default function FriendsPage() {
   if (selected) {
     const active = activityText(selected);
     return (
-      <div className="space-y-4 animate-card-in">
-        <div className="flex items-center gap-3 sticky top-[68px] z-20 bg-[var(--app-surface-strong)] backdrop-blur-xl py-2">
-          <button onClick={() => setSelected(null)} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 tap-bounce">
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-11 h-11" iconClassName="w-5 h-5" />
-          <div className="min-w-0 flex-1">
-            <h1 className="text-lg font-black text-[var(--app-text)] truncate">{selected.displayName}</h1>
-            <p className="text-xs text-gray-500 truncate">@{selected.username} · {active}</p>
-          </div>
-          <button onClick={() => setMenu({ uid: selected.uid, open: !menu.open })} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce"><MoreVertical className="w-4 h-4" /></button>
-          {menu.open && menu.uid === selected.uid && (
-            <div className="absolute right-0 top-14 z-30 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden">
-              <button onClick={() => challenge(selected)} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2"><Swords className="w-4 h-4" />Challenge</button>
-              <button onClick={() => unfriend(selected)} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2"><UserMinus className="w-4 h-4" />Unfriend</button>
-              <button onClick={() => block(selected)} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2"><Ban className="w-4 h-4" />Block</button>
+      <div className="fixed inset-0 z-[520] flex h-[100dvh] flex-col overflow-hidden bg-[var(--app-bg)] text-[var(--app-text)] animate-card-in">
+        <div className="shrink-0 border-b border-white/10 bg-[var(--app-surface-strong)]/95 px-3 pb-3 pt-[max(env(safe-area-inset-top),12px)] backdrop-blur-xl">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setSelected(null)} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 tap-bounce" aria-label="Back to friends">
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-11 h-11" iconClassName="w-5 h-5" />
+            <div className="min-w-0 flex-1">
+              <h1 className="text-base font-black text-white truncate">{selected.displayName}</h1>
+              <p className="text-[11px] text-gray-500 truncate">@{selected.username} · {active}</p>
             </div>
-          )}
+            <button onClick={() => setMenu({ uid: selected.uid, open: !menu.open })} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce" aria-label="Chat options"><MoreVertical className="w-4 h-4" /></button>
+            {menu.open && menu.uid === selected.uid && (
+              <div className="absolute right-3 top-[calc(max(env(safe-area-inset-top),12px)+54px)] z-30 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden">
+                <button onClick={() => challenge(selected)} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2"><Swords className="w-4 h-4" />Challenge</button>
+                <button onClick={() => unfriend(selected)} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2"><UserMinus className="w-4 h-4" />Unfriend</button>
+                <button onClick={() => block(selected)} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2"><Ban className="w-4 h-4" />Block</button>
+              </div>
+            )}
+          </div>
+          <div className="mt-2 flex items-center justify-between gap-2 text-[10px] text-gray-500">
+            <span className="inline-flex items-center gap-1"><Clock3 className="w-3 h-3" /> {active}</span>
+            <span className="truncate">✓ sent · ✓✓ delivered · <b className="rounded-full bg-white/95 px-1.5 py-0.5 text-[#007AFF]">✓✓ seen</b></span>
+            {unreadCount > 0 && <span className="shrink-0 rounded-full bg-secondary/15 px-2 py-0.5 text-secondary font-bold">{unreadCount} new</span>}
+          </div>
         </div>
 
-        <Card className="min-h-[70vh] flex flex-col p-0 overflow-hidden border border-white/10 bg-gradient-to-b from-white/[0.045] to-black/20">
-          <div className="px-4 py-2 border-b border-white/5 text-xs text-gray-500 flex items-center justify-between bg-black/10">
-            <span className="inline-flex items-center gap-1"><Clock3 className="w-3 h-3" /> {active}</span>
-            <span className="text-[10px] text-gray-600">✓ sent · ✓✓ delivered · <b className="text-secondary">✓✓ seen</b></span>
-            {unreadCount > 0 && <span className="text-secondary font-bold">{unreadCount} new</span>}
-          </div>
-          <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[70vh] bg-[radial-gradient(circle_at_top_right,rgba(0,240,255,0.05),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(57,255,20,0.045),transparent_30%)]">
-            {messages.length === 0 && <p className="text-sm text-gray-500 text-center mt-10">No messages yet. Start the conversation.</p>}
-            {messages.map((msg) => {
-              const mine = msg.from === user.uid;
-              return (
-                <div key={msg.id} className={`flex items-end gap-2 ${mine ? "justify-end" : "justify-start"}`}>
-                  {!mine && <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-7 h-7" iconClassName="w-3 h-3" />}
-                  <div className={`max-w-[78%] rounded-[22px] px-4 py-2.5 text-sm shadow-lg ${mine ? "bg-primary text-black font-semibold rounded-br-md" : "bg-white/[0.075] border border-white/10 text-[var(--app-text)] rounded-bl-md"}`}>
-                    <p className="whitespace-pre-wrap break-words leading-relaxed">{msg.content}</p>
-                    <div className={`mt-1.5 text-[10px] flex items-center gap-1.5 ${mine ? "text-black/60 justify-end" : "text-gray-500"}`}>
-                      <span>{messageTime(msg)}</span>
-                      {mine && <MessageStatus msg={msg} />}
-                    </div>
+        <div className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-3 bg-[radial-gradient(circle_at_top_right,rgba(0,240,255,0.05),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(57,255,20,0.045),transparent_30%)]">
+          {messages.length === 0 && <p className="text-sm text-gray-500 text-center mt-10">No messages yet. Start the conversation.</p>}
+          {messages.map((msg) => {
+            const mine = msg.from === user.uid;
+            return (
+              <div key={msg.id} className={`flex items-end gap-2 ${mine ? "justify-end" : "justify-start"}`}>
+                {!mine && <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-7 h-7 shrink-0" iconClassName="w-3 h-3" />}
+                <div className={`max-w-[82%] rounded-[22px] px-4 py-2.5 text-sm shadow-lg ${mine ? "bg-primary text-black font-semibold rounded-br-md" : "bg-white/[0.075] border border-white/10 text-[var(--app-text)] rounded-bl-md"}`}>
+                  <p className="whitespace-pre-wrap break-words leading-relaxed">{msg.content}</p>
+                  <div className={`mt-1.5 flex items-center gap-1.5 ${mine ? "justify-end" : "justify-start text-gray-500"}`}>
+                    <span className={`text-[10px] ${mine ? "text-black/60" : "text-gray-500"}`}>{messageTime(msg)}</span>
+                    {mine && <MessageStatus msg={msg} />}
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <div className="shrink-0 border-t border-white/10 bg-[var(--app-surface-strong)]/95 p-3 pb-[max(env(safe-area-inset-bottom),12px)] backdrop-blur-xl">
+          <div className="flex items-end gap-2 rounded-[26px] border border-white/10 bg-white/[0.06] p-2 shadow-2xl">
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessage();
+                }
+              }}
+              rows={1}
+              placeholder="Write message..."
+              className="max-h-28 min-h-[44px] flex-1 resize-none bg-transparent px-3 py-3 text-sm text-white placeholder-gray-600 focus:outline-none"
+            />
+            <Button onClick={sendMessage} disabled={!text.trim() || busyId === selected.uid} className="h-11 w-11 shrink-0 rounded-full p-0"><Send className="w-4 h-4" /></Button>
           </div>
-          <div className="p-3 border-t border-white/5 flex gap-2 bg-black/25 backdrop-blur-xl">
-            <input value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) sendMessage(); }} placeholder="Write message..." className="flex-1 bg-white/[0.065] border border-white/10 rounded-2xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-secondary/50" />
-            <Button onClick={sendMessage} disabled={!text.trim() || busyId === selected.uid} className="rounded-2xl px-4"><Send className="w-4 h-4" /></Button>
-          </div>
-        </Card>
+        </div>
       </div>
     );
   }

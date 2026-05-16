@@ -1,13 +1,37 @@
 import toast from "react-hot-toast";
 import { savePushToken, type AppNotification } from "@/lib/firebase";
 
+let pushRegistrationListenerAttached = false;
+
 function isNativeCapacitor() {
   if (typeof window === "undefined") return false;
   return Boolean((window as any).Capacitor?.isNativePlatform?.());
 }
 
-export async function requestAppNotificationPermission(uid: string) {
-  if (typeof window === "undefined" || !uid || uid.startsWith("guest_")) return;
+type PermissionState = "granted" | "denied" | "prompt" | "unknown";
+
+export async function getAppNotificationPermissionState(): Promise<PermissionState> {
+  if (typeof window === "undefined") return "unknown";
+
+  try {
+    if (isNativeCapacitor()) {
+      const { LocalNotifications } = await import("@capacitor/local-notifications");
+      const localStatus = await LocalNotifications.checkPermissions().catch(() => null);
+      if (localStatus?.display === "granted") return "granted";
+      if (localStatus?.display === "denied") return "denied";
+      return "prompt";
+    }
+
+    if ("Notification" in window) return Notification.permission as PermissionState;
+  } catch {
+    return "unknown";
+  }
+
+  return "unknown";
+}
+
+export async function requestAppNotificationPermission(uid: string): Promise<boolean> {
+  if (typeof window === "undefined" || !uid || uid.startsWith("guest_")) return false;
 
   try {
     if (isNativeCapacitor()) {
@@ -16,23 +40,35 @@ export async function requestAppNotificationPermission(uid: string) {
         import("@capacitor/local-notifications"),
       ]);
 
-      await LocalNotifications.requestPermissions().catch(() => undefined);
-      const permission = await PushNotifications.requestPermissions().catch(() => null);
-      if (permission?.receive === "granted") {
+      const localBefore = await LocalNotifications.checkPermissions().catch(() => null);
+      const localPermission = localBefore?.display === "granted"
+        ? localBefore
+        : await LocalNotifications.requestPermissions().catch(() => null);
+
+      const pushPermission = await PushNotifications.requestPermissions().catch(() => null);
+      if (pushPermission?.receive === "granted") {
         await PushNotifications.register().catch(() => undefined);
-        PushNotifications.addListener("registration", (token) => {
-          savePushToken(uid, token.value, "android").catch(() => undefined);
-        }).catch(() => undefined);
+        if (!pushRegistrationListenerAttached) {
+          pushRegistrationListenerAttached = true;
+          PushNotifications.addListener("registration", (token) => {
+            savePushToken(uid, token.value, "android").catch(() => undefined);
+          }).catch(() => undefined);
+        }
       }
-      return;
+
+      return localPermission?.display === "granted" || pushPermission?.receive === "granted";
     }
 
-    if ("Notification" in window && Notification.permission === "default") {
-      await Notification.requestPermission().catch(() => undefined);
+    if ("Notification" in window) {
+      if (Notification.permission === "granted") return true;
+      const permission = await Notification.requestPermission().catch(() => "default");
+      return permission === "granted";
     }
   } catch {
     // Notification permission is optional; app must keep working if the device blocks it.
   }
+
+  return false;
 }
 
 export async function showDeviceNotification(notification: AppNotification) {
@@ -42,6 +78,10 @@ export async function showDeviceNotification(notification: AppNotification) {
   try {
     if (isNativeCapacitor()) {
       const { LocalNotifications } = await import("@capacitor/local-notifications");
+      const permission = await LocalNotifications.checkPermissions().catch(() => null);
+      if (permission?.display !== "granted") {
+        await LocalNotifications.requestPermissions().catch(() => undefined);
+      }
       await LocalNotifications.schedule({
         notifications: [
           {
@@ -49,6 +89,7 @@ export async function showDeviceNotification(notification: AppNotification) {
             title,
             body,
             schedule: { at: new Date(Date.now() + 300) },
+            sound: "default",
           },
         ],
       });

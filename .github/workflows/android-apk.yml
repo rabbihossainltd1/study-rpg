@@ -104,5 +104,5 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: study-rpg-v1.3.4-debug-apk
+          name: study-rpg-v1.3.5-debug-apk
           path: frontend/android/app/build/outputs/apk/debug/*.apk

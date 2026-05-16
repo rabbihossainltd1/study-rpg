@@ -7,25 +7,25 @@ export type UpdateInfo = {
 };
 
 export const CURRENT_UPDATE_INFO: UpdateInfo = {
-  version: "1.3.4",
-  title: "Study RPG v1.3.4",
-  titleBn: "Study RPG v1.3.4 আপডেট",
+  version: "1.3.5",
+  title: "Study RPG v1.3.5",
+  titleBn: "Study RPG v1.3.5 আপডেট",
   notes: [
-    "Android notification permission added for APK users.",
-    "Friend request and message notification records are created automatically.",
-    "In-app/mobile local notification bridge added for new friend requests and messages.",
-    "Message box UI is cleaner and Messenger-style.",
-    "Message status now shows single tick for sent, double tick for delivered, and colored double tick for seen.",
-    "Friends page now includes a compact Block list button with unblock support.",
-    "Update popup now shows release notes when a new GitHub Release is available."
+    "Notification permission now prompts inside the APK after login.",
+    "Notification bridge is mounted in the dashboard so friend request and message alerts can show.",
+    "Friend chat opens as a full-screen Messenger-style screen.",
+    "Typing box now stays fixed at the bottom; no page scroll is needed to write a message.",
+    "Message list scrolls independently and auto-jumps to the newest message.",
+    "Seen double tick is now high-contrast blue in a white pill so it is clearly visible on green bubbles.",
+    "Update popup remains connected to the latest GitHub Release."
   ],
   notesBn: [
-    "APK user-দের জন্য Android notification permission add করা হয়েছে।",
-    "Friend request এবং message পাঠালে notification record auto create হবে।",
-    "নতুন friend request/message-এর জন্য in-app/mobile local notification bridge add করা হয়েছে।",
-    "Message box UI আরও clean এবং Messenger-style করা হয়েছে।",
-    "Single tick = sent, double tick = delivered, colored double tick = seen status add করা হয়েছে।",
-    "Friends page-এ compact Block list button এবং unblock support add করা হয়েছে।",
-    "নতুন GitHub Release থাকলে update popup release notes সহ দেখাবে।"
+    "APK login করার পর notification permission prompt ঠিকভাবে দেখাবে।",
+    "Dashboard-এর ভিতরে notification bridge mount করা হয়েছে, তাই friend request/message alert show করতে পারবে।",
+    "Friend chat এখন full-screen Messenger-style screen হবে।",
+    "Typing box নিচে fixed থাকবে; message লেখার জন্য page scroll করতে হবে না।",
+    "Message list আলাদা scroll হবে এবং newest message-এ auto jump করবে।",
+    "Seen double tick এখন white pill-এর ভিতরে high-contrast blue, তাই green bubble-এর উপর clear দেখা যাবে।",
+    "New GitHub Release থাকলে update popup আগের মতোই দেখাবে।"
   ]
 };
