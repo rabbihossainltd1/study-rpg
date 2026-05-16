@@ -41,8 +41,8 @@ export default function MissionsPage() {
   useBodyScrollLock(Boolean(activeMission));
 
   useEffect(() => {
-    const uid = user?.uid;
-    if (!uid) return;
+    const uid: string = user?.uid ?? "";
+    if (uid.length === 0) return;
 
     let active = true;
     const localKey = `studyRpgMissionClaims_${uid}_${dayKey}`;
@@ -69,8 +69,9 @@ export default function MissionsPage() {
   }, [user?.uid, dayKey]);
 
   const saveGuestClaim = (missionId: string) => {
-    if (!user?.uid || typeof window === "undefined") return;
-    const localKey = `studyRpgMissionClaims_${user.uid}_${dayKey}`;
+    const uid: string = user?.uid ?? "";
+    if (uid.length === 0 || typeof window === "undefined") return;
+    const localKey = `studyRpgMissionClaims_${uid}_${dayKey}`;
     const next = Array.from(new Set([...Array.from(completedMissions), missionId]));
     localStorage.setItem(localKey, JSON.stringify(next));
   };
@@ -85,11 +86,12 @@ export default function MissionsPage() {
       return;
     }
 
+    const uid: string = user.uid;
     const nextXp = user.xp + mission.xpReward;
     const nextLevel = calculateLevel(nextXp);
     try {
-      if (!user.uid.startsWith("guest_")) {
-        const result = await claimDailyMissionReward(user.uid, mission.id, mission.xpReward, mission.coinReward, earnedScore, dayKey);
+      if (!uid.startsWith("guest_")) {
+        const result = await claimDailyMissionReward(uid, mission.id, mission.xpReward, mission.coinReward, earnedScore, dayKey);
         if (!result.claimed) {
           setCompletedMissions((prev) => new Set([...prev, mission.id]));
           toast(isBn ? "আজকের reward already collected" : "Today reward already collected");
