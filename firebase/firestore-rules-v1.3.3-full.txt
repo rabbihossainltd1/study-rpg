@@ -15,9 +15,11 @@ service cloud.firestore {
     }
 
     function isParticipant() {
-      return isAuthenticated()
-        && resource.data.participants is list
-        && signedInUid() in resource.data.participants;
+      return isAuthenticated() && (
+        (resource.data.participants is list && signedInUid() in resource.data.participants) ||
+        resource.data.from == signedInUid() ||
+        resource.data.to == signedInUid()
+      );
     }
 
     function willBeParticipant() {
@@ -259,10 +261,6 @@ service cloud.firestore {
         && validParticipantsCreate()
         && willBeParticipant();
       allow update: if isParticipant()
-        && request.resource.data.participants == resource.data.participants
-        && request.resource.data.from == resource.data.from
-        && request.resource.data.to == resource.data.to
-        && request.resource.data.content == resource.data.content
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["read", "readAt"])
         && resource.data.to == signedInUid();
       allow delete: if false;

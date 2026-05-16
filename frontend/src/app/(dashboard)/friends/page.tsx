@@ -131,7 +131,24 @@ export default function FriendsPage() {
   }, [user?.uid]);
 
   useEffect(() => {
-    refreshMessages();
+    if (!user || !selected || user.uid.startsWith("guest_")) {
+      setMessages([]);
+      return;
+    }
+
+    let alive = true;
+    const loadThread = async () => {
+      await markMessagesRead(user.uid, selected.uid).catch(() => undefined);
+      const list = await getMessagesWithFriend(user.uid, selected.uid).catch(() => []);
+      if (alive) setMessages(list);
+    };
+
+    loadThread();
+    const timer = window.setInterval(loadThread, 5000);
+    return () => {
+      alive = false;
+      window.clearInterval(timer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid, selected?.uid]);
 
@@ -209,12 +226,25 @@ export default function FriendsPage() {
 
   const sendMessage = async () => {
     const body = text.trim();
-    if (!selected || !body) return;
-    setBusyId(selected.uid);
+    if (!user || !selected || !body) return;
+    const target = selected;
+    setBusyId(target.uid);
     try {
-      await sendQuickMessage(user.uid, selected.uid, body);
+      await sendQuickMessage(user.uid, target.uid, body);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `local-${Date.now()}`,
+          from: user.uid,
+          to: target.uid,
+          content: body,
+          createdAt: new Date() as any,
+          read: false,
+          participants: [user.uid, target.uid],
+        },
+      ]);
       setText("");
-      await refreshMessages(selected);
+      await refreshMessages(target);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Message failed");
     } finally {

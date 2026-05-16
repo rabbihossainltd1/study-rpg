@@ -764,16 +764,48 @@ export type FriendMessage = {
   participants?: string[];
 };
 
+function normalizeFriendMessage(id: string, data: any): FriendMessage {
+  const participants = Array.isArray(data.participants)
+    ? data.participants
+    : [data.from, data.to].filter((value: unknown): value is string => typeof value === "string" && value.length > 0);
+  return { id, ...data, participants } as FriendMessage;
+}
+
+function isMessageBetween(message: FriendMessage, currentUid: string, targetUid: string) {
+  const directPair =
+    (message.from === currentUid && message.to === targetUid) ||
+    (message.from === targetUid && message.to === currentUid);
+  const participantPair =
+    Array.isArray(message.participants) &&
+    message.participants.includes(currentUid) &&
+    message.participants.includes(targetUid);
+  return directPair || participantPair;
+}
+
 export async function getMessagesWithFriend(currentUid: string, targetUid: string): Promise<FriendMessage[]> {
-  const snap = await getDocs(query(collection(db, "messages"), where("participants", "array-contains", currentUid), limit(120)));
-  return snap.docs
-    .map((d) => ({ id: d.id, ...(d.data() as any) } as FriendMessage))
-    .filter((m) => Array.isArray(m.participants) && m.participants.includes(targetUid))
-    .sort((a, b) => {
-      const ta = (a.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
-      const tb = (b.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
-      return ta - tb;
+  if (!currentUid || !targetUid || currentUid === targetUid) return [];
+
+  const messageMap = new Map<string, FriendMessage>();
+  const messageQueries = [
+    query(collection(db, "messages"), where("participants", "array-contains", currentUid), limit(200)),
+    query(collection(db, "messages"), where("from", "==", currentUid), limit(200)),
+    query(collection(db, "messages"), where("to", "==", currentUid), limit(200)),
+  ];
+
+  const results = await Promise.allSettled(messageQueries.map((messageQuery) => getDocs(messageQuery)));
+  results.forEach((result) => {
+    if (result.status !== "fulfilled") return;
+    result.value.docs.forEach((messageDoc) => {
+      const message = normalizeFriendMessage(messageDoc.id, messageDoc.data());
+      if (isMessageBetween(message, currentUid, targetUid)) messageMap.set(message.id, message);
     });
+  });
+
+  return Array.from(messageMap.values()).sort((a, b) => {
+    const ta = timestampToDate(a.createdAt)?.getTime() || (a.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
+    const tb = timestampToDate(b.createdAt)?.getTime() || (b.createdAt as Timestamp | undefined)?.toMillis?.() || 0;
+    return ta - tb;
+  });
 }
 
 export async function markMessagesRead(currentUid: string, targetUid: string) {
