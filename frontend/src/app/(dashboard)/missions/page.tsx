@@ -41,18 +41,21 @@ export default function MissionsPage() {
   useBodyScrollLock(Boolean(activeMission));
 
   useEffect(() => {
-    if (!user?.uid) return;
+    const uid = user?.uid;
+    if (!uid) return;
+
     let active = true;
+    const localKey = `studyRpgMissionClaims_${uid}_${dayKey}`;
+
     async function loadClaims() {
       setLoadingClaims(true);
-      const localKey = `studyRpgMissionClaims_${user.uid}_${dayKey}`;
       try {
-        if (user.uid.startsWith("guest_")) {
+        if (uid.startsWith("guest_")) {
           const saved = JSON.parse(localStorage.getItem(localKey) || "[]") as string[];
           if (active) setCompletedMissions(new Set(saved));
           return;
         }
-        const claims = await getMissionClaimsForDay(user.uid, dayKey);
+        const claims = await getMissionClaimsForDay(uid, dayKey);
         if (active) setCompletedMissions(new Set(claims.map((claim) => claim.missionId)));
       } catch {
         const saved = typeof window !== "undefined" ? JSON.parse(localStorage.getItem(localKey) || "[]") as string[] : [];
