@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import type { ReactNode } from "react";
 import { RouterProvider } from "@/components/RouterProvider";
+import { NotificationPermissionBoot } from "@/components/system/NotificationPermissionBoot";
 
 export const metadata: Metadata = {
   title: "Study RPG | Level Up Your Learning",
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" style={{ background: "var(--app-bg)" }}>
       <body className="app-shell" style={{ background: "var(--app-bg)", color: "var(--app-text)", margin: 0, padding: 0, minHeight: "100vh", fontFamily: "Inter, system-ui, -apple-system, sans-serif" }}>
         <RouterProvider />
+        <NotificationPermissionBoot />
         {children}
         <Toaster
           position="top-right"

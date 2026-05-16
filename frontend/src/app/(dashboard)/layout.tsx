@@ -12,6 +12,7 @@ import { navigate } from "@/lib/navigate";
 import { Loader2 } from "lucide-react";
 import { APP_VERSION, UPDATE_RELEASE_URL, compareVersion, fetchLatestUpdate } from "@/lib/appVersion";
 import { NotificationBridge } from "@/components/system/NotificationBridge";
+import { UpdatePopup } from "@/components/updates/UpdatePopup";
 import { showDeviceNotification } from "@/lib/notifications";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
@@ -98,43 +99,26 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const dismissedKey = `study-rpg-update-dismissed-${APP_VERSION}`;
     const notifiedKey = `study-rpg-update-notified-${APP_VERSION}`;
-    if (localStorage.getItem(dismissedKey)) return;
-
     fetchLatestUpdate()
       .then((latest) => {
         if (!latest || compareVersion(latest.version, APP_VERSION) <= 0) return;
-
+        if (localStorage.getItem(notifiedKey)) return;
+        localStorage.setItem(notifiedKey, "1");
         const downloadUrl = latest.apkUrl || latest.url || UPDATE_RELEASE_URL;
         const notes = latest.notes.slice(0, 6);
-        const message = [
-          `${latest.title || `Study RPG v${latest.version}`} update available.`,
-          "",
-          ...notes,
-          "",
-          "Download now?",
-        ].join("\n");
-
-        if (!localStorage.getItem(notifiedKey)) {
-          localStorage.setItem(notifiedKey, "1");
-          showDeviceNotification({
-            id: `update-${latest.version}`,
-            type: "update",
-            from: "system",
-            to: user?.uid || "local",
-            title: latest.title || `Study RPG v${latest.version}`,
-            body: notes.slice(0, 2).join(" • ") || "New update is available. Tap the update popup to download.",
-            link: downloadUrl,
-            shown: false,
-            read: false,
-            createdAt: new Date() as any,
-          }).catch(() => undefined);
-        }
-
-        const open = confirm(message);
-        if (open) window.open(downloadUrl, "_blank");
-        else localStorage.setItem(dismissedKey, "1");
+        showDeviceNotification({
+          id: `update-${latest.version}`,
+          type: "update",
+          from: "system",
+          to: user?.uid || "local",
+          title: latest.title || `Study RPG v${latest.version}`,
+          body: notes.slice(0, 2).join(" • ") || "New update is available. Download required.",
+          link: downloadUrl,
+          shown: false,
+          read: false,
+          createdAt: new Date() as any,
+        }).catch(() => undefined);
       })
       .catch(() => undefined);
   }, [user?.uid]);
@@ -165,6 +149,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </div>
       </main>
       <NotificationBridge />
+      <UpdatePopup />
       <BottomNav />
       <LevelUpModal />
       <XpFloatingPopups />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DownloadCloud, X, Sparkles } from "lucide-react";
+import { DownloadCloud, Sparkles } from "lucide-react";
 import { APP_VERSION, compareVersion, fetchLatestUpdate, type LatestUpdate } from "@/lib/appVersion";
 import { useUserStore } from "@/store/useUserStore";
 import { Button } from "@/components/ui/Button";
@@ -20,8 +20,6 @@ export function UpdatePopup() {
       .then((latest) => {
         if (cancelled || !latest) return;
         if (compareVersion(latest.version, APP_VERSION) <= 0) return;
-        const key = `study-rpg-update-dismissed-${APP_VERSION}-to-${latest.version}`;
-        if (localStorage.getItem(key)) return;
         setUpdate(latest);
       })
       .catch(() => undefined);
@@ -29,11 +27,6 @@ export function UpdatePopup() {
   }, []);
 
   if (!update) return null;
-
-  const close = () => {
-    localStorage.setItem(`study-rpg-update-dismissed-${APP_VERSION}-to-${update.version}`, "1");
-    setUpdate(null);
-  };
 
   const openUpdate = () => {
     window.open(update.apkUrl || update.url, "_blank");
@@ -52,7 +45,7 @@ export function UpdatePopup() {
               <p className="text-xs text-gray-500">{isBn ? `তোমার ভার্সন: v${APP_VERSION}` : `Installed: v${APP_VERSION}`}</p>
             </div>
           </div>
-          <button onClick={close} className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-500"><X className="w-5 h-5" /></button>
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-black text-red-300">Required</div>
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 mb-4">
@@ -67,10 +60,8 @@ export function UpdatePopup() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <Button variant="ghost" onClick={close}>{isBn ? "পরে" : "Later"}</Button>
-          <Button onClick={openUpdate} leftIcon={<DownloadCloud className="w-4 h-4" />}>{isBn ? "Update" : "Update"}</Button>
-        </div>
+        <Button onClick={openUpdate} leftIcon={<DownloadCloud className="w-4 h-4" />} className="w-full" size="lg">{isBn ? "Download Update" : "Download Update"}</Button>
+        <p className="mt-3 text-center text-xs text-gray-500">{isBn ? "নতুন version install করা বাধ্যতামূলক।" : "Installing the latest version is required."}</p>
       </div>
     </div>
   );

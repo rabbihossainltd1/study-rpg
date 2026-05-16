@@ -21,7 +21,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { UserAvatar } from "@/components/ui/AppIcon";
-import { Swords, Users, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, Check, CheckCheck, UserRound, Trash2 } from "lucide-react";
+import { Swords, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, Check, CheckCheck, UserRound, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 type MenuState = { uid: string; open: boolean };
@@ -164,20 +164,8 @@ function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onDeleteCh
         <p className="text-sm font-black text-white truncate">{person.displayName}</p>
         <p className="text-xs text-gray-500 truncate">@{person.username} · LV.{person.level} · {active}</p>
       </div>
-      <button
-        onClick={(event) => {
-          event.stopPropagation();
-          setMenu({ uid: person.uid, open: !(menu.open && menu.uid === person.uid) });
-        }}
-        onMouseDown={(event) => event.stopPropagation()}
-        onTouchStart={(event) => event.stopPropagation()}
-        className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce"
-        aria-label="More"
-      >
-        <MoreVertical className="w-4 h-4" />
-      </button>
       {menu.open && menu.uid === person.uid && (
-        <div className="absolute right-3 top-14 z-20 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden animate-card-in" onClick={(event) => event.stopPropagation()}>
+        <div data-action-menu="true" className="absolute right-3 top-14 z-20 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden animate-card-in" onClick={(event) => event.stopPropagation()}>
           <button onClick={handleMenuClick(onViewProfile)} className="w-full px-4 py-3 text-left text-sm text-secondary hover:bg-white/5 flex items-center gap-2"><UserRound className="w-4 h-4" />View profile</button>
           <button onClick={handleMenuClick(onDeleteChat)} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><Trash2 className="w-4 h-4" />Delete chat</button>
           <button onClick={handleMenuClick(onUnfriend)} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><UserMinus className="w-4 h-4" />Unfriend</button>
@@ -201,6 +189,7 @@ export default function FriendsPage() {
   const [menu, setMenu] = useState<MenuState>({ uid: "", open: false });
   const [profileView, setProfileView] = useState<PublicUserResult | null>(null);
   const [showBlockedList, setShowBlockedList] = useState(false);
+  const [topMenuOpen, setTopMenuOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const load = async () => {
@@ -273,6 +262,22 @@ export default function FriendsPage() {
     if (found) setSelected(found);
   }, [friends]);
 
+
+  useEffect(() => {
+    if (typeof document === "undefined" || (!menu.open && !topMenuOpen)) return;
+    const closeMenus = (event: Event) => {
+      const target = event.target as Element | null;
+      if (target?.closest?.('[data-action-menu="true"]')) return;
+      setMenu({ uid: "", open: false });
+      setTopMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", closeMenus);
+    document.addEventListener("touchstart", closeMenus);
+    return () => {
+      document.removeEventListener("pointerdown", closeMenus);
+      document.removeEventListener("touchstart", closeMenus);
+    };
+  }, [menu.open, topMenuOpen]);
 
   useEffect(() => {
     if (!selected || typeof window === "undefined") return;
@@ -416,7 +421,7 @@ export default function FriendsPage() {
             </button>
             <button onClick={() => setMenu({ uid: selected.uid, open: !menu.open })} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce" aria-label="Chat options"><MoreVertical className="w-4 h-4" /></button>
             {menu.open && menu.uid === selected.uid && (
-              <div className="absolute right-3 top-[calc(max(env(safe-area-inset-top),12px)+54px)] z-30 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden">
+              <div data-action-menu="true" className="absolute right-3 top-[calc(max(env(safe-area-inset-top),12px)+54px)] z-30 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden">
                 <button onClick={() => challenge(selected)} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2"><Swords className="w-4 h-4" />Challenge</button>
                 <button onClick={() => unfriend(selected)} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2"><UserMinus className="w-4 h-4" />Unfriend</button>
                 <button onClick={() => block(selected)} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2"><Ban className="w-4 h-4" />Block</button>
@@ -474,20 +479,22 @@ export default function FriendsPage() {
 
   return (
     <div className="space-y-5 animate-card-in">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
-            <Users className="w-5 h-5 text-primary" />
+      <div className="relative flex items-center justify-end min-h-[24px]">
+        <button
+          type="button"
+          data-action-menu="true"
+          onClick={(event) => { event.stopPropagation(); setTopMenuOpen((v) => !v); setMenu({ uid: "", open: false }); }}
+          className="w-11 h-11 rounded-2xl bg-white/[0.04] border border-white/10 text-gray-300 flex items-center justify-center tap-bounce"
+          aria-label="Inbox options"
+        >
+          <MoreVertical className="w-5 h-5" />
+        </button>
+        {topMenuOpen && (
+          <div data-action-menu="true" className="absolute right-0 top-12 z-30 w-44 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden animate-card-in">
+            <button onClick={() => { setTopMenuOpen(false); load(); }} className="w-full px-4 py-3 text-left text-sm text-gray-200 hover:bg-white/5 flex items-center gap-2"><RefreshCw className="w-4 h-4" />Refresh</button>
+            <button onClick={() => { setTopMenuOpen(false); setShowBlockedList((v) => !v); }} className="w-full px-4 py-3 text-left text-sm text-red-300 hover:bg-red-500/10 flex items-center gap-2"><Ban className="w-4 h-4" />Block list</button>
           </div>
-          <div>
-            <h1 className="text-2xl font-black text-white">{language === "bn" ? "ফ্রেন্ডস" : "Friends"}</h1>
-            <p className="text-sm text-gray-500">Friend list, messages and quiz challenges</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="px-2.5 py-1 text-xs" onClick={() => setShowBlockedList((v) => !v)}><Ban className="w-3.5 h-3.5" />Block list</Button>
-          <Button variant="ghost" size="sm" onClick={load} isLoading={loading}><RefreshCw className="w-4 h-4" />Refresh</Button>
-        </div>
+        )}
       </div>
 
       {showBlockedList && (

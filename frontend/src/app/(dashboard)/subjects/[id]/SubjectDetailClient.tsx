@@ -8,7 +8,7 @@ import { getSubjectQuizQuestions, type QuizDifficulty } from "@/lib/quizData";
 import { getWrittenQuestionsForChapter, writtenQuestionToLesson, type WrittenDifficulty, type WrittenQuestion } from "@/lib/writtenQuestions";
 import { Button } from "@/components/ui/Button";
 import {
-  ChevronLeft, Lock, CheckCircle2, Clock, Zap, BookOpen, ChevronDown, ChevronUp,
+  ChevronLeft, Lock, CheckCircle2, Zap, BookOpen, ChevronDown, ChevronUp,
   X, UploadCloud, ShieldCheck, FileText, Coins, AlertTriangle, HelpCircle, Play, Check, Trophy
 } from "lucide-react";
 import { addXp, addCoins, getSubjectProgress, markLessonRewardClaimed, markQuizRewardClaimed } from "@/lib/firebase";
@@ -375,7 +375,6 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-white text-sm truncate">{isBn ? chapter.titleBn : chapter.title}</p>
-                    <p className="text-xs text-gray-500 truncate">{isBn ? "প্রশ্ন দেখে খাতায় সমাধান করো" : "Solve in notebook and upload proof"}</p>
                     <div className="flex gap-2 mt-1">
                       <span className="text-xs text-gray-600">{writtenQuestions.length} questions</span>
                       <span className="text-xs font-bold" style={{ color: subject.color }}>+{writtenQuestions.reduce((sum, q) => sum + q.xpReward, 0)} XP</span>
@@ -396,15 +395,9 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                               {done ? <CheckCircle2 className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                <span className="text-[11px] px-2 py-0.5 rounded-lg bg-white/5 text-gray-500 uppercase font-mono">{difficulty}</span>
-                                <span className="text-[11px] text-gray-600">{question.topic}</span>
-                              </div>
                               <p className="text-sm text-white font-bold leading-relaxed whitespace-pre-line">{isBn ? question.questionBn : question.question}</p>
-                              <p className="text-xs text-gray-500 mt-2">{isBn ? "নির্দেশনা: উত্তর খাতায় লিখে solved proof upload করো।" : "Instruction: solve in notebook and upload proof."}</p>
                               <div className="flex items-center gap-2 mt-2">
-                                <Clock className="w-3 h-3 text-gray-600" />
-                                <span className="text-xs text-gray-600">{question.duration} min</span>
+                                <span className="text-[11px] px-2 py-0.5 rounded-lg bg-white/5 text-gray-500 uppercase font-mono">{difficulty}</span>
                                 <span className="text-xs font-semibold text-primary">+{question.xpReward} XP</span>
                               </div>
                             </div>

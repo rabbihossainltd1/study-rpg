@@ -1,0 +1,15 @@
+Study RPG v1.3.5
+
+New / Fixed:
+- APK notification permission prompt now opens from inside the app after login.
+- Dashboard notification bridge is mounted properly.
+- Friend request and message notification records continue to work.
+- Friend chat is now full-screen and Messenger-style.
+- Message typing box is fixed at the bottom; no page scroll is needed.
+- Message list scrolls independently and auto-scrolls to the latest message.
+- Seen double tick is now clearly visible with a blue mark inside a white pill.
+- Update popup remains connected to GitHub Releases for future versions.
+
+Notes:
+- App-killed remote push still needs Firebase Cloud Messaging server/Cloud Functions for guaranteed delivery.
+- This update does not change dataset, MCQ, written questions, missions, or friend/block data.

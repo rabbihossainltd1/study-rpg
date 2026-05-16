@@ -5,6 +5,8 @@ type AppRouter = {
 
 let appRouter: AppRouter = null;
 
+const SCROLL_PREFIX = "study_rpg_scroll_";
+
 export function normalizePathForRouter(path: string) {
   if (!path) return "/";
 
@@ -23,6 +25,27 @@ export function normalizePathForRouter(path: string) {
   return url;
 }
 
+export function getScrollStorageKey(path = typeof window !== "undefined" ? window.location.pathname : "/") {
+  return `${SCROLL_PREFIX}${normalizePathForRouter(path)}`;
+}
+
+export function saveCurrentScrollPosition() {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(getScrollStorageKey(window.location.pathname), String(window.scrollY || 0));
+  } catch {}
+}
+
+export function restoreSavedScrollPosition(path: string) {
+  if (typeof window === "undefined") return;
+  const key = getScrollStorageKey(path);
+  const saved = Number(sessionStorage.getItem(key) || "0");
+  if (!Number.isFinite(saved) || saved < 1) return;
+  window.requestAnimationFrame(() => {
+    window.scrollTo({ top: saved, behavior: "auto" });
+  });
+}
+
 export function registerRouter(router: AppRouter) {
   appRouter = router;
 }
@@ -31,14 +54,13 @@ export function navigate(path: string) {
   if (typeof window === "undefined") return;
 
   const url = normalizePathForRouter(path);
+  saveCurrentScrollPosition();
 
-  // Use Next router if available
   if (appRouter) {
     appRouter.push(url);
     return;
   }
 
-  // Fallback
   window.history.pushState({}, "", url);
   window.dispatchEvent(new PopStateEvent("popstate"));
 }

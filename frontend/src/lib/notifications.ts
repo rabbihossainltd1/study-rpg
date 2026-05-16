@@ -46,8 +46,8 @@ export async function getAppNotificationPermissionState(): Promise<PermissionSta
   return "unknown";
 }
 
-export async function requestAppNotificationPermission(uid: string): Promise<boolean> {
-  if (typeof window === "undefined" || !uid || uid.startsWith("guest_")) return false;
+export async function requestAppNotificationPermission(uid = ""): Promise<boolean> {
+  if (typeof window === "undefined") return false;
 
   try {
     if (isNativeCapacitor()) {
@@ -68,7 +68,7 @@ export async function requestAppNotificationPermission(uid: string): Promise<boo
         if (!pushRegistrationListenerAttached) {
           pushRegistrationListenerAttached = true;
           PushNotifications.addListener("registration", (token) => {
-            savePushToken(uid, token.value, "android").catch(() => undefined);
+            if (uid && !uid.startsWith("guest_")) savePushToken(uid, token.value, "android").catch(() => undefined);
           }).catch(() => undefined);
         }
       }

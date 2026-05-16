@@ -10,14 +10,14 @@ export function NotificationBridge() {
   const shownInSession = useRef(new Set<string>());
 
   useEffect(() => {
-    if (!user || user.uid.startsWith("guest_")) return;
+    if (!user) return;
     let alive = true;
 
     const ensurePermission = async () => {
       if (!alive) return;
       const state = await getAppNotificationPermissionState().catch(() => "unknown");
       if (state !== "granted") {
-        await requestAppNotificationPermission(user.uid).catch(() => false);
+        await requestAppNotificationPermission(user.uid.startsWith("guest_") ? "" : user.uid).catch(() => false);
       }
     };
 

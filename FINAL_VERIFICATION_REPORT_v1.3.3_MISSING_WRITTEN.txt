@@ -1,0 +1,9 @@
+Final Verification Report v1.3.3 Missing Written Dataset
+==========================================================
+ZIP source dataset entries parsed: 2286
+Written entries added: 2286
+Total written entries: 3489
+Duplicate same-subject written questions: 0
+Same-subject cross-difficulty duplicate written questions: 0
+Blank expectedAnswer/keywords/question issues: 0
+Missing requested bucket count: 0

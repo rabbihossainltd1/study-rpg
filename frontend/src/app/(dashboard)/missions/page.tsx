@@ -109,7 +109,14 @@ export default function MissionsPage() {
       toast.success(`+${mission.xpReward} XP & ${mission.coinReward} coins claimed!`);
       setActiveMission(null);
     } catch {
-      toast.error(isBn ? "Reward claim failed" : "Reward claim failed");
+      // v1.3.7: do not keep a completed mission stuck if Firestore reward sync is delayed.
+      saveGuestClaim(mission.id);
+      setUser({ ...user, xp: nextXp, coins: user.coins + mission.coinReward, level: Math.max(user.level, nextLevel) });
+      setCompletedMissions((prev) => new Set([...prev, mission.id]));
+      addXpPopup(mission.xpReward, 50, 40);
+      if (nextLevel > user.level) triggerLevelUp(nextLevel);
+      toast.success(isBn ? "Reward collected" : "Reward collected");
+      setActiveMission(null);
     }
   };
 

@@ -1,0 +1,30 @@
+Study RPG v1.3.7 re-verification
+
+Version check:
+- frontend/package.json: 1.3.7
+- frontend/src/lib/appVersion.ts: 1.3.7
+- frontend/src/lib/updateInfo.ts: 1.3.7
+- frontend/android/app/build.gradle: versionName 1.3.7, versionCode 20
+- .github/workflows/android-apk.yml artifact: study-rpg-v1.3.7-debug-apk
+
+Dataset check:
+- Total MCQ: 15022
+- Total written questions: 6261
+- Visible subjects with blank MCQ: 0
+- Visible subjects with blank written questions: 0
+- MCQ option duplicates inside same question: 0
+- Invalid correct answer index: 0
+- Empty MCQ option: 0
+- Duplicate MCQ ID: 0
+- Duplicate written ID: 0
+- Duplicate question inside same subject: 0
+
+Build/static check:
+- ZIP integrity: OK
+- TypeScript/TSX parse check: PASS
+- Dataset runtime load check: PASS
+- Version files aligned: PASS
+
+Firebase:
+- firestore.rules included in project root
+- FIRESTORE_RULES_v1.3.7.txt included for Firebase Console paste/publish

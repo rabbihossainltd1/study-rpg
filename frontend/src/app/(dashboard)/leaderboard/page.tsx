@@ -146,8 +146,15 @@ export default function LeaderboardPage() {
   };
 
   const RankBadge = ({ rank }: { rank: number }) => {
-    if (rank <= 3) return <CrownBadge rank={rank} className="w-5 h-5" />;
-    return <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">{rank}</span>;
+    if (rank <= 3) {
+      const color = rank === 1 ? "#FFD700" : rank === 2 ? "#E5E7EB" : "#CD7F32";
+      return (
+        <span className="relative inline-flex w-9 h-9 items-center justify-center rounded-full border shadow-[0_0_20px_rgba(255,215,0,0.18)]" style={{ borderColor: `${color}80`, background: `radial-gradient(circle, ${color}33, rgba(255,255,255,0.04))` }}>
+          <CrownBadge rank={rank} className="w-5 h-5 drop-shadow" />
+        </span>
+      );
+    }
+    return <span className="w-8 h-8 rounded-full border border-white/10 bg-white/[0.06] flex items-center justify-center text-sm font-black text-gray-400 shadow-[inset_0_0_12px_rgba(255,255,255,0.03)]">{rank}</span>;
   };
 
   const Avatar = ({ entry, size = "md", showCrown = true }: { entry: LeaderEntry; size?: "sm" | "md" | "lg"; showCrown?: boolean }) => {
@@ -175,8 +182,9 @@ export default function LeaderboardPage() {
           const rankColor = position === 0 ? "#FFD700" : position === 1 ? "#C0C0C0" : "#CD7F32";
           return (
             <button key={entry.userId || entry.rank} onClick={() => setSelected(entry)} className={`bg-transparent border-0 p-0 cursor-pointer tap-bounce ${visualIndex === 0 ? "mt-7" : visualIndex === 2 ? "mt-9" : ""}`}>
-              <div className={`glass-card p-3 text-center border hover-lift ${position === 0 ? "shadow-[0_0_34px_rgba(255,215,0,0.16)]" : ""}`} style={{ borderColor: `${rankColor}50` }}>
-                <div className="mx-auto mb-2 mt-2 flex justify-center"><Avatar entry={entry} size={position === 0 ? "lg" : "md"} /></div>
+              <div className={`glass-card p-3 text-center border hover-lift relative overflow-visible ${position === 0 ? "shadow-[0_0_44px_rgba(255,215,0,0.24)]" : "shadow-[0_0_24px_rgba(255,255,255,0.05)]"}`} style={{ borderColor: `${rankColor}70`, background: `linear-gradient(180deg, ${rankColor}12, rgba(255,255,255,0.025))` }}>
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full border px-2 py-0.5 text-[10px] font-black" style={{ borderColor: `${rankColor}60`, color: rankColor, background: "rgba(0,0,0,0.78)" }}>TOP {entry.rank}</div>
+                <div className="mx-auto mb-2 mt-3 flex justify-center"><Avatar entry={entry} size={position === 0 ? "lg" : "md"} /></div>
                 <p className="font-bold text-white text-xs truncate">{entry.displayName || entry.username}</p>
                 <p className="text-xs" style={{ color: rankColor }}>LV.{entry.level}</p>
                 <p className="text-sm font-bold mt-1" style={{ color: rankColor }}>#{entry.rank}</p>

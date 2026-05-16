@@ -4,7 +4,6 @@ import { navigate } from "@/lib/navigate";
 import { useEffect, useMemo, useState, type ChangeEvent, type ReactNode } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { XpBar } from "@/components/ui/XpBar";
-import { StatCard } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { RANK_COLORS, RANK_THRESHOLDS, type Rank, type Achievement } from "@/types";
 import { getRarityColor, formatDuration } from "@/lib/utils";
@@ -311,13 +310,17 @@ export default function ProfilePage() {
       </div>
 
       {activeTab === "stats" && (
-        <div className="grid grid-cols-2 gap-3 animate-card-in">
-          <StatCard label="Total XP" value={user.xp.toLocaleString()} icon={<Zap className="w-4 h-4" />} color="#39FF14" />
-          <StatCard label="Level" value={user.level} icon={<Star className="w-4 h-4" />} color="#FFD700" />
-          <StatCard label="Study Time" value={formatDuration(user.totalStudyTime)} icon={<Clock className="w-4 h-4" />} color="#00F0FF" />
-          <StatCard label="Max Streak" value={`${user.maxStreak || 0}d`} icon={<Flame className="w-4 h-4" />} color="#FF8C00" />
-          <StatCard label="Coins" value={user.coins} icon={<Coins className="w-4 h-4" />} color="#FFD700" />
-          <StatCard label="Gems" value={user.gems} icon={<Gem className="w-4 h-4" />} color="#BF5FFF" />
+        <div className="glass-card p-4 border border-white/10 animate-card-in space-y-3">
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="rounded-2xl bg-primary/10 border border-primary/20 p-3"><p className="text-lg font-black text-primary">{user.xp.toLocaleString()}</p><p className="text-[11px] text-gray-500">XP</p></div>
+            <div className="rounded-2xl bg-gold/10 border border-gold/20 p-3"><p className="text-lg font-black text-gold">LV.{user.level}</p><p className="text-[11px] text-gray-500">Level</p></div>
+            <div className="rounded-2xl bg-secondary/10 border border-secondary/20 p-3"><p className="text-lg font-black text-secondary">{user.coins}</p><p className="text-[11px] text-gray-500">Coins</p></div>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-gray-500">
+            <span className="rounded-full bg-white/5 px-3 py-1">Study {formatDuration(user.totalStudyTime)}</span>
+            <span className="rounded-full bg-white/5 px-3 py-1">Max streak {user.maxStreak || 0}d</span>
+            <span className="rounded-full bg-white/5 px-3 py-1">Gems {user.gems}</span>
+          </div>
         </div>
       )}
 

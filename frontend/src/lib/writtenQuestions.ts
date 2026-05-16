@@ -27,6 +27,11695 @@ const DATASET_WRITTEN_BY_SUBJECT: Record<string, WrittenQuestion[]> = {"admissio
 
 export const WRITTEN_TOPICS: Record<string, string[]> = {"admission-accounting":["Accounting Equation","Accounting Basics","Journal","Trial Balance","Financial Statements","Inventory","Cost Accounting","Ratio Analysis"],"admission-biology":["Cell Biology","Biomolecule","Cell Division","Physiology","Plant Physiology","Human Physiology","Genetics","Ecology","Health"],"admission-business-org":["Forms of Business","Company","Entrepreneurship","CSR"],"admission-chemistry":["Atomic Structure","Periodic Table","Bonding","Acid-Base","Thermochemistry","Redox","Electrochemistry","Organic Chemistry","Separation"],"admission-civics":["State","Constitution","Rights","Judiciary","Election"],"admission-economics":["Basic Economics","Demand","Market","National Income","Macro Economics","International Trade"],"admission-ethics":["Civic Values","নৈতিক দর্শন","নৈতিক তত্ত্ব","ব্যক্তিগত নৈতিকতা","সামাজিক নৈতিকতা","পেশাগত নৈতিকতা","প্রয়োগিক নৈতিকতা","মানবাধিকার","গবেষণা নৈতিকতা","নাগরিক নৈতিকতা"],"admission-finance":["Time Value","Investment","Risk","Working Capital","Banking","Foreign Exchange"],"admission-geography":["Earth","Geomorphology","Disaster","Technology"],"admission-higher-math":["Algebra","Trigonometry","Calculus","Matrix","Coordinate Geometry"],"admission-history":["Bangladesh History","World History"],"admission-ict":["Programming","Networking","Security","Cloud"],"admission-logic":["Logic Basics","Reasoning","Fallacy"],"admission-management":["Management Process","Staffing","Controlling","Motivation","Decision Making","Principles"],"admission-marketing":["Marketing Mix","Targeting","Branding","Consumer Behavior","Distribution"],"admission-physics":["Mechanics","Heat","Wave","Optics","Electricity","Magnetism","Modern Physics"],"admission-political-science":["Democracy","রাষ্ট্রবিজ্ঞানের ধারণা","সার্বভৌমত্ব","গণতন্ত্র","সংবিধান","ক্ষমতার বিভাজন","রাজনৈতিক দল","জনপ্রশাসন","আন্তর্জাতিক সম্পর্ক","বাংলাদেশের রাজনীতি","রাজনৈতিক উন্নয়ন"],"admission-psychology":["Learning","মনোবিজ্ঞানের পরিচিতি","গবেষণা পদ্ধতি","Motivation","শিক্ষণ","স্মৃতি","প্রেষণা","আবেগ","ব্যক্তিত্ব","বিকাশ","সামাজিক মনোবিজ্ঞান","মানসিক স্বাস্থ্য"],"admission-sociology":["Society","সমাজবিজ্ঞানের পরিচিতি","Institution","সংস্কৃতি","সামাজিকীকরণ","সামাজিক স্তরবিন্যাস","সামাজিক প্রতিষ্ঠান","সামাজিক পরিবর্তন","বিচ্যুতি ও সামাজিক নিয়ন্ত্রণ","গবেষণা পদ্ধতি","লিঙ্গ ও সমাজ","নগরায়ণ"],"admission-statistics":["Central Tendency","Correlation","Probability","Index Number"],"class6-bgs":["সমাজ","নাগরিকতা","ভূগোল","বাংলাদেশ","জলবায়ু","অর্থনীতি","সংস্কৃতি","ইতিহাস","প্রশাসন","পরিবেশ"],"class6-life-livelihood":["অর্থনৈতিক জীবন","কর্মজীবন","উদ্যোগ","বাজার","নৈতিকতা","ব্যবসা","সামাজিক অর্থনীতি","প্রযুক্তি"],"class6-science":["জীবজগৎ","জীবদেহের সংগঠন","উদ্ভিদ ও খাদ্য","পরিবেশ","পৃথিবী ও পরিবেশ","পদার্থের অবস্থা","পদার্থ","বল ও গতি","আলো","শব্দ","তাপ","বিজ্ঞানচর্চা","পরিমাপ","স্বাস্থ্য","খাদ্য ও স্বাস্থ্য","শক্তি"],"class7-bgs":["ভূগোল","বাংলাদেশ","জলবায়ু","অর্থনীতি","সংস্কৃতি","ইতিহাস","প্রশাসন","সমাজ","পরিবেশ"],"class7-life-livelihood":["অর্থনৈতিক জীবন","কর্মজীবন","উদ্যোগ","বাজার","নৈতিকতা","ব্যবসা","সামাজিক অর্থনীতি","প্রযুক্তি"],"class7-science":["পরিবেশ","পৃথিবী ও পরিবেশ","পদার্থের অবস্থা","পদার্থ","বল ও গতি","আলো","শব্দ","তাপ","বিজ্ঞানচর্চা","পরিমাপ","স্বাস্থ্য","খাদ্য ও স্বাস্থ্য","শক্তি","জীবজগৎ","জীবদেহের সংগঠন"],"class8-bgs":["সমাজ","নাগরিকতা","ভূগোল"],"class8-life-livelihood":["কর্মজীবন","অর্থনৈতিক জীবন","প্রযুক্তি"],"class8-science":["পরিবেশ","জীবজগৎ","জীবদেহের সংগঠন","উদ্ভিদ ও খাদ্য","পৃথিবী ও পরিবেশ"],"hsc-accounting":["হিসাববিজ্ঞান","আর্থিক বিবরণী","বিশ্লেষণ","Accounting Equation","Accounting Basics","Journal","Trial Balance","Financial Statements","Inventory","Cost Accounting","Ratio Analysis"],"hsc-biology":["কোষ","জিনতত্ত্ব","বংশগতি","উদ্ভিদ","মানবদেহ","স্বাস্থ্য","পরিবেশ","জীবপ্রযুক্তি","Cell Biology","Biomolecule","Cell Division","Physiology","Plant Physiology","Human Physiology","Genetics","Ecology","Health"],"hsc-business-org":["Forms of Business","Company","Entrepreneurship","CSR"],"hsc-chemistry":["রসায়ন","পরমাণু","সাম্যাবস্থা","জৈব রসায়ন","Atomic Structure","Periodic Table","Bonding","Acid-Base","Thermochemistry","Redox","Electrochemistry","Organic Chemistry","Separation"],"hsc-civics":["রাজনীতি","বিশ্ব","State","Constitution","Rights","Judiciary","Election"],"hsc-economics":["অর্থনীতি","Basic Economics","Demand","Market","National Income","Macro Economics","International Trade"],"hsc-ethics":["Civic Values","নৈতিক দর্শন","নৈতিক তত্ত্ব","ব্যক্তিগত নৈতিকতা","সামাজিক নৈতিকতা","পেশাগত নৈতিকতা","প্রয়োগিক নৈতিকতা","মানবাধিকার","গবেষণা নৈতিকতা","নাগরিক নৈতিকতা"],"hsc-finance":["অর্থায়ন","Time Value","Investment","Risk","Working Capital","Banking","Foreign Exchange"],"hsc-geography":["ভূগোল","Earth","Geomorphology","Disaster","Technology"],"hsc-higher-math":["ক্যালকুলাস","বীজগণিত","জ্যামিতি","Algebra","Trigonometry","Calculus","Matrix","Coordinate Geometry"],"hsc-history":["Bangladesh History","World History"],"hsc-ict":["Programming","Networking","Security","Cloud"],"hsc-logic":["Logic Basics","Reasoning","Fallacy"],"hsc-management":["ব্যবসায় সংগঠন","ব্যবস্থাপনা","Management Process","Staffing","Controlling","Motivation","Decision Making","Principles"],"hsc-marketing":["মার্কেটিং","Marketing Mix","Targeting","Branding","Consumer Behavior","Distribution"],"hsc-physics":["ভেক্টর","গতি","বল","ঘূর্ণন","তাপ","তাপগতিবিদ্যা","তড়িৎ","চৌম্বকত্ব","আধুনিক পদার্থবিদ্যা","Mechanics","Heat","Wave","Optics","Electricity","Magnetism","Modern Physics"],"hsc-political-science":["রাষ্ট্রবিজ্ঞানের ধারণা","Democracy","সার্বভৌমত্ব","গণতন্ত্র","সংবিধান","ক্ষমতার বিভাজন","রাজনৈতিক দল","জনপ্রশাসন","আন্তর্জাতিক সম্পর্ক","বাংলাদেশের রাজনীতি","রাজনৈতিক উন্নয়ন"],"hsc-production":["উৎপাদন"],"hsc-psychology":["Learning","মনোবিজ্ঞানের পরিচিতি","গবেষণা পদ্ধতি","Motivation","শিক্ষণ","স্মৃতি","প্রেষণা","আবেগ","ব্যক্তিত্ব","বিকাশ","সামাজিক মনোবিজ্ঞান","মানসিক স্বাস্থ্য"],"hsc-sociology":["সমাজ","Society","Institution"],"hsc-statistics":["পরিসংখ্যান","Central Tendency","Correlation","Probability","Index Number"],"ssc-accounting":["পরিচিতি","মৌলিক ধারণা","দ্বৈত দাখিলা","বইসমূহ","রেওয়ামিল","বিশেষ জাবেদা","ব্যাংক","সম্পদ"],"ssc-biology":["কোষ","কোষ বিভাজন","পরিবহন","বংশগতি","পরিবেশ"],"ssc-business":["উদ্যোগ","বাজার","নৈতিকতা"],"ssc-chemistry":["পদার্থ","পরমাণু","রাসায়নিক বন্ধন","পরিমাণগত রসায়ন","অম্ল-ক্ষার"],"ssc-civics":["রাষ্ট্র","সমাজ","বিশ্ব"],"ssc-economics":["অর্থনীতি"],"ssc-finance":["অর্থায়ন","ব্যাংক","বীমা"],"ssc-geography":["পরিবেশ","দুর্যোগ","জনসংখ্যা","অর্থনীতি"],"ssc-history":["বাংলাদেশের ইতিহাস"],"ssc-physics":["গতি","বল","বিদ্যুৎ","আলো"],"university-accounting":["Accounting Equation","Accounting Basics","Journal","Trial Balance","Financial Statements","Inventory","Cost Accounting","Ratio Analysis"],"university-biology":["Cell Biology","Biomolecule","Cell Division","Physiology","Plant Physiology","Human Physiology","Genetics","Ecology","Health"],"university-business-org":["Forms of Business","Company","Entrepreneurship","CSR"],"university-chemistry":["Atomic Structure","Periodic Table","Bonding","Acid-Base","Thermochemistry","Redox","Electrochemistry","Organic Chemistry","Separation"],"university-civics":["State","Constitution","Rights","Judiciary","Election"],"university-economics":["Basic Economics","Demand","Market","National Income","Macro Economics","International Trade"],"university-ethics":["Civic Values","নৈতিক দর্শন","নৈতিক তত্ত্ব","ব্যক্তিগত নৈতিকতা","সামাজিক নৈতিকতা","পেশাগত নৈতিকতা","প্রয়োগিক নৈতিকতা","মানবাধিকার","গবেষণা নৈতিকতা","নাগরিক নৈতিকতা"],"university-finance":["Time Value","Investment","Risk","Working Capital","Banking","Foreign Exchange"],"university-geography":["Earth","Geomorphology","Disaster","Technology"],"university-higher-math":["Algebra","Trigonometry","Calculus","Matrix","Coordinate Geometry"],"university-history":["Bangladesh History","World History"],"university-ict":["Programming","Networking","Security","Cloud"],"university-logic":["Logic Basics","Reasoning","Fallacy"],"university-management":["Management Process","Staffing","Controlling","Motivation","Decision Making","Principles"],"university-marketing":["Marketing Mix","Targeting","Branding","Consumer Behavior","Distribution"],"university-physics":["Mechanics","Heat","Wave","Optics","Electricity","Magnetism","Modern Physics"],"university-political-science":["রাষ্ট্রবিজ্ঞানের ধারণা","Democracy","সার্বভৌমত্ব","গণতন্ত্র","সংবিধান","ক্ষমতার বিভাজন","রাজনৈতিক দল","জনপ্রশাসন","আন্তর্জাতিক সম্পর্ক","বাংলাদেশের রাজনীতি","রাজনৈতিক উন্নয়ন"],"university-psychology":["Learning","মনোবিজ্ঞানের পরিচিতি","গবেষণা পদ্ধতি","Motivation","শিক্ষণ","স্মৃতি","প্রেষণা","আবেগ","ব্যক্তিত্ব","বিকাশ","সামাজিক মনোবিজ্ঞান","মানসিক স্বাস্থ্য"],"university-sociology":["Society","সমাজবিজ্ঞানের পরিচিতি","সংস্কৃতি","Institution","সামাজিকীকরণ","সামাজিক স্তরবিন্যাস","সামাজিক প্রতিষ্ঠান","সামাজিক পরিবর্তন","বিচ্যুতি ও সামাজিক নিয়ন্ত্রণ","গবেষণা পদ্ধতি","লিঙ্গ ও সমাজ","নগরায়ণ"],"university-statistics":["Central Tendency","Correlation","Probability","Index Number"],"admission-bangla":["বাংলা ব্যাকরণ","বাংলা সাহিত্য","নির্মিতি"],"admission-english":["Admission English Grammar","Admission Vocabulary","Reading Comprehension"],"admission-gk":["বাংলাদেশ বিষয়াবলি","আন্তর্জাতিক বিষয়াবলি","ভূগোল","অর্থনীতি","বিজ্ঞান ও প্রযুক্তি","সাম্প্রতিক জ্ঞান"],"admission-math":["Arithmetic","Algebra","Geometry","Mensuration","Statistics"],"class6-bangla":["গদ্য: চরিত্র ও ঘটনা","গদ্য: মূলভাব","পদ্য: কবিতার ভাব","পদ্য: শব্দার্থ","ব্যাকরণ: পদ","ব্যাকরণ: বাক্য","ব্যাকরণ: সন্ধি ও সমাস","লেখা: সারাংশ","লেখা: ভাবসম্প্রসারণ","লেখা: অনুচ্ছেদ","ভাষা ও যোগাযোগ","পাঠ-বোঝাপড়া"],"class6-digital":["ডিজিটাল পরিচিতি","তথ্য ও ডেটা","অনলাইন নিরাপত্তা","সাইবার আচরণ","কনটেন্ট তৈরি","অ্যালগরিদম","প্রোগ্রামিং ধারণা","যোগাযোগ প্রযুক্তি","ডিজিটাল নাগরিকত্ব","তথ্য যাচাই"],"class6-english":["Grammar: Parts of Speech","Grammar: Tense","Grammar: Article","Grammar: Preposition","Grammar: Sentence","Vocabulary","Reading Comprehension","Writing: Paragraph","Writing: Dialogue","Writing: Email","Grammar: Subject-Verb Agreement","Punctuation"],"class6-health":["ব্যক্তিগত স্বাস্থ্য","পুষ্টি","শারীরিক ব্যায়াম","মানসিক স্বাস্থ্য","নিরাপদ জীবন","প্রাথমিক চিকিৎসা","রোগ প্রতিরোধ","কৈশোর স্বাস্থ্য","পরিবেশ স্বাস্থ্য","ডিজিটাল স্বাস্থ্য"],"class6-math":["সংখ্যা পদ্ধতি","ভগ্নাংশ ও দশমিক","শতকরা","অনুপাত ও সমানুপাত","বীজগণিত","সমীকরণ","জ্যামিতি","পরিমাপ","ডেটা ও সম্ভাবনা","গুণিতক ও গ.সা.গু","সূচক ধারণা"],"class6-religion":["নৈতিকতা ও মূল্যবোধ","ধর্মীয় জীবন","ধর্মীয় আচরণ","মানবিক সম্পর্ক","সামাজিক জীবন","দায়িত্ববোধ","সহনশীলতা","আত্মশুদ্ধি","সেবা"],"class7-bangla":["গদ্য: চরিত্র ও ঘটনা","গদ্য: মূলভাব","পদ্য: কবিতার ভাব","পদ্য: শব্দার্থ","ব্যাকরণ: পদ","ব্যাকরণ: বাক্য","ব্যাকরণ: সন্ধি ও সমাস","লেখা: সারাংশ","লেখা: ভাবসম্প্রসারণ","লেখা: অনুচ্ছেদ","ভাষা ও যোগাযোগ","পাঠ-বোঝাপড়া"],"class7-digital":["ডিজিটাল পরিচিতি","তথ্য ও ডেটা","অনলাইন নিরাপত্তা","সাইবার আচরণ","কনটেন্ট তৈরি","অ্যালগরিদম","প্রোগ্রামিং ধারণা","যোগাযোগ প্রযুক্তি","ডিজিটাল নাগরিকত্ব","তথ্য যাচাই"],"class7-english":["Grammar: Parts of Speech","Grammar: Tense","Grammar: Article","Grammar: Preposition","Grammar: Sentence","Vocabulary","Reading Comprehension","Writing: Paragraph","Writing: Dialogue","Writing: Email","Grammar: Subject-Verb Agreement","Punctuation"],"class7-math":["সংখ্যা পদ্ধতি","ভগ্নাংশ ও দশমিক","শতকরা","অনুপাত ও সমানুপাত","বীজগণিত","সমীকরণ","জ্যামিতি","পরিমাপ","ডেটা ও সম্ভাবনা","গুণিতক ও গ.সা.গু","সূচক ধারণা"],"class7-religion":["নৈতিকতা ও মূল্যবোধ","ধর্মীয় জীবন","ধর্মীয় আচরণ","মানবিক সম্পর্ক","সামাজিক জীবন","দায়িত্ববোধ","সহনশীলতা","আত্মশুদ্ধি","সেবা"],"class8-bangla":["গদ্য: চরিত্র ও ঘটনা","গদ্য: মূলভাব","পদ্য: কবিতার ভাব","পদ্য: শব্দার্থ","ব্যাকরণ: পদ","ব্যাকরণ: বাক্য","ব্যাকরণ: সন্ধি ও সমাস","লেখা: সারাংশ","লেখা: ভাবসম্প্রসারণ","লেখা: অনুচ্ছেদ","ভাষা ও যোগাযোগ","পাঠ-বোঝাপড়া"],"class8-digital":["ডিজিটাল পরিচিতি","তথ্য ও ডেটা","অনলাইন নিরাপত্তা","সাইবার আচরণ","কনটেন্ট তৈরি","অ্যালগরিদম","প্রোগ্রামিং ধারণা","যোগাযোগ প্রযুক্তি","ডিজিটাল নাগরিকত্ব","তথ্য যাচাই"],"class8-english":["Grammar: Parts of Speech","Grammar: Tense","Grammar: Article","Grammar: Preposition","Grammar: Sentence","Vocabulary","Reading Comprehension","Writing: Paragraph","Writing: Dialogue","Writing: Email","Grammar: Subject-Verb Agreement","Punctuation"],"class8-math":["সংখ্যা পদ্ধতি","ভগ্নাংশ ও দশমিক","শতকরা","অনুপাত ও সমানুপাত","বীজগণিত","সমীকরণ","জ্যামিতি","পরিমাপ","ডেটা ও সম্ভাবনা","গুণিতক ও গ.সা.গু","সূচক ধারণা"],"hsc-bangla":["বাংলা প্রথম পত্র: গদ্য","বাংলা প্রথম পত্র: কবিতা","বাংলা প্রথম পত্র: নাটক","বাংলা প্রথম পত্র: উপন্যাস","বাংলা দ্বিতীয় পত্র: ব্যাকরণ","বাংলা দ্বিতীয় পত্র: সমাস","বাংলা দ্বিতীয় পত্র: নির্মিতি","বাংলা দ্বিতীয় পত্র: প্রবন্ধ","বাংলা ভাষার ইতিহাস","সাহিত্য সমালোচনা"],"hsc-english":["English First Paper: Reading","English First Paper: Writing","English First Paper: Summary","English Second Paper: Grammar","English Second Paper: Transformation","English Second Paper: Narration","English Second Paper: Composition","Vocabulary"],"ssc-bangla":["গদ্য: চরিত্র ও ঘটনা","গদ্য: মূলভাব","পদ্য: কবিতার ভাব","পদ্য: শব্দার্থ","ব্যাকরণ: পদ","ব্যাকরণ: বাক্য","ব্যাকরণ: সন্ধি ও সমাস","লেখা: সারাংশ","লেখা: ভাবসম্প্রসারণ","লেখা: অনুচ্ছেদ","ভাষা ও যোগাযোগ","পাঠ-বোঝাপড়া"],"ssc-bgs":["বাংলাদেশের ভূগোল","বাংলাদেশের ইতিহাস","মুক্তিযুদ্ধ","সংবিধান","অর্থনীতি","সমাজ ও সংস্কৃতি","জলবায়ু ও দুর্যোগ","বিশ্বপরিচয়","জনসংখ্যা","নাগরিকতা"],"ssc-english":["Grammar: Parts of Speech","Grammar: Tense","Grammar: Article","Grammar: Preposition","Grammar: Sentence","Vocabulary","Reading Comprehension","Writing: Paragraph","Writing: Dialogue","Writing: Email","Grammar: Subject-Verb Agreement","Punctuation"],"ssc-higher-math":["বীজগণিত","ত্রিকোণমিতি","জ্যামিতি","স্থানাঙ্ক জ্যামিতি","ভেক্টর","পরিসংখ্যান","সম্ভাবনা"],"ssc-ict":["আইসিটি পরিচিতি","কম্পিউটার সিস্টেম","ইন্টারনেট","নেটওয়ার্ক","ডেটাবেজ","প্রোগ্রামিং","ওয়েব ডিজাইন","সাইবার নিরাপত্তা","ডিজিটাল বাংলাদেশ","মাল্টিমিডিয়া"],"ssc-math":["সংখ্যা পদ্ধতি","ভগ্নাংশ ও দশমিক","শতকরা","অনুপাত ও সমানুপাত","বীজগণিত","সমীকরণ","জ্যামিতি","পরিমাপ","ডেটা ও সম্ভাবনা","গুণিতক ও গ.সা.গু","সূচক ধারণা"],"degree-bangla":["বাংলা ভাষার ইতিহাস","শব্দতত্ত্ব","রূপতত্ত্ব","বাক্যতত্ত্ব","অলংকার","কবিতা পাঠ","গদ্য পাঠ","নাটক","উপন্যাস","রবীন্দ্র সাহিত্য","নজরুল সাহিত্য","লোকসাহিত্য","ছন্দ","সাহিত্য সমালোচনা","ভাষাবিজ্ঞান","প্রাচীন সাহিত্য","আধুনিক সাহিত্য","বানান ও শুদ্ধ ভাষা"],"degree-english":["Grammar","Syntax","Vocabulary","Writing Skills","Composition","Poetry","Drama","Fiction","Literary Criticism","Linguistics","Morphology","Semantics","Pragmatics","ELT","Research Writing","Postcolonial Literature","Rhetoric"],"degree-ethics":["মূল্যবোধ","মানবিকতা","ব্যক্তিগত নৈতিকতা","পারিবারিক নৈতিকতা","সামাজিক নৈতিকতা","পেশাগত নৈতিকতা","নাগরিক নৈতিকতা","মানবাধিকার","পরিবেশ নৈতিকতা","ডিজিটাল নৈতিকতা","দুর্নীতি বিরোধী নৈতিকতা","ধর্ম ও নৈতিকতা","নৈতিক সিদ্ধান্ত","শান্তি ও সহনশীলতা","নেতৃত্ব নৈতিকতা","গবেষণা নৈতিকতা","আন্তর্জাতিক নৈতিকতা","লিঙ্গ নৈতিকতা"],"degree-political-science":["সার্বভৌমত্ব","সরকার","সংবিধান","গণতন্ত্র","নির্বাচন","রাজনৈতিক দল","ক্ষমতার বিভাজন","রাজনৈতিক চিন্তা","বাংলাদেশের রাজনীতি","স্থানীয় সরকার","আন্তর্জাতিক সম্পর্ক","পররাষ্ট্রনীতি","রাজনৈতিক অর্থনীতি","জনপ্রশাসন","জননীতি","গবেষণা পদ্ধতি","তুলনামূলক রাজনীতি","মানবাধিকার রাজনীতি"],"degree-psychology":["জৈবিক ভিত্তি","সংবেদন","প্রত্যক্ষণ","শিক্ষণ","স্মৃতি","চিন্তা","বুদ্ধি","ব্যক্তিত্ব","বিকাশ","সামাজিক মনোবিজ্ঞান","প্রেষণা","আবেগ","অস্বাভাবিক মনোবিজ্ঞান","পরামর্শ মনোবিজ্ঞান","স্বাস্থ্য মনোবিজ্ঞান","গবেষণা পদ্ধতি","পরিসংখ্যান","শিল্প-সংগঠন মনোবিজ্ঞান"],"degree-sociology":["সমাজ","সংস্কৃতি","সামাজিকীকরণ","সামাজিক প্রতিষ্ঠান","ধর্ম","শিক্ষা","অর্থনীতি ও সমাজ","সামাজিক স্তরবিন্যাস","লিঙ্গ ও সমাজ","গ্রামীণ সমাজ","নগর সমাজ","সামাজিক পরিবর্তন","বিশ্বায়ন","সামাজিক সমস্যা","অপরাধ ও বিচ্যুতি","বাংলাদেশ সমাজ","গবেষণা পদ্ধতি","সমাজতাত্ত্বিক তত্ত্ব"],"honours-bangla":["বাক্যতত্ত্ব","অলংকার","কবিতা পাঠ","গদ্য পাঠ","নাটক","উপন্যাস","রবীন্দ্র সাহিত্য","নজরুল সাহিত্য","লোকসাহিত্য","ছন্দ","সাহিত্য সমালোচনা","ভাষাবিজ্ঞান","প্রাচীন সাহিত্য","আধুনিক সাহিত্য","বানান ও শুদ্ধ ভাষা","অনুবাদ","ভাষা ও ব্যাকরণ","বাংলা ভাষার ইতিহাস"],"honours-english":["Writing Skills","Composition","Poetry","Drama","Fiction","Literary Criticism","Linguistics","Morphology","Semantics","Pragmatics","ELT","Research Writing","Postcolonial Literature","Rhetoric","Translation","Grammar"],"honours-ethics":["পারিবারিক নৈতিকতা","সামাজিক নৈতিকতা","পেশাগত নৈতিকতা","নাগরিক নৈতিকতা","মানবাধিকার","পরিবেশ নৈতিকতা","ডিজিটাল নৈতিকতা","দুর্নীতি বিরোধী নৈতিকতা","ধর্ম ও নৈতিকতা","নৈতিক সিদ্ধান্ত","শান্তি ও সহনশীলতা","নেতৃত্ব নৈতিকতা","গবেষণা নৈতিকতা","আন্তর্জাতিক নৈতিকতা","লিঙ্গ নৈতিকতা","অর্থনৈতিক নৈতিকতা","নৈতিকতার ধারণা","মূল্যবোধ"],"honours-political-science":["গণতন্ত্র","নির্বাচন","রাজনৈতিক দল","ক্ষমতার বিভাজন","রাজনৈতিক চিন্তা","বাংলাদেশের রাজনীতি","স্থানীয় সরকার","আন্তর্জাতিক সম্পর্ক","পররাষ্ট্রনীতি","রাজনৈতিক অর্থনীতি","জনপ্রশাসন","জননীতি","গবেষণা পদ্ধতি","তুলনামূলক রাজনীতি","মানবাধিকার রাজনীতি","রাজনৈতিক উন্নয়ন","রাষ্ট্রের ধারণা","সার্বভৌমত্ব"],"honours-psychology":["শিক্ষণ","স্মৃতি","চিন্তা","বুদ্ধি","ব্যক্তিত্ব","বিকাশ","সামাজিক মনোবিজ্ঞান","প্রেষণা","আবেগ","অস্বাভাবিক মনোবিজ্ঞান","পরামর্শ মনোবিজ্ঞান","স্বাস্থ্য মনোবিজ্ঞান","গবেষণা পদ্ধতি","পরিসংখ্যান","শিল্প-সংগঠন মনোবিজ্ঞান","শিক্ষা মনোবিজ্ঞান","মনোবিজ্ঞানের পরিচয়","জৈবিক ভিত্তি"],"honours-sociology":["সামাজিক প্রতিষ্ঠান","ধর্ম","শিক্ষা","অর্থনীতি ও সমাজ","সামাজিক স্তরবিন্যাস","লিঙ্গ ও সমাজ","গ্রামীণ সমাজ","নগর সমাজ","সামাজিক পরিবর্তন","বিশ্বায়ন","সামাজিক সমস্যা","অপরাধ ও বিচ্যুতি","বাংলাদেশ সমাজ","গবেষণা পদ্ধতি","সমাজতাত্ত্বিক তত্ত্ব","উন্নয়ন সমাজবিজ্ঞান","সমাজবিজ্ঞানের পরিচয়","সমাজ"],"masters-bangla":["নাটক","উপন্যাস","রবীন্দ্র সাহিত্য","নজরুল সাহিত্য","লোকসাহিত্য","ছন্দ","সাহিত্য সমালোচনা","ভাষাবিজ্ঞান","প্রাচীন সাহিত্য","আধুনিক সাহিত্য","বানান ও শুদ্ধ ভাষা","অনুবাদ","ভাষা ও ব্যাকরণ","বাংলা ভাষার ইতিহাস","শব্দতত্ত্ব","রূপতত্ত্ব","বাক্যতত্ত্ব","অলংকার"],"masters-english":["Drama","Fiction","Literary Criticism","Linguistics","Morphology","Semantics","Pragmatics","ELT","Research Writing","Postcolonial Literature","Rhetoric","Translation","Grammar","Syntax","Vocabulary","Writing Skills","Composition"],"masters-ethics":["মানবাধিকার","পরিবেশ নৈতিকতা","ডিজিটাল নৈতিকতা","দুর্নীতি বিরোধী নৈতিকতা","ধর্ম ও নৈতিকতা","নৈতিক সিদ্ধান্ত","শান্তি ও সহনশীলতা","নেতৃত্ব নৈতিকতা","গবেষণা নৈতিকতা","আন্তর্জাতিক নৈতিকতা","লিঙ্গ নৈতিকতা","অর্থনৈতিক নৈতিকতা","নৈতিকতার ধারণা","মূল্যবোধ","মানবিকতা","ব্যক্তিগত নৈতিকতা","পারিবারিক নৈতিকতা","সামাজিক নৈতিকতা"],"masters-political-science":["রাজনৈতিক চিন্তা","বাংলাদেশের রাজনীতি","স্থানীয় সরকার","আন্তর্জাতিক সম্পর্ক","পররাষ্ট্রনীতি","রাজনৈতিক অর্থনীতি","জনপ্রশাসন","জননীতি","গবেষণা পদ্ধতি","তুলনামূলক রাজনীতি","মানবাধিকার রাজনীতি","রাজনৈতিক উন্নয়ন","রাষ্ট্রের ধারণা","সার্বভৌমত্ব","সরকার","সংবিধান","গণতন্ত্র","নির্বাচন"],"masters-psychology":["ব্যক্তিত্ব","বিকাশ","সামাজিক মনোবিজ্ঞান","প্রেষণা","আবেগ","অস্বাভাবিক মনোবিজ্ঞান","পরামর্শ মনোবিজ্ঞান","স্বাস্থ্য মনোবিজ্ঞান","গবেষণা পদ্ধতি","পরিসংখ্যান","শিল্প-সংগঠন মনোবিজ্ঞান","শিক্ষা মনোবিজ্ঞান","মনোবিজ্ঞানের পরিচয়","জৈবিক ভিত্তি","সংবেদন","প্রত্যক্ষণ","শিক্ষণ","স্মৃতি"],"masters-sociology":["সামাজিক স্তরবিন্যাস","লিঙ্গ ও সমাজ","গ্রামীণ সমাজ","নগর সমাজ","সামাজিক পরিবর্তন","বিশ্বায়ন","সামাজিক সমস্যা","অপরাধ ও বিচ্যুতি","বাংলাদেশ সমাজ","গবেষণা পদ্ধতি","সমাজতাত্ত্বিক তত্ত্ব","উন্নয়ন সমাজবিজ্ঞান","সমাজবিজ্ঞানের পরিচয়","সমাজ","সংস্কৃতি","সামাজিকীকরণ","সামাজিক প্রতিষ্ঠান","ধর্ম"],"university-1st-bangla":["ভাষা ও ব্যাকরণ","বাংলা ভাষার ইতিহাস","শব্দতত্ত্ব","রূপতত্ত্ব","বাক্যতত্ত্ব","অলংকার","কবিতা পাঠ","গদ্য পাঠ","নাটক","উপন্যাস","রবীন্দ্র সাহিত্য","নজরুল সাহিত্য","লোকসাহিত্য","ছন্দ","সাহিত্য সমালোচনা","ভাষাবিজ্ঞান","প্রাচীন সাহিত্য","আধুনিক সাহিত্য"],"university-1st-english":["Grammar","Syntax","Vocabulary","Writing Skills","Composition","Poetry","Drama","Fiction","Literary Criticism","Linguistics","Morphology","Semantics","Pragmatics","ELT","Research Writing","Postcolonial Literature"],"university-1st-ethics":["নৈতিকতার ধারণা","মূল্যবোধ","মানবিকতা","ব্যক্তিগত নৈতিকতা","পারিবারিক নৈতিকতা","সামাজিক নৈতিকতা","পেশাগত নৈতিকতা","নাগরিক নৈতিকতা","মানবাধিকার","পরিবেশ নৈতিকতা","ডিজিটাল নৈতিকতা","দুর্নীতি বিরোধী নৈতিকতা","ধর্ম ও নৈতিকতা","নৈতিক সিদ্ধান্ত","শান্তি ও সহনশীলতা","নেতৃত্ব নৈতিকতা","গবেষণা নৈতিকতা","আন্তর্জাতিক নৈতিকতা"],"university-1st-political-science":["রাষ্ট্রের ধারণা","সার্বভৌমত্ব","সরকার","সংবিধান","গণতন্ত্র","নির্বাচন","রাজনৈতিক দল","ক্ষমতার বিভাজন","রাজনৈতিক চিন্তা","বাংলাদেশের রাজনীতি","স্থানীয় সরকার","আন্তর্জাতিক সম্পর্ক","পররাষ্ট্রনীতি","রাজনৈতিক অর্থনীতি","জনপ্রশাসন","জননীতি","গবেষণা পদ্ধতি","তুলনামূলক রাজনীতি"],"university-1st-psychology":["মনোবিজ্ঞানের পরিচয়","জৈবিক ভিত্তি","সংবেদন","প্রত্যক্ষণ","শিক্ষণ","স্মৃতি","চিন্তা","বুদ্ধি","ব্যক্তিত্ব","বিকাশ","সামাজিক মনোবিজ্ঞান","প্রেষণা","আবেগ","অস্বাভাবিক মনোবিজ্ঞান","পরামর্শ মনোবিজ্ঞান","স্বাস্থ্য মনোবিজ্ঞান","গবেষণা পদ্ধতি","পরিসংখ্যান"],"university-1st-sociology":["সমাজবিজ্ঞানের পরিচয়","সমাজ","সংস্কৃতি","সামাজিকীকরণ","সামাজিক প্রতিষ্ঠান","ধর্ম","শিক্ষা","অর্থনীতি ও সমাজ","সামাজিক স্তরবিন্যাস","লিঙ্গ ও সমাজ","গ্রামীণ সমাজ","নগর সমাজ","সামাজিক পরিবর্তন","বিশ্বায়ন","সামাজিক সমস্যা","অপরাধ ও বিচ্যুতি","বাংলাদেশ সমাজ","গবেষণা পদ্ধতি"],"university-2nd-bangla":["রূপতত্ত্ব","বাক্যতত্ত্ব","অলংকার","কবিতা পাঠ","গদ্য পাঠ","নাটক","উপন্যাস","রবীন্দ্র সাহিত্য","নজরুল সাহিত্য","লোকসাহিত্য","ছন্দ","সাহিত্য সমালোচনা","ভাষাবিজ্ঞান","প্রাচীন সাহিত্য","আধুনিক সাহিত্য","বানান ও শুদ্ধ ভাষা","অনুবাদ","ভাষা ও ব্যাকরণ"],"university-2nd-english":["Vocabulary","Writing Skills","Composition","Poetry","Drama","Fiction","Literary Criticism","Linguistics","Morphology","Semantics","Pragmatics","ELT","Research Writing","Postcolonial Literature","Rhetoric","Translation","Grammar"],"university-2nd-ethics":["ব্যক্তিগত নৈতিকতা","পারিবারিক নৈতিকতা","সামাজিক নৈতিকতা","পেশাগত নৈতিকতা","নাগরিক নৈতিকতা","মানবাধিকার","পরিবেশ নৈতিকতা","ডিজিটাল নৈতিকতা","দুর্নীতি বিরোধী নৈতিকতা","ধর্ম ও নৈতিকতা","নৈতিক সিদ্ধান্ত","শান্তি ও সহনশীলতা","নেতৃত্ব নৈতিকতা","গবেষণা নৈতিকতা","আন্তর্জাতিক নৈতিকতা","লিঙ্গ নৈতিকতা","অর্থনৈতিক নৈতিকতা","নৈতিকতার ধারণা"],"university-2nd-political-science":["সংবিধান","গণতন্ত্র","নির্বাচন","রাজনৈতিক দল","ক্ষমতার বিভাজন","রাজনৈতিক চিন্তা","বাংলাদেশের রাজনীতি","স্থানীয় সরকার","আন্তর্জাতিক সম্পর্ক","পররাষ্ট্রনীতি","রাজনৈতিক অর্থনীতি","জনপ্রশাসন","জননীতি","গবেষণা পদ্ধতি","তুলনামূলক রাজনীতি","মানবাধিকার রাজনীতি","রাজনৈতিক উন্নয়ন","রাষ্ট্রের ধারণা"],"university-2nd-psychology":["প্রত্যক্ষণ","শিক্ষণ","স্মৃতি","চিন্তা","বুদ্ধি","ব্যক্তিত্ব","বিকাশ","সামাজিক মনোবিজ্ঞান","প্রেষণা","আবেগ","অস্বাভাবিক মনোবিজ্ঞান","পরামর্শ মনোবিজ্ঞান","স্বাস্থ্য মনোবিজ্ঞান","গবেষণা পদ্ধতি","পরিসংখ্যান","শিল্প-সংগঠন মনোবিজ্ঞান","শিক্ষা মনোবিজ্ঞান","মনোবিজ্ঞানের পরিচয়"],"university-2nd-sociology":["সামাজিকীকরণ","সামাজিক প্রতিষ্ঠান","ধর্ম","শিক্ষা","অর্থনীতি ও সমাজ","সামাজিক স্তরবিন্যাস","লিঙ্গ ও সমাজ","গ্রামীণ সমাজ","নগর সমাজ","সামাজিক পরিবর্তন","বিশ্বায়ন","সামাজিক সমস্যা","অপরাধ ও বিচ্যুতি","বাংলাদেশ সমাজ","গবেষণা পদ্ধতি","সমাজতাত্ত্বিক তত্ত্ব","উন্নয়ন সমাজবিজ্ঞান","সমাজবিজ্ঞানের পরিচয়"],"university-3rd-bangla":["কবিতা পাঠ","গদ্য পাঠ","নাটক","উপন্যাস","রবীন্দ্র সাহিত্য","নজরুল সাহিত্য","লোকসাহিত্য","ছন্দ","সাহিত্য সমালোচনা","ভাষাবিজ্ঞান","প্রাচীন সাহিত্য","আধুনিক সাহিত্য","বানান ও শুদ্ধ ভাষা","অনুবাদ","ভাষা ও ব্যাকরণ","বাংলা ভাষার ইতিহাস","শব্দতত্ত্ব","রূপতত্ত্ব"],"university-3rd-english":["Poetry","Drama","Fiction","Literary Criticism","Linguistics","Morphology","Semantics","Pragmatics","ELT","Research Writing","Postcolonial Literature","Rhetoric","Translation","Grammar","Syntax","Vocabulary"],"university-3rd-ethics":["পেশাগত নৈতিকতা","নাগরিক নৈতিকতা","মানবাধিকার","পরিবেশ নৈতিকতা","ডিজিটাল নৈতিকতা","দুর্নীতি বিরোধী নৈতিকতা","ধর্ম ও নৈতিকতা","নৈতিক সিদ্ধান্ত","শান্তি ও সহনশীলতা","নেতৃত্ব নৈতিকতা","গবেষণা নৈতিকতা","আন্তর্জাতিক নৈতিকতা","লিঙ্গ নৈতিকতা","অর্থনৈতিক নৈতিকতা","নৈতিকতার ধারণা","মূল্যবোধ","মানবিকতা","ব্যক্তিগত নৈতিকতা"],"university-3rd-political-science":["রাজনৈতিক দল","ক্ষমতার বিভাজন","রাজনৈতিক চিন্তা","বাংলাদেশের রাজনীতি","স্থানীয় সরকার","আন্তর্জাতিক সম্পর্ক","পররাষ্ট্রনীতি","রাজনৈতিক অর্থনীতি","জনপ্রশাসন","জননীতি","গবেষণা পদ্ধতি","তুলনামূলক রাজনীতি","মানবাধিকার রাজনীতি","রাজনৈতিক উন্নয়ন","রাষ্ট্রের ধারণা","সার্বভৌমত্ব","সরকার","সংবিধান"],"university-3rd-psychology":["চিন্তা","বুদ্ধি","ব্যক্তিত্ব","বিকাশ","সামাজিক মনোবিজ্ঞান","প্রেষণা","আবেগ","অস্বাভাবিক মনোবিজ্ঞান","পরামর্শ মনোবিজ্ঞান","স্বাস্থ্য মনোবিজ্ঞান","গবেষণা পদ্ধতি","পরিসংখ্যান","শিল্প-সংগঠন মনোবিজ্ঞান","শিক্ষা মনোবিজ্ঞান","মনোবিজ্ঞানের পরিচয়","জৈবিক ভিত্তি","সংবেদন","প্রত্যক্ষণ"],"university-3rd-sociology":["শিক্ষা","অর্থনীতি ও সমাজ","সামাজিক স্তরবিন্যাস","লিঙ্গ ও সমাজ","গ্রামীণ সমাজ","নগর সমাজ","সামাজিক পরিবর্তন","বিশ্বায়ন","সামাজিক সমস্যা","অপরাধ ও বিচ্যুতি","বাংলাদেশ সমাজ","গবেষণা পদ্ধতি","সমাজতাত্ত্বিক তত্ত্ব","উন্নয়ন সমাজবিজ্ঞান","সমাজবিজ্ঞানের পরিচয়","সমাজ","সংস্কৃতি","সামাজিকীকরণ"],"university-4th-bangla":["উপন্যাস","রবীন্দ্র সাহিত্য","নজরুল সাহিত্য","লোকসাহিত্য","ছন্দ","সাহিত্য সমালোচনা","ভাষাবিজ্ঞান","প্রাচীন সাহিত্য","আধুনিক সাহিত্য","বানান ও শুদ্ধ ভাষা","অনুবাদ","ভাষা ও ব্যাকরণ","বাংলা ভাষার ইতিহাস","শব্দতত্ত্ব","রূপতত্ত্ব","বাক্যতত্ত্ব","অলংকার","কবিতা পাঠ"],"university-4th-english":["Fiction","Literary Criticism","Linguistics","Morphology","Semantics","Pragmatics","ELT","Research Writing","Postcolonial Literature","Rhetoric","Translation","Grammar","Syntax","Vocabulary","Writing Skills","Composition","Poetry"],"university-4th-ethics":["পরিবেশ নৈতিকতা","ডিজিটাল নৈতিকতা","দুর্নীতি বিরোধী নৈতিকতা","ধর্ম ও নৈতিকতা","নৈতিক সিদ্ধান্ত","শান্তি ও সহনশীলতা","নেতৃত্ব নৈতিকতা","গবেষণা নৈতিকতা","আন্তর্জাতিক নৈতিকতা","লিঙ্গ নৈতিকতা","অর্থনৈতিক নৈতিকতা","নৈতিকতার ধারণা","মূল্যবোধ","মানবিকতা","ব্যক্তিগত নৈতিকতা","পারিবারিক নৈতিকতা","সামাজিক নৈতিকতা","পেশাগত নৈতিকতা"],"university-4th-political-science":["বাংলাদেশের রাজনীতি","স্থানীয় সরকার","আন্তর্জাতিক সম্পর্ক","পররাষ্ট্রনীতি","রাজনৈতিক অর্থনীতি","জনপ্রশাসন","জননীতি","গবেষণা পদ্ধতি","তুলনামূলক রাজনীতি","মানবাধিকার রাজনীতি","রাজনৈতিক উন্নয়ন","রাষ্ট্রের ধারণা","সার্বভৌমত্ব","সরকার","সংবিধান","গণতন্ত্র","নির্বাচন","রাজনৈতিক দল"],"university-4th-psychology":["বিকাশ","সামাজিক মনোবিজ্ঞান","প্রেষণা","আবেগ","অস্বাভাবিক মনোবিজ্ঞান","পরামর্শ মনোবিজ্ঞান","স্বাস্থ্য মনোবিজ্ঞান","গবেষণা পদ্ধতি","পরিসংখ্যান","শিল্প-সংগঠন মনোবিজ্ঞান","শিক্ষা মনোবিজ্ঞান","মনোবিজ্ঞানের পরিচয়","জৈবিক ভিত্তি","সংবেদন","প্রত্যক্ষণ","শিক্ষণ","স্মৃতি","চিন্তা"],"university-4th-sociology":["লিঙ্গ ও সমাজ","গ্রামীণ সমাজ","নগর সমাজ","সামাজিক পরিবর্তন","বিশ্বায়ন","সামাজিক সমস্যা","অপরাধ ও বিচ্যুতি","বাংলাদেশ সমাজ","গবেষণা পদ্ধতি","সমাজতাত্ত্বিক তত্ত্ব","উন্নয়ন সমাজবিজ্ঞান","সমাজবিজ্ঞানের পরিচয়","সমাজ","সংস্কৃতি","সামাজিকীকরণ","সামাজিক প্রতিষ্ঠান","ধর্ম","শিক্ষা"]};
 
+
+const CLASS8_LIFE_LIVELIHOOD_WRITTEN_TOPICS_V137 = ["কর্মজীবন", "অর্থনৈতিক জীবন", "প্রযুক্তি", "বাজার", "নৈতিকতা", "উদ্যোগ", "ব্যবসা", "সামাজিক অর্থনীতি"];
+const CLASS8_LIFE_LIVELIHOOD_WRITTEN_V137: WrittenQuestion[] = [{"id": "V137-C8LL-WR-001", "subjectId": "class8-life-livelihood", "chapterOrder": 1, "difficulty": "easy", "topic": "কর্মজীবন", "question": "কর্মজীবন অধ্যায়ে কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "কর্মজীবন অধ্যায়ে কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "নিজের আগ্রহ, দক্ষতা ও কাজের পরিবেশ বুঝে ভবিষ্যৎ পরিকল্পনা করা", "keywords": ["কর্মজীবন", "নিজের", "আগ্রহ,", "দক্ষতা", "ও", "কাজের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-002", "subjectId": "class8-life-livelihood", "chapterOrder": 1, "difficulty": "easy", "topic": "কর্মজীবন", "question": "কর্মজীবন অধ্যায়ে কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য উদাহরণসহ লিখো।", "questionBn": "কর্মজীবন অধ্যায়ে কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য উদাহরণসহ লিখো।", "expectedAnswer": "নিজের আগ্রহ, দক্ষতা ও কাজের পরিবেশ বুঝে ভবিষ্যৎ পরিকল্পনা করা", "keywords": ["কর্মজীবন", "নিজের", "আগ্রহ,", "দক্ষতা", "ও", "কাজের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-003", "subjectId": "class8-life-livelihood", "chapterOrder": 1, "difficulty": "easy", "topic": "কর্মজীবন", "question": "কর্মজীবন অধ্যায়ে কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "কর্মজীবন অধ্যায়ে কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "নিজের আগ্রহ, দক্ষতা ও কাজের পরিবেশ বুঝে ভবিষ্যৎ পরিকল্পনা করা", "keywords": ["কর্মজীবন", "নিজের", "আগ্রহ,", "দক্ষতা", "ও", "কাজের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-004", "subjectId": "class8-life-livelihood", "chapterOrder": 2, "difficulty": "easy", "topic": "অর্থনৈতিক জীবন", "question": "অর্থনৈতিক জীবন অধ্যায়ে অর্থনৈতিক জীবনের প্রধান কাজ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "অর্থনৈতিক জীবন অধ্যায়ে অর্থনৈতিক জীবনের প্রধান কাজ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "আয়, ব্যয়, সঞ্চয় ও সম্পদের সঠিক ব্যবহার বোঝা", "keywords": ["অর্থনৈতিক জীবন", "আয়,", "ব্যয়,", "সঞ্চয়", "ও", "সম্পদের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-005", "subjectId": "class8-life-livelihood", "chapterOrder": 2, "difficulty": "easy", "topic": "অর্থনৈতিক জীবন", "question": "অর্থনৈতিক জীবন অধ্যায়ে অর্থনৈতিক জীবনের প্রধান কাজ উদাহরণসহ লিখো।", "questionBn": "অর্থনৈতিক জীবন অধ্যায়ে অর্থনৈতিক জীবনের প্রধান কাজ উদাহরণসহ লিখো।", "expectedAnswer": "আয়, ব্যয়, সঞ্চয় ও সম্পদের সঠিক ব্যবহার বোঝা", "keywords": ["অর্থনৈতিক জীবন", "আয়,", "ব্যয়,", "সঞ্চয়", "ও", "সম্পদের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-006", "subjectId": "class8-life-livelihood", "chapterOrder": 2, "difficulty": "easy", "topic": "অর্থনৈতিক জীবন", "question": "অর্থনৈতিক জীবন অধ্যায়ে অর্থনৈতিক জীবনের প্রধান কাজ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "অর্থনৈতিক জীবন অধ্যায়ে অর্থনৈতিক জীবনের প্রধান কাজ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "আয়, ব্যয়, সঞ্চয় ও সম্পদের সঠিক ব্যবহার বোঝা", "keywords": ["অর্থনৈতিক জীবন", "আয়,", "ব্যয়,", "সঞ্চয়", "ও", "সম্পদের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-007", "subjectId": "class8-life-livelihood", "chapterOrder": 3, "difficulty": "easy", "topic": "প্রযুক্তি", "question": "প্রযুক্তি অধ্যায়ে জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "প্রযুক্তি অধ্যায়ে জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "কাজ দ্রুত, নিরাপদ ও দক্ষ করে তোলা", "keywords": ["প্রযুক্তি", "কাজ", "দ্রুত,", "নিরাপদ", "ও", "দক্ষ"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-008", "subjectId": "class8-life-livelihood", "chapterOrder": 3, "difficulty": "easy", "topic": "প্রযুক্তি", "question": "প্রযুক্তি অধ্যায়ে জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা উদাহরণসহ লিখো।", "questionBn": "প্রযুক্তি অধ্যায়ে জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা উদাহরণসহ লিখো।", "expectedAnswer": "কাজ দ্রুত, নিরাপদ ও দক্ষ করে তোলা", "keywords": ["প্রযুক্তি", "কাজ", "দ্রুত,", "নিরাপদ", "ও", "দক্ষ"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-009", "subjectId": "class8-life-livelihood", "chapterOrder": 3, "difficulty": "easy", "topic": "প্রযুক্তি", "question": "প্রযুক্তি অধ্যায়ে জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "প্রযুক্তি অধ্যায়ে জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "কাজ দ্রুত, নিরাপদ ও দক্ষ করে তোলা", "keywords": ["প্রযুক্তি", "কাজ", "দ্রুত,", "নিরাপদ", "ও", "দক্ষ"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-010", "subjectId": "class8-life-livelihood", "chapterOrder": 4, "difficulty": "easy", "topic": "বাজার", "question": "বাজার অধ্যায়ে বাজার বলতে কী বোঝায় সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "বাজার অধ্যায়ে বাজার বলতে কী বোঝায় সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "ক্রেতা-বিক্রেতার পণ্য ও সেবা বিনিময়ের ব্যবস্থা", "keywords": ["বাজার", "ক্রেতা-বিক্রেতার", "পণ্য", "ও", "সেবা", "বিনিময়ের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-011", "subjectId": "class8-life-livelihood", "chapterOrder": 4, "difficulty": "easy", "topic": "বাজার", "question": "বাজার অধ্যায়ে বাজার বলতে কী বোঝায় উদাহরণসহ লিখো।", "questionBn": "বাজার অধ্যায়ে বাজার বলতে কী বোঝায় উদাহরণসহ লিখো।", "expectedAnswer": "ক্রেতা-বিক্রেতার পণ্য ও সেবা বিনিময়ের ব্যবস্থা", "keywords": ["বাজার", "ক্রেতা-বিক্রেতার", "পণ্য", "ও", "সেবা", "বিনিময়ের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-012", "subjectId": "class8-life-livelihood", "chapterOrder": 4, "difficulty": "easy", "topic": "বাজার", "question": "বাজার অধ্যায়ে বাজার বলতে কী বোঝায় নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "বাজার অধ্যায়ে বাজার বলতে কী বোঝায় নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "ক্রেতা-বিক্রেতার পণ্য ও সেবা বিনিময়ের ব্যবস্থা", "keywords": ["বাজার", "ক্রেতা-বিক্রেতার", "পণ্য", "ও", "সেবা", "বিনিময়ের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-013", "subjectId": "class8-life-livelihood", "chapterOrder": 5, "difficulty": "easy", "topic": "নৈতিকতা", "question": "নৈতিকতা অধ্যায়ে কর্মক্ষেত্রে নৈতিকতার অর্থ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "নৈতিকতা অধ্যায়ে কর্মক্ষেত্রে নৈতিকতার অর্থ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "সততা, দায়িত্ব ও ন্যায্য আচরণ বজায় রাখা", "keywords": ["নৈতিকতা", "সততা,", "দায়িত্ব", "ও", "ন্যায্য", "আচরণ"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-014", "subjectId": "class8-life-livelihood", "chapterOrder": 5, "difficulty": "easy", "topic": "নৈতিকতা", "question": "নৈতিকতা অধ্যায়ে কর্মক্ষেত্রে নৈতিকতার অর্থ উদাহরণসহ লিখো।", "questionBn": "নৈতিকতা অধ্যায়ে কর্মক্ষেত্রে নৈতিকতার অর্থ উদাহরণসহ লিখো।", "expectedAnswer": "সততা, দায়িত্ব ও ন্যায্য আচরণ বজায় রাখা", "keywords": ["নৈতিকতা", "সততা,", "দায়িত্ব", "ও", "ন্যায্য", "আচরণ"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-015", "subjectId": "class8-life-livelihood", "chapterOrder": 5, "difficulty": "easy", "topic": "নৈতিকতা", "question": "নৈতিকতা অধ্যায়ে কর্মক্ষেত্রে নৈতিকতার অর্থ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "নৈতিকতা অধ্যায়ে কর্মক্ষেত্রে নৈতিকতার অর্থ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "সততা, দায়িত্ব ও ন্যায্য আচরণ বজায় রাখা", "keywords": ["নৈতিকতা", "সততা,", "দায়িত্ব", "ও", "ন্যায্য", "আচরণ"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-016", "subjectId": "class8-life-livelihood", "chapterOrder": 6, "difficulty": "easy", "topic": "উদ্যোগ", "question": "উদ্যোগ অধ্যায়ে উদ্যোগের মূল বৈশিষ্ট্য সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "উদ্যোগ অধ্যায়ে উদ্যোগের মূল বৈশিষ্ট্য সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "সমস্যা দেখে পরিকল্পনা করে নতুন কাজ শুরু করা", "keywords": ["উদ্যোগ", "সমস্যা", "দেখে", "পরিকল্পনা", "করে", "নতুন"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-017", "subjectId": "class8-life-livelihood", "chapterOrder": 6, "difficulty": "easy", "topic": "উদ্যোগ", "question": "উদ্যোগ অধ্যায়ে উদ্যোগের মূল বৈশিষ্ট্য উদাহরণসহ লিখো।", "questionBn": "উদ্যোগ অধ্যায়ে উদ্যোগের মূল বৈশিষ্ট্য উদাহরণসহ লিখো।", "expectedAnswer": "সমস্যা দেখে পরিকল্পনা করে নতুন কাজ শুরু করা", "keywords": ["উদ্যোগ", "সমস্যা", "দেখে", "পরিকল্পনা", "করে", "নতুন"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-018", "subjectId": "class8-life-livelihood", "chapterOrder": 6, "difficulty": "easy", "topic": "উদ্যোগ", "question": "উদ্যোগ অধ্যায়ে উদ্যোগের মূল বৈশিষ্ট্য নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "উদ্যোগ অধ্যায়ে উদ্যোগের মূল বৈশিষ্ট্য নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "সমস্যা দেখে পরিকল্পনা করে নতুন কাজ শুরু করা", "keywords": ["উদ্যোগ", "সমস্যা", "দেখে", "পরিকল্পনা", "করে", "নতুন"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-019", "subjectId": "class8-life-livelihood", "chapterOrder": 7, "difficulty": "easy", "topic": "ব্যবসা", "question": "ব্যবসা অধ্যায়ে ব্যবসার প্রধান লক্ষ্য সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "ব্যবসা অধ্যায়ে ব্যবসার প্রধান লক্ষ্য সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "পণ্য বা সেবা দিয়ে চাহিদা পূরণ ও আয় করা", "keywords": ["ব্যবসা", "পণ্য", "বা", "সেবা", "দিয়ে", "চাহিদা"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-020", "subjectId": "class8-life-livelihood", "chapterOrder": 7, "difficulty": "easy", "topic": "ব্যবসা", "question": "ব্যবসা অধ্যায়ে ব্যবসার প্রধান লক্ষ্য উদাহরণসহ লিখো।", "questionBn": "ব্যবসা অধ্যায়ে ব্যবসার প্রধান লক্ষ্য উদাহরণসহ লিখো।", "expectedAnswer": "পণ্য বা সেবা দিয়ে চাহিদা পূরণ ও আয় করা", "keywords": ["ব্যবসা", "পণ্য", "বা", "সেবা", "দিয়ে", "চাহিদা"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-021", "subjectId": "class8-life-livelihood", "chapterOrder": 7, "difficulty": "easy", "topic": "ব্যবসা", "question": "ব্যবসা অধ্যায়ে ব্যবসার প্রধান লক্ষ্য নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "ব্যবসা অধ্যায়ে ব্যবসার প্রধান লক্ষ্য নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "পণ্য বা সেবা দিয়ে চাহিদা পূরণ ও আয় করা", "keywords": ["ব্যবসা", "পণ্য", "বা", "সেবা", "দিয়ে", "চাহিদা"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-022", "subjectId": "class8-life-livelihood", "chapterOrder": 8, "difficulty": "easy", "topic": "সামাজিক অর্থনীতি", "question": "সামাজিক অর্থনীতি অধ্যায়ে সামাজিক অর্থনীতির গুরুত্ব সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "সামাজিক অর্থনীতি অধ্যায়ে সামাজিক অর্থনীতির গুরুত্ব সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "সমাজের মানুষের কল্যাণ ও সম্পদের ন্যায্য ব্যবহার নিশ্চিত করা", "keywords": ["সামাজিক অর্থনীতি", "সমাজের", "মানুষের", "কল্যাণ", "ও", "সম্পদের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-023", "subjectId": "class8-life-livelihood", "chapterOrder": 8, "difficulty": "easy", "topic": "সামাজিক অর্থনীতি", "question": "সামাজিক অর্থনীতি অধ্যায়ে সামাজিক অর্থনীতির গুরুত্ব উদাহরণসহ লিখো।", "questionBn": "সামাজিক অর্থনীতি অধ্যায়ে সামাজিক অর্থনীতির গুরুত্ব উদাহরণসহ লিখো।", "expectedAnswer": "সমাজের মানুষের কল্যাণ ও সম্পদের ন্যায্য ব্যবহার নিশ্চিত করা", "keywords": ["সামাজিক অর্থনীতি", "সমাজের", "মানুষের", "কল্যাণ", "ও", "সম্পদের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-024", "subjectId": "class8-life-livelihood", "chapterOrder": 8, "difficulty": "easy", "topic": "সামাজিক অর্থনীতি", "question": "সামাজিক অর্থনীতি অধ্যায়ে সামাজিক অর্থনীতির গুরুত্ব নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "সামাজিক অর্থনীতি অধ্যায়ে সামাজিক অর্থনীতির গুরুত্ব নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "সমাজের মানুষের কল্যাণ ও সম্পদের ন্যায্য ব্যবহার নিশ্চিত করা", "keywords": ["সামাজিক অর্থনীতি", "সমাজের", "মানুষের", "কল্যাণ", "ও", "সম্পদের"], "xpReward": 35, "duration": 12, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-025", "subjectId": "class8-life-livelihood", "chapterOrder": 1, "difficulty": "medium", "topic": "কর্মজীবন", "question": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "নিজের আগ্রহ, দক্ষতা ও কাজের পরিবেশ বুঝে ভবিষ্যৎ পরিকল্পনা করা", "keywords": ["কর্মজীবন", "নিজের", "আগ্রহ,", "দক্ষতা", "ও", "কাজের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-026", "subjectId": "class8-life-livelihood", "chapterOrder": 1, "difficulty": "medium", "topic": "কর্মজীবন", "question": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "নিজের আগ্রহ, দক্ষতা ও কাজের পরিবেশ বুঝে ভবিষ্যৎ পরিকল্পনা করা", "keywords": ["কর্মজীবন", "নিজের", "আগ্রহ,", "দক্ষতা", "ও", "কাজের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-027", "subjectId": "class8-life-livelihood", "chapterOrder": 1, "difficulty": "medium", "topic": "কর্মজীবন", "question": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "নিজের আগ্রহ, দক্ষতা ও কাজের পরিবেশ বুঝে ভবিষ্যৎ পরিকল্পনা করা", "keywords": ["কর্মজীবন", "নিজের", "আগ্রহ,", "দক্ষতা", "ও", "কাজের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-028", "subjectId": "class8-life-livelihood", "chapterOrder": 2, "difficulty": "medium", "topic": "অর্থনৈতিক জীবন", "question": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "আয়, ব্যয়, সঞ্চয় ও সম্পদের সঠিক ব্যবহার বোঝা", "keywords": ["অর্থনৈতিক জীবন", "আয়,", "ব্যয়,", "সঞ্চয়", "ও", "সম্পদের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-029", "subjectId": "class8-life-livelihood", "chapterOrder": 2, "difficulty": "medium", "topic": "অর্থনৈতিক জীবন", "question": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "আয়, ব্যয়, সঞ্চয় ও সম্পদের সঠিক ব্যবহার বোঝা", "keywords": ["অর্থনৈতিক জীবন", "আয়,", "ব্যয়,", "সঞ্চয়", "ও", "সম্পদের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-030", "subjectId": "class8-life-livelihood", "chapterOrder": 2, "difficulty": "medium", "topic": "অর্থনৈতিক জীবন", "question": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "আয়, ব্যয়, সঞ্চয় ও সম্পদের সঠিক ব্যবহার বোঝা", "keywords": ["অর্থনৈতিক জীবন", "আয়,", "ব্যয়,", "সঞ্চয়", "ও", "সম্পদের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-031", "subjectId": "class8-life-livelihood", "chapterOrder": 3, "difficulty": "medium", "topic": "প্রযুক্তি", "question": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "কাজ দ্রুত, নিরাপদ ও দক্ষ করে তোলা", "keywords": ["প্রযুক্তি", "কাজ", "দ্রুত,", "নিরাপদ", "ও", "দক্ষ"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-032", "subjectId": "class8-life-livelihood", "chapterOrder": 3, "difficulty": "medium", "topic": "প্রযুক্তি", "question": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "কাজ দ্রুত, নিরাপদ ও দক্ষ করে তোলা", "keywords": ["প্রযুক্তি", "কাজ", "দ্রুত,", "নিরাপদ", "ও", "দক্ষ"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-033", "subjectId": "class8-life-livelihood", "chapterOrder": 3, "difficulty": "medium", "topic": "প্রযুক্তি", "question": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "কাজ দ্রুত, নিরাপদ ও দক্ষ করে তোলা", "keywords": ["প্রযুক্তি", "কাজ", "দ্রুত,", "নিরাপদ", "ও", "দক্ষ"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-034", "subjectId": "class8-life-livelihood", "chapterOrder": 4, "difficulty": "medium", "topic": "বাজার", "question": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "ক্রেতা-বিক্রেতার পণ্য ও সেবা বিনিময়ের ব্যবস্থা", "keywords": ["বাজার", "ক্রেতা-বিক্রেতার", "পণ্য", "ও", "সেবা", "বিনিময়ের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-035", "subjectId": "class8-life-livelihood", "chapterOrder": 4, "difficulty": "medium", "topic": "বাজার", "question": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "ক্রেতা-বিক্রেতার পণ্য ও সেবা বিনিময়ের ব্যবস্থা", "keywords": ["বাজার", "ক্রেতা-বিক্রেতার", "পণ্য", "ও", "সেবা", "বিনিময়ের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-036", "subjectId": "class8-life-livelihood", "chapterOrder": 4, "difficulty": "medium", "topic": "বাজার", "question": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "ক্রেতা-বিক্রেতার পণ্য ও সেবা বিনিময়ের ব্যবস্থা", "keywords": ["বাজার", "ক্রেতা-বিক্রেতার", "পণ্য", "ও", "সেবা", "বিনিময়ের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-037", "subjectId": "class8-life-livelihood", "chapterOrder": 5, "difficulty": "medium", "topic": "নৈতিকতা", "question": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "সততা, দায়িত্ব ও ন্যায্য আচরণ বজায় রাখা", "keywords": ["নৈতিকতা", "সততা,", "দায়িত্ব", "ও", "ন্যায্য", "আচরণ"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-038", "subjectId": "class8-life-livelihood", "chapterOrder": 5, "difficulty": "medium", "topic": "নৈতিকতা", "question": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "সততা, দায়িত্ব ও ন্যায্য আচরণ বজায় রাখা", "keywords": ["নৈতিকতা", "সততা,", "দায়িত্ব", "ও", "ন্যায্য", "আচরণ"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-039", "subjectId": "class8-life-livelihood", "chapterOrder": 5, "difficulty": "medium", "topic": "নৈতিকতা", "question": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "সততা, দায়িত্ব ও ন্যায্য আচরণ বজায় রাখা", "keywords": ["নৈতিকতা", "সততা,", "দায়িত্ব", "ও", "ন্যায্য", "আচরণ"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-040", "subjectId": "class8-life-livelihood", "chapterOrder": 6, "difficulty": "medium", "topic": "উদ্যোগ", "question": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "সমস্যা দেখে পরিকল্পনা করে নতুন কাজ শুরু করা", "keywords": ["উদ্যোগ", "সমস্যা", "দেখে", "পরিকল্পনা", "করে", "নতুন"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-041", "subjectId": "class8-life-livelihood", "chapterOrder": 6, "difficulty": "medium", "topic": "উদ্যোগ", "question": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "সমস্যা দেখে পরিকল্পনা করে নতুন কাজ শুরু করা", "keywords": ["উদ্যোগ", "সমস্যা", "দেখে", "পরিকল্পনা", "করে", "নতুন"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-042", "subjectId": "class8-life-livelihood", "chapterOrder": 6, "difficulty": "medium", "topic": "উদ্যোগ", "question": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "সমস্যা দেখে পরিকল্পনা করে নতুন কাজ শুরু করা", "keywords": ["উদ্যোগ", "সমস্যা", "দেখে", "পরিকল্পনা", "করে", "নতুন"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-043", "subjectId": "class8-life-livelihood", "chapterOrder": 7, "difficulty": "medium", "topic": "ব্যবসা", "question": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "পণ্য বা সেবা দিয়ে চাহিদা পূরণ ও আয় করা", "keywords": ["ব্যবসা", "পণ্য", "বা", "সেবা", "দিয়ে", "চাহিদা"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-044", "subjectId": "class8-life-livelihood", "chapterOrder": 7, "difficulty": "medium", "topic": "ব্যবসা", "question": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "পণ্য বা সেবা দিয়ে চাহিদা পূরণ ও আয় করা", "keywords": ["ব্যবসা", "পণ্য", "বা", "সেবা", "দিয়ে", "চাহিদা"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-045", "subjectId": "class8-life-livelihood", "chapterOrder": 7, "difficulty": "medium", "topic": "ব্যবসা", "question": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "পণ্য বা সেবা দিয়ে চাহিদা পূরণ ও আয় করা", "keywords": ["ব্যবসা", "পণ্য", "বা", "সেবা", "দিয়ে", "চাহিদা"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-046", "subjectId": "class8-life-livelihood", "chapterOrder": 8, "difficulty": "medium", "topic": "সামাজিক অর্থনীতি", "question": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বিষয়টি সংক্ষেপে ব্যাখ্যা করো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "সমাজের মানুষের কল্যাণ ও সম্পদের ন্যায্য ব্যবহার নিশ্চিত করা", "keywords": ["সামাজিক অর্থনীতি", "সমাজের", "মানুষের", "কল্যাণ", "ও", "সম্পদের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-047", "subjectId": "class8-life-livelihood", "chapterOrder": 8, "difficulty": "medium", "topic": "সামাজিক অর্থনীতি", "question": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বিষয়টি উদাহরণসহ লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "সমাজের মানুষের কল্যাণ ও সম্পদের ন্যায্য ব্যবহার নিশ্চিত করা", "keywords": ["সামাজিক অর্থনীতি", "সমাজের", "মানুষের", "কল্যাণ", "ও", "সম্পদের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-048", "subjectId": "class8-life-livelihood", "chapterOrder": 8, "difficulty": "medium", "topic": "সামাজিক অর্থনীতি", "question": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "questionBn": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বিষয়টি নিজের জীবনের সঙ্গে মিলিয়ে লিখো; সুবিধা ও সীমাবদ্ধতা উল্লেখ করো।", "expectedAnswer": "সমাজের মানুষের কল্যাণ ও সম্পদের ন্যায্য ব্যবহার নিশ্চিত করা", "keywords": ["সামাজিক অর্থনীতি", "সমাজের", "মানুষের", "কল্যাণ", "ও", "সম্পদের"], "xpReward": 48, "duration": 16, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-049", "subjectId": "class8-life-livelihood", "chapterOrder": 1, "difficulty": "hard", "topic": "কর্মজীবন", "question": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "নিজের আগ্রহ, দক্ষতা ও কাজের পরিবেশ বুঝে ভবিষ্যৎ পরিকল্পনা করা", "keywords": ["কর্মজীবন", "নিজের", "আগ্রহ,", "দক্ষতা", "ও", "কাজের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-050", "subjectId": "class8-life-livelihood", "chapterOrder": 1, "difficulty": "hard", "topic": "কর্মজীবন", "question": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "questionBn": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "expectedAnswer": "নিজের আগ্রহ, দক্ষতা ও কাজের পরিবেশ বুঝে ভবিষ্যৎ পরিকল্পনা করা", "keywords": ["কর্মজীবন", "নিজের", "আগ্রহ,", "দক্ষতা", "ও", "কাজের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-051", "subjectId": "class8-life-livelihood", "chapterOrder": 1, "difficulty": "hard", "topic": "কর্মজীবন", "question": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "কর্মজীবন অধ্যায়ের কর্মজীবন প্রস্তুতির মূল উদ্দেশ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "নিজের আগ্রহ, দক্ষতা ও কাজের পরিবেশ বুঝে ভবিষ্যৎ পরিকল্পনা করা", "keywords": ["কর্মজীবন", "নিজের", "আগ্রহ,", "দক্ষতা", "ও", "কাজের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-052", "subjectId": "class8-life-livelihood", "chapterOrder": 2, "difficulty": "hard", "topic": "অর্থনৈতিক জীবন", "question": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "আয়, ব্যয়, সঞ্চয় ও সম্পদের সঠিক ব্যবহার বোঝা", "keywords": ["অর্থনৈতিক জীবন", "আয়,", "ব্যয়,", "সঞ্চয়", "ও", "সম্পদের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-053", "subjectId": "class8-life-livelihood", "chapterOrder": 2, "difficulty": "hard", "topic": "অর্থনৈতিক জীবন", "question": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "questionBn": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "expectedAnswer": "আয়, ব্যয়, সঞ্চয় ও সম্পদের সঠিক ব্যবহার বোঝা", "keywords": ["অর্থনৈতিক জীবন", "আয়,", "ব্যয়,", "সঞ্চয়", "ও", "সম্পদের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-054", "subjectId": "class8-life-livelihood", "chapterOrder": 2, "difficulty": "hard", "topic": "অর্থনৈতিক জীবন", "question": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "অর্থনৈতিক জীবন অধ্যায়ের অর্থনৈতিক জীবনের প্রধান কাজ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "আয়, ব্যয়, সঞ্চয় ও সম্পদের সঠিক ব্যবহার বোঝা", "keywords": ["অর্থনৈতিক জীবন", "আয়,", "ব্যয়,", "সঞ্চয়", "ও", "সম্পদের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-055", "subjectId": "class8-life-livelihood", "chapterOrder": 3, "difficulty": "hard", "topic": "প্রযুক্তি", "question": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "কাজ দ্রুত, নিরাপদ ও দক্ষ করে তোলা", "keywords": ["প্রযুক্তি", "কাজ", "দ্রুত,", "নিরাপদ", "ও", "দক্ষ"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-056", "subjectId": "class8-life-livelihood", "chapterOrder": 3, "difficulty": "hard", "topic": "প্রযুক্তি", "question": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "questionBn": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "expectedAnswer": "কাজ দ্রুত, নিরাপদ ও দক্ষ করে তোলা", "keywords": ["প্রযুক্তি", "কাজ", "দ্রুত,", "নিরাপদ", "ও", "দক্ষ"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-057", "subjectId": "class8-life-livelihood", "chapterOrder": 3, "difficulty": "hard", "topic": "প্রযুক্তি", "question": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "প্রযুক্তি অধ্যায়ের জীবিকা উন্নয়নে প্রযুক্তির ভূমিকা বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "কাজ দ্রুত, নিরাপদ ও দক্ষ করে তোলা", "keywords": ["প্রযুক্তি", "কাজ", "দ্রুত,", "নিরাপদ", "ও", "দক্ষ"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-058", "subjectId": "class8-life-livelihood", "chapterOrder": 4, "difficulty": "hard", "topic": "বাজার", "question": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "ক্রেতা-বিক্রেতার পণ্য ও সেবা বিনিময়ের ব্যবস্থা", "keywords": ["বাজার", "ক্রেতা-বিক্রেতার", "পণ্য", "ও", "সেবা", "বিনিময়ের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-059", "subjectId": "class8-life-livelihood", "chapterOrder": 4, "difficulty": "hard", "topic": "বাজার", "question": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "questionBn": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "expectedAnswer": "ক্রেতা-বিক্রেতার পণ্য ও সেবা বিনিময়ের ব্যবস্থা", "keywords": ["বাজার", "ক্রেতা-বিক্রেতার", "পণ্য", "ও", "সেবা", "বিনিময়ের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-060", "subjectId": "class8-life-livelihood", "chapterOrder": 4, "difficulty": "hard", "topic": "বাজার", "question": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "বাজার অধ্যায়ের বাজার বলতে কী বোঝায় বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "ক্রেতা-বিক্রেতার পণ্য ও সেবা বিনিময়ের ব্যবস্থা", "keywords": ["বাজার", "ক্রেতা-বিক্রেতার", "পণ্য", "ও", "সেবা", "বিনিময়ের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-061", "subjectId": "class8-life-livelihood", "chapterOrder": 5, "difficulty": "hard", "topic": "নৈতিকতা", "question": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "সততা, দায়িত্ব ও ন্যায্য আচরণ বজায় রাখা", "keywords": ["নৈতিকতা", "সততা,", "দায়িত্ব", "ও", "ন্যায্য", "আচরণ"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-062", "subjectId": "class8-life-livelihood", "chapterOrder": 5, "difficulty": "hard", "topic": "নৈতিকতা", "question": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "questionBn": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "expectedAnswer": "সততা, দায়িত্ব ও ন্যায্য আচরণ বজায় রাখা", "keywords": ["নৈতিকতা", "সততা,", "দায়িত্ব", "ও", "ন্যায্য", "আচরণ"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-063", "subjectId": "class8-life-livelihood", "chapterOrder": 5, "difficulty": "hard", "topic": "নৈতিকতা", "question": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "নৈতিকতা অধ্যায়ের কর্মক্ষেত্রে নৈতিকতার অর্থ বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "সততা, দায়িত্ব ও ন্যায্য আচরণ বজায় রাখা", "keywords": ["নৈতিকতা", "সততা,", "দায়িত্ব", "ও", "ন্যায্য", "আচরণ"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-064", "subjectId": "class8-life-livelihood", "chapterOrder": 6, "difficulty": "hard", "topic": "উদ্যোগ", "question": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "সমস্যা দেখে পরিকল্পনা করে নতুন কাজ শুরু করা", "keywords": ["উদ্যোগ", "সমস্যা", "দেখে", "পরিকল্পনা", "করে", "নতুন"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-065", "subjectId": "class8-life-livelihood", "chapterOrder": 6, "difficulty": "hard", "topic": "উদ্যোগ", "question": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "questionBn": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "expectedAnswer": "সমস্যা দেখে পরিকল্পনা করে নতুন কাজ শুরু করা", "keywords": ["উদ্যোগ", "সমস্যা", "দেখে", "পরিকল্পনা", "করে", "নতুন"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-066", "subjectId": "class8-life-livelihood", "chapterOrder": 6, "difficulty": "hard", "topic": "উদ্যোগ", "question": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "উদ্যোগ অধ্যায়ের উদ্যোগের মূল বৈশিষ্ট্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "সমস্যা দেখে পরিকল্পনা করে নতুন কাজ শুরু করা", "keywords": ["উদ্যোগ", "সমস্যা", "দেখে", "পরিকল্পনা", "করে", "নতুন"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-067", "subjectId": "class8-life-livelihood", "chapterOrder": 7, "difficulty": "hard", "topic": "ব্যবসা", "question": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "পণ্য বা সেবা দিয়ে চাহিদা পূরণ ও আয় করা", "keywords": ["ব্যবসা", "পণ্য", "বা", "সেবা", "দিয়ে", "চাহিদা"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-068", "subjectId": "class8-life-livelihood", "chapterOrder": 7, "difficulty": "hard", "topic": "ব্যবসা", "question": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "questionBn": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "expectedAnswer": "পণ্য বা সেবা দিয়ে চাহিদা পূরণ ও আয় করা", "keywords": ["ব্যবসা", "পণ্য", "বা", "সেবা", "দিয়ে", "চাহিদা"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-069", "subjectId": "class8-life-livelihood", "chapterOrder": 7, "difficulty": "hard", "topic": "ব্যবসা", "question": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "ব্যবসা অধ্যায়ের ব্যবসার প্রধান লক্ষ্য বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "পণ্য বা সেবা দিয়ে চাহিদা পূরণ ও আয় করা", "keywords": ["ব্যবসা", "পণ্য", "বা", "সেবা", "দিয়ে", "চাহিদা"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-070", "subjectId": "class8-life-livelihood", "chapterOrder": 8, "difficulty": "hard", "topic": "সামাজিক অর্থনীতি", "question": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "questionBn": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ সংক্ষেপে ব্যাখ্যা করো।", "expectedAnswer": "সমাজের মানুষের কল্যাণ ও সম্পদের ন্যায্য ব্যবহার নিশ্চিত করা", "keywords": ["সামাজিক অর্থনীতি", "সমাজের", "মানুষের", "কল্যাণ", "ও", "সম্পদের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-071", "subjectId": "class8-life-livelihood", "chapterOrder": 8, "difficulty": "hard", "topic": "সামাজিক অর্থনীতি", "question": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "questionBn": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ উদাহরণসহ লিখো।", "expectedAnswer": "সমাজের মানুষের কল্যাণ ও সম্পদের ন্যায্য ব্যবহার নিশ্চিত করা", "keywords": ["সামাজিক অর্থনীতি", "সমাজের", "মানুষের", "কল্যাণ", "ও", "সম্পদের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}, {"id": "V137-C8LL-WR-072", "subjectId": "class8-life-livelihood", "chapterOrder": 8, "difficulty": "hard", "topic": "সামাজিক অর্থনীতি", "question": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "questionBn": "সামাজিক অর্থনীতি অধ্যায়ের সামাজিক অর্থনীতির গুরুত্ব বাস্তব জীবনে কীভাবে কাজে লাগবে তা পরিকল্পনাসহ নিজের জীবনের সঙ্গে মিলিয়ে লিখো।", "expectedAnswer": "সমাজের মানুষের কল্যাণ ও সম্পদের ন্যায্য ব্যবহার নিশ্চিত করা", "keywords": ["সামাজিক অর্থনীতি", "সমাজের", "মানুষের", "কল্যাণ", "ও", "সম্পদের"], "xpReward": 60, "duration": 20, "sourceId": "user-v137-class8-life-livelihood", "sourceTitle": "Study RPG v1.3.7 Class 8 Life & Livelihood fix", "sourceUrl": "local-update:v1.3.7", "examModes": ["SSC"], "classLevel": "Class 8"}];
+DATASET_WRITTEN_BY_SUBJECT["class8-life-livelihood"] = [
+  ...(DATASET_WRITTEN_BY_SUBJECT["class8-life-livelihood"] || []),
+  ...CLASS8_LIFE_LIVELIHOOD_WRITTEN_V137,
+];
+WRITTEN_TOPICS["class8-life-livelihood"] = Array.from(new Set([
+  ...(WRITTEN_TOPICS["class8-life-livelihood"] || []),
+  ...CLASS8_LIFE_LIVELIHOOD_WRITTEN_TOPICS_V137,
+]));
+
+const V137_BLANK_SUBJECT_WRITTEN_FIX: WrittenQuestion[] = [
+  {
+    "id": "V137-BLANK-WR-ADMISSION-SOCIAL-WORK-001",
+    "subjectId": "admission-social-work",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "Social Work Methods and Welfare",
+    "question": "সমাজকর্ম বিষয়ের Social Work Methods and Welfare অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সমাজকর্ম বিষয়ের Social Work Methods and Welfare অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "Social Work Methods and Welfare",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "Admission"
+    ],
+    "classLevel": "Admission"
+  },
+  {
+    "id": "V137-BLANK-WR-ADMISSION-SOCIAL-WORK-002",
+    "subjectId": "admission-social-work",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "Social Work Methods and Welfare",
+    "question": "সমাজকর্ম বিষয়ের Social Work Methods and Welfare অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সমাজকর্ম বিষয়ের Social Work Methods and Welfare অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "Social Work Methods and Welfare",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "Admission"
+    ],
+    "classLevel": "Admission"
+  },
+  {
+    "id": "V137-BLANK-WR-ADMISSION-SOCIAL-WORK-003",
+    "subjectId": "admission-social-work",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "Social Work Methods and Welfare",
+    "question": "সমাজকর্ম বিষয়ের Social Work Methods and Welfare অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সমাজকর্ম বিষয়ের Social Work Methods and Welfare অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "Social Work Methods and Welfare",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "Admission"
+    ],
+    "classLevel": "Admission"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-AGRICULTURE-001",
+    "subjectId": "class6-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "অঙ্কুরোদ্গম",
+    "question": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "অঙ্কুরোদ্গম",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-AGRICULTURE-002",
+    "subjectId": "class6-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "আগাছা",
+    "question": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আগাছা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-AGRICULTURE-003",
+    "subjectId": "class6-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "আবহাওয়া",
+    "question": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আবহাওয়া",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-AGRICULTURE-004",
+    "subjectId": "class6-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "অঙ্কুরোদ্গম",
+    "question": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "অঙ্কুরোদ্গম",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-AGRICULTURE-005",
+    "subjectId": "class6-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "আগাছা",
+    "question": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আগাছা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-AGRICULTURE-006",
+    "subjectId": "class6-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "আবহাওয়া",
+    "question": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আবহাওয়া",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-AGRICULTURE-007",
+    "subjectId": "class6-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "অঙ্কুরোদ্গম",
+    "question": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "অঙ্কুরোদ্গম",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-AGRICULTURE-008",
+    "subjectId": "class6-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "আগাছা",
+    "question": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আগাছা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-AGRICULTURE-009",
+    "subjectId": "class6-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "আবহাওয়া",
+    "question": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আবহাওয়া",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARABIC-001",
+    "subjectId": "class6-arabic",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আদব ও শুভেচ্ছা",
+    "question": "সচিত্র আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সচিত্র আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আদব ও শুভেচ্ছা",
+      "সচিত্র আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARABIC-002",
+    "subjectId": "class6-arabic",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "আরবি বর্ণমালা",
+    "question": "সচিত্র আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সচিত্র আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি বর্ণমালা",
+      "সচিত্র আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARABIC-003",
+    "subjectId": "class6-arabic",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "ছোট বাক্য",
+    "question": "সচিত্র আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সচিত্র আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "ছোট বাক্য",
+      "সচিত্র আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARABIC-004",
+    "subjectId": "class6-arabic",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "আদব ও শুভেচ্ছা",
+    "question": "সচিত্র আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সচিত্র আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আদব ও শুভেচ্ছা",
+      "সচিত্র আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARABIC-005",
+    "subjectId": "class6-arabic",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "আরবি বর্ণমালা",
+    "question": "সচিত্র আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সচিত্র আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি বর্ণমালা",
+      "সচিত্র আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARABIC-006",
+    "subjectId": "class6-arabic",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "ছোট বাক্য",
+    "question": "সচিত্র আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সচিত্র আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "ছোট বাক্য",
+      "সচিত্র আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARABIC-007",
+    "subjectId": "class6-arabic",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "আদব ও শুভেচ্ছা",
+    "question": "সচিত্র আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সচিত্র আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আদব ও শুভেচ্ছা",
+      "সচিত্র আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARABIC-008",
+    "subjectId": "class6-arabic",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "আরবি বর্ণমালা",
+    "question": "সচিত্র আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সচিত্র আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি বর্ণমালা",
+      "সচিত্র আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARABIC-009",
+    "subjectId": "class6-arabic",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "ছোট বাক্য",
+    "question": "সচিত্র আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সচিত্র আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "ছোট বাক্য",
+      "সচিত্র আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARTS-CRAFTS-001",
+    "subjectId": "class6-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "উপকরণ",
+    "question": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "উপকরণ",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARTS-CRAFTS-002",
+    "subjectId": "class6-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "নকশা",
+    "question": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "নকশা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARTS-CRAFTS-003",
+    "subjectId": "class6-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "পরিবেশ ও সৃজনশীলতা",
+    "question": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "পরিবেশ ও সৃজনশীলতা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARTS-CRAFTS-004",
+    "subjectId": "class6-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "উপকরণ",
+    "question": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "উপকরণ",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARTS-CRAFTS-005",
+    "subjectId": "class6-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "নকশা",
+    "question": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "নকশা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARTS-CRAFTS-006",
+    "subjectId": "class6-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "পরিবেশ ও সৃজনশীলতা",
+    "question": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "পরিবেশ ও সৃজনশীলতা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARTS-CRAFTS-007",
+    "subjectId": "class6-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "উপকরণ",
+    "question": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "উপকরণ",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARTS-CRAFTS-008",
+    "subjectId": "class6-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "নকশা",
+    "question": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "নকশা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ARTS-CRAFTS-009",
+    "subjectId": "class6-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "পরিবেশ ও সৃজনশীলতা",
+    "question": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "পরিবেশ ও সৃজনশীলতা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-BUDDHIST-001",
+    "subjectId": "class6-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "অষ্টাঙ্গিক মার্গ",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "অষ্টাঙ্গিক মার্গ",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-BUDDHIST-002",
+    "subjectId": "class6-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "উৎসব ও করুণা",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "উৎসব ও করুণা",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-BUDDHIST-003",
+    "subjectId": "class6-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "চার আর্যসত্য",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "চার আর্যসত্য",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-BUDDHIST-004",
+    "subjectId": "class6-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "অষ্টাঙ্গিক মার্গ",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "অষ্টাঙ্গিক মার্গ",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-BUDDHIST-005",
+    "subjectId": "class6-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "উৎসব ও করুণা",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "উৎসব ও করুণা",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-BUDDHIST-006",
+    "subjectId": "class6-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "চার আর্যসত্য",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "চার আর্যসত্য",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-BUDDHIST-007",
+    "subjectId": "class6-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "অষ্টাঙ্গিক মার্গ",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "অষ্টাঙ্গিক মার্গ",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-BUDDHIST-008",
+    "subjectId": "class6-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "উৎসব ও করুণা",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "উৎসব ও করুণা",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-BUDDHIST-009",
+    "subjectId": "class6-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "চার আর্যসত্য",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "চার আর্যসত্য",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-CHRISTIAN-001",
+    "subjectId": "class6-christian",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-CHRISTIAN-002",
+    "subjectId": "class6-christian",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "উৎসব",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "উৎসব",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-CHRISTIAN-003",
+    "subjectId": "class6-christian",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "খ্রিষ্টীয় নৈতিকতা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "খ্রিষ্টীয় নৈতিকতা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-CHRISTIAN-004",
+    "subjectId": "class6-christian",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-CHRISTIAN-005",
+    "subjectId": "class6-christian",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "উৎসব",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "উৎসব",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-CHRISTIAN-006",
+    "subjectId": "class6-christian",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "খ্রিষ্টীয় নৈতিকতা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "খ্রিষ্টীয় নৈতিকতা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-CHRISTIAN-007",
+    "subjectId": "class6-christian",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-CHRISTIAN-008",
+    "subjectId": "class6-christian",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "উৎসব",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "উৎসব",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-CHRISTIAN-009",
+    "subjectId": "class6-christian",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "খ্রিষ্টীয় নৈতিকতা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "খ্রিষ্টীয় নৈতিকতা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ETHNIC-LANGUAGE-001",
+    "subjectId": "class6-ethnic-language",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "উৎসব",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "উৎসব",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ETHNIC-LANGUAGE-002",
+    "subjectId": "class6-ethnic-language",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "জীবনযাপন",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "জীবনযাপন",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ETHNIC-LANGUAGE-003",
+    "subjectId": "class6-ethnic-language",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "পোশাক ও অলংকার",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও অলংকার",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ETHNIC-LANGUAGE-004",
+    "subjectId": "class6-ethnic-language",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "উৎসব",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "উৎসব",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ETHNIC-LANGUAGE-005",
+    "subjectId": "class6-ethnic-language",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "জীবনযাপন",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "জীবনযাপন",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ETHNIC-LANGUAGE-006",
+    "subjectId": "class6-ethnic-language",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "পোশাক ও অলংকার",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও অলংকার",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ETHNIC-LANGUAGE-007",
+    "subjectId": "class6-ethnic-language",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "উৎসব",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "উৎসব",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ETHNIC-LANGUAGE-008",
+    "subjectId": "class6-ethnic-language",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "জীবনযাপন",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "জীবনযাপন",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ETHNIC-LANGUAGE-009",
+    "subjectId": "class6-ethnic-language",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "পোশাক ও অলংকার",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও অলংকার",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HINDU-001",
+    "subjectId": "class6-hindu",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HINDU-002",
+    "subjectId": "class6-hindu",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ধর্মীয় গ্রন্থ",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্মীয় গ্রন্থ",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HINDU-003",
+    "subjectId": "class6-hindu",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "নৈতিক শিক্ষা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "নৈতিক শিক্ষা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HINDU-004",
+    "subjectId": "class6-hindu",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HINDU-005",
+    "subjectId": "class6-hindu",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ধর্মীয় গ্রন্থ",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্মীয় গ্রন্থ",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HINDU-006",
+    "subjectId": "class6-hindu",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "নৈতিক শিক্ষা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "নৈতিক শিক্ষা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HINDU-007",
+    "subjectId": "class6-hindu",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HINDU-008",
+    "subjectId": "class6-hindu",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ধর্মীয় গ্রন্থ",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্মীয় গ্রন্থ",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HINDU-009",
+    "subjectId": "class6-hindu",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "নৈতিক শিক্ষা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "নৈতিক শিক্ষা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HOME-SCIENCE-001",
+    "subjectId": "class6-home-science",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HOME-SCIENCE-002",
+    "subjectId": "class6-home-science",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "পরিবার ও গৃহপরিচালনা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও গৃহপরিচালনা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HOME-SCIENCE-003",
+    "subjectId": "class6-home-science",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "পোশাক ও পরিচর্যা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও পরিচর্যা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HOME-SCIENCE-004",
+    "subjectId": "class6-home-science",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HOME-SCIENCE-005",
+    "subjectId": "class6-home-science",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "পরিবার ও গৃহপরিচালনা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও গৃহপরিচালনা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HOME-SCIENCE-006",
+    "subjectId": "class6-home-science",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "পোশাক ও পরিচর্যা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও পরিচর্যা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HOME-SCIENCE-007",
+    "subjectId": "class6-home-science",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HOME-SCIENCE-008",
+    "subjectId": "class6-home-science",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "পরিবার ও গৃহপরিচালনা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও গৃহপরিচালনা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-HOME-SCIENCE-009",
+    "subjectId": "class6-home-science",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "পোশাক ও পরিচর্যা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও পরিচর্যা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ISLAM-001",
+    "subjectId": "class6-islam",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আখলাক",
+    "question": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আখলাক",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ISLAM-002",
+    "subjectId": "class6-islam",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ISLAM-003",
+    "subjectId": "class6-islam",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "ইসলামি ইতিহাস",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইসলামি ইতিহাস",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ISLAM-004",
+    "subjectId": "class6-islam",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "আখলাক",
+    "question": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আখলাক",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ISLAM-005",
+    "subjectId": "class6-islam",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ISLAM-006",
+    "subjectId": "class6-islam",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "ইসলামি ইতিহাস",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইসলামি ইতিহাস",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ISLAM-007",
+    "subjectId": "class6-islam",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "আখলাক",
+    "question": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আখলাক",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ISLAM-008",
+    "subjectId": "class6-islam",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-ISLAM-009",
+    "subjectId": "class6-islam",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "ইসলামি ইতিহাস",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইসলামি ইতিহাস",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-MUSIC-001",
+    "subjectId": "class6-music",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "গান ও ছন্দ",
+    "question": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "গান ও ছন্দ",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-MUSIC-002",
+    "subjectId": "class6-music",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "জাতীয় ও লোকসংগীত",
+    "question": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "জাতীয় ও লোকসংগীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-MUSIC-003",
+    "subjectId": "class6-music",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "বাদ্যযন্ত্র",
+    "question": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "বাদ্যযন্ত্র",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-MUSIC-004",
+    "subjectId": "class6-music",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "গান ও ছন্দ",
+    "question": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "গান ও ছন্দ",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-MUSIC-005",
+    "subjectId": "class6-music",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "জাতীয় ও লোকসংগীত",
+    "question": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "জাতীয় ও লোকসংগীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-MUSIC-006",
+    "subjectId": "class6-music",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "বাদ্যযন্ত্র",
+    "question": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "বাদ্যযন্ত্র",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-MUSIC-007",
+    "subjectId": "class6-music",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "গান ও ছন্দ",
+    "question": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "গান ও ছন্দ",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-MUSIC-008",
+    "subjectId": "class6-music",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "জাতীয় ও লোকসংগীত",
+    "question": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "জাতীয় ও লোকসংগীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-MUSIC-009",
+    "subjectId": "class6-music",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "বাদ্যযন্ত্র",
+    "question": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "বাদ্যযন্ত্র",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-PALI-001",
+    "subjectId": "class6-pali",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "অনুবাদ",
+    "question": "পালি বিষয়ের অনুবাদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের অনুবাদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "অনুবাদ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-PALI-002",
+    "subjectId": "class6-pali",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ক্রিয়া",
+    "question": "পালি বিষয়ের ক্রিয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের ক্রিয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ক্রিয়া",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-PALI-003",
+    "subjectId": "class6-pali",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "ধর্মীয় শব্দ",
+    "question": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ধর্মীয় শব্দ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-PALI-004",
+    "subjectId": "class6-pali",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "অনুবাদ",
+    "question": "পালি বিষয়ের অনুবাদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের অনুবাদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "অনুবাদ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-PALI-005",
+    "subjectId": "class6-pali",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ক্রিয়া",
+    "question": "পালি বিষয়ের ক্রিয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের ক্রিয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ক্রিয়া",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-PALI-006",
+    "subjectId": "class6-pali",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "ধর্মীয় শব্দ",
+    "question": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ধর্মীয় শব্দ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-PALI-007",
+    "subjectId": "class6-pali",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "অনুবাদ",
+    "question": "পালি বিষয়ের অনুবাদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের অনুবাদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "অনুবাদ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-PALI-008",
+    "subjectId": "class6-pali",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ক্রিয়া",
+    "question": "পালি বিষয়ের ক্রিয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের ক্রিয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ক্রিয়া",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-PALI-009",
+    "subjectId": "class6-pali",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "ধর্মীয় শব্দ",
+    "question": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ধর্মীয় শব্দ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-SANSKRIT-001",
+    "subjectId": "class6-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "অনুবাদ",
+    "question": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "অনুবাদ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-SANSKRIT-002",
+    "subjectId": "class6-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ক্রিয়ারূপ",
+    "question": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "ক্রিয়ারূপ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-SANSKRIT-003",
+    "subjectId": "class6-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "বর্ণমালা",
+    "question": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "বর্ণমালা",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-SANSKRIT-004",
+    "subjectId": "class6-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "অনুবাদ",
+    "question": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "অনুবাদ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-SANSKRIT-005",
+    "subjectId": "class6-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ক্রিয়ারূপ",
+    "question": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "ক্রিয়ারূপ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-SANSKRIT-006",
+    "subjectId": "class6-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "বর্ণমালা",
+    "question": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "বর্ণমালা",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-SANSKRIT-007",
+    "subjectId": "class6-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "অনুবাদ",
+    "question": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "অনুবাদ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-SANSKRIT-008",
+    "subjectId": "class6-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ক্রিয়ারূপ",
+    "question": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "ক্রিয়ারূপ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS6-SANSKRIT-009",
+    "subjectId": "class6-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "বর্ণমালা",
+    "question": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "বর্ণমালা",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 6"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-AGRICULTURE-001",
+    "subjectId": "class7-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "অঙ্কুরোদ্গম",
+    "question": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "অঙ্কুরোদ্গম",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-AGRICULTURE-002",
+    "subjectId": "class7-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "আগাছা",
+    "question": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আগাছা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-AGRICULTURE-003",
+    "subjectId": "class7-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "আবহাওয়া",
+    "question": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আবহাওয়া",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-AGRICULTURE-004",
+    "subjectId": "class7-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "অঙ্কুরোদ্গম",
+    "question": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "অঙ্কুরোদ্গম",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-AGRICULTURE-005",
+    "subjectId": "class7-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "আগাছা",
+    "question": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আগাছা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-AGRICULTURE-006",
+    "subjectId": "class7-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "আবহাওয়া",
+    "question": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আবহাওয়া",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-AGRICULTURE-007",
+    "subjectId": "class7-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "অঙ্কুরোদ্গম",
+    "question": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের অঙ্কুরোদ্গম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "অঙ্কুরোদ্গম",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-AGRICULTURE-008",
+    "subjectId": "class7-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "আগাছা",
+    "question": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আগাছা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আগাছা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-AGRICULTURE-009",
+    "subjectId": "class7-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "আবহাওয়া",
+    "question": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের আবহাওয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "আবহাওয়া",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARABIC-001",
+    "subjectId": "class7-arabic",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আদব ও শুভেচ্ছা",
+    "question": "সহজ আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আদব ও শুভেচ্ছা",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARABIC-002",
+    "subjectId": "class7-arabic",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "আরবি বর্ণমালা",
+    "question": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি বর্ণমালা",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARABIC-003",
+    "subjectId": "class7-arabic",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "ছোট বাক্য",
+    "question": "সহজ আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "ছোট বাক্য",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARABIC-004",
+    "subjectId": "class7-arabic",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "আদব ও শুভেচ্ছা",
+    "question": "সহজ আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আদব ও শুভেচ্ছা",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARABIC-005",
+    "subjectId": "class7-arabic",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "আরবি বর্ণমালা",
+    "question": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি বর্ণমালা",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARABIC-006",
+    "subjectId": "class7-arabic",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "ছোট বাক্য",
+    "question": "সহজ আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "ছোট বাক্য",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARABIC-007",
+    "subjectId": "class7-arabic",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "আদব ও শুভেচ্ছা",
+    "question": "সহজ আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের আদব ও শুভেচ্ছা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আদব ও শুভেচ্ছা",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARABIC-008",
+    "subjectId": "class7-arabic",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "আরবি বর্ণমালা",
+    "question": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণমালা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি বর্ণমালা",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARABIC-009",
+    "subjectId": "class7-arabic",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "ছোট বাক্য",
+    "question": "সহজ আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের ছোট বাক্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "ছোট বাক্য",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARTS-CRAFTS-001",
+    "subjectId": "class7-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "উপকরণ",
+    "question": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "উপকরণ",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARTS-CRAFTS-002",
+    "subjectId": "class7-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "নকশা",
+    "question": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "নকশা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARTS-CRAFTS-003",
+    "subjectId": "class7-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "পরিবেশ ও সৃজনশীলতা",
+    "question": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "পরিবেশ ও সৃজনশীলতা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARTS-CRAFTS-004",
+    "subjectId": "class7-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "উপকরণ",
+    "question": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "উপকরণ",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARTS-CRAFTS-005",
+    "subjectId": "class7-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "নকশা",
+    "question": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "নকশা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARTS-CRAFTS-006",
+    "subjectId": "class7-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "পরিবেশ ও সৃজনশীলতা",
+    "question": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "পরিবেশ ও সৃজনশীলতা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARTS-CRAFTS-007",
+    "subjectId": "class7-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "উপকরণ",
+    "question": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের উপকরণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "উপকরণ",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARTS-CRAFTS-008",
+    "subjectId": "class7-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "নকশা",
+    "question": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের নকশা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "নকশা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ARTS-CRAFTS-009",
+    "subjectId": "class7-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "পরিবেশ ও সৃজনশীলতা",
+    "question": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের পরিবেশ ও সৃজনশীলতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "পরিবেশ ও সৃজনশীলতা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-BUDDHIST-001",
+    "subjectId": "class7-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "অষ্টাঙ্গিক মার্গ",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "অষ্টাঙ্গিক মার্গ",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-BUDDHIST-002",
+    "subjectId": "class7-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "উৎসব ও করুণা",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "উৎসব ও করুণা",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-BUDDHIST-003",
+    "subjectId": "class7-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "চার আর্যসত্য",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "চার আর্যসত্য",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-BUDDHIST-004",
+    "subjectId": "class7-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "অষ্টাঙ্গিক মার্গ",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "অষ্টাঙ্গিক মার্গ",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-BUDDHIST-005",
+    "subjectId": "class7-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "উৎসব ও করুণা",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "উৎসব ও করুণা",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-BUDDHIST-006",
+    "subjectId": "class7-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "চার আর্যসত্য",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "চার আর্যসত্য",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-BUDDHIST-007",
+    "subjectId": "class7-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "অষ্টাঙ্গিক মার্গ",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "অষ্টাঙ্গিক মার্গ",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-BUDDHIST-008",
+    "subjectId": "class7-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "উৎসব ও করুণা",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের উৎসব ও করুণা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "উৎসব ও করুণা",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-BUDDHIST-009",
+    "subjectId": "class7-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "চার আর্যসত্য",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "চার আর্যসত্য",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-CHRISTIAN-001",
+    "subjectId": "class7-christian",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-CHRISTIAN-002",
+    "subjectId": "class7-christian",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "উৎসব",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "উৎসব",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-CHRISTIAN-003",
+    "subjectId": "class7-christian",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "খ্রিষ্টীয় নৈতিকতা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "খ্রিষ্টীয় নৈতিকতা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-CHRISTIAN-004",
+    "subjectId": "class7-christian",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-CHRISTIAN-005",
+    "subjectId": "class7-christian",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "উৎসব",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "উৎসব",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-CHRISTIAN-006",
+    "subjectId": "class7-christian",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "খ্রিষ্টীয় নৈতিকতা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "খ্রিষ্টীয় নৈতিকতা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-CHRISTIAN-007",
+    "subjectId": "class7-christian",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-CHRISTIAN-008",
+    "subjectId": "class7-christian",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "উৎসব",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের উৎসব অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "উৎসব",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-CHRISTIAN-009",
+    "subjectId": "class7-christian",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "খ্রিষ্টীয় নৈতিকতা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "খ্রিষ্টীয় নৈতিকতা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ETHNIC-LANGUAGE-001",
+    "subjectId": "class7-ethnic-language",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "উৎসব",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "উৎসব",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ETHNIC-LANGUAGE-002",
+    "subjectId": "class7-ethnic-language",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "জীবনযাপন",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "জীবনযাপন",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ETHNIC-LANGUAGE-003",
+    "subjectId": "class7-ethnic-language",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "পোশাক ও অলংকার",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও অলংকার",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ETHNIC-LANGUAGE-004",
+    "subjectId": "class7-ethnic-language",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "উৎসব",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "উৎসব",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ETHNIC-LANGUAGE-005",
+    "subjectId": "class7-ethnic-language",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "জীবনযাপন",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "জীবনযাপন",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ETHNIC-LANGUAGE-006",
+    "subjectId": "class7-ethnic-language",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "পোশাক ও অলংকার",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও অলংকার",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ETHNIC-LANGUAGE-007",
+    "subjectId": "class7-ethnic-language",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "উৎসব",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের উৎসব অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "উৎসব",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ETHNIC-LANGUAGE-008",
+    "subjectId": "class7-ethnic-language",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "জীবনযাপন",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের জীবনযাপন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "জীবনযাপন",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ETHNIC-LANGUAGE-009",
+    "subjectId": "class7-ethnic-language",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "পোশাক ও অলংকার",
+    "question": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের পোশাক ও অলংকার অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি বিষয়ের মূল ধারণা বুঝে বাস্তব জীবনে প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও অলংকার",
+      "ক্ষুদ্র নৃগোষ্ঠীর ভাষা ও সংস্কৃতি",
+      "ক্ষুদ্র",
+      "নৃগোষ্ঠীর",
+      "ভাষা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HEALTH-001",
+    "subjectId": "class7-health",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আঘাত প্রতিরোধ",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের আঘাত প্রতিরোধ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের আঘাত প্রতিরোধ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "আঘাত প্রতিরোধ",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HEALTH-002",
+    "subjectId": "class7-health",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "খেলাধুলা",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলাধুলা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলাধুলা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "খেলাধুলা",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HEALTH-003",
+    "subjectId": "class7-health",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "খেলার নিয়ম",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলার নিয়ম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলার নিয়ম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "খেলার নিয়ম",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HEALTH-004",
+    "subjectId": "class7-health",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "আঘাত প্রতিরোধ",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের আঘাত প্রতিরোধ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের আঘাত প্রতিরোধ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "আঘাত প্রতিরোধ",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HEALTH-005",
+    "subjectId": "class7-health",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "খেলাধুলা",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলাধুলা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলাধুলা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "খেলাধুলা",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HEALTH-006",
+    "subjectId": "class7-health",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "খেলার নিয়ম",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলার নিয়ম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলার নিয়ম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "খেলার নিয়ম",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HEALTH-007",
+    "subjectId": "class7-health",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "আঘাত প্রতিরোধ",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের আঘাত প্রতিরোধ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের আঘাত প্রতিরোধ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "আঘাত প্রতিরোধ",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HEALTH-008",
+    "subjectId": "class7-health",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "খেলাধুলা",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলাধুলা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলাধুলা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "খেলাধুলা",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HEALTH-009",
+    "subjectId": "class7-health",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "খেলার নিয়ম",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলার নিয়ম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলার নিয়ম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "খেলার নিয়ম",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HINDU-001",
+    "subjectId": "class7-hindu",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HINDU-002",
+    "subjectId": "class7-hindu",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ধর্মীয় গ্রন্থ",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্মীয় গ্রন্থ",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HINDU-003",
+    "subjectId": "class7-hindu",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "নৈতিক শিক্ষা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "নৈতিক শিক্ষা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HINDU-004",
+    "subjectId": "class7-hindu",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HINDU-005",
+    "subjectId": "class7-hindu",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ধর্মীয় গ্রন্থ",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্মীয় গ্রন্থ",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HINDU-006",
+    "subjectId": "class7-hindu",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "নৈতিক শিক্ষা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "নৈতিক শিক্ষা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HINDU-007",
+    "subjectId": "class7-hindu",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "ঈশ্বর ও সৃষ্টি",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ঈশ্বর ও সৃষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ঈশ্বর ও সৃষ্টি",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HINDU-008",
+    "subjectId": "class7-hindu",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ধর্মীয় গ্রন্থ",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্মীয় গ্রন্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্মীয় গ্রন্থ",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HINDU-009",
+    "subjectId": "class7-hindu",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "নৈতিক শিক্ষা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের নৈতিক শিক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "নৈতিক শিক্ষা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HOME-SCIENCE-001",
+    "subjectId": "class7-home-science",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HOME-SCIENCE-002",
+    "subjectId": "class7-home-science",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "পরিবার ও গৃহপরিচালনা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও গৃহপরিচালনা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HOME-SCIENCE-003",
+    "subjectId": "class7-home-science",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "পোশাক ও পরিচর্যা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও পরিচর্যা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HOME-SCIENCE-004",
+    "subjectId": "class7-home-science",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HOME-SCIENCE-005",
+    "subjectId": "class7-home-science",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "পরিবার ও গৃহপরিচালনা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও গৃহপরিচালনা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HOME-SCIENCE-006",
+    "subjectId": "class7-home-science",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "পোশাক ও পরিচর্যা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও পরিচর্যা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HOME-SCIENCE-007",
+    "subjectId": "class7-home-science",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HOME-SCIENCE-008",
+    "subjectId": "class7-home-science",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "পরিবার ও গৃহপরিচালনা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহপরিচালনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও গৃহপরিচালনা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-HOME-SCIENCE-009",
+    "subjectId": "class7-home-science",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "পোশাক ও পরিচর্যা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচর্যা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও পরিচর্যা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ISLAM-001",
+    "subjectId": "class7-islam",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আখলাক",
+    "question": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আখলাক",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ISLAM-002",
+    "subjectId": "class7-islam",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ISLAM-003",
+    "subjectId": "class7-islam",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "ইসলামি ইতিহাস",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইসলামি ইতিহাস",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ISLAM-004",
+    "subjectId": "class7-islam",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "আখলাক",
+    "question": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আখলাক",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ISLAM-005",
+    "subjectId": "class7-islam",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ISLAM-006",
+    "subjectId": "class7-islam",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "ইসলামি ইতিহাস",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইসলামি ইতিহাস",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ISLAM-007",
+    "subjectId": "class7-islam",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "আখলাক",
+    "question": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আখলাক",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ISLAM-008",
+    "subjectId": "class7-islam",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-ISLAM-009",
+    "subjectId": "class7-islam",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "ইসলামি ইতিহাস",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইসলামি ইতিহাস অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইসলামি ইতিহাস",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-MUSIC-001",
+    "subjectId": "class7-music",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "গান ও ছন্দ",
+    "question": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "গান ও ছন্দ",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-MUSIC-002",
+    "subjectId": "class7-music",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "জাতীয় ও লোকসংগীত",
+    "question": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "জাতীয় ও লোকসংগীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-MUSIC-003",
+    "subjectId": "class7-music",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "বাদ্যযন্ত্র",
+    "question": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "বাদ্যযন্ত্র",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-MUSIC-004",
+    "subjectId": "class7-music",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "গান ও ছন্দ",
+    "question": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "গান ও ছন্দ",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-MUSIC-005",
+    "subjectId": "class7-music",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "জাতীয় ও লোকসংগীত",
+    "question": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "জাতীয় ও লোকসংগীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-MUSIC-006",
+    "subjectId": "class7-music",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "বাদ্যযন্ত্র",
+    "question": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "বাদ্যযন্ত্র",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-MUSIC-007",
+    "subjectId": "class7-music",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "গান ও ছন্দ",
+    "question": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের গান ও ছন্দ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "গান ও ছন্দ",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-MUSIC-008",
+    "subjectId": "class7-music",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "জাতীয় ও লোকসংগীত",
+    "question": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের জাতীয় ও লোকসংগীত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "জাতীয় ও লোকসংগীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-MUSIC-009",
+    "subjectId": "class7-music",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "বাদ্যযন্ত্র",
+    "question": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের বাদ্যযন্ত্র অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "বাদ্যযন্ত্র",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-PALI-001",
+    "subjectId": "class7-pali",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "অনুবাদ",
+    "question": "পালি বিষয়ের অনুবাদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের অনুবাদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "অনুবাদ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-PALI-002",
+    "subjectId": "class7-pali",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ক্রিয়া",
+    "question": "পালি বিষয়ের ক্রিয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের ক্রিয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ক্রিয়া",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-PALI-003",
+    "subjectId": "class7-pali",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "ধর্মীয় শব্দ",
+    "question": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ধর্মীয় শব্দ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-PALI-004",
+    "subjectId": "class7-pali",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "অনুবাদ",
+    "question": "পালি বিষয়ের অনুবাদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের অনুবাদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "অনুবাদ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-PALI-005",
+    "subjectId": "class7-pali",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ক্রিয়া",
+    "question": "পালি বিষয়ের ক্রিয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের ক্রিয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ক্রিয়া",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-PALI-006",
+    "subjectId": "class7-pali",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "ধর্মীয় শব্দ",
+    "question": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ধর্মীয় শব্দ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-PALI-007",
+    "subjectId": "class7-pali",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "অনুবাদ",
+    "question": "পালি বিষয়ের অনুবাদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের অনুবাদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "অনুবাদ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-PALI-008",
+    "subjectId": "class7-pali",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ক্রিয়া",
+    "question": "পালি বিষয়ের ক্রিয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের ক্রিয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ক্রিয়া",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-PALI-009",
+    "subjectId": "class7-pali",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "ধর্মীয় শব্দ",
+    "question": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের ধর্মীয় শব্দ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ধর্মীয় শব্দ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-SANSKRIT-001",
+    "subjectId": "class7-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "অনুবাদ",
+    "question": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "অনুবাদ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-SANSKRIT-002",
+    "subjectId": "class7-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ক্রিয়ারূপ",
+    "question": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "ক্রিয়ারূপ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-SANSKRIT-003",
+    "subjectId": "class7-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "বর্ণমালা",
+    "question": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "বর্ণমালা",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-SANSKRIT-004",
+    "subjectId": "class7-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "অনুবাদ",
+    "question": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "অনুবাদ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-SANSKRIT-005",
+    "subjectId": "class7-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ক্রিয়ারূপ",
+    "question": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "ক্রিয়ারূপ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-SANSKRIT-006",
+    "subjectId": "class7-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "বর্ণমালা",
+    "question": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "বর্ণমালা",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-SANSKRIT-007",
+    "subjectId": "class7-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "অনুবাদ",
+    "question": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের অনুবাদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "অনুবাদ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-SANSKRIT-008",
+    "subjectId": "class7-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ক্রিয়ারূপ",
+    "question": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের ক্রিয়ারূপ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "ক্রিয়ারূপ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS7-SANSKRIT-009",
+    "subjectId": "class7-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "বর্ণমালা",
+    "question": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের বর্ণমালা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "বর্ণমালা",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 7"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-AGRICULTURE-001",
+    "subjectId": "class8-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "কৃষির ধারণা",
+    "question": "কৃষিশিক্ষা বিষয়ের কৃষির ধারণা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের কৃষির ধারণা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "কৃষির ধারণা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-AGRICULTURE-002",
+    "subjectId": "class8-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ফসল উৎপাদন",
+    "question": "কৃষিশিক্ষা বিষয়ের ফসল উৎপাদন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের ফসল উৎপাদন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "ফসল উৎপাদন",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-AGRICULTURE-003",
+    "subjectId": "class8-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "উদ্ভিদ সুরক্ষা",
+    "question": "কৃষিশিক্ষা বিষয়ের উদ্ভিদ সুরক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের উদ্ভিদ সুরক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "উদ্ভিদ সুরক্ষা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-AGRICULTURE-004",
+    "subjectId": "class8-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "কৃষির ধারণা",
+    "question": "কৃষিশিক্ষা বিষয়ের কৃষির ধারণা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের কৃষির ধারণা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "কৃষির ধারণা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-AGRICULTURE-005",
+    "subjectId": "class8-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ফসল উৎপাদন",
+    "question": "কৃষিশিক্ষা বিষয়ের ফসল উৎপাদন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের ফসল উৎপাদন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "ফসল উৎপাদন",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-AGRICULTURE-006",
+    "subjectId": "class8-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "উদ্ভিদ সুরক্ষা",
+    "question": "কৃষিশিক্ষা বিষয়ের উদ্ভিদ সুরক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের উদ্ভিদ সুরক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "উদ্ভিদ সুরক্ষা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-AGRICULTURE-007",
+    "subjectId": "class8-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "কৃষির ধারণা",
+    "question": "কৃষিশিক্ষা বিষয়ের কৃষির ধারণা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের কৃষির ধারণা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "কৃষির ধারণা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-AGRICULTURE-008",
+    "subjectId": "class8-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ফসল উৎপাদন",
+    "question": "কৃষিশিক্ষা বিষয়ের ফসল উৎপাদন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের ফসল উৎপাদন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "ফসল উৎপাদন",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-AGRICULTURE-009",
+    "subjectId": "class8-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "উদ্ভিদ সুরক্ষা",
+    "question": "কৃষিশিক্ষা বিষয়ের উদ্ভিদ সুরক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের উদ্ভিদ সুরক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "উদ্ভিদ সুরক্ষা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARABIC-001",
+    "subjectId": "class8-arabic",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আরবি বর্ণ",
+    "question": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি বর্ণ",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARABIC-002",
+    "subjectId": "class8-arabic",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "উচ্চারণ",
+    "question": "সহজ আরবি পাঠ বিষয়ের উচ্চারণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের উচ্চারণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "উচ্চারণ",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARABIC-003",
+    "subjectId": "class8-arabic",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "শব্দার্থ",
+    "question": "সহজ আরবি পাঠ বিষয়ের শব্দার্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের শব্দার্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "শব্দার্থ",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARABIC-004",
+    "subjectId": "class8-arabic",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "আরবি বর্ণ",
+    "question": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি বর্ণ",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARABIC-005",
+    "subjectId": "class8-arabic",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "উচ্চারণ",
+    "question": "সহজ আরবি পাঠ বিষয়ের উচ্চারণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের উচ্চারণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "উচ্চারণ",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARABIC-006",
+    "subjectId": "class8-arabic",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "শব্দার্থ",
+    "question": "সহজ আরবি পাঠ বিষয়ের শব্দার্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের শব্দার্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "শব্দার্থ",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARABIC-007",
+    "subjectId": "class8-arabic",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "আরবি বর্ণ",
+    "question": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের আরবি বর্ণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি বর্ণ",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARABIC-008",
+    "subjectId": "class8-arabic",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "উচ্চারণ",
+    "question": "সহজ আরবি পাঠ বিষয়ের উচ্চারণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের উচ্চারণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "উচ্চারণ",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARABIC-009",
+    "subjectId": "class8-arabic",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "শব্দার্থ",
+    "question": "সহজ আরবি পাঠ বিষয়ের শব্দার্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সহজ আরবি পাঠ বিষয়ের শব্দার্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "শব্দার্থ",
+      "সহজ আরবি পাঠ",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARTS-CRAFTS-001",
+    "subjectId": "class8-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "রং ও রেখা",
+    "question": "চারু ও কারুকলা বিষয়ের রং ও রেখা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের রং ও রেখা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "রং ও রেখা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARTS-CRAFTS-002",
+    "subjectId": "class8-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "আকৃতি ও নকশা",
+    "question": "চারু ও কারুকলা বিষয়ের আকৃতি ও নকশা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের আকৃতি ও নকশা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "আকৃতি ও নকশা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARTS-CRAFTS-003",
+    "subjectId": "class8-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "লোকশিল্প",
+    "question": "চারু ও কারুকলা বিষয়ের লোকশিল্প অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের লোকশিল্প অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "লোকশিল্প",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARTS-CRAFTS-004",
+    "subjectId": "class8-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "রং ও রেখা",
+    "question": "চারু ও কারুকলা বিষয়ের রং ও রেখা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের রং ও রেখা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "রং ও রেখা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARTS-CRAFTS-005",
+    "subjectId": "class8-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "আকৃতি ও নকশা",
+    "question": "চারু ও কারুকলা বিষয়ের আকৃতি ও নকশা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের আকৃতি ও নকশা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "আকৃতি ও নকশা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARTS-CRAFTS-006",
+    "subjectId": "class8-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "লোকশিল্প",
+    "question": "চারু ও কারুকলা বিষয়ের লোকশিল্প অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের লোকশিল্প অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "লোকশিল্প",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARTS-CRAFTS-007",
+    "subjectId": "class8-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "রং ও রেখা",
+    "question": "চারু ও কারুকলা বিষয়ের রং ও রেখা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের রং ও রেখা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "রং ও রেখা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARTS-CRAFTS-008",
+    "subjectId": "class8-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "আকৃতি ও নকশা",
+    "question": "চারু ও কারুকলা বিষয়ের আকৃতি ও নকশা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের আকৃতি ও নকশা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "আকৃতি ও নকশা",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ARTS-CRAFTS-009",
+    "subjectId": "class8-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "লোকশিল্প",
+    "question": "চারু ও কারুকলা বিষয়ের লোকশিল্প অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের লোকশিল্প অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "লোকশিল্প",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-BUDDHIST-001",
+    "subjectId": "class8-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "বুদ্ধ ও ধর্ম",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধ ও ধর্ম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধ ও ধর্ম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "বুদ্ধ ও ধর্ম",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-BUDDHIST-002",
+    "subjectId": "class8-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "চার আর্যসত্য",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "চার আর্যসত্য",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-BUDDHIST-003",
+    "subjectId": "class8-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "অষ্টাঙ্গিক মার্গ",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "অষ্টাঙ্গিক মার্গ",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-BUDDHIST-004",
+    "subjectId": "class8-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "বুদ্ধ ও ধর্ম",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধ ও ধর্ম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধ ও ধর্ম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "বুদ্ধ ও ধর্ম",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-BUDDHIST-005",
+    "subjectId": "class8-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "চার আর্যসত্য",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "চার আর্যসত্য",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-BUDDHIST-006",
+    "subjectId": "class8-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "অষ্টাঙ্গিক মার্গ",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "অষ্টাঙ্গিক মার্গ",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-BUDDHIST-007",
+    "subjectId": "class8-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "বুদ্ধ ও ধর্ম",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধ ও ধর্ম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধ ও ধর্ম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "বুদ্ধ ও ধর্ম",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-BUDDHIST-008",
+    "subjectId": "class8-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "চার আর্যসত্য",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের চার আর্যসত্য অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "চার আর্যসত্য",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-BUDDHIST-009",
+    "subjectId": "class8-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "অষ্টাঙ্গিক মার্গ",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের অষ্টাঙ্গিক মার্গ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "অষ্টাঙ্গিক মার্গ",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-CHRISTIAN-001",
+    "subjectId": "class8-christian",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "বিশ্বাস",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বিশ্বাস অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বিশ্বাস অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "বিশ্বাস",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-CHRISTIAN-002",
+    "subjectId": "class8-christian",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "বাইবেল",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বাইবেল অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বাইবেল অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "বাইবেল",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-CHRISTIAN-003",
+    "subjectId": "class8-christian",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "প্রার্থনা ও উপাসনা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের প্রার্থনা ও উপাসনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের প্রার্থনা ও উপাসনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "প্রার্থনা ও উপাসনা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-CHRISTIAN-004",
+    "subjectId": "class8-christian",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "বিশ্বাস",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বিশ্বাস অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বিশ্বাস অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "বিশ্বাস",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-CHRISTIAN-005",
+    "subjectId": "class8-christian",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "বাইবেল",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বাইবেল অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বাইবেল অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "বাইবেল",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-CHRISTIAN-006",
+    "subjectId": "class8-christian",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "প্রার্থনা ও উপাসনা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের প্রার্থনা ও উপাসনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের প্রার্থনা ও উপাসনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "প্রার্থনা ও উপাসনা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-CHRISTIAN-007",
+    "subjectId": "class8-christian",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "বিশ্বাস",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বিশ্বাস অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বিশ্বাস অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "বিশ্বাস",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-CHRISTIAN-008",
+    "subjectId": "class8-christian",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "বাইবেল",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বাইবেল অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের বাইবেল অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "বাইবেল",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-CHRISTIAN-009",
+    "subjectId": "class8-christian",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "প্রার্থনা ও উপাসনা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের প্রার্থনা ও উপাসনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের প্রার্থনা ও উপাসনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "প্রার্থনা ও উপাসনা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HEALTH-001",
+    "subjectId": "class8-health",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "শারীরিক সক্ষমতা",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের শারীরিক সক্ষমতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের শারীরিক সক্ষমতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "শারীরিক সক্ষমতা",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HEALTH-002",
+    "subjectId": "class8-health",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "খেলা ও কৌশল",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলা ও কৌশল অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলা ও কৌশল অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "খেলা ও কৌশল",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HEALTH-003",
+    "subjectId": "class8-health",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "স্বাস্থ্যবিধি",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "স্বাস্থ্যবিধি",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HEALTH-004",
+    "subjectId": "class8-health",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "শারীরিক সক্ষমতা",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের শারীরিক সক্ষমতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের শারীরিক সক্ষমতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "শারীরিক সক্ষমতা",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HEALTH-005",
+    "subjectId": "class8-health",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "খেলা ও কৌশল",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলা ও কৌশল অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলা ও কৌশল অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "খেলা ও কৌশল",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HEALTH-006",
+    "subjectId": "class8-health",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "স্বাস্থ্যবিধি",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "স্বাস্থ্যবিধি",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HEALTH-007",
+    "subjectId": "class8-health",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "শারীরিক সক্ষমতা",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের শারীরিক সক্ষমতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের শারীরিক সক্ষমতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "শারীরিক সক্ষমতা",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HEALTH-008",
+    "subjectId": "class8-health",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "খেলা ও কৌশল",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলা ও কৌশল অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের খেলা ও কৌশল অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "খেলা ও কৌশল",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HEALTH-009",
+    "subjectId": "class8-health",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "স্বাস্থ্যবিধি",
+    "question": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "শারীরিক শিক্ষা ও স্বাস্থ্য বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "স্বাস্থ্যবিধি",
+      "শারীরিক শিক্ষা ও স্বাস্থ্য",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HINDU-001",
+    "subjectId": "class8-hindu",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "ধর্ম ও নৈতিকতা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্ম ও নৈতিকতা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HINDU-002",
+    "subjectId": "class8-hindu",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "উপাসনা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের উপাসনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের উপাসনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "উপাসনা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HINDU-003",
+    "subjectId": "class8-hindu",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "শাস্ত্র",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের শাস্ত্র অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের শাস্ত্র অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "শাস্ত্র",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HINDU-004",
+    "subjectId": "class8-hindu",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "ধর্ম ও নৈতিকতা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্ম ও নৈতিকতা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HINDU-005",
+    "subjectId": "class8-hindu",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "উপাসনা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের উপাসনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের উপাসনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "উপাসনা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HINDU-006",
+    "subjectId": "class8-hindu",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "শাস্ত্র",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের শাস্ত্র অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের শাস্ত্র অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "শাস্ত্র",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HINDU-007",
+    "subjectId": "class8-hindu",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "ধর্ম ও নৈতিকতা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্ম ও নৈতিকতা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HINDU-008",
+    "subjectId": "class8-hindu",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "উপাসনা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের উপাসনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের উপাসনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "উপাসনা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HINDU-009",
+    "subjectId": "class8-hindu",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "শাস্ত্র",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের শাস্ত্র অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের শাস্ত্র অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "শাস্ত্র",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HOME-SCIENCE-001",
+    "subjectId": "class8-home-science",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "পরিবার ও গৃহব্যবস্থাপনা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহব্যবস্থাপনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহব্যবস্থাপনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও গৃহব্যবস্থাপনা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HOME-SCIENCE-002",
+    "subjectId": "class8-home-science",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HOME-SCIENCE-003",
+    "subjectId": "class8-home-science",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "পোশাক ও পরিচ্ছদ",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচ্ছদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচ্ছদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও পরিচ্ছদ",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HOME-SCIENCE-004",
+    "subjectId": "class8-home-science",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "পরিবার ও গৃহব্যবস্থাপনা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহব্যবস্থাপনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহব্যবস্থাপনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও গৃহব্যবস্থাপনা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HOME-SCIENCE-005",
+    "subjectId": "class8-home-science",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HOME-SCIENCE-006",
+    "subjectId": "class8-home-science",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "পোশাক ও পরিচ্ছদ",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচ্ছদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচ্ছদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও পরিচ্ছদ",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HOME-SCIENCE-007",
+    "subjectId": "class8-home-science",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "পরিবার ও গৃহব্যবস্থাপনা",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহব্যবস্থাপনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও গৃহব্যবস্থাপনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও গৃহব্যবস্থাপনা",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HOME-SCIENCE-008",
+    "subjectId": "class8-home-science",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-HOME-SCIENCE-009",
+    "subjectId": "class8-home-science",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "পোশাক ও পরিচ্ছদ",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচ্ছদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পোশাক ও পরিচ্ছদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পোশাক ও পরিচ্ছদ",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ISLAM-001",
+    "subjectId": "class8-islam",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আকাইদ",
+    "question": "ইসলাম শিক্ষা বিষয়ের আকাইদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আকাইদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আকাইদ",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ISLAM-002",
+    "subjectId": "class8-islam",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ISLAM-003",
+    "subjectId": "class8-islam",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "আখলাক",
+    "question": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আখলাক",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ISLAM-004",
+    "subjectId": "class8-islam",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "আকাইদ",
+    "question": "ইসলাম শিক্ষা বিষয়ের আকাইদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আকাইদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আকাইদ",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ISLAM-005",
+    "subjectId": "class8-islam",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ISLAM-006",
+    "subjectId": "class8-islam",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "আখলাক",
+    "question": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আখলাক",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ISLAM-007",
+    "subjectId": "class8-islam",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "আকাইদ",
+    "question": "ইসলাম শিক্ষা বিষয়ের আকাইদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আকাইদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আকাইদ",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ISLAM-008",
+    "subjectId": "class8-islam",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের ইবাদত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-ISLAM-009",
+    "subjectId": "class8-islam",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "আখলাক",
+    "question": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আখলাক অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আখলাক",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-MUSIC-001",
+    "subjectId": "class8-music",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "সুর ও তাল",
+    "question": "সংগীত বিষয়ের সুর ও তাল অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের সুর ও তাল অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "সুর ও তাল",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-MUSIC-002",
+    "subjectId": "class8-music",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "কণ্ঠসঙ্গীত",
+    "question": "সংগীত বিষয়ের কণ্ঠসঙ্গীত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের কণ্ঠসঙ্গীত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "কণ্ঠসঙ্গীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-MUSIC-003",
+    "subjectId": "class8-music",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "লোকসংগীত",
+    "question": "সংগীত বিষয়ের লোকসংগীত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের লোকসংগীত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "লোকসংগীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-MUSIC-004",
+    "subjectId": "class8-music",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "সুর ও তাল",
+    "question": "সংগীত বিষয়ের সুর ও তাল অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের সুর ও তাল অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "সুর ও তাল",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-MUSIC-005",
+    "subjectId": "class8-music",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "কণ্ঠসঙ্গীত",
+    "question": "সংগীত বিষয়ের কণ্ঠসঙ্গীত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের কণ্ঠসঙ্গীত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "কণ্ঠসঙ্গীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-MUSIC-006",
+    "subjectId": "class8-music",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "লোকসংগীত",
+    "question": "সংগীত বিষয়ের লোকসংগীত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের লোকসংগীত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "লোকসংগীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-MUSIC-007",
+    "subjectId": "class8-music",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "সুর ও তাল",
+    "question": "সংগীত বিষয়ের সুর ও তাল অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের সুর ও তাল অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "সুর ও তাল",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-MUSIC-008",
+    "subjectId": "class8-music",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "কণ্ঠসঙ্গীত",
+    "question": "সংগীত বিষয়ের কণ্ঠসঙ্গীত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের কণ্ঠসঙ্গীত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "কণ্ঠসঙ্গীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-MUSIC-009",
+    "subjectId": "class8-music",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "লোকসংগীত",
+    "question": "সংগীত বিষয়ের লোকসংগীত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের লোকসংগীত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "লোকসংগীত",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-PALI-001",
+    "subjectId": "class8-pali",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "বর্ণ ও উচ্চারণ",
+    "question": "পালি বিষয়ের বর্ণ ও উচ্চারণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের বর্ণ ও উচ্চারণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "বর্ণ ও উচ্চারণ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-PALI-002",
+    "subjectId": "class8-pali",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "শব্দার্থ",
+    "question": "পালি বিষয়ের শব্দার্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের শব্দার্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "শব্দার্থ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-PALI-003",
+    "subjectId": "class8-pali",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "ব্যাকরণ",
+    "question": "পালি বিষয়ের ব্যাকরণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের ব্যাকরণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ব্যাকরণ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-PALI-004",
+    "subjectId": "class8-pali",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "বর্ণ ও উচ্চারণ",
+    "question": "পালি বিষয়ের বর্ণ ও উচ্চারণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের বর্ণ ও উচ্চারণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "বর্ণ ও উচ্চারণ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-PALI-005",
+    "subjectId": "class8-pali",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "শব্দার্থ",
+    "question": "পালি বিষয়ের শব্দার্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের শব্দার্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "শব্দার্থ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-PALI-006",
+    "subjectId": "class8-pali",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "ব্যাকরণ",
+    "question": "পালি বিষয়ের ব্যাকরণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের ব্যাকরণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ব্যাকরণ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-PALI-007",
+    "subjectId": "class8-pali",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "বর্ণ ও উচ্চারণ",
+    "question": "পালি বিষয়ের বর্ণ ও উচ্চারণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের বর্ণ ও উচ্চারণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "বর্ণ ও উচ্চারণ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-PALI-008",
+    "subjectId": "class8-pali",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "শব্দার্থ",
+    "question": "পালি বিষয়ের শব্দার্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের শব্দার্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "শব্দার্থ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-PALI-009",
+    "subjectId": "class8-pali",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "ব্যাকরণ",
+    "question": "পালি বিষয়ের ব্যাকরণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের ব্যাকরণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "ব্যাকরণ",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-SANSKRIT-001",
+    "subjectId": "class8-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "বর্ণপরিচয়",
+    "question": "সংস্কৃত বিষয়ের বর্ণপরিচয় অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের বর্ণপরিচয় অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "বর্ণপরিচয়",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-SANSKRIT-002",
+    "subjectId": "class8-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "শব্দরূপ",
+    "question": "সংস্কৃত বিষয়ের শব্দরূপ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের শব্দরূপ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "শব্দরূপ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-SANSKRIT-003",
+    "subjectId": "class8-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "ধাতু ও ক্রিয়া",
+    "question": "সংস্কৃত বিষয়ের ধাতু ও ক্রিয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের ধাতু ও ক্রিয়া অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "ধাতু ও ক্রিয়া",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-SANSKRIT-004",
+    "subjectId": "class8-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "বর্ণপরিচয়",
+    "question": "সংস্কৃত বিষয়ের বর্ণপরিচয় অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের বর্ণপরিচয় অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "বর্ণপরিচয়",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-SANSKRIT-005",
+    "subjectId": "class8-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "শব্দরূপ",
+    "question": "সংস্কৃত বিষয়ের শব্দরূপ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের শব্দরূপ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "শব্দরূপ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-SANSKRIT-006",
+    "subjectId": "class8-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "ধাতু ও ক্রিয়া",
+    "question": "সংস্কৃত বিষয়ের ধাতু ও ক্রিয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের ধাতু ও ক্রিয়া অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "ধাতু ও ক্রিয়া",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-SANSKRIT-007",
+    "subjectId": "class8-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "বর্ণপরিচয়",
+    "question": "সংস্কৃত বিষয়ের বর্ণপরিচয় অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের বর্ণপরিচয় অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "বর্ণপরিচয়",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-SANSKRIT-008",
+    "subjectId": "class8-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "শব্দরূপ",
+    "question": "সংস্কৃত বিষয়ের শব্দরূপ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের শব্দরূপ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "শব্দরূপ",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-CLASS8-SANSKRIT-009",
+    "subjectId": "class8-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "ধাতু ও ক্রিয়া",
+    "question": "সংস্কৃত বিষয়ের ধাতু ও ক্রিয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের ধাতু ও ক্রিয়া অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "ধাতু ও ক্রিয়া",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 8"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-ISLAMIC-HISTORY-001",
+    "subjectId": "hsc-islamic-history",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "খিলাফত",
+    "question": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের খিলাফত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের খিলাফত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "খিলাফত",
+      "ইসলামের ইতিহাস ও সংস্কৃতি",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-ISLAMIC-HISTORY-002",
+    "subjectId": "hsc-islamic-history",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "মুসলিম সভ্যতা",
+    "question": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের মুসলিম সভ্যতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের মুসলিম সভ্যতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "মুসলিম সভ্যতা",
+      "ইসলামের ইতিহাস ও সংস্কৃতি",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-ISLAMIC-HISTORY-003",
+    "subjectId": "hsc-islamic-history",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "সংস্কৃতি ও সমাজ",
+    "question": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের সংস্কৃতি ও সমাজ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের সংস্কৃতি ও সমাজ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "সংস্কৃতি ও সমাজ",
+      "ইসলামের ইতিহাস ও সংস্কৃতি",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-ISLAMIC-HISTORY-004",
+    "subjectId": "hsc-islamic-history",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "খিলাফত",
+    "question": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের খিলাফত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের খিলাফত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "খিলাফত",
+      "ইসলামের ইতিহাস ও সংস্কৃতি",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-ISLAMIC-HISTORY-005",
+    "subjectId": "hsc-islamic-history",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "মুসলিম সভ্যতা",
+    "question": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের মুসলিম সভ্যতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের মুসলিম সভ্যতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "মুসলিম সভ্যতা",
+      "ইসলামের ইতিহাস ও সংস্কৃতি",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-ISLAMIC-HISTORY-006",
+    "subjectId": "hsc-islamic-history",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "সংস্কৃতি ও সমাজ",
+    "question": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের সংস্কৃতি ও সমাজ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের সংস্কৃতি ও সমাজ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "সংস্কৃতি ও সমাজ",
+      "ইসলামের ইতিহাস ও সংস্কৃতি",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-ISLAMIC-HISTORY-007",
+    "subjectId": "hsc-islamic-history",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "খিলাফত",
+    "question": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের খিলাফত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের খিলাফত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "খিলাফত",
+      "ইসলামের ইতিহাস ও সংস্কৃতি",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-ISLAMIC-HISTORY-008",
+    "subjectId": "hsc-islamic-history",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "মুসলিম সভ্যতা",
+    "question": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের মুসলিম সভ্যতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের মুসলিম সভ্যতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "মুসলিম সভ্যতা",
+      "ইসলামের ইতিহাস ও সংস্কৃতি",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-ISLAMIC-HISTORY-009",
+    "subjectId": "hsc-islamic-history",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "সংস্কৃতি ও সমাজ",
+    "question": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের সংস্কৃতি ও সমাজ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলামের ইতিহাস ও সংস্কৃতি বিষয়ের সংস্কৃতি ও সমাজ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "সংস্কৃতি ও সমাজ",
+      "ইসলামের ইতিহাস ও সংস্কৃতি",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-SOCIAL-WORK-001",
+    "subjectId": "hsc-social-work",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "সমাজকর্মের পরিচয়",
+    "question": "সমাজকর্ম বিষয়ের সমাজকর্মের পরিচয় অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সমাজকর্ম বিষয়ের সমাজকর্মের পরিচয় অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "সমাজকর্মের পরিচয়",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-SOCIAL-WORK-002",
+    "subjectId": "hsc-social-work",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ব্যক্তি ও দলীয় সমাজকর্ম",
+    "question": "সমাজকর্ম বিষয়ের ব্যক্তি ও দলীয় সমাজকর্ম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সমাজকর্ম বিষয়ের ব্যক্তি ও দলীয় সমাজকর্ম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "ব্যক্তি ও দলীয় সমাজকর্ম",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-SOCIAL-WORK-003",
+    "subjectId": "hsc-social-work",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "সামাজিক সেবা",
+    "question": "সমাজকর্ম বিষয়ের সামাজিক সেবা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সমাজকর্ম বিষয়ের সামাজিক সেবা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "সামাজিক সেবা",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-SOCIAL-WORK-004",
+    "subjectId": "hsc-social-work",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "সমাজকর্মের পরিচয়",
+    "question": "সমাজকর্ম বিষয়ের সমাজকর্মের পরিচয় অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সমাজকর্ম বিষয়ের সমাজকর্মের পরিচয় অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "সমাজকর্মের পরিচয়",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-SOCIAL-WORK-005",
+    "subjectId": "hsc-social-work",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ব্যক্তি ও দলীয় সমাজকর্ম",
+    "question": "সমাজকর্ম বিষয়ের ব্যক্তি ও দলীয় সমাজকর্ম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সমাজকর্ম বিষয়ের ব্যক্তি ও দলীয় সমাজকর্ম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "ব্যক্তি ও দলীয় সমাজকর্ম",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-SOCIAL-WORK-006",
+    "subjectId": "hsc-social-work",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "সামাজিক সেবা",
+    "question": "সমাজকর্ম বিষয়ের সামাজিক সেবা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সমাজকর্ম বিষয়ের সামাজিক সেবা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "সামাজিক সেবা",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-SOCIAL-WORK-007",
+    "subjectId": "hsc-social-work",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "সমাজকর্মের পরিচয়",
+    "question": "সমাজকর্ম বিষয়ের সমাজকর্মের পরিচয় অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সমাজকর্ম বিষয়ের সমাজকর্মের পরিচয় অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "সমাজকর্মের পরিচয়",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-SOCIAL-WORK-008",
+    "subjectId": "hsc-social-work",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ব্যক্তি ও দলীয় সমাজকর্ম",
+    "question": "সমাজকর্ম বিষয়ের ব্যক্তি ও দলীয় সমাজকর্ম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সমাজকর্ম বিষয়ের ব্যক্তি ও দলীয় সমাজকর্ম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "ব্যক্তি ও দলীয় সমাজকর্ম",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-HSC-SOCIAL-WORK-009",
+    "subjectId": "hsc-social-work",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "সামাজিক সেবা",
+    "question": "সমাজকর্ম বিষয়ের সামাজিক সেবা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সমাজকর্ম বিষয়ের সামাজিক সেবা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মানুষের সমস্যা বুঝে সহায়তা, অধিকার ও কল্যাণমূলক পদক্ষেপ নেওয়া",
+    "keywords": [
+      "সামাজিক সেবা",
+      "সমাজকর্ম",
+      "মানুষের",
+      "সমস্যা",
+      "বুঝে",
+      "সহায়তা,"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "HSC"
+    ],
+    "classLevel": "HSC 1st Year"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-AGRICULTURE-001",
+    "subjectId": "ssc-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "মাটি ও ফসল",
+    "question": "কৃষিশিক্ষা বিষয়ের মাটি ও ফসল অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের মাটি ও ফসল অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "মাটি ও ফসল",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-AGRICULTURE-002",
+    "subjectId": "ssc-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "বীজ ও চারা",
+    "question": "কৃষিশিক্ষা বিষয়ের বীজ ও চারা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের বীজ ও চারা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "বীজ ও চারা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-AGRICULTURE-003",
+    "subjectId": "ssc-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "সেচ ও নিষ্কাশন",
+    "question": "কৃষিশিক্ষা বিষয়ের সেচ ও নিষ্কাশন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের সেচ ও নিষ্কাশন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "সেচ ও নিষ্কাশন",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-AGRICULTURE-004",
+    "subjectId": "ssc-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "মাটি ও ফসল",
+    "question": "কৃষিশিক্ষা বিষয়ের মাটি ও ফসল অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের মাটি ও ফসল অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "মাটি ও ফসল",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-AGRICULTURE-005",
+    "subjectId": "ssc-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "বীজ ও চারা",
+    "question": "কৃষিশিক্ষা বিষয়ের বীজ ও চারা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের বীজ ও চারা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "বীজ ও চারা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-AGRICULTURE-006",
+    "subjectId": "ssc-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "সেচ ও নিষ্কাশন",
+    "question": "কৃষিশিক্ষা বিষয়ের সেচ ও নিষ্কাশন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের সেচ ও নিষ্কাশন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "সেচ ও নিষ্কাশন",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-AGRICULTURE-007",
+    "subjectId": "ssc-agriculture",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "মাটি ও ফসল",
+    "question": "কৃষিশিক্ষা বিষয়ের মাটি ও ফসল অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের মাটি ও ফসল অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "মাটি ও ফসল",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-AGRICULTURE-008",
+    "subjectId": "ssc-agriculture",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "বীজ ও চারা",
+    "question": "কৃষিশিক্ষা বিষয়ের বীজ ও চারা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের বীজ ও চারা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "বীজ ও চারা",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-AGRICULTURE-009",
+    "subjectId": "ssc-agriculture",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "সেচ ও নিষ্কাশন",
+    "question": "কৃষিশিক্ষা বিষয়ের সেচ ও নিষ্কাশন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "কৃষিশিক্ষা বিষয়ের সেচ ও নিষ্কাশন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "মাটি, বীজ, পানি, ফসল ও কৃষি প্রযুক্তির সঠিক ব্যবহার করা",
+    "keywords": [
+      "সেচ ও নিষ্কাশন",
+      "কৃষিশিক্ষা",
+      "মাটি,",
+      "বীজ,",
+      "পানি,",
+      "ফসল"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARABIC-001",
+    "subjectId": "ssc-arabic",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আরবি ভাষা",
+    "question": "আরবি বিষয়ের আরবি ভাষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "আরবি বিষয়ের আরবি ভাষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি ভাষা",
+      "আরবি",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARABIC-002",
+    "subjectId": "ssc-arabic",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "আরবি ভাষা",
+    "question": "আরবি বিষয়ের আরবি ভাষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "আরবি বিষয়ের আরবি ভাষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি ভাষা",
+      "আরবি",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARABIC-003",
+    "subjectId": "ssc-arabic",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "আরবি ভাষা",
+    "question": "আরবি বিষয়ের আরবি ভাষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "আরবি বিষয়ের আরবি ভাষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শব্দ, বাক্য, উচ্চারণ ও অর্থ বুঝে আরবি পাঠ করা",
+    "keywords": [
+      "আরবি ভাষা",
+      "আরবি",
+      "শব্দ,",
+      "বাক্য,",
+      "উচ্চারণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARTS-CRAFTS-001",
+    "subjectId": "ssc-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "চিত্রকলার উপাদান",
+    "question": "চারু ও কারুকলা বিষয়ের চিত্রকলার উপাদান অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের চিত্রকলার উপাদান অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "চিত্রকলার উপাদান",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARTS-CRAFTS-002",
+    "subjectId": "ssc-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "রং",
+    "question": "চারু ও কারুকলা বিষয়ের রং অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের রং অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "রং",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARTS-CRAFTS-003",
+    "subjectId": "ssc-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "বুনট",
+    "question": "চারু ও কারুকলা বিষয়ের বুনট অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের বুনট অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "বুনট",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARTS-CRAFTS-004",
+    "subjectId": "ssc-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "চিত্রকলার উপাদান",
+    "question": "চারু ও কারুকলা বিষয়ের চিত্রকলার উপাদান অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের চিত্রকলার উপাদান অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "চিত্রকলার উপাদান",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARTS-CRAFTS-005",
+    "subjectId": "ssc-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "রং",
+    "question": "চারু ও কারুকলা বিষয়ের রং অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের রং অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "রং",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARTS-CRAFTS-006",
+    "subjectId": "ssc-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "বুনট",
+    "question": "চারু ও কারুকলা বিষয়ের বুনট অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের বুনট অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "বুনট",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARTS-CRAFTS-007",
+    "subjectId": "ssc-arts-crafts",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "চিত্রকলার উপাদান",
+    "question": "চারু ও কারুকলা বিষয়ের চিত্রকলার উপাদান অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের চিত্রকলার উপাদান অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "চিত্রকলার উপাদান",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARTS-CRAFTS-008",
+    "subjectId": "ssc-arts-crafts",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "রং",
+    "question": "চারু ও কারুকলা বিষয়ের রং অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের রং অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "রং",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ARTS-CRAFTS-009",
+    "subjectId": "ssc-arts-crafts",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "বুনট",
+    "question": "চারু ও কারুকলা বিষয়ের বুনট অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "চারু ও কারুকলা বিষয়ের বুনট অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "রং, রেখা, নকশা ও সৃজনশীলতা ব্যবহার করে কাজ করা",
+    "keywords": [
+      "বুনট",
+      "চারু ও কারুকলা",
+      "রং,",
+      "রেখা,",
+      "নকশা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-BUDDHIST-001",
+    "subjectId": "ssc-buddhist",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "বুদ্ধের শিক্ষা",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধের শিক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধের শিক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "বুদ্ধের শিক্ষা",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-BUDDHIST-002",
+    "subjectId": "ssc-buddhist",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "বুদ্ধের শিক্ষা",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধের শিক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধের শিক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "বুদ্ধের শিক্ষা",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-BUDDHIST-003",
+    "subjectId": "ssc-buddhist",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "বুদ্ধের শিক্ষা",
+    "question": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধের শিক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বৌদ্ধধর্ম শিক্ষা বিষয়ের বুদ্ধের শিক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় নীতি, নৈতিকতা ও শান্তিপূর্ণ আচরণ বোঝা",
+    "keywords": [
+      "বুদ্ধের শিক্ষা",
+      "বৌদ্ধধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "নীতি,",
+      "নৈতিকতা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CAREER-001",
+    "subjectId": "ssc-career",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আত্মপরিচয়",
+    "question": "ক্যারিয়ার শিক্ষা বিষয়ের আত্মপরিচয় অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ক্যারিয়ার শিক্ষা বিষয়ের আত্মপরিচয় অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "নিজের আগ্রহ, দক্ষতা, লক্ষ্য ও পেশা পরিকল্পনা যুক্তিসহ নির্ধারণ করা",
+    "keywords": [
+      "আত্মপরিচয়",
+      "ক্যারিয়ার শিক্ষা",
+      "নিজের",
+      "আগ্রহ,",
+      "দক্ষতা,",
+      "লক্ষ্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CAREER-002",
+    "subjectId": "ssc-career",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "ক্যারিয়ার পরিকল্পনা",
+    "question": "ক্যারিয়ার শিক্ষা বিষয়ের ক্যারিয়ার পরিকল্পনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ক্যারিয়ার শিক্ষা বিষয়ের ক্যারিয়ার পরিকল্পনা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "নিজের আগ্রহ, দক্ষতা, লক্ষ্য ও পেশা পরিকল্পনা যুক্তিসহ নির্ধারণ করা",
+    "keywords": [
+      "ক্যারিয়ার পরিকল্পনা",
+      "ক্যারিয়ার শিক্ষা",
+      "নিজের",
+      "আগ্রহ,",
+      "দক্ষতা,",
+      "লক্ষ্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CAREER-003",
+    "subjectId": "ssc-career",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "দক্ষতা উন্নয়ন",
+    "question": "ক্যারিয়ার শিক্ষা বিষয়ের দক্ষতা উন্নয়ন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ক্যারিয়ার শিক্ষা বিষয়ের দক্ষতা উন্নয়ন অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "নিজের আগ্রহ, দক্ষতা, লক্ষ্য ও পেশা পরিকল্পনা যুক্তিসহ নির্ধারণ করা",
+    "keywords": [
+      "দক্ষতা উন্নয়ন",
+      "ক্যারিয়ার শিক্ষা",
+      "নিজের",
+      "আগ্রহ,",
+      "দক্ষতা,",
+      "লক্ষ্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CAREER-004",
+    "subjectId": "ssc-career",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "আত্মপরিচয়",
+    "question": "ক্যারিয়ার শিক্ষা বিষয়ের আত্মপরিচয় অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ক্যারিয়ার শিক্ষা বিষয়ের আত্মপরিচয় অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "নিজের আগ্রহ, দক্ষতা, লক্ষ্য ও পেশা পরিকল্পনা যুক্তিসহ নির্ধারণ করা",
+    "keywords": [
+      "আত্মপরিচয়",
+      "ক্যারিয়ার শিক্ষা",
+      "নিজের",
+      "আগ্রহ,",
+      "দক্ষতা,",
+      "লক্ষ্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CAREER-005",
+    "subjectId": "ssc-career",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ক্যারিয়ার পরিকল্পনা",
+    "question": "ক্যারিয়ার শিক্ষা বিষয়ের ক্যারিয়ার পরিকল্পনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ক্যারিয়ার শিক্ষা বিষয়ের ক্যারিয়ার পরিকল্পনা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "নিজের আগ্রহ, দক্ষতা, লক্ষ্য ও পেশা পরিকল্পনা যুক্তিসহ নির্ধারণ করা",
+    "keywords": [
+      "ক্যারিয়ার পরিকল্পনা",
+      "ক্যারিয়ার শিক্ষা",
+      "নিজের",
+      "আগ্রহ,",
+      "দক্ষতা,",
+      "লক্ষ্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CAREER-006",
+    "subjectId": "ssc-career",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "দক্ষতা উন্নয়ন",
+    "question": "ক্যারিয়ার শিক্ষা বিষয়ের দক্ষতা উন্নয়ন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ক্যারিয়ার শিক্ষা বিষয়ের দক্ষতা উন্নয়ন অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "নিজের আগ্রহ, দক্ষতা, লক্ষ্য ও পেশা পরিকল্পনা যুক্তিসহ নির্ধারণ করা",
+    "keywords": [
+      "দক্ষতা উন্নয়ন",
+      "ক্যারিয়ার শিক্ষা",
+      "নিজের",
+      "আগ্রহ,",
+      "দক্ষতা,",
+      "লক্ষ্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CAREER-007",
+    "subjectId": "ssc-career",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "আত্মপরিচয়",
+    "question": "ক্যারিয়ার শিক্ষা বিষয়ের আত্মপরিচয় অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ক্যারিয়ার শিক্ষা বিষয়ের আত্মপরিচয় অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "নিজের আগ্রহ, দক্ষতা, লক্ষ্য ও পেশা পরিকল্পনা যুক্তিসহ নির্ধারণ করা",
+    "keywords": [
+      "আত্মপরিচয়",
+      "ক্যারিয়ার শিক্ষা",
+      "নিজের",
+      "আগ্রহ,",
+      "দক্ষতা,",
+      "লক্ষ্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CAREER-008",
+    "subjectId": "ssc-career",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "ক্যারিয়ার পরিকল্পনা",
+    "question": "ক্যারিয়ার শিক্ষা বিষয়ের ক্যারিয়ার পরিকল্পনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ক্যারিয়ার শিক্ষা বিষয়ের ক্যারিয়ার পরিকল্পনা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "নিজের আগ্রহ, দক্ষতা, লক্ষ্য ও পেশা পরিকল্পনা যুক্তিসহ নির্ধারণ করা",
+    "keywords": [
+      "ক্যারিয়ার পরিকল্পনা",
+      "ক্যারিয়ার শিক্ষা",
+      "নিজের",
+      "আগ্রহ,",
+      "দক্ষতা,",
+      "লক্ষ্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CAREER-009",
+    "subjectId": "ssc-career",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "দক্ষতা উন্নয়ন",
+    "question": "ক্যারিয়ার শিক্ষা বিষয়ের দক্ষতা উন্নয়ন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ক্যারিয়ার শিক্ষা বিষয়ের দক্ষতা উন্নয়ন অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "নিজের আগ্রহ, দক্ষতা, লক্ষ্য ও পেশা পরিকল্পনা যুক্তিসহ নির্ধারণ করা",
+    "keywords": [
+      "দক্ষতা উন্নয়ন",
+      "ক্যারিয়ার শিক্ষা",
+      "নিজের",
+      "আগ্রহ,",
+      "দক্ষতা,",
+      "লক্ষ্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CHRISTIAN-001",
+    "subjectId": "ssc-christian",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "খ্রিষ্টীয় নৈতিকতা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "খ্রিষ্টীয় নৈতিকতা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CHRISTIAN-002",
+    "subjectId": "ssc-christian",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "খ্রিষ্টীয় নৈতিকতা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "খ্রিষ্টীয় নৈতিকতা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-CHRISTIAN-003",
+    "subjectId": "ssc-christian",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "খ্রিষ্টীয় নৈতিকতা",
+    "question": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "খ্রীষ্টধর্ম শিক্ষা বিষয়ের খ্রিষ্টীয় নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ভালবাসা, ক্ষমা, সেবা ও নৈতিক জীবনচর্চা করা",
+    "keywords": [
+      "খ্রিষ্টীয় নৈতিকতা",
+      "খ্রীষ্টধর্ম শিক্ষা",
+      "ভালবাসা,",
+      "ক্ষমা,",
+      "সেবা",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HINDU-001",
+    "subjectId": "ssc-hindu",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "ধর্ম ও নৈতিকতা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্ম ও নৈতিকতা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HINDU-002",
+    "subjectId": "ssc-hindu",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "ধর্ম ও নৈতিকতা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্ম ও নৈতিকতা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HINDU-003",
+    "subjectId": "ssc-hindu",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "ধর্ম ও নৈতিকতা",
+    "question": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "হিন্দুধর্ম শিক্ষা বিষয়ের ধর্ম ও নৈতিকতা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ধর্মীয় মূল্যবোধ, আচার, নৈতিকতা ও মানবিকতা বোঝা",
+    "keywords": [
+      "ধর্ম ও নৈতিকতা",
+      "হিন্দুধর্ম শিক্ষা",
+      "ধর্মীয়",
+      "মূল্যবোধ,",
+      "আচার,",
+      "নৈতিকতা"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HOME-SCIENCE-001",
+    "subjectId": "ssc-home-science",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "পরিবার ও সম্পদ",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও সম্পদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও সম্পদ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও সম্পদ",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HOME-SCIENCE-002",
+    "subjectId": "ssc-home-science",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HOME-SCIENCE-003",
+    "subjectId": "ssc-home-science",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "খাদ্য সংরক্ষণ",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য সংরক্ষণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য সংরক্ষণ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য সংরক্ষণ",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HOME-SCIENCE-004",
+    "subjectId": "ssc-home-science",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "পরিবার ও সম্পদ",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও সম্পদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও সম্পদ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও সম্পদ",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HOME-SCIENCE-005",
+    "subjectId": "ssc-home-science",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HOME-SCIENCE-006",
+    "subjectId": "ssc-home-science",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "খাদ্য সংরক্ষণ",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য সংরক্ষণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য সংরক্ষণ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য সংরক্ষণ",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HOME-SCIENCE-007",
+    "subjectId": "ssc-home-science",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "পরিবার ও সম্পদ",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও সম্পদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের পরিবার ও সম্পদ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "পরিবার ও সম্পদ",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HOME-SCIENCE-008",
+    "subjectId": "ssc-home-science",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "খাদ্য ও পুষ্টি",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য ও পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য ও পুষ্টি",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-HOME-SCIENCE-009",
+    "subjectId": "ssc-home-science",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "খাদ্য সংরক্ষণ",
+    "question": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য সংরক্ষণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "গার্হস্থ্যবিজ্ঞান বিষয়ের খাদ্য সংরক্ষণ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পরিবার, পুষ্টি, স্বাস্থ্য, সম্পদ ব্যবস্থাপনা ও জীবনদক্ষতা প্রয়োগ করা",
+    "keywords": [
+      "খাদ্য সংরক্ষণ",
+      "গার্হস্থ্যবিজ্ঞান",
+      "পরিবার,",
+      "পুষ্টি,",
+      "স্বাস্থ্য,",
+      "সম্পদ"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ISLAM-001",
+    "subjectId": "ssc-islam",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "আকাইদ ও ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের আকাইদ ও ইবাদত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আকাইদ ও ইবাদত অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আকাইদ ও ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ISLAM-002",
+    "subjectId": "ssc-islam",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "আকাইদ ও ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের আকাইদ ও ইবাদত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আকাইদ ও ইবাদত অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আকাইদ ও ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-ISLAM-003",
+    "subjectId": "ssc-islam",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "আকাইদ ও ইবাদত",
+    "question": "ইসলাম শিক্ষা বিষয়ের আকাইদ ও ইবাদত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "ইসলাম শিক্ষা বিষয়ের আকাইদ ও ইবাদত অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "ঈমান, ইবাদত, আখলাক ও মানবিক আচরণ অনুসরণ করা",
+    "keywords": [
+      "আকাইদ ও ইবাদত",
+      "ইসলাম শিক্ষা",
+      "ঈমান,",
+      "ইবাদত,",
+      "আখলাক",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-MUSIC-001",
+    "subjectId": "ssc-music",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "সংগীত শিক্ষা",
+    "question": "সংগীত বিষয়ের সংগীত শিক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংগীত বিষয়ের সংগীত শিক্ষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "সংগীত শিক্ষা",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-MUSIC-002",
+    "subjectId": "ssc-music",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "সংগীত শিক্ষা",
+    "question": "সংগীত বিষয়ের সংগীত শিক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংগীত বিষয়ের সংগীত শিক্ষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "সংগীত শিক্ষা",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-MUSIC-003",
+    "subjectId": "ssc-music",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "সংগীত শিক্ষা",
+    "question": "সংগীত বিষয়ের সংগীত শিক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংগীত বিষয়ের সংগীত শিক্ষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সুর, তাল, লয় ও অনুভূতি বুঝে সংগীতচর্চা করা",
+    "keywords": [
+      "সংগীত শিক্ষা",
+      "সংগীত",
+      "সুর,",
+      "তাল,",
+      "লয়",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PALI-001",
+    "subjectId": "ssc-pali",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "পালি ভাষা",
+    "question": "পালি বিষয়ের পালি ভাষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "পালি বিষয়ের পালি ভাষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "পালি ভাষা",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PALI-002",
+    "subjectId": "ssc-pali",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "পালি ভাষা",
+    "question": "পালি বিষয়ের পালি ভাষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "পালি বিষয়ের পালি ভাষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "পালি ভাষা",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PALI-003",
+    "subjectId": "ssc-pali",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "পালি ভাষা",
+    "question": "পালি বিষয়ের পালি ভাষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "পালি বিষয়ের পালি ভাষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পালি শব্দ, অর্থ, বাক্য ও ধর্মীয় পাঠ বুঝে শেখা",
+    "keywords": [
+      "পালি ভাষা",
+      "পালি",
+      "পালি",
+      "শব্দ,",
+      "অর্থ,",
+      "বাক্য"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PHYSICAL-EDUCATION-001",
+    "subjectId": "ssc-physical-education",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "ব্যায়াম",
+    "question": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের ব্যায়াম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের ব্যায়াম অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "ব্যায়াম",
+      "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PHYSICAL-EDUCATION-002",
+    "subjectId": "ssc-physical-education",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "পুষ্টি",
+    "question": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের পুষ্টি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "পুষ্টি",
+      "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PHYSICAL-EDUCATION-003",
+    "subjectId": "ssc-physical-education",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "স্বাস্থ্যবিধি",
+    "question": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "স্বাস্থ্যবিধি",
+      "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PHYSICAL-EDUCATION-004",
+    "subjectId": "ssc-physical-education",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "ব্যায়াম",
+    "question": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের ব্যায়াম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের ব্যায়াম অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "ব্যায়াম",
+      "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PHYSICAL-EDUCATION-005",
+    "subjectId": "ssc-physical-education",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "পুষ্টি",
+    "question": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের পুষ্টি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "পুষ্টি",
+      "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PHYSICAL-EDUCATION-006",
+    "subjectId": "ssc-physical-education",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "স্বাস্থ্যবিধি",
+    "question": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "স্বাস্থ্যবিধি",
+      "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PHYSICAL-EDUCATION-007",
+    "subjectId": "ssc-physical-education",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "ব্যায়াম",
+    "question": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের ব্যায়াম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের ব্যায়াম অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "ব্যায়াম",
+      "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PHYSICAL-EDUCATION-008",
+    "subjectId": "ssc-physical-education",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "পুষ্টি",
+    "question": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের পুষ্টি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "পুষ্টি",
+      "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-PHYSICAL-EDUCATION-009",
+    "subjectId": "ssc-physical-education",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "স্বাস্থ্যবিধি",
+    "question": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা বিষয়ের স্বাস্থ্যবিধি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "শরীর, ব্যায়াম, স্বাস্থ্যবিধি ও নিরাপদ জীবনযাপন বজায় রাখা",
+    "keywords": [
+      "স্বাস্থ্যবিধি",
+      "শারীরিক শিক্ষা, স্বাস্থ্যবিজ্ঞান ও খেলাধুলা",
+      "শরীর,",
+      "ব্যায়াম,",
+      "স্বাস্থ্যবিধি",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SANSKRIT-001",
+    "subjectId": "ssc-sanskrit",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "সংস্কৃত ভাষা",
+    "question": "সংস্কৃত বিষয়ের সংস্কৃত ভাষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "সংস্কৃত বিষয়ের সংস্কৃত ভাষা অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "সংস্কৃত ভাষা",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SANSKRIT-002",
+    "subjectId": "ssc-sanskrit",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "সংস্কৃত ভাষা",
+    "question": "সংস্কৃত বিষয়ের সংস্কৃত ভাষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "সংস্কৃত বিষয়ের সংস্কৃত ভাষা অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "সংস্কৃত ভাষা",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SANSKRIT-003",
+    "subjectId": "ssc-sanskrit",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "সংস্কৃত ভাষা",
+    "question": "সংস্কৃত বিষয়ের সংস্কৃত ভাষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "সংস্কৃত বিষয়ের সংস্কৃত ভাষা অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "সংস্কৃত শব্দ, ধাতু, বাক্যগঠন ও অর্থ বুঝে পাঠ করা",
+    "keywords": [
+      "সংস্কৃত ভাষা",
+      "সংস্কৃত",
+      "সংস্কৃত",
+      "শব্দ,",
+      "ধাতু,",
+      "বাক্যগঠন"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SCIENCE-001",
+    "subjectId": "ssc-science",
+    "chapterOrder": 1,
+    "difficulty": "easy",
+    "topic": "জীবন ও পরিবেশ",
+    "question": "বিজ্ঞান বিষয়ের জীবন ও পরিবেশ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বিজ্ঞান বিষয়ের জীবন ও পরিবেশ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পর্যবেক্ষণ, পরীক্ষা, প্রমাণ ও কারণ-ফল সম্পর্ক বুঝে বিজ্ঞান শেখা",
+    "keywords": [
+      "জীবন ও পরিবেশ",
+      "বিজ্ঞান",
+      "পর্যবেক্ষণ,",
+      "পরীক্ষা,",
+      "প্রমাণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SCIENCE-002",
+    "subjectId": "ssc-science",
+    "chapterOrder": 2,
+    "difficulty": "easy",
+    "topic": "পদার্থ ও শক্তি",
+    "question": "বিজ্ঞান বিষয়ের পদার্থ ও শক্তি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বিজ্ঞান বিষয়ের পদার্থ ও শক্তি অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পর্যবেক্ষণ, পরীক্ষা, প্রমাণ ও কারণ-ফল সম্পর্ক বুঝে বিজ্ঞান শেখা",
+    "keywords": [
+      "পদার্থ ও শক্তি",
+      "বিজ্ঞান",
+      "পর্যবেক্ষণ,",
+      "পরীক্ষা,",
+      "প্রমাণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SCIENCE-003",
+    "subjectId": "ssc-science",
+    "chapterOrder": 3,
+    "difficulty": "easy",
+    "topic": "রসায়ন ও পদার্থ",
+    "question": "বিজ্ঞান বিষয়ের রসায়ন ও পদার্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "questionBn": "বিজ্ঞান বিষয়ের রসায়ন ও পদার্থ অধ্যায়ের মূল ধারণা সংক্ষেপে লিখো।",
+    "expectedAnswer": "পর্যবেক্ষণ, পরীক্ষা, প্রমাণ ও কারণ-ফল সম্পর্ক বুঝে বিজ্ঞান শেখা",
+    "keywords": [
+      "রসায়ন ও পদার্থ",
+      "বিজ্ঞান",
+      "পর্যবেক্ষণ,",
+      "পরীক্ষা,",
+      "প্রমাণ",
+      "ও"
+    ],
+    "xpReward": 35,
+    "duration": 12,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SCIENCE-004",
+    "subjectId": "ssc-science",
+    "chapterOrder": 1,
+    "difficulty": "medium",
+    "topic": "জীবন ও পরিবেশ",
+    "question": "বিজ্ঞান বিষয়ের জীবন ও পরিবেশ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বিজ্ঞান বিষয়ের জীবন ও পরিবেশ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পর্যবেক্ষণ, পরীক্ষা, প্রমাণ ও কারণ-ফল সম্পর্ক বুঝে বিজ্ঞান শেখা",
+    "keywords": [
+      "জীবন ও পরিবেশ",
+      "বিজ্ঞান",
+      "পর্যবেক্ষণ,",
+      "পরীক্ষা,",
+      "প্রমাণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SCIENCE-005",
+    "subjectId": "ssc-science",
+    "chapterOrder": 2,
+    "difficulty": "medium",
+    "topic": "পদার্থ ও শক্তি",
+    "question": "বিজ্ঞান বিষয়ের পদার্থ ও শক্তি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বিজ্ঞান বিষয়ের পদার্থ ও শক্তি অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পর্যবেক্ষণ, পরীক্ষা, প্রমাণ ও কারণ-ফল সম্পর্ক বুঝে বিজ্ঞান শেখা",
+    "keywords": [
+      "পদার্থ ও শক্তি",
+      "বিজ্ঞান",
+      "পর্যবেক্ষণ,",
+      "পরীক্ষা,",
+      "প্রমাণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SCIENCE-006",
+    "subjectId": "ssc-science",
+    "chapterOrder": 3,
+    "difficulty": "medium",
+    "topic": "রসায়ন ও পদার্থ",
+    "question": "বিজ্ঞান বিষয়ের রসায়ন ও পদার্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "questionBn": "বিজ্ঞান বিষয়ের রসায়ন ও পদার্থ অধ্যায়ের গুরুত্ব কারণসহ ব্যাখ্যা করো।",
+    "expectedAnswer": "পর্যবেক্ষণ, পরীক্ষা, প্রমাণ ও কারণ-ফল সম্পর্ক বুঝে বিজ্ঞান শেখা",
+    "keywords": [
+      "রসায়ন ও পদার্থ",
+      "বিজ্ঞান",
+      "পর্যবেক্ষণ,",
+      "পরীক্ষা,",
+      "প্রমাণ",
+      "ও"
+    ],
+    "xpReward": 48,
+    "duration": 16,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SCIENCE-007",
+    "subjectId": "ssc-science",
+    "chapterOrder": 1,
+    "difficulty": "hard",
+    "topic": "জীবন ও পরিবেশ",
+    "question": "বিজ্ঞান বিষয়ের জীবন ও পরিবেশ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বিজ্ঞান বিষয়ের জীবন ও পরিবেশ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পর্যবেক্ষণ, পরীক্ষা, প্রমাণ ও কারণ-ফল সম্পর্ক বুঝে বিজ্ঞান শেখা",
+    "keywords": [
+      "জীবন ও পরিবেশ",
+      "বিজ্ঞান",
+      "পর্যবেক্ষণ,",
+      "পরীক্ষা,",
+      "প্রমাণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SCIENCE-008",
+    "subjectId": "ssc-science",
+    "chapterOrder": 2,
+    "difficulty": "hard",
+    "topic": "পদার্থ ও শক্তি",
+    "question": "বিজ্ঞান বিষয়ের পদার্থ ও শক্তি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বিজ্ঞান বিষয়ের পদার্থ ও শক্তি অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পর্যবেক্ষণ, পরীক্ষা, প্রমাণ ও কারণ-ফল সম্পর্ক বুঝে বিজ্ঞান শেখা",
+    "keywords": [
+      "পদার্থ ও শক্তি",
+      "বিজ্ঞান",
+      "পর্যবেক্ষণ,",
+      "পরীক্ষা,",
+      "প্রমাণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  },
+  {
+    "id": "V137-BLANK-WR-SSC-SCIENCE-009",
+    "subjectId": "ssc-science",
+    "chapterOrder": 3,
+    "difficulty": "hard",
+    "topic": "রসায়ন ও পদার্থ",
+    "question": "বিজ্ঞান বিষয়ের রসায়ন ও পদার্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "questionBn": "বিজ্ঞান বিষয়ের রসায়ন ও পদার্থ অধ্যায়ের বাস্তব জীবনের প্রয়োগ উদাহরণসহ বিশ্লেষণ করো।",
+    "expectedAnswer": "পর্যবেক্ষণ, পরীক্ষা, প্রমাণ ও কারণ-ফল সম্পর্ক বুঝে বিজ্ঞান শেখা",
+    "keywords": [
+      "রসায়ন ও পদার্থ",
+      "বিজ্ঞান",
+      "পর্যবেক্ষণ,",
+      "পরীক্ষা,",
+      "প্রমাণ",
+      "ও"
+    ],
+    "xpReward": 60,
+    "duration": 20,
+    "sourceId": "user-v137-blank-subject-fix",
+    "sourceTitle": "Study RPG v1.3.7 blank subject question fix",
+    "sourceUrl": "local-update:v1.3.7-blank-fix",
+    "examModes": [
+      "SSC"
+    ],
+    "classLevel": "Class 9/10/SSC"
+  }
+];
+for (const question of V137_BLANK_SUBJECT_WRITTEN_FIX) {
+  DATASET_WRITTEN_BY_SUBJECT[question.subjectId] = [
+    ...(DATASET_WRITTEN_BY_SUBJECT[question.subjectId] || []),
+    question,
+  ];
+  WRITTEN_TOPICS[question.subjectId] = Array.from(new Set([
+    ...(WRITTEN_TOPICS[question.subjectId] || []),
+    question.topic,
+  ]));
+}
+
 export const VERIFIED_WRITTEN_QUESTION_BANK: Record<string, WrittenQuestion[]> = Object.fromEntries(
   CURRICULUM_SUBJECTS.map((subject) => [subject.id, DATASET_WRITTEN_BY_SUBJECT[subject.id] || []])
 ) as Record<string, WrittenQuestion[]>;

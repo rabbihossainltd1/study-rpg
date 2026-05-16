@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { App as CapacitorApp } from "@capacitor/app";
-import { registerRouter, normalizePathForRouter } from "@/lib/navigate";
+import { registerRouter, normalizePathForRouter, restoreSavedScrollPosition, saveCurrentScrollPosition } from "@/lib/navigate";
 import toast from "react-hot-toast";
 
 const HOME_PATHS = new Set(["/", "/dashboard", "/dashboard/"]);
@@ -61,6 +61,7 @@ export function RouterProvider() {
 
     internalBack.current = false;
     saveStack(pathStack.current);
+    restoreSavedScrollPosition(current);
 
     try {
       if (!window.history.state?.studyRpgGuard) {
@@ -89,6 +90,7 @@ export function RouterProvider() {
         if (pathStack.current[pathStack.current.length - 1] !== nextPath) {
           pathStack.current.push(nextPath);
         }
+        saveCurrentScrollPosition();
         saveStack(pathStack.current);
         internalBack.current = true;
         router.replace(nextPath);

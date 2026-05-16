@@ -83,10 +83,9 @@ export function getPodiumColor(rank?: number) {
 }
 
 export function CrownBadge({ rank, className = "w-6 h-6" }: { rank?: number; className?: string }) {
-  if (rank === 1) return <Crown className={className} style={{ color: "#FFD700" }} />;
-  if (rank === 2) return <Crown className={className} style={{ color: "#C0C0C0" }} />;
-  if (rank === 3) return <Crown className={className} style={{ color: "#CD7F32" }} />;
-  return null;
+  const color = rank === 1 ? "#FFD700" : rank === 2 ? "#E5E7EB" : rank === 3 ? "#CD7F32" : "#39FF14";
+  if (!rank || rank > 3) return null;
+  return <Crown className={className} style={{ color, filter: `drop-shadow(0 0 8px ${color}AA)` }} strokeWidth={2.8} />;
 }
 
 export function UserAvatar({
