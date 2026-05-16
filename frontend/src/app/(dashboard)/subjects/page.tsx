@@ -3,13 +3,14 @@
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
 import { getSubjectsForUser } from "@/lib/subjects";
+import { normalizeClassName } from "@/lib/bdAddress";
 import { BookOpen, ChevronRight, Star } from "lucide-react";
 import { AppIcon } from "@/components/ui/AppIcon";
 
 export default function SubjectsPage() {
   const { language, user } = useUserStore();
   const filtered = getSubjectsForUser(user);
-  const classLabel = `${user?.className || "SSC"}${user?.groupName && user.groupName !== "General" ? " · " + user.groupName : ""}`;
+  const classLabel = `${normalizeClassName(user?.className)}${user?.groupName && user.groupName !== "General" ? " · " + user.groupName : ""}`;
 
   return (
     <div className="space-y-6 animate-card-in">

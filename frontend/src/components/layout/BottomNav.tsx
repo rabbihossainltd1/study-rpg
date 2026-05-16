@@ -1,13 +1,13 @@
 "use client";
 
-import { Home, ListChecks, Trophy, UserRound } from "lucide-react";
+import { Home, MessageCircle, Trophy, UserRound } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
 
 const ITEMS = [
   { href: "/dashboard", label: "Home", bn: "হোম", icon: Home },
-  { href: "/subjects", label: "MCQ", bn: "MCQ", icon: ListChecks },
+  { href: "/friends", label: "Chat", bn: "চ্যাট", icon: MessageCircle },
   { href: "/leaderboard", label: "Leaderboard", bn: "র‍্যাঙ্ক", icon: Trophy },
   { href: "/profile", label: "Profile", bn: "প্রোফাইল", icon: UserRound },
 ];

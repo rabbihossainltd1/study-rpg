@@ -1,5 +1,7 @@
+export const SSC_COMBINED_CLASS = "Class 9/10/SSC" as const;
+
 export const CLASS_OPTIONS = [
-  "Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "SSC", "HSC 1st Year", "HSC 2nd Year", "HSC", "Admission", "University 1st Year", "University 2nd Year", "University 3rd Year", "University 4th Year", "Degree", "Honours", "Masters"
+  "Class 6", "Class 7", "Class 8", SSC_COMBINED_CLASS, "HSC 1st Year", "HSC 2nd Year", "HSC", "Admission", "University 1st Year", "University 2nd Year", "University 3rd Year", "University 4th Year", "Degree", "Honours", "Masters"
 ] as const;
 
 export const BD_ADDRESS: Record<string, string[]> = {
@@ -133,6 +135,13 @@ export function getThanasForZila(zila: string) {
 export function needsEducationGroup(className: string) {
   const value = className.toLowerCase();
   return value.includes("class 9") || value.includes("class 10") || value.includes("ssc") || value.includes("hsc");
+}
+
+export function normalizeClassName(className?: string) {
+  const value = String(className || "").trim();
+  const lower = value.toLowerCase();
+  if (lower === "class 9" || lower === "class 10" || lower === "ssc" || lower === "class 9/10/ssc" || lower === "class 9-10/ssc") return SSC_COMBINED_CLASS;
+  return value || SSC_COMBINED_CLASS;
 }
 
 export function deriveExamModeFromClass(className: string): "SSC" | "HSC" | "Admission" | "University" {

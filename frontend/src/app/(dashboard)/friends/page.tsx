@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { useUserStore } from "@/store/useUserStore";
+import { navigate } from "@/lib/navigate";
 import {
   acceptFriendRequest,
   blockUser,
@@ -20,7 +21,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { UserAvatar } from "@/components/ui/AppIcon";
-import { MessageCircle, Swords, Users, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, Check, CheckCheck, UserRound } from "lucide-react";
+import { Swords, Users, CheckCircle2, RefreshCw, Send, ChevronLeft, MoreVertical, Ban, UserMinus, Clock3, Check, CheckCheck, UserRound, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 type MenuState = { uid: string; open: boolean };
@@ -82,20 +83,79 @@ function mergeFriendMessages(existing: FriendMessage[], incoming: FriendMessage[
   });
 }
 
-function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onChallenge, onBlock, onUnfriend, busy }: {
+function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onDeleteChat, onBlock, onUnfriend, busy }: {
   person: PublicUserResult;
   menu: MenuState;
   setMenu: (menu: MenuState) => void;
   onMessage: () => void;
   onViewProfile: () => void;
-  onChallenge: () => void;
+  onDeleteChat: () => void;
   onBlock: () => void;
   onUnfriend: () => void;
   busy: boolean;
 }) {
   const active = activityText(person);
+  const holdTimer = useRef<number | null>(null);
+  const holdTriggered = useRef(false);
+
+  const clearHoldTimer = () => {
+    if (holdTimer.current) {
+      window.clearTimeout(holdTimer.current);
+      holdTimer.current = null;
+    }
+  };
+
+  const openActionMenu = () => {
+    holdTriggered.current = true;
+    setMenu({ uid: person.uid, open: true });
+  };
+
+  const startHold = () => {
+    holdTriggered.current = false;
+    clearHoldTimer();
+    holdTimer.current = window.setTimeout(openActionMenu, 520);
+  };
+
+  const stopHold = () => {
+    clearHoldTimer();
+  };
+
+  const handleClick = () => {
+    if (holdTriggered.current) {
+      holdTriggered.current = false;
+      return;
+    }
+    onMessage();
+  };
+
+  const handleMenuClick = (action: () => void) => (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    action();
+  };
+
   return (
-    <div className="relative flex items-center gap-3 p-3 rounded-2xl bg-white/[0.035] border border-white/10 hover:border-primary/20 transition-all">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={handleClick}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onMessage();
+        }
+      }}
+      onContextMenu={(event) => {
+        event.preventDefault();
+        openActionMenu();
+      }}
+      onMouseDown={startHold}
+      onMouseUp={stopHold}
+      onMouseLeave={stopHold}
+      onTouchStart={startHold}
+      onTouchEnd={stopHold}
+      onTouchCancel={stopHold}
+      className="relative flex cursor-pointer select-none items-center gap-3 p-3 rounded-2xl bg-white/[0.035] border border-white/10 hover:border-primary/20 transition-all tap-bounce"
+    >
       <div className="relative">
         <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-12 h-12" iconClassName="w-5 h-5" />
         <span className={`absolute -right-0.5 -bottom-0.5 w-3 h-3 rounded-full border-2 border-[#101010] ${active === "Active now" ? "bg-primary" : "bg-gray-600"}`} />
@@ -104,17 +164,24 @@ function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onChalleng
         <p className="text-sm font-black text-white truncate">{person.displayName}</p>
         <p className="text-xs text-gray-500 truncate">@{person.username} · LV.{person.level} · {active}</p>
       </div>
-      <button onClick={onMessage} className="w-10 h-10 rounded-xl bg-secondary/10 border border-secondary/25 text-secondary flex items-center justify-center tap-bounce" aria-label="Message">
-        <MessageCircle className="w-4 h-4" />
-      </button>
-      <button onClick={() => setMenu({ uid: person.uid, open: !(menu.open && menu.uid === person.uid) })} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce" aria-label="More">
+      <button
+        onClick={(event) => {
+          event.stopPropagation();
+          setMenu({ uid: person.uid, open: !(menu.open && menu.uid === person.uid) });
+        }}
+        onMouseDown={(event) => event.stopPropagation()}
+        onTouchStart={(event) => event.stopPropagation()}
+        className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce"
+        aria-label="More"
+      >
         <MoreVertical className="w-4 h-4" />
       </button>
       {menu.open && menu.uid === person.uid && (
-        <div className="absolute right-3 top-14 z-20 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden animate-card-in">
-          <button onClick={onViewProfile} className="w-full px-4 py-3 text-left text-sm text-secondary hover:bg-white/5 flex items-center gap-2"><UserRound className="w-4 h-4" />View profile</button><button onClick={onChallenge} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><Swords className="w-4 h-4" />Challenge</button>
-          <button onClick={onUnfriend} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><UserMinus className="w-4 h-4" />Unfriend</button>
-          <button onClick={onBlock} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2 disabled:opacity-50"><Ban className="w-4 h-4" />Block</button>
+        <div className="absolute right-3 top-14 z-20 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden animate-card-in" onClick={(event) => event.stopPropagation()}>
+          <button onClick={handleMenuClick(onViewProfile)} className="w-full px-4 py-3 text-left text-sm text-secondary hover:bg-white/5 flex items-center gap-2"><UserRound className="w-4 h-4" />View profile</button>
+          <button onClick={handleMenuClick(onDeleteChat)} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><Trash2 className="w-4 h-4" />Delete chat</button>
+          <button onClick={handleMenuClick(onUnfriend)} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><UserMinus className="w-4 h-4" />Unfriend</button>
+          <button onClick={handleMenuClick(onBlock)} disabled={busy} className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2 disabled:opacity-50"><Ban className="w-4 h-4" />Block</button>
         </div>
       )}
     </div>
@@ -292,6 +359,13 @@ export default function FriendsPage() {
     }
   };
 
+
+  const deleteChatLocal = (target: PublicUserResult) => {
+    if (selected?.uid === target.uid) setMessages([]);
+    setMenu({ uid: "", open: false });
+    toast.success("Chat cleared from this device");
+  };
+
   const sendMessage = async () => {
     const body = text.trim();
     if (!user || !selected || !body) return;
@@ -333,11 +407,13 @@ export default function FriendsPage() {
             <button onClick={() => setSelected(null)} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 tap-bounce" aria-label="Back to friends">
               <ChevronLeft className="w-5 h-5" />
             </button>
-            <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-11 h-11" iconClassName="w-5 h-5" />
-            <div className="min-w-0 flex-1">
-              <h1 className="text-base font-black text-white truncate">{selected.displayName}</h1>
-              <p className="text-[11px] text-gray-500 truncate">@{selected.username} · {active}</p>
-            </div>
+            <button onClick={() => navigate(`/public-profile?userId=${encodeURIComponent(selected.uid)}`)} className="min-w-0 flex flex-1 items-center gap-3 bg-transparent border-0 p-0 text-left tap-bounce" aria-label="View profile">
+              <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-11 h-11" iconClassName="w-5 h-5" />
+              <div className="min-w-0 flex-1">
+                <h1 className="text-base font-black text-white truncate">{selected.displayName}</h1>
+                <p className="text-[11px] text-gray-500 truncate">@{selected.username} · {active}</p>
+              </div>
+            </button>
             <button onClick={() => setMenu({ uid: selected.uid, open: !menu.open })} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center tap-bounce" aria-label="Chat options"><MoreVertical className="w-4 h-4" /></button>
             {menu.open && menu.uid === selected.uid && (
               <div className="absolute right-3 top-[calc(max(env(safe-area-inset-top),12px)+54px)] z-30 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden">
@@ -360,7 +436,7 @@ export default function FriendsPage() {
             const mine = msg.from === user.uid;
             return (
               <div key={msg.id} className={`flex items-end gap-2 ${mine ? "justify-end" : "justify-start"}`}>
-                {!mine && <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-7 h-7 shrink-0" iconClassName="w-3 h-3" />}
+                {!mine && <button onClick={() => navigate(`/public-profile?userId=${encodeURIComponent(selected.uid)}`)} className="bg-transparent border-0 p-0 shrink-0 tap-bounce" aria-label="View profile"><UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-7 h-7" iconClassName="w-3 h-3" /></button>}
                 <div className={`max-w-[82%] rounded-[22px] px-4 py-2.5 text-sm shadow-lg ${mine ? "bg-primary text-black font-semibold rounded-br-md" : "bg-white/[0.075] border border-white/10 text-[var(--app-text)] rounded-bl-md"}`}>
                   <p className="whitespace-pre-wrap break-words leading-relaxed">{msg.content}</p>
                   <div className={`mt-1.5 flex items-center gap-1.5 ${mine ? "justify-end" : "justify-start text-gray-500"}`}>
@@ -473,8 +549,8 @@ export default function FriendsPage() {
               setMenu={setMenu}
               busy={busyId === person.uid}
               onMessage={() => { setSelected(person); setMenu({ uid: "", open: false }); }}
-              onViewProfile={() => { setProfileView(person); setMenu({ uid: "", open: false }); }}
-              onChallenge={() => challenge(person)}
+              onViewProfile={() => { setMenu({ uid: "", open: false }); navigate(`/public-profile?userId=${encodeURIComponent(person.uid)}`); }}
+              onDeleteChat={() => deleteChatLocal(person)}
               onBlock={() => block(person)}
               onUnfriend={() => unfriend(person)}
             />

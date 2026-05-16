@@ -8,6 +8,22 @@ function isNativeCapacitor() {
   return Boolean((window as any).Capacitor?.isNativePlatform?.());
 }
 
+
+const STUDY_RPG_CHANNEL_ID = "study-rpg-alerts";
+
+async function ensureAndroidNotificationChannel(LocalNotifications: any) {
+  if (!isNativeCapacitor() || typeof LocalNotifications?.createChannel !== "function") return;
+  await LocalNotifications.createChannel({
+    id: STUDY_RPG_CHANNEL_ID,
+    name: "Study RPG Alerts",
+    description: "Friend request, message and update alerts",
+    importance: 5,
+    visibility: 1,
+    sound: "default",
+    vibration: true,
+  }).catch(() => undefined);
+}
+
 type PermissionState = "granted" | "denied" | "prompt" | "unknown";
 
 export async function getAppNotificationPermissionState(): Promise<PermissionState> {
@@ -40,6 +56,7 @@ export async function requestAppNotificationPermission(uid: string): Promise<boo
         import("@capacitor/local-notifications"),
       ]);
 
+      await ensureAndroidNotificationChannel(LocalNotifications);
       const localBefore = await LocalNotifications.checkPermissions().catch(() => null);
       const localPermission = localBefore?.display === "granted"
         ? localBefore
@@ -78,6 +95,7 @@ export async function showDeviceNotification(notification: AppNotification) {
   try {
     if (isNativeCapacitor()) {
       const { LocalNotifications } = await import("@capacitor/local-notifications");
+      await ensureAndroidNotificationChannel(LocalNotifications);
       const permission = await LocalNotifications.checkPermissions().catch(() => null);
       if (permission?.display !== "granted") {
         await LocalNotifications.requestPermissions().catch(() => undefined);
@@ -89,6 +107,7 @@ export async function showDeviceNotification(notification: AppNotification) {
             title,
             body,
             schedule: { at: new Date(Date.now() + 300) },
+            channelId: STUDY_RPG_CHANNEL_ID,
             sound: "default",
           },
         ],

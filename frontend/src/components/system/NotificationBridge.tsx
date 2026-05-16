@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { subscribeUserNotifications } from "@/lib/firebase";
+import { getPendingUserNotifications, markUserNotificationShown, subscribeUserNotifications, type AppNotification } from "@/lib/firebase";
 import { getAppNotificationPermissionState, requestAppNotificationPermission, showDeviceNotification } from "@/lib/notifications";
 
 export function NotificationBridge() {
   const user = useUserStore((state) => state.user);
+  const shownInSession = useRef(new Set<string>());
 
   useEffect(() => {
     if (!user || user.uid.startsWith("guest_")) return;
@@ -20,7 +21,8 @@ export function NotificationBridge() {
       }
     };
 
-    const timer = window.setTimeout(ensurePermission, 900);
+    const timer = window.setTimeout(ensurePermission, 700);
+    const repeatTimer = window.setInterval(ensurePermission, 90000);
     const onFocus = () => ensurePermission();
     window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onFocus);
@@ -28,6 +30,7 @@ export function NotificationBridge() {
     return () => {
       alive = false;
       window.clearTimeout(timer);
+      window.clearInterval(repeatTimer);
       window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onFocus);
     };
@@ -35,10 +38,33 @@ export function NotificationBridge() {
 
   useEffect(() => {
     if (!user || user.uid.startsWith("guest_")) return;
+
+    const handleNotification = async (notification: AppNotification) => {
+      if (!notification.id || shownInSession.current.has(notification.id)) return;
+      shownInSession.current.add(notification.id);
+      await showDeviceNotification(notification).catch(() => undefined);
+      await markUserNotificationShown(user.uid, notification.id).catch(() => undefined);
+    };
+
     const unsubscribe = subscribeUserNotifications(user.uid, (notification) => {
-      showDeviceNotification(notification).catch(() => undefined);
+      handleNotification(notification).catch(() => undefined);
     });
-    return () => unsubscribe?.();
+
+    const pollPending = async () => {
+      const pending = await getPendingUserNotifications(user.uid).catch(() => []);
+      for (const notification of pending) {
+        await handleNotification(notification).catch(() => undefined);
+      }
+    };
+
+    const firstPoll = window.setTimeout(() => pollPending().catch(() => undefined), 1200);
+    const pollTimer = window.setInterval(() => pollPending().catch(() => undefined), 8000);
+
+    return () => {
+      unsubscribe?.();
+      window.clearTimeout(firstPoll);
+      window.clearInterval(pollTimer);
+    };
   }, [user?.uid]);
 
   return null;

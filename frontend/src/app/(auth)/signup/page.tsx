@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { AppIcon } from "@/components/ui/AppIcon";
 import { signUpEmail, signInGuest, createUserProfile, isUsernameAvailable, normalizePublicUsername } from "@/lib/firebase";
 import { useUserStore } from "@/store/useUserStore";
-import { CLASS_OPTIONS, DIVISIONS, getDistrictsForDivision, getThanasForZila, deriveExamModeFromClass, needsEducationGroup, EDUCATION_GROUPS } from "@/lib/bdAddress";
+import { CLASS_OPTIONS, SSC_COMBINED_CLASS, DIVISIONS, getDistrictsForDivision, getThanasForZila, deriveExamModeFromClass, needsEducationGroup, EDUCATION_GROUPS } from "@/lib/bdAddress";
 import toast from "react-hot-toast";
 
 const AVATARS = ["zap", "book", "target", "trophy", "gem", "rocket", "brain", "notebook", "star", "bot", "graduation", "shield"];
@@ -53,7 +53,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [className, setClassName] = useState("Class 9");
+  const [className, setClassName] = useState(SSC_COMBINED_CLASS);
   const [groupName, setGroupName] = useState("Science");
   const [college, setCollege] = useState("");
   const [division, setDivision] = useState("Khulna");

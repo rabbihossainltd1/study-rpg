@@ -7,7 +7,7 @@ import { bindGuestAccountToEmail, deleteCurrentAccount, logOut, updateUserProfil
 import { navigate } from "@/lib/navigate";
 import { Button } from "@/components/ui/Button";
 import { UserAvatar } from "@/components/ui/AppIcon";
-import { CLASS_OPTIONS, DIVISIONS, EDUCATION_GROUPS, deriveExamModeFromClass, getDistrictsForDivision, getThanasForZila, needsEducationGroup } from "@/lib/bdAddress";
+import { CLASS_OPTIONS, SSC_COMBINED_CLASS, DIVISIONS, EDUCATION_GROUPS, deriveExamModeFromClass, getDistrictsForDivision, getThanasForZila, needsEducationGroup, normalizeClassName } from "@/lib/bdAddress";
 import { APP_VERSION, UPDATE_API_URL, UPDATE_PACKAGE_URL, UPDATE_RELEASE_URL } from "@/lib/appVersion";
 import toast from "react-hot-toast";
 import {
@@ -24,7 +24,7 @@ export default function SettingsPage() {
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [showStudentEditor, setShowStudentEditor] = useState(false);
   const [studentForm, setStudentForm] = useState(() => ({
-    className: user?.className || "Class 9",
+    className: normalizeClassName(user?.className),
     groupName: user?.groupName || "Science",
     school: user?.school || user?.college || "",
     division: user?.division || "Khulna",
@@ -40,7 +40,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (!user) return;
     setStudentForm({
-      className: user.className || "Class 9",
+      className: normalizeClassName(user.className),
       groupName: user.groupName || "Science",
       school: user.school || user.college || "",
       division: user.division || "Khulna",

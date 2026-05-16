@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { AppIcon, UserAvatar } from "@/components/ui/AppIcon";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
-import { CLASS_OPTIONS, DIVISIONS, EDUCATION_GROUPS, deriveExamModeFromClass, getDistrictsForDivision, getThanasForZila, needsEducationGroup } from "@/lib/bdAddress";
+import { CLASS_OPTIONS, SSC_COMBINED_CLASS, DIVISIONS, EDUCATION_GROUPS, deriveExamModeFromClass, getDistrictsForDivision, getThanasForZila, needsEducationGroup, normalizeClassName } from "@/lib/bdAddress";
 import toast from "react-hot-toast";
 
 const RANK_ORDER: Rank[] = ["Novice", "Apprentice", "Scholar", "Expert", "Master", "Grandmaster", "Legend"];
@@ -76,7 +76,7 @@ export default function ProfilePage() {
     avatar: "zap",
     school: "",
     college: "",
-    className: "Class 9",
+    className: SSC_COMBINED_CLASS,
     groupName: "Science",
     division: "Khulna",
     zila: "Jhenaidah",
@@ -98,13 +98,13 @@ export default function ProfilePage() {
       avatar: user.avatar || "zap",
       school: user.school || user.college || "",
       college: user.college || user.school || "",
-      className: user.className || "Class 9",
+      className: normalizeClassName(user.className),
       groupName: user.groupName || "Science",
       division: user.division || "Khulna",
       zila: user.zila || user.district || "Jhenaidah",
       district: user.district || user.zila || "Jhenaidah",
       thana: user.thana || "",
-      examMode: user.examMode || deriveExamModeFromClass(user.className || "Class 9"),
+      examMode: user.examMode || deriveExamModeFromClass(user.className || SSC_COMBINED_CLASS),
     });
   }, [user]);
 

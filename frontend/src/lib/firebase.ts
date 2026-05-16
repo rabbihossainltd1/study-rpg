@@ -717,6 +717,25 @@ export function subscribeUserNotifications(uid: string, onNew: (notification: Ap
   }, () => undefined);
 }
 
+
+export async function getPendingUserNotifications(uid: string): Promise<AppNotification[]> {
+  if (!uid || uid.startsWith("guest_")) return [];
+  const q = query(collection(db, "notifications", uid, "items"), where("shown", "==", false), limit(25));
+  const snap = await getDocs(q).catch(() => null);
+  if (!snap) return [];
+  return snap.docs
+    .map((item) => ({ id: item.id, ...(item.data() as Omit<AppNotification, "id">) } as AppNotification))
+    .filter((notification) => notification.from !== uid);
+}
+
+export async function markUserNotificationShown(uid: string, notificationId: string) {
+  if (!uid || uid.startsWith("guest_") || !notificationId) return;
+  await updateDoc(doc(db, "notifications", uid, "items", notificationId), {
+    shown: true,
+    shownAt: serverTimestamp(),
+  }).catch(() => undefined);
+}
+
 export async function sendFriendRequest(currentUid: string, targetUid: string) {
   if (!currentUid || !targetUid || currentUid === targetUid) throw new Error("Invalid student");
   const id = relationId(currentUid, targetUid);

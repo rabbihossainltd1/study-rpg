@@ -10,10 +10,11 @@ import { getSubjectsForUser } from "@/lib/subjects";
 import { DAILY_MISSIONS } from "@/lib/missions";
 import { getGreeting, formatDuration } from "@/lib/utils";
 import { RANK_COLORS } from "@/types";
+import { normalizeClassName } from "@/lib/bdAddress";
 import { getLeaderboard } from "@/lib/firebase";
 import { AppIcon, IconBadge, UserAvatar, CrownBadge } from "@/components/ui/AppIcon";
 import {
-  Zap, Trophy, Target, BookOpen, Timer, Star, ChevronRight, Coins, Flame,
+  Zap, Trophy, Target, BookOpen, Timer, Star, ChevronRight, Coins, Flame, ListChecks,
 } from "lucide-react";
 
 type LeaderPreview = {
@@ -66,7 +67,7 @@ export default function DashboardPage() {
             <p className="text-xs text-gray-500 mt-1 truncate">@{user.username} · Student ID {user.studentId || "—"}</p>
             <div className="flex items-center gap-2 mt-2 flex-wrap">
               <span className="px-2.5 py-1 rounded-lg text-xs font-bold border" style={{ color: rankColor, borderColor: `${rankColor}35`, background: `${rankColor}12` }}>{user.rank}</span>
-              <span className="px-2.5 py-1 rounded-lg text-xs text-gray-400 bg-white/5 border border-white/10">{user.className || user.examMode}{user.groupName && user.groupName !== "General" ? ` · ${user.groupName}` : ""}</span>
+              <span className="px-2.5 py-1 rounded-lg text-xs text-gray-400 bg-white/5 border border-white/10">{normalizeClassName(user.className || user.examMode)}{user.groupName && user.groupName !== "General" ? ` · ${user.groupName}` : ""}</span>
               <span className="px-2.5 py-1 rounded-lg text-xs text-gold bg-gold/5 border border-gold/10 inline-flex items-center gap-1"><Coins className="w-3.5 h-3.5" />{user.coins}</span>
               <span className="px-2.5 py-1 rounded-lg text-xs text-orange-400 bg-orange-500/5 border border-orange-500/10 inline-flex items-center gap-1"><Flame className="w-3.5 h-3.5" />{user.streak}</span>
             </div>
@@ -83,10 +84,10 @@ export default function DashboardPage() {
           <p className="text-white font-black">{language === "bn" ? "লিখিত প্রশ্ন" : "Written Practice"}</p>
           <p className="text-xs text-gray-500">{language === "bn" ? "ক্লাস অনুযায়ী লিখিত প্রশ্ন" : "Class-based questions"}</p>
         </button>
-        <button onClick={() => navigate("/leaderboard")} className="glass-card p-4 text-left border border-gold/10 hover-lift tap-bounce">
-          <Trophy className="w-5 h-5 text-gold mb-2" />
-          <p className="text-white font-black">{language === "bn" ? "র‍্যাঙ্ক" : "Rank"}</p>
-          <p className="text-xs text-gray-500">#{user.level} · {user.rank}</p>
+        <button onClick={() => navigate("/subjects")} className="glass-card p-4 text-left border border-secondary/10 hover-lift tap-bounce">
+          <ListChecks className="w-5 h-5 text-secondary mb-2" />
+          <p className="text-white font-black">{language === "bn" ? "MCQ" : "MCQ"}</p>
+          <p className="text-xs text-gray-500">{language === "bn" ? "ক্লাস অনুযায়ী MCQ" : "Class-based MCQ"}</p>
         </button>
       </div>
 

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { navigate } from "@/lib/navigate";
 import { useUserStore } from "@/store/useUserStore";
 import { cancelFriendRequest, createChallenge, getFriendRelationState, getUserProfile, sendFriendRequest, type FriendStatus } from "@/lib/firebase";
+import { normalizeClassName } from "@/lib/bdAddress";
 import { Button } from "@/components/ui/Button";
 import { UserAvatar } from "@/components/ui/AppIcon";
 import { RANK_COLORS, type Rank, type User } from "@/types";
@@ -154,7 +155,7 @@ export default function PublicProfileClient() {
         </div>
         <div className="grid gap-3">
           <InfoCard icon={<UserRound className="w-5 h-5" />} label="Student Name" value={profile.displayName || profile.username} />
-          <InfoCard icon={<GraduationCap className="w-5 h-5" />} label="Class / Level" value={`${profile.className || "Student"} · LV.${profile.level}`} />
+          <InfoCard icon={<GraduationCap className="w-5 h-5" />} label="Class / Level" value={`${normalizeClassName(profile.className) || "Student"} · LV.${profile.level}`} />
           <InfoCard icon={<MapPin className="w-5 h-5" />} label="District" value={profile.district || profile.zila || "Not added"} />
           {canSeeFull && <InfoCard icon={<School className="w-5 h-5" />} label="School / University" value={profile.school || profile.college || "Not added"} />}
           {canSeeFull && <InfoCard icon={<Building2 className="w-5 h-5" />} label="Group / Exam" value={`${profile.groupName || "General"} · ${profile.examMode || "SSC"}`} />}

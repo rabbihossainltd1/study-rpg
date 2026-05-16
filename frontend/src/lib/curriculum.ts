@@ -1,5 +1,6 @@
 
 import type { Subject } from "@/types";
+import { SSC_COMBINED_CLASS, normalizeClassName } from "@/lib/bdAddress";
 
 export type EducationGroup = "General" | "Science" | "Humanities" | "Business Studies";
 
@@ -20,7 +21,7 @@ const BUSINESS = ["Business Studies"] as EducationGroup[];
 const class6 = ["Class 6"];
 const class7 = ["Class 7"];
 const class8 = ["Class 8"];
-const ssc = ["Class 9", "Class 10", "SSC"];
+const ssc = [SSC_COMBINED_CLASS, "Class 9", "Class 10", "SSC"];
 const hsc = ["HSC 1st Year", "HSC 2nd Year", "HSC"];
 const admission = ["Admission"];
 const university = ["University General"];
@@ -265,10 +266,11 @@ export function normalizeGroup(group?: string): EducationGroup {
 }
 
 export function getCurriculumSubjectsFor(className?: string, groupName?: string) {
-  const cls = className || "SSC";
+  const cls = normalizeClassName(className || SSC_COMBINED_CLASS);
   const group = normalizeGroup(groupName);
   return CURRICULUM_SUBJECTS.filter((s) =>
-    s.classLevels.includes(cls) && (s.groups.includes("General") || s.groups.includes(group))
+    (s.classLevels.includes(cls) || (cls === SSC_COMBINED_CLASS && s.classLevels.some((level) => ["Class 9", "Class 10", "SSC"].includes(level)))) &&
+    (s.groups.includes("General") || s.groups.includes(group))
   );
 }
 
