@@ -37,6 +37,25 @@ type LeaderEntry = {
   className?: string;
 };
 
+const LEADERBOARD_CACHE_KEY = "studyRpgLeaderboardCache_v141";
+
+function readLocalJson<T>(key: string, fallback: T): T {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const parsed = JSON.parse(localStorage.getItem(key) || "");
+    return parsed ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeLocalJson(key: string, value: unknown) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {}
+}
+
 export default function LeaderboardPage() {
   const { user, language } = useUserStore();
   const [tab, setTab] = useState("global");
@@ -47,10 +66,22 @@ export default function LeaderboardPage() {
   const [friendStates, setFriendStates] = useState<Record<string, FriendStatus>>({});
 
   useEffect(() => {
-    setLoading(true);
+    const cached = readLocalJson<LeaderEntry[]>(LEADERBOARD_CACHE_KEY, []);
+    if (cached.length) {
+      setEntries(cached);
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
     getLeaderboard("global", 100)
-      .then((data) => setEntries(data as LeaderEntry[]))
-      .catch(() => setEntries([]))
+      .then((data) => {
+        const rows = data as LeaderEntry[];
+        setEntries(rows);
+        writeLocalJson(LEADERBOARD_CACHE_KEY, rows);
+      })
+      .catch(() => {
+        if (!cached.length) setEntries([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 

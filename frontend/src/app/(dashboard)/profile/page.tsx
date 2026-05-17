@@ -42,6 +42,27 @@ const ACHIEVEMENTS: Achievement[] = [
 
 const AVATARS = ["zap", "fire", "book", "target", "trophy", "gem", "rocket", "brain", "bot", "star"];
 
+function readLocalJson<T>(key: string, fallback: T): T {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const parsed = JSON.parse(localStorage.getItem(key) || "");
+    return parsed ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeLocalJson(key: string, value: unknown) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {}
+}
+
+function profileCacheKey(uid: string) {
+  return `studyRpgProfileCache_${uid}`;
+}
+
 async function compressImage(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -96,10 +117,14 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!user) return;
+    const cachedProfile = readLocalJson<{ podiumRank?: number }>(profileCacheKey(user.uid), {});
+    if (cachedProfile.podiumRank) setPodiumRank(cachedProfile.podiumRank);
     getLeaderboard("global", 100).then((rows: any[]) => {
       const found = rows.find((r) => r.userId === user.uid);
-      setPodiumRank(found?.rank && found.rank <= 3 ? found.rank : undefined);
-    }).catch(() => setPodiumRank(undefined));
+      const nextPodiumRank = found?.rank && found.rank <= 3 ? found.rank : undefined;
+      setPodiumRank(nextPodiumRank);
+      writeLocalJson(profileCacheKey(user.uid), { podiumRank: nextPodiumRank, user, savedAt: Date.now() });
+    }).catch(() => setPodiumRank(cachedProfile.podiumRank));
     setForm({
       username: user.username || "",
       displayName: user.displayName || user.username || "",
@@ -307,10 +332,10 @@ export default function ProfilePage() {
               <div key={rank} className="flex items-center gap-2 flex-shrink-0">
                 <div className={`min-w-[76px] rounded-2xl border px-2 py-2 text-center transition-all duration-300 ${isActive ? "scale-105" : ""}`}
                   style={{ borderColor: unlocked ? `${rColor}80` : "rgba(255,255,255,0.08)", background: unlocked ? `linear-gradient(135deg, ${rColor}24, rgba(255,255,255,0.035))` : "rgba(255,255,255,0.025)", boxShadow: isActive ? `0 0 28px ${rColor}35` : undefined }}>
-                  <div className="mx-auto mb-1 flex h-8 w-8 items-center justify-center rounded-full border" style={{ borderColor: unlocked ? rColor : "rgba(255,255,255,0.12)", color: unlocked ? rColor : "#4B5563", background: unlocked ? `${rColor}18` : "transparent" }}>
-                    {isPast ? <Check className="w-4 h-4" /> : isActive ? <Crown className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
+                  <div className="mx-auto mb-1 flex h-11 w-11 items-center justify-center rounded-2xl border" style={{ borderColor: unlocked ? `${rColor}CC` : "rgba(255,255,255,0.14)", color: unlocked ? rColor : "#4B5563", background: unlocked ? `radial-gradient(circle, ${rColor}30, rgba(255,255,255,0.03))` : "rgba(255,255,255,0.025)", boxShadow: unlocked ? `0 0 24px ${rColor}45, inset 0 0 18px ${rColor}18` : "inset 0 0 12px rgba(255,255,255,0.03)" }}>
+                    {isPast ? <Check className="w-5 h-5 stroke-[3] drop-shadow" /> : isActive ? <Crown className="w-5 h-5 stroke-[2.8] drop-shadow" /> : <Award className="w-5 h-5 stroke-[2.6] drop-shadow" />}
                   </div>
-                  <p className="text-[10px] font-black uppercase tracking-wide" style={{ color: unlocked ? rColor : "#6B7280" }}>{tier}</p>
+                  <p className="text-[10px] font-black uppercase tracking-wide" style={{ color: unlocked ? rColor : "#6B7280", textShadow: unlocked ? `0 0 12px ${rColor}55` : undefined }}>{tier}</p>
                   <p className="text-[9px] text-gray-600 truncate">{rank}</p>
                 </div>
                 {i < RANK_ORDER.length - 1 && <div className="h-px w-5 flex-shrink-0" style={{ background: isPast ? `linear-gradient(90deg, ${rColor}, ${RANK_COLORS[RANK_ORDER[i + 1]]})` : "rgba(255,255,255,0.08)" }} />}
@@ -320,7 +345,7 @@ export default function ProfilePage() {
         </div>
         {nextRank && (
           <p className="text-xs text-gray-500 mt-2">
-            Next rank: <span style={{ color: RANK_COLORS[nextRank] }}>{nextRank}</span> · Need {(RANK_THRESHOLDS[nextRank] - user.xp).toLocaleString()} more XP
+            Next rank: <span style={{ color: RANK_COLORS[nextRank] }}>{RANK_TIER_LABELS[nextRank]}</span> · Need {(RANK_THRESHOLDS[nextRank] - user.xp).toLocaleString()} more XP
           </p>
         )}
       </div>

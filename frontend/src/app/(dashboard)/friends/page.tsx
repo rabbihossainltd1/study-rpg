@@ -13,6 +13,7 @@ import {
   markMessagesRead,
   sendQuickMessage,
   subscribeMessagesWithFriend,
+  subscribeRecentMessagesForUser,
   unblockUser,
   unfriendUser,
   type FriendMessage,
@@ -347,6 +348,32 @@ export default function FriendsPage() {
   }, [user?.uid]);
 
   useEffect(() => {
+    if (!user || user.uid.startsWith("guest_")) return;
+    const unsubscribe = subscribeRecentMessagesForUser(user.uid, (list) => {
+      setFriends((items) => {
+        if (!items.length) return items;
+        const latestByFriend = new Map<string, FriendMessage>();
+        list.forEach((msg) => {
+          const otherUid = msg.from === user.uid ? msg.to : msg.to === user.uid ? msg.from : msg.senderId === user.uid ? msg.receiverId : msg.receiverId === user.uid ? msg.senderId : undefined;
+          if (!otherUid || !items.some((item) => item.uid === otherUid)) return;
+          const visible = filterDeletedMessages(user.uid, otherUid, [msg]);
+          if (!visible.length) return;
+          const current = latestByFriend.get(otherUid);
+          if (!current || messageMs(msg) >= messageMs(current)) latestByFriend.set(otherUid, msg);
+        });
+        if (!latestByFriend.size) return items.map((item) => ({ ...item, muted: isChatMutedLocal(user.uid, item.uid) }));
+        const updated = sortFriendsByLatest(items.map((item) => {
+          const latest = latestByFriend.get(item.uid);
+          return latest ? { ...item, lastMessageAtMs: messageMs(latest), lastMessagePreview: latest.content || item.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, item.uid) } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) };
+        }));
+        saveFriendsCache(user.uid, updated);
+        return updated;
+      });
+    });
+    return () => unsubscribe?.();
+  }, [user?.uid]);
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       (window as any).studyRpgActiveChatUid = selected?.uid || "";
     }
@@ -496,6 +523,7 @@ export default function FriendsPage() {
       saveFriendsCache(user.uid, updated);
       return updated;
     });
+    setSelected((current) => current?.uid === target.uid ? { ...current, muted: !muted } : current);
     setChatMenuOpen(false);
     setMenu({ uid: "", open: false });
     toast.success(muted ? "Chat unmuted" : "Chat muted");
@@ -558,7 +586,7 @@ export default function FriendsPage() {
 
   if (selected) {
     const active = activityText(selected);
-    const selectedMuted = isChatMutedLocal(user.uid, selected.uid) || selected.muted;
+    const selectedMuted = isChatMutedLocal(user.uid, selected.uid);
     return (
       <div className="fixed inset-0 z-[520] flex h-[100dvh] flex-col overflow-hidden bg-[var(--app-bg)] text-[var(--app-text)] animate-card-in">
         <div className="shrink-0 border-b border-white/10 bg-[var(--app-surface-strong)]/95 px-3 pb-3 pt-[max(env(safe-area-inset-top),12px)] backdrop-blur-xl">
@@ -709,7 +737,7 @@ export default function FriendsPage() {
               menu={menu}
               setMenu={setMenu}
               busy={busyId === person.uid}
-              onMessage={() => { setSelected(person); setMenu({ uid: "", open: false }); }}
+              onMessage={() => { setSelected({ ...person, muted: isChatMutedLocal(user.uid, person.uid) }); setMenu({ uid: "", open: false }); }}
               onViewProfile={() => { setMenu({ uid: "", open: false }); navigate(`/public-profile?userId=${encodeURIComponent(person.uid)}`); }}
               onDeleteChat={() => deleteChatLocal(person)}
               onBlock={() => block(person)}

@@ -994,6 +994,37 @@ export function subscribeMessagesWithFriend(currentUid: string, targetUid: strin
   return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
 }
 
+export function subscribeRecentMessagesForUser(currentUid: string, onChange: (messages: FriendMessage[]) => void): Unsubscribe | undefined {
+  if (!currentUid) return undefined;
+
+  const messageMap = new Map<string, FriendMessage>();
+  const emit = () => {
+    onChange(Array.from(messageMap.values()).sort((a, b) => messageSortValue(a) - messageSortValue(b)));
+  };
+
+  const messageQueries = [
+    query(collection(db, "messages"), where("participants", "array-contains", currentUid), limit(300)),
+    query(collection(db, "messages"), where("from", "==", currentUid), limit(250)),
+    query(collection(db, "messages"), where("to", "==", currentUid), limit(250)),
+    query(collection(db, "messages"), where("senderId", "==", currentUid), limit(250)),
+    query(collection(db, "messages"), where("receiverId", "==", currentUid), limit(250)),
+  ];
+
+  const unsubscribers = messageQueries.map((messageQuery) => onSnapshot(messageQuery, (snap) => {
+    snap.docs.forEach((messageDoc) => {
+      const message = normalizeFriendMessage(messageDoc.id, messageDoc.data());
+      if (message.content.trim().length > 0 && Array.isArray(message.participants) && message.participants.includes(currentUid)) {
+        messageMap.set(message.id, message);
+      } else if (message.content.trim().length > 0 && (message.from === currentUid || message.to === currentUid || message.senderId === currentUid || message.receiverId === currentUid)) {
+        messageMap.set(message.id, message);
+      }
+    });
+    emit();
+  }, () => undefined));
+
+  return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
+}
+
 export async function markMessagesRead(currentUid: string, targetUid: string) {
   const messages = await getMessagesWithFriend(currentUid, targetUid);
   const unread = messages.filter((m) =>

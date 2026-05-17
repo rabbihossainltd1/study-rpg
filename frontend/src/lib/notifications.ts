@@ -111,9 +111,11 @@ export async function showDeviceNotification(notification: AppNotification) {
             id: Math.floor(Date.now() % 2147483647),
             title,
             body,
-            schedule: { at: new Date(Date.now() + 300) },
+            schedule: { at: new Date(Date.now() + 50) },
             channelId: STUDY_RPG_CHANNEL_ID,
             sound: "default",
+            autoCancel: true,
+            ongoing: false,
           },
         ],
       });
