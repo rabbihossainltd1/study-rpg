@@ -9,8 +9,9 @@ import { AppIcon, UserAvatar, VerifiedBadge } from "@/components/ui/AppIcon";
 import { Button } from "@/components/ui/Button";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 import toast from "react-hot-toast";
-import { RANK_COLORS } from "@/types";
+import { RANK_COLORS, type Subject } from "@/types";
 import { isVerifiedUser } from "@/lib/verified";
+import { getSubjectsForUser } from "@/lib/subjects";
 import {
   LayoutDashboard, BookOpen, Trophy, Bot,
   Target, User, LogOut, Zap, Menu, X, ChevronRight, Users, Search, UserPlus, Coins, Gem, Flame, XCircle, CheckCircle2, Settings,
@@ -32,16 +33,28 @@ function HeaderSearch() {
   const { user } = useUserStore();
   const [term, setTerm] = useState("");
   const [results, setResults] = useState<PublicUserResult[]>([]);
+  const [subjectResults, setSubjectResults] = useState<Subject[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
   const [selected, setSelected] = useState<PublicUserResult | null>(null);
   const boxRef = useRef<HTMLDivElement | null>(null);
   useBodyScrollLock(Boolean(selected));
 
   useEffect(() => {
-    if (!user || user.uid.startsWith("guest_")) return;
+    if (!user) return;
     const timer = setTimeout(async () => {
-      const q = term.trim();
+      const q = term.trim().toLowerCase();
       if (q.length < 2) {
+        setResults([]);
+        setSubjectResults([]);
+        return;
+      }
+
+      const classSubjects = getSubjectsForUser(user)
+        .filter((subject) => `${subject.name} ${subject.nameBn}`.toLowerCase().includes(q))
+        .slice(0, 6);
+      setSubjectResults(classSubjects);
+
+      if (user.uid.startsWith("guest_")) {
         setResults([]);
         return;
       }
@@ -50,7 +63,7 @@ function HeaderSearch() {
       } catch {
         setResults([]);
       }
-    }, 300);
+    }, 250);
     return () => clearTimeout(timer);
   }, [term, user]);
 
@@ -59,6 +72,7 @@ function HeaderSearch() {
       if (!boxRef.current) return;
       if (!boxRef.current.contains(e.target as Node)) {
         setResults([]);
+        setSubjectResults([]);
       }
     };
     document.addEventListener("mousedown", onDown);
@@ -112,7 +126,7 @@ function HeaderSearch() {
   };
 
   const ActionButton = ({ person }: { person: PublicUserResult }) => {
-    if (person.friendStatus === "accepted") return <div style={{ display: "flex", gap: 5 }}><button onClick={() => { navigate(`/friends?chat=${person.uid}`); setResults([]); }} style={{ border: "1px solid rgba(0,240,255,.3)", background: "rgba(0,240,255,.12)", color: "#00F0FF", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Msg</button><button onClick={() => { createChallenge(user!.uid, person.uid).then(() => toast.success("Challenge sent")); }} style={{ border: "1px solid rgba(255,215,0,.3)", background: "rgba(255,215,0,.12)", color: "#FFD700", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Challenge</button></div>;
+    if (person.friendStatus === "accepted") return <div style={{ display: "flex", gap: 5 }}><button onClick={() => { navigate(`/friends?chat=${person.uid}`); setResults([]); setSubjectResults([]); setTerm(""); }} style={{ border: "1px solid rgba(0,240,255,.3)", background: "rgba(0,240,255,.12)", color: "#00F0FF", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Msg</button><button onClick={() => { createChallenge(user!.uid, person.uid).then(() => toast.success("Challenge sent")); }} style={{ border: "1px solid rgba(255,215,0,.3)", background: "rgba(255,215,0,.12)", color: "#FFD700", borderRadius: 10, padding: "7px 8px", fontWeight: 900, fontSize: 10 }}>Challenge</button></div>;
     if (person.friendStatus === "pending") return <button onClick={() => cancel(person)} disabled={busy === person.uid} style={{ border: "1px solid rgba(255,215,0,.3)", background: "rgba(255,215,0,.12)", color: "#FFD700", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><XCircle size={13} />Cancel</button>;
     if (person.friendStatus === "incoming") return <button onClick={() => accept(person)} disabled={busy === person.uid} style={{ border: 0, background: "#00F0FF", color: "#000", borderRadius: 10, padding: "7px 9px", fontWeight: 900, fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}><CheckCircle2 size={13} />Accept</button>;
     if (person.friendStatus === "blocked_by_me") return <span style={{ color: "#EF4444", fontSize: 10, fontWeight: 900 }}>Blocked</span>;
@@ -129,17 +143,27 @@ function HeaderSearch() {
         placeholder="Search ID/name"
         className="app-input" style={{ width: "100%", border: "1px solid var(--app-border)", background: "var(--app-input)", color: "var(--app-text)", borderRadius: 13, padding: "9px 10px 9px 32px", fontSize: 12, outline: "none" }}
       />
-      {results.length > 0 && (
+      {(results.length > 0 || subjectResults.length > 0) && (
         <div style={{ position: "absolute", top: 44, left: -42, right: -70, background: "var(--app-surface-strong)", border: "1px solid rgba(57,255,20,.22)", borderRadius: 16, padding: 8, boxShadow: "0 20px 50px rgba(0,0,0,.5)", zIndex: 80 }}>
           {results.slice(0, 4).map((person) => (
             <div key={person.uid} style={{ display: "flex", alignItems: "center", gap: 8, padding: 8, borderRadius: 12, background: "var(--app-surface-soft)", marginBottom: 6 }}>
               <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-9 h-9" iconClassName="w-4 h-4" />
-              <button type="button" onClick={() => { setSelected(person); setResults([]); }} style={{ flex: 1, minWidth: 0, background: "transparent", border: 0, textAlign: "left", padding: 0, cursor: "pointer" }}>
+              <button type="button" onClick={() => { navigate(`/public-profile?userId=${encodeURIComponent(person.uid)}`); setResults([]); setSubjectResults([]); setTerm(""); }} style={{ flex: 1, minWidth: 0, background: "transparent", border: 0, textAlign: "left", padding: 0, cursor: "pointer" }}>
                 <p style={{ margin: 0, color: "var(--app-text)", fontSize: 12, fontWeight: 800, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4 }}>{person.displayName}{isVerifiedUser(person) && <VerifiedBadge className="w-3.5 h-3.5" />}</p>
                 <p style={{ margin: 0, color: "#6B7280", fontSize: 10, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>@{person.username} · {person.district || ""}</p>
               </button>
               <ActionButton person={person} />
             </div>
+          ))}
+          {subjectResults.length > 0 && <div style={{ padding: "4px 4px 6px", color: "#6B7280", fontSize: 10, fontWeight: 900, textTransform: "uppercase", letterSpacing: 0.8 }}>Subjects</div>}
+          {subjectResults.map((subject) => (
+            <button key={subject.id} type="button" onClick={() => { navigate(`/subjects/${subject.id}`); setResults([]); setSubjectResults([]); setTerm(""); }} style={{ width: "100%", display: "flex", alignItems: "center", gap: 8, padding: 8, borderRadius: 12, background: "var(--app-surface-soft)", marginBottom: 6, border: 0, textAlign: "left", cursor: "pointer" }}>
+              <span style={{ width: 36, height: 36, borderRadius: 11, display: "inline-flex", alignItems: "center", justifyContent: "center", background: `${subject.color}18`, color: subject.color }}><BookOpen size={17} /></span>
+              <span style={{ minWidth: 0, flex: 1 }}>
+                <span style={{ display: "block", color: "var(--app-text)", fontSize: 12, fontWeight: 900, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{subject.nameBn || subject.name}</span>
+                <span style={{ display: "block", color: "#6B7280", fontSize: 10, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{subject.name} · {subject.totalChapters} chapters</span>
+              </span>
+            </button>
           ))}
         </div>
       )}

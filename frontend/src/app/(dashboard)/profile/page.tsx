@@ -19,6 +19,15 @@ import toast from "react-hot-toast";
 import { isVerifiedUser } from "@/lib/verified";
 
 const RANK_ORDER: Rank[] = ["Novice", "Apprentice", "Scholar", "Expert", "Master", "Grandmaster", "Legend"];
+const RANK_TIER_LABELS: Record<Rank, string> = {
+  Novice: "Bronze",
+  Apprentice: "Silver",
+  Scholar: "Gold",
+  Expert: "Platinum",
+  Master: "Titanium",
+  Grandmaster: "Diamond",
+  Legend: "Legend"
+};
 
 const ACHIEVEMENTS: Achievement[] = [
   { id: "first_session", title: "First Step", titleBn: "প্রথম পদক্ষেপ", description: "Complete your first study session", icon: "target", rarity: "common", xpReward: 50, isUnlocked: false },
@@ -228,7 +237,17 @@ export default function ProfilePage() {
   const toggleLanguage = () => {
     const newLang = language === "bn" ? "en" : "bn";
     setLanguage(newLang);
+    setUser({ ...user, language: newLang });
+    if (!user.isGuest && !user.uid.startsWith("guest_")) updateUserProfile(user.uid, { language: newLang }).catch(() => undefined);
     toast.success(`Language: ${newLang === "bn" ? "বাংলা" : "English"}`);
+  };
+
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    setUser({ ...user, theme: newTheme });
+    if (!user.isGuest && !user.uid.startsWith("guest_")) updateUserProfile(user.uid, { theme: newTheme }).catch(() => undefined);
+    toast.success(newTheme === "dark" ? "Dark theme saved" : "Light theme saved");
   };
 
   return (
@@ -277,20 +296,24 @@ export default function ProfilePage() {
           <Shield className="w-4 h-4" style={{ color: rankColor }} />
           <p className="font-bold text-white text-sm">Rank Journey</p>
         </div>
-        <div className="flex items-center gap-1 overflow-x-auto overflow-y-visible px-4 py-4 -mx-2">
+        <div className="flex items-center gap-2 overflow-x-auto overflow-y-visible px-2 py-5 -mx-2">
           {RANK_ORDER.map((rank, i) => {
             const rColor = RANK_COLORS[rank];
+            const tier = RANK_TIER_LABELS[rank];
             const isActive = rank === user.rank;
             const isPast = RANK_ORDER.indexOf(rank) < currentRankIndex;
+            const unlocked = isPast || isActive;
             return (
               <div key={rank} className="flex items-center gap-2 flex-shrink-0">
-                <div className="text-center">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 ${isActive ? "scale-125 shadow-lg" : ""}`}
-                    style={{ borderColor: isPast || isActive ? rColor : "rgba(255,255,255,0.1)", background: isPast || isActive ? `${rColor}20` : "transparent", color: isPast || isActive ? rColor : "#4B5563", boxShadow: isActive ? `0 0 22px ${rColor}40` : undefined }}>
-                    {isPast ? "✓" : isActive ? "●" : "○"}
+                <div className={`min-w-[76px] rounded-2xl border px-2 py-2 text-center transition-all duration-300 ${isActive ? "scale-105" : ""}`}
+                  style={{ borderColor: unlocked ? `${rColor}80` : "rgba(255,255,255,0.08)", background: unlocked ? `linear-gradient(135deg, ${rColor}24, rgba(255,255,255,0.035))` : "rgba(255,255,255,0.025)", boxShadow: isActive ? `0 0 28px ${rColor}35` : undefined }}>
+                  <div className="mx-auto mb-1 flex h-8 w-8 items-center justify-center rounded-full border" style={{ borderColor: unlocked ? rColor : "rgba(255,255,255,0.12)", color: unlocked ? rColor : "#4B5563", background: unlocked ? `${rColor}18` : "transparent" }}>
+                    {isPast ? <Check className="w-4 h-4" /> : isActive ? <Crown className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
                   </div>
+                  <p className="text-[10px] font-black uppercase tracking-wide" style={{ color: unlocked ? rColor : "#6B7280" }}>{tier}</p>
+                  <p className="text-[9px] text-gray-600 truncate">{rank}</p>
                 </div>
-                {i < RANK_ORDER.length - 1 && <div className="w-8 h-px flex-shrink-0" style={{ background: isPast ? rColor : "rgba(255,255,255,0.1)" }} />}
+                {i < RANK_ORDER.length - 1 && <div className="h-px w-5 flex-shrink-0" style={{ background: isPast ? `linear-gradient(90deg, ${rColor}, ${RANK_COLORS[RANK_ORDER[i + 1]]})` : "rgba(255,255,255,0.08)" }} />}
               </div>
             );
           })}
@@ -313,8 +336,8 @@ export default function ProfilePage() {
       {activeTab === "stats" && (
         <div className="glass-card p-4 border border-white/10 animate-card-in">
           <div className="grid grid-cols-2 gap-3 text-center">
-            <div className="rounded-2xl bg-secondary/10 border border-secondary/20 p-4"><p className="text-2xl font-black text-secondary">{user.coins}</p><p className="text-xs text-gray-500">Coins</p></div>
-            <div className="rounded-2xl bg-purple/10 border border-purple/20 p-4"><p className="text-2xl font-black text-purple">{user.gems}</p><p className="text-xs text-gray-500">Gems</p></div>
+            <div className="rounded-2xl bg-secondary/10 border border-secondary/20 p-4 flex flex-col items-center gap-1.5"><div className="h-10 w-10 rounded-xl bg-secondary/15 border border-secondary/30 flex items-center justify-center"><Coins className="w-5 h-5 text-secondary" /></div><p className="text-2xl font-black text-secondary">{user.coins}</p><p className="text-xs text-gray-500">Coins</p></div>
+            <div className="rounded-2xl bg-purple/10 border border-purple/20 p-4 flex flex-col items-center gap-1.5"><div className="h-10 w-10 rounded-xl bg-purple/15 border border-purple/30 flex items-center justify-center"><Gem className="w-5 h-5 text-purple" /></div><p className="text-2xl font-black text-purple">{user.gems}</p><p className="text-xs text-gray-500">Gems</p></div>
           </div>
         </div>
       )}
@@ -350,7 +373,7 @@ export default function ProfilePage() {
             </div>
           )}
           <Button variant="ghost" className="w-full justify-start" onClick={toggleLanguage} leftIcon={<Languages className="w-4 h-4" />}>{language === "bn" ? "ভাষা: বাংলা" : "Language: English"}</Button>
-          <Button variant="ghost" className="w-full justify-start" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} leftIcon={<SunMoon className="w-4 h-4" />}>{language === "bn" ? `থিম: ${theme === "dark" ? "ডার্ক" : "লাইট"}` : `Theme: ${theme === "dark" ? "Dark" : "Light"}`}</Button>
+          <Button variant="ghost" className="w-full justify-start" onClick={toggleTheme} leftIcon={<SunMoon className="w-4 h-4" />}>{language === "bn" ? `থিম: ${theme === "dark" ? "ডার্ক" : "লাইট"}` : `Theme: ${theme === "dark" ? "Dark" : "Light"}`}</Button>
           <Button variant="ghost" className="w-full justify-start" onClick={() => setEditing(true)} leftIcon={<Edit3 className="w-4 h-4" />}>Edit profile info</Button>
           <Button variant="danger" className="w-full justify-start" onClick={handleLogout} leftIcon={<LogOut className="w-4 h-4" />}>{language === "bn" ? "লগ আউট" : "Log out"}</Button>
           <button onClick={handleDeleteAccount} className="w-full flex items-center gap-2 px-4 py-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-400 font-bold text-sm tap-bounce"><Trash2 className="w-4 h-4" />{language === "bn" ? "অ্যাকাউন্ট ডিলিট" : "Delete account"}</button>

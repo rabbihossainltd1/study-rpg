@@ -26,14 +26,112 @@ import toast from "react-hot-toast";
 import { isVerifiedUser } from "@/lib/verified";
 
 type MenuState = { uid: string; open: boolean };
+type FriendWithMeta = PublicUserResult & { lastMessageAtMs?: number; lastMessagePreview?: string; muted?: boolean };
 
 function dateFromUnknown(value: unknown): Date | null {
   if (!value) return null;
   if (value instanceof Date) return value;
+  if (typeof value === "string" || typeof value === "number") {
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
   const maybe = value as { toDate?: () => Date; seconds?: number };
   if (typeof maybe.toDate === "function") return maybe.toDate();
   if (typeof maybe.seconds === "number") return new Date(maybe.seconds * 1000);
   return null;
+}
+
+
+function readLocalJson<T>(key: string, fallback: T): T {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const parsed = JSON.parse(localStorage.getItem(key) || "");
+    return parsed ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeLocalJson(key: string, value: unknown) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {}
+}
+
+const friendsCacheKey = (uid: string) => `studyRpgFriendsCache_${uid}`;
+const messagesCacheKey = (uid: string, targetUid: string) => `studyRpgChatMessages_${uid}_${targetUid}`;
+const mutedChatsKey = (uid: string) => `studyRpgMutedChats_${uid}`;
+const deletedCutoffKey = (uid: string, targetUid: string) => `studyRpgChatDeletedAt_${uid}_${targetUid}`;
+
+function messageMs(msg: FriendMessage) {
+  return dateFromUnknown(msg.createdAt)?.getTime() || 0;
+}
+
+function readMutedChats(uid: string) {
+  return readLocalJson<string[]>(mutedChatsKey(uid), []).filter(Boolean);
+}
+
+function isChatMutedLocal(uid: string, targetUid: string) {
+  return readMutedChats(uid).includes(targetUid);
+}
+
+function setChatMutedLocal(uid: string, targetUid: string, muted: boolean) {
+  const current = readMutedChats(uid).filter((id) => id !== targetUid);
+  writeLocalJson(mutedChatsKey(uid), muted ? [...current, targetUid] : current);
+}
+
+function getChatDeletedCutoff(uid: string, targetUid: string) {
+  if (typeof window === "undefined") return 0;
+  return Number(localStorage.getItem(deletedCutoffKey(uid, targetUid)) || 0) || 0;
+}
+
+function setChatDeletedCutoff(uid: string, targetUid: string, cutoff = Date.now()) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(deletedCutoffKey(uid, targetUid), String(cutoff));
+}
+
+function filterDeletedMessages(uid: string, targetUid: string, list: FriendMessage[]) {
+  const cutoff = getChatDeletedCutoff(uid, targetUid);
+  if (!cutoff) return list;
+  return list.filter((msg) => messageMs(msg) > cutoff || String(msg.id || "").startsWith("local-"));
+}
+
+function readCachedMessages(uid: string, targetUid: string) {
+  return readLocalJson<FriendMessage[]>(messagesCacheKey(uid, targetUid), []);
+}
+
+function saveCachedMessages(uid: string, targetUid: string, list: FriendMessage[]) {
+  const cleaned = filterDeletedMessages(uid, targetUid, list).slice(-250);
+  writeLocalJson(messagesCacheKey(uid, targetUid), cleaned);
+}
+
+function applyLocalFriendMeta(uid: string, friendList: PublicUserResult[]): FriendWithMeta[] {
+  const cached = readLocalJson<FriendWithMeta[]>(friendsCacheKey(uid), []);
+  const cacheMap = new Map(cached.map((friend) => [friend.uid, friend]));
+  return friendList.map((friend) => {
+    const old = cacheMap.get(friend.uid);
+    const cachedMessages = readCachedMessages(uid, friend.uid);
+    const latest = cachedMessages.reduce((max, msg) => Math.max(max, messageMs(msg)), old?.lastMessageAtMs || 0);
+    return {
+      ...friend,
+      lastMessageAtMs: latest,
+      lastMessagePreview: old?.lastMessagePreview || "",
+      muted: isChatMutedLocal(uid, friend.uid),
+    };
+  });
+}
+
+function sortFriendsByLatest(list: FriendWithMeta[]) {
+  return [...list].sort((a, b) => {
+    const ta = a.lastMessageAtMs || dateFromUnknown(a.lastActiveAt)?.getTime() || 0;
+    const tb = b.lastMessageAtMs || dateFromUnknown(b.lastActiveAt)?.getTime() || 0;
+    return tb - ta;
+  });
+}
+
+function saveFriendsCache(uid: string, list: FriendWithMeta[]) {
+  writeLocalJson(friendsCacheKey(uid), sortFriendsByLatest(list).slice(0, 200));
 }
 
 function activityText(person: PublicUserResult) {
@@ -85,7 +183,7 @@ function mergeFriendMessages(existing: FriendMessage[], incoming: FriendMessage[
 }
 
 function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onDeleteChat, onBlock, onUnfriend, busy }: {
-  person: PublicUserResult;
+  person: FriendWithMeta;
   menu: MenuState;
   setMenu: (menu: MenuState) => void;
   onMessage: () => void;
@@ -162,7 +260,7 @@ function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onDeleteCh
         <span className={`absolute -right-0.5 -bottom-0.5 w-3 h-3 rounded-full border-2 border-[#101010] ${active === "Active now" ? "bg-primary" : "bg-gray-600"}`} />
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5 min-w-0"><p className="text-sm font-black text-white truncate">{person.displayName}</p>{isVerifiedUser(person) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}</div>
+        <div className="flex items-center gap-1.5 min-w-0"><p className="text-sm font-black text-white truncate">{person.displayName}</p>{isVerifiedUser(person) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}{person.muted && <BellOff className="w-3.5 h-3.5 text-gold flex-shrink-0" />}</div>
         <p className="text-xs text-gray-500 truncate">@{person.username} · LV.{person.level} · {active}</p>
       </div>
       {menu.open && menu.uid === person.uid && (
@@ -179,10 +277,10 @@ function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onDeleteCh
 
 export default function FriendsPage() {
   const { user } = useUserStore();
-  const [friends, setFriends] = useState<PublicUserResult[]>([]);
+  const [friends, setFriends] = useState<FriendWithMeta[]>([]);
   const [incoming, setIncoming] = useState<PublicUserResult[]>([]);
   const [blockedUsers, setBlockedUsers] = useState<PublicUserResult[]>([]);
-  const [selected, setSelected] = useState<PublicUserResult | null>(null);
+  const [selected, setSelected] = useState<FriendWithMeta | null>(null);
   const [messages, setMessages] = useState<FriendMessage[]>([]);
   const [text, setText] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -191,20 +289,36 @@ export default function FriendsPage() {
   const [showBlockedList, setShowBlockedList] = useState(false);
   const [topMenuOpen, setTopMenuOpen] = useState(false);
   const [chatMenuOpen, setChatMenuOpen] = useState(false);
+  const [muteVersion, setMuteVersion] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const load = async () => {
     if (!user || user.uid.startsWith("guest_")) return;
+    const cached = readLocalJson<FriendWithMeta[]>(friendsCacheKey(user.uid), []);
+    if (cached.length) setFriends(sortFriendsByLatest(cached.map((friend) => ({ ...friend, muted: isChatMutedLocal(user.uid, friend.uid) }))));
     try {
       const [friendList, requestList, blockedList] = await Promise.all([
         getFriendsForUser(user.uid).catch(() => []),
         getIncomingFriendRequests(user.uid).catch(() => []),
         getBlockedUsersForUser(user.uid).catch(() => []),
       ]);
-      setFriends(friendList);
+      const prepared = sortFriendsByLatest(applyLocalFriendMeta(user.uid, friendList));
+      setFriends(prepared);
+      saveFriendsCache(user.uid, prepared);
       setIncoming(requestList);
       setBlockedUsers(blockedList);
       if (selected && !friendList.some((f) => f.uid === selected.uid)) setSelected(null);
+
+      Promise.all(prepared.map(async (friend) => {
+        const list = filterDeletedMessages(user.uid, friend.uid, await getMessagesWithFriend(user.uid, friend.uid).catch(() => []));
+        saveCachedMessages(user.uid, friend.uid, list);
+        const latest = list[list.length - 1];
+        return { ...friend, lastMessageAtMs: latest ? messageMs(latest) : friend.lastMessageAtMs || 0, lastMessagePreview: latest?.content || friend.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, friend.uid) };
+      })).then((enriched) => {
+        const sorted = sortFriendsByLatest(enriched);
+        setFriends(sorted);
+        saveFriendsCache(user.uid, sorted);
+      }).catch(() => undefined);
     } catch {
       toast.error("Friends load failed");
     }
@@ -213,10 +327,17 @@ export default function FriendsPage() {
   const refreshMessages = async (friend = selected) => {
     if (!user || !friend || user.uid.startsWith("guest_")) return;
     await markMessagesRead(user.uid, friend.uid).catch(() => undefined);
-    const list = await getMessagesWithFriend(user.uid, friend.uid).catch(() => []);
+    const list = filterDeletedMessages(user.uid, friend.uid, await getMessagesWithFriend(user.uid, friend.uid).catch(() => []));
     setMessages((prev) => {
-      if (list.length === 0 && prev.length > 0) return prev;
-      return mergeFriendMessages(prev, list);
+      const merged = list.length === 0 && prev.length > 0 ? prev : mergeFriendMessages(prev, list);
+      saveCachedMessages(user.uid, friend.uid, merged);
+      const latest = merged[merged.length - 1];
+      setFriends((items) => {
+        const updated = sortFriendsByLatest(items.map((item) => item.uid === friend.uid ? { ...item, lastMessageAtMs: latest ? messageMs(latest) : item.lastMessageAtMs, lastMessagePreview: latest?.content || item.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, item.uid) } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) }));
+        saveFriendsCache(user.uid, updated);
+        return updated;
+      });
+      return merged;
     });
   };
 
@@ -237,10 +358,23 @@ export default function FriendsPage() {
     }
 
     let alive = true;
+    const cachedMessages = filterDeletedMessages(user.uid, selected.uid, readCachedMessages(user.uid, selected.uid));
+    setMessages(cachedMessages);
     markMessagesRead(user.uid, selected.uid).catch(() => undefined);
     const unsubscribe = subscribeMessagesWithFriend(user.uid, selected.uid, (list) => {
       if (!alive) return;
-      setMessages((prev) => mergeFriendMessages(prev, list));
+      const filtered = filterDeletedMessages(user.uid, selected.uid, list);
+      setMessages((prev) => {
+        const merged = mergeFriendMessages(prev, filtered);
+        saveCachedMessages(user.uid, selected.uid, merged);
+        const latest = merged[merged.length - 1];
+        setFriends((items) => {
+          const updated = sortFriendsByLatest(items.map((item) => item.uid === selected.uid ? { ...item, lastMessageAtMs: latest ? messageMs(latest) : item.lastMessageAtMs, lastMessagePreview: latest?.content || item.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, item.uid) } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) }));
+          saveFriendsCache(user.uid, updated);
+          return updated;
+        });
+        return merged;
+      });
       markMessagesRead(user.uid, selected.uid).catch(() => undefined);
     });
 
@@ -353,22 +487,32 @@ export default function FriendsPage() {
   };
 
 
-  const muteChatLocal = (target: PublicUserResult) => {
-    if (typeof window !== "undefined") {
-      const key = `studyRpgMutedChats_${user.uid}`;
-      const saved = JSON.parse(localStorage.getItem(key) || "[]") as string[];
-      localStorage.setItem(key, JSON.stringify(Array.from(new Set([...saved, target.uid]))));
-    }
+  const toggleMuteChatLocal = (target: PublicUserResult) => {
+    const muted = isChatMutedLocal(user.uid, target.uid);
+    setChatMutedLocal(user.uid, target.uid, !muted);
+    setMuteVersion((v) => v + 1);
+    setFriends((items) => {
+      const updated = sortFriendsByLatest(items.map((item) => item.uid === target.uid ? { ...item, muted: !muted } : item));
+      saveFriendsCache(user.uid, updated);
+      return updated;
+    });
     setChatMenuOpen(false);
     setMenu({ uid: "", open: false });
-    toast.success("Chat muted on this device");
+    toast.success(muted ? "Chat unmuted" : "Chat muted");
   };
 
   const deleteChatLocal = (target: PublicUserResult) => {
+    setChatDeletedCutoff(user.uid, target.uid);
+    saveCachedMessages(user.uid, target.uid, []);
     if (selected?.uid === target.uid) setMessages([]);
+    setFriends((items) => {
+      const updated = sortFriendsByLatest(items.map((item) => item.uid === target.uid ? { ...item, lastMessageAtMs: 0, lastMessagePreview: "" } : item));
+      saveFriendsCache(user.uid, updated);
+      return updated;
+    });
     setChatMenuOpen(false);
     setMenu({ uid: "", open: false });
-    toast.success("Chat cleared from this device");
+    toast.success("Chat deleted from this device");
   };
 
   const sendMessage = async () => {
@@ -387,7 +531,16 @@ export default function FriendsPage() {
 
     setBusyId(target.uid);
     setText("");
-    setMessages((prev) => mergeFriendMessages(prev, [localMessage]));
+    setMessages((prev) => {
+      const merged = mergeFriendMessages(prev, [localMessage]);
+      saveCachedMessages(user.uid, target.uid, merged);
+      setFriends((items) => {
+        const updated = sortFriendsByLatest(items.map((item) => item.uid === target.uid ? { ...item, lastMessageAtMs: Date.now(), lastMessagePreview: body, muted: isChatMutedLocal(user.uid, item.uid) } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) }));
+        saveFriendsCache(user.uid, updated);
+        return updated;
+      });
+      return merged;
+    });
 
     try {
       await sendQuickMessage(user.uid, target.uid, body);
@@ -405,6 +558,7 @@ export default function FriendsPage() {
 
   if (selected) {
     const active = activityText(selected);
+    const selectedMuted = isChatMutedLocal(user.uid, selected.uid) || selected.muted;
     return (
       <div className="fixed inset-0 z-[520] flex h-[100dvh] flex-col overflow-hidden bg-[var(--app-bg)] text-[var(--app-text)] animate-card-in">
         <div className="shrink-0 border-b border-white/10 bg-[var(--app-surface-strong)]/95 px-3 pb-3 pt-[max(env(safe-area-inset-top),12px)] backdrop-blur-xl">
@@ -415,7 +569,7 @@ export default function FriendsPage() {
             <button onClick={() => navigate(`/public-profile?userId=${encodeURIComponent(selected.uid)}`)} className="min-w-0 flex flex-1 items-center gap-3 bg-transparent border-0 p-0 text-left tap-bounce" aria-label="View profile">
               <UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-11 h-11" iconClassName="w-5 h-5" />
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 min-w-0"><h1 className="text-base font-black text-white truncate">{selected.displayName}</h1>{isVerifiedUser(selected) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}</div>
+                <div className="flex items-center gap-1.5 min-w-0"><h1 className="text-base font-black text-white truncate">{selected.displayName}</h1>{isVerifiedUser(selected) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}{selectedMuted && <BellOff className="w-3.5 h-3.5 text-gold flex-shrink-0" />}</div>
                 <p className="text-[11px] text-gray-500 truncate">@{selected.username} · {active}</p>
               </div>
             </button>
@@ -426,7 +580,7 @@ export default function FriendsPage() {
               <div data-action-menu="true" className="absolute right-0 top-12 z-30 w-44 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden animate-card-in">
                 <button onClick={() => { setChatMenuOpen(false); block(selected); }} disabled={busyId === selected.uid} className="w-full px-4 py-3 text-left text-sm text-red-300 hover:bg-red-500/10 flex items-center gap-2 disabled:opacity-50"><Ban className="w-4 h-4" />Block</button>
                 <button onClick={() => { setChatMenuOpen(false); unfriend(selected); }} disabled={busyId === selected.uid} className="w-full px-4 py-3 text-left text-sm text-gray-200 hover:bg-white/5 flex items-center gap-2 disabled:opacity-50"><UserMinus className="w-4 h-4" />Unfriend</button>
-                <button onClick={() => muteChatLocal(selected)} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2"><BellOff className="w-4 h-4" />Mute</button>
+                <button onClick={() => toggleMuteChatLocal(selected)} className="w-full px-4 py-3 text-left text-sm text-gold hover:bg-white/5 flex items-center gap-2"><BellOff className="w-4 h-4" />{selectedMuted ? "Unmute" : "Mute"}</button>
                 <button onClick={() => deleteChatLocal(selected)} className="w-full px-4 py-3 text-left text-sm text-secondary hover:bg-white/5 flex items-center gap-2"><Trash2 className="w-4 h-4" />Delete chat</button>
               </div>
             )}

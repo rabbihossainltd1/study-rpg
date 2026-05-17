@@ -179,8 +179,9 @@ export default function SignupPage() {
         avatar,
         photoURL,
         language: languageChoice,
+        theme: themeChoice,
       });
-      setUser({ ...profile, language: languageChoice });
+      setUser({ ...profile, language: languageChoice, theme: themeChoice });
       toast.success(languageChoice === "bn" ? "অ্যাকাউন্ট তৈরি হয়েছে" : "Account created successfully");
       navigate("/dashboard");
     } catch (err: unknown) {

@@ -188,7 +188,7 @@ function buildProfilePatch(uid: string, data: Partial<User>) {
 
 export async function createUserProfile(
   firebaseUser: FirebaseUser,
-  extra?: { username?: string; displayName?: string; examMode?: string; division?: string; zila?: string; district?: string; school?: string; college?: string; className?: string; groupName?: string; thana?: string; avatar?: string; photoURL?: string; studentId?: string; language?: "bn" | "en" }
+  extra?: { username?: string; displayName?: string; examMode?: string; division?: string; zila?: string; district?: string; school?: string; college?: string; className?: string; groupName?: string; thana?: string; avatar?: string; photoURL?: string; studentId?: string; language?: "bn" | "en"; theme?: "dark" | "light" }
 ) {
   const ref = doc(db, "users", firebaseUser.uid);
   const snap = await getDoc(ref);
@@ -233,6 +233,7 @@ export async function createUserProfile(
     frame: "default",
     isGuest: firebaseUser.isAnonymous,
     language: extra?.language || "bn",
+    theme: extra?.theme || "light",
     createdAt: serverTimestamp(),
     lastLoginAt: serverTimestamp(),
   });
@@ -256,7 +257,7 @@ export async function getUserProfile(uid: string): Promise<User | null> {
   } as User;
 }
 
-export async function updateUserProfile(uid: string, updates: Partial<Pick<User, "username" | "displayName" | "photoURL" | "division" | "zila" | "district" | "school" | "college" | "className" | "groupName" | "thana" | "examMode" | "avatar" | "language">>) {
+export async function updateUserProfile(uid: string, updates: Partial<Pick<User, "username" | "displayName" | "photoURL" | "division" | "zila" | "district" | "school" | "college" | "className" | "groupName" | "thana" | "examMode" | "avatar" | "language" | "theme">>) {
   const clean = stripUndefined({ ...updates, username: updates.username ? normalizeUsername(updates.username) : undefined, updatedAt: serverTimestamp() });
   await updateDoc(doc(db, "users", uid), clean);
   return clean;
@@ -1002,7 +1003,7 @@ export async function markMessagesRead(currentUid: string, targetUid: string) {
   await Promise.all(unread.slice(0, 50).map((m) => updateDoc(doc(db, "messages", m.id), { read: true, readAt: serverTimestamp() }).catch(() => undefined)));
 }
 
-export function createLocalGuestProfile(options?: { username?: string; language?: "bn" | "en" }): import("@/types").User {
+export function createLocalGuestProfile(options?: { username?: string; language?: "bn" | "en"; theme?: "dark" | "light" }): import("@/types").User {
   const username = options?.username || `Guest_${Math.floor(Math.random() * 9999)}`;
   return {
     uid: `guest_${Date.now()}`,
@@ -1036,6 +1037,7 @@ export function createLocalGuestProfile(options?: { username?: string; language?
     frame: "default",
     isGuest: true,
     language: options?.language || "bn",
+    theme: options?.theme || "light",
     createdAt: new Date(),
     lastLoginAt: new Date(),
   };

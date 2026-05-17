@@ -128,6 +128,18 @@ export default function SettingsPage() {
     }
   };
 
+  const saveThemePreference = (nextTheme: "dark" | "light") => {
+    setTheme(nextTheme);
+    setUser({ ...user, theme: nextTheme });
+    if (!user.isGuest && !user.uid.startsWith("guest_")) updateUserProfile(user.uid, { theme: nextTheme }).catch(() => undefined);
+  };
+
+  const saveLanguagePreference = (nextLanguage: "bn" | "en") => {
+    setLanguage(nextLanguage);
+    setUser({ ...user, language: nextLanguage });
+    if (!user.isGuest && !user.uid.startsWith("guest_")) updateUserProfile(user.uid, { language: nextLanguage }).catch(() => undefined);
+  };
+
   const saveStudentInfo = async () => {
     if (!studentForm.school.trim()) {
       toast.error(isBn ? "প্রতিষ্ঠানের নাম দাও" : "Enter institution name");
@@ -221,12 +233,12 @@ export default function SettingsPage() {
       <div className="glass-card p-5 space-y-4">
         <SectionTitle icon={<SunMoon className="w-4 h-4" />} title={isBn ? "থিম" : "Theme"} />
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={() => setTheme("dark")} className={`rounded-2xl border p-4 text-left tap-bounce ${theme === "dark" ? "border-primary bg-primary/10" : "border-white/10 bg-white/5"}`}>
+          <button onClick={() => saveThemePreference("dark")} className={`rounded-2xl border p-4 text-left tap-bounce ${theme === "dark" ? "border-primary bg-primary/10" : "border-white/10 bg-white/5"}`}>
             <Moon className="w-5 h-5 mb-2 text-primary" />
             <p className="font-black text-white">{isBn ? "ডার্ক মোড" : "Dark mode"}</p>
             <p className="text-xs text-gray-500">{isBn ? "নিওন ব্ল্যাক UI" : "Neon black UI"}</p>
           </button>
-          <button onClick={() => setTheme("light")} className={`rounded-2xl border p-4 text-left tap-bounce ${theme === "light" ? "border-primary bg-primary/10" : "border-white/10 bg-white/5"}`}>
+          <button onClick={() => saveThemePreference("light")} className={`rounded-2xl border p-4 text-left tap-bounce ${theme === "light" ? "border-primary bg-primary/10" : "border-white/10 bg-white/5"}`}>
             <Sun className="w-5 h-5 mb-2 text-gold" />
             <p className="font-black text-white">{isBn ? "লাইট মোড" : "Light mode"}</p>
             <p className="text-xs text-gray-500">{isBn ? "ক্লিন সাদা UI" : "Clean white UI"}</p>
@@ -236,8 +248,8 @@ export default function SettingsPage() {
         <div className="h-px bg-white/10" />
         <SectionTitle icon={<Languages className="w-4 h-4" />} title={isBn ? "ভাষা" : "Language"} />
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={() => setLanguage("bn")} className={`rounded-2xl border p-3 font-black tap-bounce ${language === "bn" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 text-gray-500"}`}>বাংলা</button>
-          <button onClick={() => setLanguage("en")} className={`rounded-2xl border p-3 font-black tap-bounce ${language === "en" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 text-gray-500"}`}>English</button>
+          <button onClick={() => saveLanguagePreference("bn")} className={`rounded-2xl border p-3 font-black tap-bounce ${language === "bn" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 text-gray-500"}`}>বাংলা</button>
+          <button onClick={() => saveLanguagePreference("en")} className={`rounded-2xl border p-3 font-black tap-bounce ${language === "en" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 text-gray-500"}`}>English</button>
         </div>
       </div>
 

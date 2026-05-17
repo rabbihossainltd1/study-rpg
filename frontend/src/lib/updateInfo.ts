@@ -7,23 +7,23 @@ export type UpdateInfo = {
 };
 
 export const CURRENT_UPDATE_INFO: UpdateInfo = {
-  version: "1.3.9",
-  title: "Study RPG v1.3.9",
-  titleBn: "Study RPG v1.3.9 আপডেট",
+  version: "1.4.0",
+  title: "Study RPG v1.4.0",
+  titleBn: "Study RPG v1.4.0 আপডেট",
   notes: [
-    "MCQ questions now hide generated class and subject labels everywhere.",
-    "Chat opens incoming messages instantly and suppresses mini popups while the same chat is open.",
-    "Android notification permission and local alert flow have been strengthened.",
-    "Update downloads now open in the device browser so APK files can download properly.",
-    "Chat screen UI is cleaner with compact bubbles and a simple three-dot menu.",
-    "Profile stats now shows only Coins and Gems cards."
+    "Chat delete and mute/unmute now persist locally and show faster.",
+    "Friend list loads from local cache first and sorts latest message on top.",
+    "Profile coins and gems cards now include proper icons.",
+    "Rank journey has professional Bronze, Silver, Gold, Platinum and Titanium style milestones.",
+    "Theme and language preferences are saved with the user profile.",
+    "Search now opens public profiles directly and shows class-wise subject results."
   ],
   notesBn: [
-    "সব class ও subject-এর MCQ-তে generated class/subject label hide করা হয়েছে।",
-    "Chat open থাকলে incoming message আগে chat box-এ আসবে, mini popup আসবে না।",
-    "Android notification permission ও local alert flow আরও strong করা হয়েছে।",
-    "Update download এখন device default browser-এ open হবে।",
-    "Chat screen compact bubble ও clean 3-dot menu দিয়ে সাজানো হয়েছে।",
-    "Profile stats-এ এখন শুধু Coins ও Gems card থাকবে।"
+    "Chat delete ও mute/unmute এখন local save থাকে এবং দ্রুত load হয়।",
+    "Friend list আগে local cache থেকে load হবে এবং latest message top-এ থাকবে।",
+    "Profile coins ও gems card-এ proper icon add করা হয়েছে।",
+    "Rank journey Bronze, Silver, Gold, Platinum, Titanium style milestone দিয়ে professional করা হয়েছে।",
+    "Theme ও language preference user profile-এ save থাকবে।",
+    "Search থেকে public profile direct open হবে এবং class-wise subject result দেখাবে।"
   ]
 };

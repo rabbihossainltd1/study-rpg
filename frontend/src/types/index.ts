@@ -33,6 +33,7 @@ export interface User {
   lastActiveAt?: Date;
   isGuest: boolean;
   language: "bn" | "en";
+  theme?: "dark" | "light";
 }
 
 export type Rank =

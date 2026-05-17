@@ -54,7 +54,12 @@ export const useUserStore = create<UserStore>()(
       missions: [],
       achievements: [],
 
-      setUser: (user) => set({ user }),
+      setUser: (user) => set((state) => {
+        const nextTheme = user?.theme || state.theme;
+        const nextLanguage = user?.language || state.language;
+        if (typeof document !== "undefined") document.documentElement.dataset.theme = nextTheme;
+        return { user, theme: nextTheme, language: nextLanguage };
+      }),
       setLoading: (isLoading) => set({ isLoading }),
       setLanguage: (language) => set({ language }),
       setTheme: (theme) => {
