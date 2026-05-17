@@ -12,13 +12,26 @@ function stripQuestionNoise(raw: string) {
     .replace(/^প্রশ্ন\s*[—–:-]\s*/i, "");
 
   // Generated class/subject labels before colon, e.g. "দশম শ্রেণির ... MCQ:".
-  text = text.replace(/^(?:ষষ্ঠ|সপ্তম|অষ্টম|নবম|দশম|একাদশ|দ্বাদশ)\s+শ্রেণি(?:র)?\s+[^:：?？]{2,90}?\s*(?:MCQ|কুইজ)\s*[:：]\s*/i, "");
-  text = text.replace(/^Class\s*\d+(?:\s*[-/]\s*\d+)?\s+[^:：?？]{2,90}?\s*(?:MCQ|Quiz)\s*[:：]\s*/i, "");
+  text = text.replace(/^(?:ষষ্ঠ|সপ্তম|অষ্টম|নবম|দশম|একাদশ|দ্বাদশ)\s+শ্রেণি(?:র)?\s+[^:：?？]{2,120}?\s*(?:MCQ|কুইজ)\s*[:：]\s*/i, "");
+  text = text.replace(/^Class\s*\d+(?:\s*[-/]\s*\d+)?\s+[^:：?？]{2,120}?\s*(?:MCQ|Quiz)\s*[:：]\s*/i, "");
+
+  // Remove generated dataset labels that mention class/subject before the real question.
+  text = text
+    .replace(/^Class\s*\d+(?:\s*[-/]\s*\d+)?(?:\/SSC)?\s+(?:বাংলা|ইংরেজি|গণিত|আইসিটি|ICT|তথ্য\s*ও\s*যোগাযোগ\s*প্রযুক্তি|বাংলাদেশ\s*ও\s*বিশ্ব\s*পরিচয়|বাংলাদেশ\s*ও\s*বিশ্বপরিচয়|হিন্দুধর্ম\s*শিক্ষা|ইসলাম\s*শিক্ষা|জীবন\s*ও\s*জীবিকা|বিজ্ঞান|ইতিহাস|ভূগোল|অর্থনীতি|রাষ্ট্রবিজ্ঞান|নৈতিক\s*শিক্ষা|সমাজবিজ্ঞান|মনোবিজ্ঞান|উচ্চতর\s*গণিত)(?:\s+বিষয়(?:ের|ের|ে)?|\s+বিষয়ের|\s+বিষয়ে|\s+বিষয়ে)?\s*/i, "")
+    .replace(/^(?:ষষ্ঠ|সপ্তম|অষ্টম|নবম|দশম|একাদশ|দ্বাদশ)\s+শ্রেণি(?:র)?\s+(?:বাংলা|ইংরেজি|গণিত|আইসিটি|ICT|তথ্য\s*ও\s*যোগাযোগ\s*প্রযুক্তি|বাংলাদেশ\s*ও\s*বিশ্ব\s*পরিচয়|বাংলাদেশ\s*ও\s*বিশ্বপরিচয়|হিন্দুধর্ম\s*শিক্ষা|ইসলাম\s*শিক্ষা|জীবন\s*ও\s*জীবিকা|বিজ্ঞান|ইতিহাস|ভূগোল|অর্থনীতি|রাষ্ট্রবিজ্ঞান|নৈতিক\s*শিক্ষা|সমাজবিজ্ঞান|মনোবিজ্ঞান|উচ্চতর\s*গণিত)(?:\s+বিষয়(?:ের|ের|ে)?|\s+বিষয়ের|\s+বিষয়ে|\s+বিষয়ে)?\s*/i, "")
+    .replace(/^(?:Honours|Degree|Masters|University|Admission|HSC|SSC)\s+(?:পর্যায়(?:ের)?|পর্যায়ের)?\s*[^?？]{1,100}?\s+(?:বিষয়(?:ের|ের|ে)?|বিষয়ের|বিষয়ে|বিষয়ে)\s*/i, "")
+    .replace(/^(?:Honours|Degree|Masters|University|Admission|HSC|SSC)\s+[^?？:：]{1,100}?\s*(?:MCQ|Quiz|কুইজ)\s*[:：—–-]?\s*/i, "")
+    .replace(/^(?:Class\s*\d+(?:\s*[-/]\s*\d+)?(?:\/SSC)?|SSC|HSC|Admission|University|Honours|Degree|Masters)\s*[—–:-]?\s*/i, "")
+    .replace(/^(?:সহজ|মধ্যম|কঠিন|Easy|Medium|Hard)\s+(?:অনুশীলন|practice|quiz)\s*[:：—–-]?\s*/i, "")
+    .replace(/^প্রয়োগমূলক\s+মূল্যায়ন\s*[:：—–-]\s*/i, "")
+    .replace(/^ধারণা\s+যাচাই\s*[:：—–-]\s*/i, "");
 
   // Remove simple chapter/context lead-ins so the card shows only the question.
   if (!/^(?:কোন|কি|কী|কেন|কিভাবে|কোথায়|কোথায়)\s+অধ্যা/i.test(text)) {
     text = text.replace(/^(?:Class\s*\d+|ষষ্ঠ|সপ্তম|অষ্টম|নবম|দশম|একাদশ|দ্বাদশ)?\s*[^?？]{1,70}?অধ্যা(?:য়|য়|য়ে|য়ে)\s+/i, "");
   }
+
+  text = text.replace(/^অধ্যা(?:য়|য়|য়ে|য়ে)\s+/i, "");
 
   // Admission/Foundation source labels that were generated into a few banks.
   text = text

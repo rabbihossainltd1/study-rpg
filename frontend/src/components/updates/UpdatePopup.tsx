@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { DownloadCloud, Sparkles } from "lucide-react";
 import { APP_VERSION, compareVersion, fetchLatestUpdate, type LatestUpdate } from "@/lib/appVersion";
+import { showDeviceNotification } from "@/lib/notifications";
 import { useUserStore } from "@/store/useUserStore";
 import { Button } from "@/components/ui/Button";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
@@ -21,6 +22,19 @@ export function UpdatePopup() {
         if (cancelled || !latest) return;
         if (compareVersion(latest.version, APP_VERSION) <= 0) return;
         setUpdate(latest);
+        const notifyKey = `studyRpgUpdateNotified_${latest.version}`;
+        if (typeof window !== "undefined" && localStorage.getItem(notifyKey) !== "1") {
+          localStorage.setItem(notifyKey, "1");
+          showDeviceNotification({
+            id: `update-${latest.version}`,
+            type: "update",
+            from: "system",
+            to: "current",
+            title: `Study RPG v${latest.version} update`,
+            body: "New version is ready. Download update now.",
+            link: latest.apkUrl || latest.url,
+          }).catch(() => undefined);
+        }
       })
       .catch(() => undefined);
     return () => { cancelled = true; };
@@ -29,7 +43,20 @@ export function UpdatePopup() {
   if (!update) return null;
 
   const openUpdate = () => {
-    window.open(update.apkUrl || update.url, "_blank");
+    const url = update.apkUrl || update.url;
+    const androidExternal = typeof window !== "undefined" ? (window as any).AndroidExternal : null;
+    if (androidExternal?.openExternalUrl) {
+      androidExternal.openExternalUrl(url);
+      return;
+    }
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.target = "_blank";
+    anchor.rel = "noopener noreferrer";
+    anchor.setAttribute("download", "");
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
   };
 
   return (

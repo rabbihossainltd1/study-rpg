@@ -42,7 +42,19 @@ export function NotificationBridge() {
     const handleNotification = async (notification: AppNotification) => {
       if (!notification.id || shownInSession.current.has(notification.id)) return;
       shownInSession.current.add(notification.id);
-      await showDeviceNotification(notification).catch(() => undefined);
+
+      const activeChatUid = typeof window !== "undefined" ? String((window as any).studyRpgActiveChatUid || "") : "";
+      let mutedChats: string[] = [];
+      if (typeof window !== "undefined") {
+        try {
+          mutedChats = JSON.parse(localStorage.getItem(`studyRpgMutedChats_${user.uid}`) || "[]") as string[];
+        } catch {
+          mutedChats = [];
+        }
+      }
+      const shouldSilenceMessage = notification.type === "message" && (notification.from === activeChatUid || mutedChats.includes(notification.from));
+
+      if (!shouldSilenceMessage) await showDeviceNotification(notification).catch(() => undefined);
       await markUserNotificationShown(user.uid, notification.id).catch(() => undefined);
     };
 

@@ -58,6 +58,15 @@ export async function requestAppNotificationPermission(uid = ""): Promise<boolea
       ]);
 
       await ensureAndroidNotificationChannel(LocalNotifications);
+      if (!pushRegistrationListenerAttached) {
+        pushRegistrationListenerAttached = true;
+        PushNotifications.addListener("registration", (token) => {
+          pendingPushToken = token.value || pendingPushToken;
+          if (uid && !uid.startsWith("guest_") && pendingPushToken) savePushToken(uid, pendingPushToken, "android").catch(() => undefined);
+        }).catch(() => undefined);
+        PushNotifications.addListener("registrationError", () => undefined).catch(() => undefined);
+      }
+
       const localBefore = await LocalNotifications.checkPermissions().catch(() => null);
       const localPermission = localBefore?.display === "granted"
         ? localBefore
@@ -66,13 +75,6 @@ export async function requestAppNotificationPermission(uid = ""): Promise<boolea
       const pushPermission = await PushNotifications.requestPermissions().catch(() => null);
       if (pushPermission?.receive === "granted") {
         await PushNotifications.register().catch(() => undefined);
-        if (!pushRegistrationListenerAttached) {
-          pushRegistrationListenerAttached = true;
-          PushNotifications.addListener("registration", (token) => {
-            pendingPushToken = token.value || pendingPushToken;
-            if (uid && !uid.startsWith("guest_") && pendingPushToken) savePushToken(uid, pendingPushToken, "android").catch(() => undefined);
-          }).catch(() => undefined);
-        }
       }
 
       if (uid && !uid.startsWith("guest_") && pendingPushToken) savePushToken(uid, pendingPushToken, "android").catch(() => undefined);

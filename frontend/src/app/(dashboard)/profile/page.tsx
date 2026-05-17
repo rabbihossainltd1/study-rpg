@@ -6,7 +6,7 @@ import { useUserStore } from "@/store/useUserStore";
 import { XpBar } from "@/components/ui/XpBar";
 import { Button } from "@/components/ui/Button";
 import { RANK_COLORS, RANK_THRESHOLDS, type Rank, type Achievement } from "@/types";
-import { getRarityColor, formatDuration } from "@/lib/utils";
+import { getRarityColor } from "@/lib/utils";
 import { updateUserProfile, logOut, bindGuestAccountToEmail, getLeaderboard, deleteCurrentAccount } from "@/lib/firebase";
 import {
   Edit3, Trophy, Zap, Flame, Clock, Star, Shield, LogOut, Copy, Check,
@@ -311,16 +311,10 @@ export default function ProfilePage() {
       </div>
 
       {activeTab === "stats" && (
-        <div className="glass-card p-4 border border-white/10 animate-card-in space-y-3">
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <div className="rounded-2xl bg-primary/10 border border-primary/20 p-3"><p className="text-lg font-black text-primary">{user.xp.toLocaleString()}</p><p className="text-[11px] text-gray-500">XP</p></div>
-            <div className="rounded-2xl bg-gold/10 border border-gold/20 p-3"><p className="text-lg font-black text-gold">LV.{user.level}</p><p className="text-[11px] text-gray-500">Level</p></div>
-            <div className="rounded-2xl bg-secondary/10 border border-secondary/20 p-3"><p className="text-lg font-black text-secondary">{user.coins}</p><p className="text-[11px] text-gray-500">Coins</p></div>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-gray-500">
-            <span className="rounded-full bg-white/5 px-3 py-1">Study {formatDuration(user.totalStudyTime)}</span>
-            <span className="rounded-full bg-white/5 px-3 py-1">Max streak {user.maxStreak || 0}d</span>
-            <span className="rounded-full bg-white/5 px-3 py-1">Gems {user.gems}</span>
+        <div className="glass-card p-4 border border-white/10 animate-card-in">
+          <div className="grid grid-cols-2 gap-3 text-center">
+            <div className="rounded-2xl bg-secondary/10 border border-secondary/20 p-4"><p className="text-2xl font-black text-secondary">{user.coins}</p><p className="text-xs text-gray-500">Coins</p></div>
+            <div className="rounded-2xl bg-purple/10 border border-purple/20 p-4"><p className="text-2xl font-black text-purple">{user.gems}</p><p className="text-xs text-gray-500">Gems</p></div>
           </div>
         </div>
       )}

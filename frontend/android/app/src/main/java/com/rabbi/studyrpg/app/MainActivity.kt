@@ -2,9 +2,11 @@ package com.rabbi.studyrpg.app
 
 import android.Manifest
 import android.content.Intent
+import android.net.Uri
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.webkit.JavascriptInterface
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -16,6 +18,7 @@ class MainActivity : BridgeActivity() {
         registerPlugin(GoogleSignInPlugin::class.java)
         super.onCreate(savedInstanceState)
         requestPostNotificationPermission()
+        bridge?.webView?.addJavascriptInterface(ExternalBrowserBridge(), "AndroidExternal")
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -27,6 +30,23 @@ class MainActivity : BridgeActivity() {
                 }
             }
         })
+    }
+
+
+    inner class ExternalBrowserBridge {
+        @JavascriptInterface
+        fun openExternalUrl(url: String?) {
+            val safeUrl = url ?: return
+            runOnUiThread {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(safeUrl))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                } catch (_: Exception) {
+                    // Keep app stable if no browser handles the URL.
+                }
+            }
+        }
     }
 
     private fun requestPostNotificationPermission() {
