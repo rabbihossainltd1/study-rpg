@@ -7,21 +7,21 @@ export type UpdateInfo = {
 };
 
 export const CURRENT_UPDATE_INFO: UpdateInfo = {
-  version: "1.4.1",
-  title: "Study RPG v1.4.1",
-  titleBn: "Study RPG v1.4.1 আপডেট",
+  version: "1.4.2",
+  title: "Study RPG v1.4.2",
+  titleBn: "Study RPG v1.4.2 আপডেট",
   notes: [
-    "Leaderboard and profile load from local cache first for faster opening.",
-    "Mute/unmute now updates instantly and removes the mute icon correctly.",
-    "Rank journey next rank now uses Bronze, Silver, Gold, Platinum and Titanium labels.",
-    "Rank journey icons are brighter and more professional.",
-    "Message notification fallback improved for open app and active sessions."
+    "Cleaned MCQ and written dataset imported with duplicate removal.",
+    "Easy, medium and hard difficulty filtering updated from the supplied dataset.",
+    "MCQ wrong options are refreshed and verified with no repeated option inside a question.",
+    "A seen message will not show the mini notification popup again after reopening the app.",
+    "Unread chats now appear bold in the chat list and return to normal after seen."
   ],
   notesBn: [
-    "Leaderboard ও profile আগে local cache থেকে load হবে, তাই দ্রুত open হবে।",
-    "Mute/unmute এখন সাথে সাথে update হবে এবং mute icon ঠিকভাবে remove হবে।",
-    "Rank journey-এর next rank এখন Bronze, Silver, Gold, Platinum, Titanium label দেখাবে।",
-    "Rank journey icon আরও highlighted ও professional করা হয়েছে।",
-    "Message notification open app/active session-এর জন্য আরও strong করা হয়েছে।"
+    "Duplicate remove করা clean MCQ ও written dataset import করা হয়েছে।",
+    "Supplied dataset অনুযায়ী Easy, Medium, Hard difficulty filtering update করা হয়েছে।",
+    "প্রতিটা MCQ-এর wrong options refresh ও verify করা হয়েছে, একই question-এর option repeat নেই।",
+    "Seen করা message app reopen করলে আবার mini popup দেখাবে না।",
+    "Unseen chat list-এ bold থাকবে, seen হলে normal হয়ে যাবে।"
   ]
 };

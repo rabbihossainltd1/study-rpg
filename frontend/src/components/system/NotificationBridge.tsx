@@ -39,6 +39,29 @@ function messageSignature(from: string, body: string) {
   return `${from}|${String(body || "").slice(0, 120)}`;
 }
 
+function shownMessagesKey(uid: string) {
+  return `studyRpgShownMessagePopupIds_${uid}`;
+}
+
+function readShownMessageIds(uid: string) {
+  if (typeof window === "undefined") return [] as string[];
+  try {
+    return JSON.parse(localStorage.getItem(shownMessagesKey(uid)) || "[]") as string[];
+  } catch {
+    return [] as string[];
+  }
+}
+
+function rememberShownMessageId(uid: string, messageId: string) {
+  if (typeof window === "undefined" || !messageId) return;
+  const current = readShownMessageIds(uid).filter(Boolean);
+  if (current.includes(messageId)) return;
+  const next = [...current.slice(-299), messageId];
+  try {
+    localStorage.setItem(shownMessagesKey(uid), JSON.stringify(next));
+  } catch {}
+}
+
 export function NotificationBridge() {
   const user = useUserStore((state) => state.user);
   const shownInSession = useRef(new Set<string>());
@@ -77,7 +100,7 @@ export function NotificationBridge() {
   useEffect(() => {
     if (!user || user.uid.startsWith("guest_")) return;
 
-    seenMessageIds.current.clear();
+    seenMessageIds.current = new Set(readShownMessageIds(user.uid));
     shownMessageSignatures.current.clear();
 
     const isMessageSilenced = (fromUid: string) => {
@@ -123,16 +146,33 @@ export function NotificationBridge() {
         const from = msg.from || msg.senderId || "";
         const to = msg.to || msg.receiverId || "";
         const incoming = from && from !== user.uid && (to === user.uid || msg.receiverId === user.uid || msg.participants?.includes(user.uid));
-        seenMessageIds.current.add(msg.id);
-        if (!incoming) continue;
+        if (!incoming) {
+          seenMessageIds.current.add(msg.id);
+          continue;
+        }
+        if (msg.read) {
+          seenMessageIds.current.add(msg.id);
+          rememberShownMessageId(user.uid, msg.id);
+          continue;
+        }
 
         const ms = dateMs(msg.createdAt);
-        if (firstMessageSnapshot && (!ms || now - ms > 25000)) continue;
-        if (isMessageSilenced(from)) continue;
+        if (firstMessageSnapshot && (!ms || now - ms > 25000)) {
+          seenMessageIds.current.add(msg.id);
+          continue;
+        }
+        if (isMessageSilenced(from)) {
+          seenMessageIds.current.add(msg.id);
+          rememberShownMessageId(user.uid, msg.id);
+          continue;
+        }
 
         const signature = messageSignature(from, msg.content);
         if (shownMessageSignatures.current.has(signature)) continue;
         shownMessageSignatures.current.add(signature);
+
+        seenMessageIds.current.add(msg.id);
+        rememberShownMessageId(user.uid, msg.id);
 
         showDeviceNotification({
           id: `message-${msg.id}`,

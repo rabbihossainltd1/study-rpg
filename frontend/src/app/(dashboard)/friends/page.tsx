@@ -27,7 +27,7 @@ import toast from "react-hot-toast";
 import { isVerifiedUser } from "@/lib/verified";
 
 type MenuState = { uid: string; open: boolean };
-type FriendWithMeta = PublicUserResult & { lastMessageAtMs?: number; lastMessagePreview?: string; muted?: boolean };
+type FriendWithMeta = PublicUserResult & { lastMessageAtMs?: number; lastMessagePreview?: string; muted?: boolean; unreadCount?: number; hasUnread?: boolean };
 
 function dateFromUnknown(value: unknown): Date | null {
   if (!value) return null;
@@ -67,6 +67,12 @@ const deletedCutoffKey = (uid: string, targetUid: string) => `studyRpgChatDelete
 
 function messageMs(msg: FriendMessage) {
   return dateFromUnknown(msg.createdAt)?.getTime() || 0;
+}
+
+function isUnreadIncomingMessage(msg: FriendMessage, uid: string, friendUid: string) {
+  const from = msg.from || msg.senderId || "";
+  const to = msg.to || msg.receiverId || "";
+  return from === friendUid && (to === uid || msg.receiverId === uid || msg.participants?.includes(uid)) && !msg.read;
 }
 
 function readMutedChats(uid: string) {
@@ -114,11 +120,14 @@ function applyLocalFriendMeta(uid: string, friendList: PublicUserResult[]): Frie
     const old = cacheMap.get(friend.uid);
     const cachedMessages = readCachedMessages(uid, friend.uid);
     const latest = cachedMessages.reduce((max, msg) => Math.max(max, messageMs(msg)), old?.lastMessageAtMs || 0);
+    const unreadCount = cachedMessages.filter((msg) => isUnreadIncomingMessage(msg, uid, friend.uid)).length || old?.unreadCount || 0;
     return {
       ...friend,
       lastMessageAtMs: latest,
       lastMessagePreview: old?.lastMessagePreview || "",
       muted: isChatMutedLocal(uid, friend.uid),
+      unreadCount,
+      hasUnread: unreadCount > 0 || Boolean(old?.hasUnread),
     };
   });
 }
@@ -254,16 +263,17 @@ function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onDeleteCh
       onTouchStart={startHold}
       onTouchEnd={stopHold}
       onTouchCancel={stopHold}
-      className="relative flex cursor-pointer select-none items-center gap-3 p-3 rounded-2xl bg-white/[0.035] border border-white/10 hover:border-primary/20 transition-all tap-bounce"
+      className={`relative flex cursor-pointer select-none items-center gap-3 p-3 rounded-2xl border transition-all tap-bounce ${person.hasUnread ? "bg-primary/[0.08] border-primary/25 shadow-[0_0_18px_rgba(0,240,255,0.08)]" : "bg-white/[0.035] border-white/10 hover:border-primary/20"}`}
     >
       <div className="relative">
         <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-12 h-12" iconClassName="w-5 h-5" />
         <span className={`absolute -right-0.5 -bottom-0.5 w-3 h-3 rounded-full border-2 border-[#101010] ${active === "Active now" ? "bg-primary" : "bg-gray-600"}`} />
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5 min-w-0"><p className="text-sm font-black text-white truncate">{person.displayName}</p>{isVerifiedUser(person) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}{person.muted && <BellOff className="w-3.5 h-3.5 text-gold flex-shrink-0" />}</div>
-        <p className="text-xs text-gray-500 truncate">@{person.username} · LV.{person.level} · {active}</p>
+        <div className="flex items-center gap-1.5 min-w-0"><p className={`text-sm text-white truncate ${person.hasUnread ? "font-black" : "font-bold"}`}>{person.displayName}</p>{isVerifiedUser(person) && <VerifiedBadge className="w-4 h-4 flex-shrink-0" />}{person.muted && <BellOff className="w-3.5 h-3.5 text-gold flex-shrink-0" />}</div>
+        <p className={`text-xs truncate ${person.hasUnread ? "font-extrabold text-white/85" : "text-gray-500"}`}>{person.lastMessagePreview ? person.lastMessagePreview : `@${person.username} · LV.${person.level} · ${active}`}</p>
       </div>
+      {person.hasUnread && <span className="ml-1 h-2.5 w-2.5 rounded-full bg-secondary shadow-[0_0_12px_rgba(0,240,255,0.9)]" aria-label="Unread message" />}
       {menu.open && menu.uid === person.uid && (
         <div data-action-menu="true" className="absolute right-3 top-14 z-20 w-48 rounded-2xl border border-white/10 bg-[var(--app-surface-strong)] shadow-2xl overflow-hidden animate-card-in" onClick={(event) => event.stopPropagation()}>
           <button onClick={handleMenuClick(onViewProfile)} className="w-full px-4 py-3 text-left text-sm text-secondary hover:bg-white/5 flex items-center gap-2"><UserRound className="w-4 h-4" />View profile</button>
@@ -314,7 +324,8 @@ export default function FriendsPage() {
         const list = filterDeletedMessages(user.uid, friend.uid, await getMessagesWithFriend(user.uid, friend.uid).catch(() => []));
         saveCachedMessages(user.uid, friend.uid, list);
         const latest = list[list.length - 1];
-        return { ...friend, lastMessageAtMs: latest ? messageMs(latest) : friend.lastMessageAtMs || 0, lastMessagePreview: latest?.content || friend.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, friend.uid) };
+        const unreadCount = list.filter((msg) => isUnreadIncomingMessage(msg, user.uid, friend.uid)).length;
+        return { ...friend, lastMessageAtMs: latest ? messageMs(latest) : friend.lastMessageAtMs || 0, lastMessagePreview: latest?.content || friend.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, friend.uid), unreadCount, hasUnread: unreadCount > 0 };
       })).then((enriched) => {
         const sorted = sortFriendsByLatest(enriched);
         setFriends(sorted);
@@ -334,7 +345,7 @@ export default function FriendsPage() {
       saveCachedMessages(user.uid, friend.uid, merged);
       const latest = merged[merged.length - 1];
       setFriends((items) => {
-        const updated = sortFriendsByLatest(items.map((item) => item.uid === friend.uid ? { ...item, lastMessageAtMs: latest ? messageMs(latest) : item.lastMessageAtMs, lastMessagePreview: latest?.content || item.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, item.uid) } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) }));
+        const updated = sortFriendsByLatest(items.map((item) => item.uid === friend.uid ? { ...item, lastMessageAtMs: latest ? messageMs(latest) : item.lastMessageAtMs, lastMessagePreview: latest?.content || item.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, item.uid), unreadCount: 0, hasUnread: false } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) }));
         saveFriendsCache(user.uid, updated);
         return updated;
       });
@@ -364,7 +375,9 @@ export default function FriendsPage() {
         if (!latestByFriend.size) return items.map((item) => ({ ...item, muted: isChatMutedLocal(user.uid, item.uid) }));
         const updated = sortFriendsByLatest(items.map((item) => {
           const latest = latestByFriend.get(item.uid);
-          return latest ? { ...item, lastMessageAtMs: messageMs(latest), lastMessagePreview: latest.content || item.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, item.uid) } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) };
+          const activeChatUid = typeof window !== "undefined" ? String((window as any).studyRpgActiveChatUid || "") : "";
+          const unread = latest ? isUnreadIncomingMessage(latest, user.uid, item.uid) && activeChatUid !== item.uid : Boolean(item.hasUnread);
+          return latest ? { ...item, lastMessageAtMs: messageMs(latest), lastMessagePreview: latest.content || item.lastMessagePreview || "", muted: isChatMutedLocal(user.uid, item.uid), unreadCount: unread ? Math.max(1, item.unreadCount || 0) : 0, hasUnread: unread } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) };
         }));
         saveFriendsCache(user.uid, updated);
         return updated;
@@ -534,7 +547,7 @@ export default function FriendsPage() {
     saveCachedMessages(user.uid, target.uid, []);
     if (selected?.uid === target.uid) setMessages([]);
     setFriends((items) => {
-      const updated = sortFriendsByLatest(items.map((item) => item.uid === target.uid ? { ...item, lastMessageAtMs: 0, lastMessagePreview: "" } : item));
+      const updated = sortFriendsByLatest(items.map((item) => item.uid === target.uid ? { ...item, lastMessageAtMs: 0, lastMessagePreview: "", unreadCount: 0, hasUnread: false } : item));
       saveFriendsCache(user.uid, updated);
       return updated;
     });
@@ -563,7 +576,7 @@ export default function FriendsPage() {
       const merged = mergeFriendMessages(prev, [localMessage]);
       saveCachedMessages(user.uid, target.uid, merged);
       setFriends((items) => {
-        const updated = sortFriendsByLatest(items.map((item) => item.uid === target.uid ? { ...item, lastMessageAtMs: Date.now(), lastMessagePreview: body, muted: isChatMutedLocal(user.uid, item.uid) } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) }));
+        const updated = sortFriendsByLatest(items.map((item) => item.uid === target.uid ? { ...item, lastMessageAtMs: Date.now(), lastMessagePreview: body, muted: isChatMutedLocal(user.uid, item.uid), unreadCount: 0, hasUnread: false } : { ...item, muted: isChatMutedLocal(user.uid, item.uid) }));
         saveFriendsCache(user.uid, updated);
         return updated;
       });
@@ -737,7 +750,7 @@ export default function FriendsPage() {
               menu={menu}
               setMenu={setMenu}
               busy={busyId === person.uid}
-              onMessage={() => { setSelected({ ...person, muted: isChatMutedLocal(user.uid, person.uid) }); setMenu({ uid: "", open: false }); }}
+              onMessage={() => { const next = { ...person, muted: isChatMutedLocal(user.uid, person.uid), unreadCount: 0, hasUnread: false }; setSelected(next); setFriends((items) => { const updated = sortFriendsByLatest(items.map((item) => item.uid === person.uid ? next : item)); saveFriendsCache(user.uid, updated); return updated; }); setMenu({ uid: "", open: false }); }}
               onViewProfile={() => { setMenu({ uid: "", open: false }); navigate(`/public-profile?userId=${encodeURIComponent(person.uid)}`); }}
               onDeleteChat={() => deleteChatLocal(person)}
               onBlock={() => block(person)}
