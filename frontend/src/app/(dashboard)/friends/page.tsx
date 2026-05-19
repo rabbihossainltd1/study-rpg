@@ -263,7 +263,7 @@ function FriendRow({ person, menu, setMenu, onMessage, onViewProfile, onDeleteCh
       onTouchStart={startHold}
       onTouchEnd={stopHold}
       onTouchCancel={stopHold}
-      className={`sr-friend-card relative flex cursor-pointer select-none items-center gap-3 p-3 border transition-all tap-bounce ${person.hasUnread ? "sr-friend-unread" : ""}`}
+      className={`relative flex cursor-pointer select-none items-center gap-3 p-3 rounded-2xl border transition-all tap-bounce ${person.hasUnread ? "bg-primary/[0.08] border-primary/25 shadow-[0_0_18px_rgba(0,240,255,0.08)]" : "bg-white/[0.035] border-white/10 hover:border-primary/20"}`}
     >
       <div className="relative">
         <UserAvatar photoURL={person.photoURL} avatar={person.avatar} name={person.displayName} sizeClass="w-12 h-12" iconClassName="w-5 h-5" />
@@ -497,7 +497,7 @@ export default function FriendsPage() {
   };
 
   const block = async (target: PublicUserResult) => {
-    if (!confirm(`Block ${target.displayName}? Messages and gifts will stop.`)) return;
+    if (!confirm(`Block ${target.displayName}? Messages and challenges will stop.`)) return;
     setBusyId(target.uid);
     try {
       await blockUser(user.uid, target.uid);
@@ -601,8 +601,8 @@ export default function FriendsPage() {
     const active = activityText(selected);
     const selectedMuted = isChatMutedLocal(user.uid, selected.uid);
     return (
-      <div className="sr-chat-panel fixed inset-0 z-[520] flex h-[100dvh] flex-col overflow-hidden bg-[var(--app-bg)] text-[var(--app-text)] animate-card-in">
-        <div className="shrink-0 border-b border-[var(--app-border)] bg-[var(--app-surface-strong)]/95 px-3 pb-3 pt-[max(env(safe-area-inset-top),12px)] backdrop-blur-xl">
+      <div className="fixed inset-0 z-[520] flex h-[100dvh] flex-col overflow-hidden bg-[var(--app-bg)] text-[var(--app-text)] animate-card-in">
+        <div className="shrink-0 border-b border-white/10 bg-[var(--app-surface-strong)]/95 px-3 pb-3 pt-[max(env(safe-area-inset-top),12px)] backdrop-blur-xl">
           <div className="relative flex items-center gap-3">
             <button onClick={() => setSelected(null)} className="h-10 w-8 bg-transparent border-0 flex items-center justify-center text-gray-300 tap-bounce" aria-label="Back to friends">
               <ChevronLeft className="w-6 h-6" />
@@ -629,14 +629,14 @@ export default function FriendsPage() {
           {unreadCount > 0 && <div className="mt-2 text-right"><span className="rounded-full bg-secondary/15 px-2 py-0.5 text-[10px] text-secondary font-bold">{unreadCount} new</span></div>}
         </div>
 
-        <div className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-3 bg-[radial-gradient(circle_at_top_right,rgba(0,212,180,0.07),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(57,255,20,0.055),transparent_30%)]">
+        <div className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-3 bg-[radial-gradient(circle_at_top_right,rgba(0,240,255,0.05),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(57,255,20,0.045),transparent_30%)]">
           {messages.length === 0 && <p className="text-sm text-gray-500 text-center mt-10">No messages yet. Start the conversation.</p>}
           {messages.map((msg) => {
             const mine = msg.from === user.uid;
             return (
               <div key={msg.id} className={`flex items-end gap-2 ${mine ? "justify-end" : "justify-start"}`}>
                 {!mine && <button onClick={() => navigate(`/public-profile?userId=${encodeURIComponent(selected.uid)}`)} className="bg-transparent border-0 p-0 shrink-0 tap-bounce" aria-label="View profile"><UserAvatar photoURL={selected.photoURL} avatar={selected.avatar} name={selected.displayName} sizeClass="w-7 h-7" iconClassName="w-3 h-3" /></button>}
-                <div className={`max-w-[76%] rounded-2xl px-3 py-2 text-[13px] ${mine ? "sr-chat-bubble-sent font-semibold rounded-br-sm" : "sr-chat-bubble-received rounded-bl-sm"}`}>
+                <div className={`max-w-[76%] rounded-2xl px-3 py-2 text-[13px] ${mine ? "bg-primary text-black font-semibold rounded-br-sm" : "bg-white/[0.07] border border-white/10 text-[var(--app-text)] rounded-bl-sm"}`}>
                   <p className="whitespace-pre-wrap break-words leading-snug">{msg.content}</p>
                   <div className={`mt-1 flex items-center gap-1.5 ${mine ? "justify-end" : "justify-start text-gray-500"}`}>
                     <span className={`text-[10px] ${mine ? "text-black/60" : "text-gray-500"}`}>{messageTime(msg)}</span>
@@ -649,7 +649,7 @@ export default function FriendsPage() {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="sr-bottom-input shrink-0 border-t bg-[var(--app-surface-strong)]/95 p-3 pb-[max(env(safe-area-inset-bottom),12px)] backdrop-blur-xl">
+        <div className="shrink-0 border-t border-white/10 bg-[var(--app-surface-strong)]/95 p-3 pb-[max(env(safe-area-inset-bottom),12px)] backdrop-blur-xl">
           <div className="flex items-end gap-2 rounded-[26px] border border-white/10 bg-white/[0.06] p-2 shadow-2xl">
             <textarea
               value={text}
@@ -672,7 +672,7 @@ export default function FriendsPage() {
   }
 
   return (
-    <div className="sr-page relative -mt-2 mx-auto max-w-[420px] space-y-3 animate-card-in">
+    <div className="relative -mt-2 space-y-3 animate-card-in">
       {showBlockedList && (
         <Card className="border border-red-500/20 bg-red-500/[0.035]">
           <div className="flex items-center justify-between mb-3">
@@ -698,7 +698,7 @@ export default function FriendsPage() {
       )}
 
       {incoming.length > 0 && (
-        <Card className="sr-card border border-secondary/20 bg-secondary/5">
+        <Card className="border border-secondary/20 bg-secondary/5">
           <p className="text-sm font-bold text-white mb-3">Incoming Requests</p>
           <div className="space-y-2">
             {incoming.map((person) => (
@@ -717,7 +717,7 @@ export default function FriendsPage() {
         </Card>
       )}
 
-      <Card className="sr-card relative min-h-[70vh]">
+      <Card className="relative min-h-[70vh]">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div>
             <p className="text-sm font-bold text-white">My Friends</p>

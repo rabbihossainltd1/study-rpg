@@ -2,11 +2,11 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useUserStore } from "@/store/useUserStore";
-import { cancelFriendRequest, getFriendRelationState, getLeaderboard, sendFriendRequest, type FriendStatus } from "@/lib/firebase";
+import { cancelFriendRequest, getFriendRelationState, getLeaderboard, sendFriendRequest, createChallenge, type FriendStatus } from "@/lib/firebase";
 import { RANK_COLORS, type Rank } from "@/types";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
-import { Trophy, Globe, MapPin, TrendingUp, Crown, X, School, UserRound, UserPlus, Flame, Eye, MessageCircle, Gift } from "lucide-react";
+import { Trophy, Globe, MapPin, TrendingUp, Crown, X, School, UserRound, UserPlus, Flame, Eye, MessageCircle, Swords } from "lucide-react";
 import { AppIcon, UserAvatar, CrownBadge, VerifiedBadge } from "@/components/ui/AppIcon";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 import { navigate } from "@/lib/navigate";
@@ -164,9 +164,17 @@ export default function LeaderboardPage() {
     navigate(`/friends?chat=${entry.userId}`);
   };
 
-  const giftFromLeaderboard = async (entry: LeaderEntry) => {
+  const challengeFromLeaderboard = async (entry: LeaderEntry) => {
     if (!user || user.uid === entry.userId) return;
-    toast.success(`Gift options for ${entry.displayName || entry.username}: Coins / Gems / Gift`);
+    setBusyAdd(entry.userId);
+    try {
+      await createChallenge(user.uid, entry.userId);
+      toast.success("Challenge sent");
+    } catch {
+      toast.error("Challenge failed");
+    } finally {
+      setBusyAdd(null);
+    }
   };
 
   const RankBadge = ({ rank }: { rank: number }) => {
@@ -285,7 +293,7 @@ export default function LeaderboardPage() {
               {!canSeeFull && <p className="text-[11px] text-gray-500 text-center pt-1">Friend হলে full information দেখা যাবে।</p>}
             </div>
             {user && selected.userId !== user.uid && (() => {
-              if (state === "accepted") return <div className="grid grid-cols-3 gap-2 mt-4"><Button className="min-h-[48px] flex-col gap-1" onClick={() => viewProfileFromLeaderboard(selected)} disabled={busyAdd === selected.userId} leftIcon={<Eye className="w-4 h-4" />}>Profile</Button><Button className="min-h-[48px] flex-col gap-1" variant="secondary" onClick={() => messageFromLeaderboard(selected)} disabled={busyAdd === selected.userId} leftIcon={<MessageCircle className="w-4 h-4" />}>Message</Button><Button className="min-h-[48px] flex-col gap-1" variant="gold" onClick={() => giftFromLeaderboard(selected)} disabled={busyAdd === selected.userId} leftIcon={<Gift className="w-4 h-4" />}>Gift</Button></div>;
+              if (state === "accepted") return <div className="grid grid-cols-3 gap-2 mt-4"><Button className="min-h-[48px] flex-col gap-1" onClick={() => viewProfileFromLeaderboard(selected)} disabled={busyAdd === selected.userId} leftIcon={<Eye className="w-4 h-4" />}>Profile</Button><Button className="min-h-[48px] flex-col gap-1" variant="secondary" onClick={() => messageFromLeaderboard(selected)} disabled={busyAdd === selected.userId} leftIcon={<MessageCircle className="w-4 h-4" />}>Message</Button><Button className="min-h-[48px] flex-col gap-1" variant="gold" onClick={() => challengeFromLeaderboard(selected)} disabled={busyAdd === selected.userId} leftIcon={<Swords className="w-4 h-4" />}>Challenge</Button></div>;
               if (state === "pending") return <Button className="w-full mt-3" variant="gold" onClick={() => cancelLeaderboardRequest(selected)} disabled={busyAdd === selected.userId}>Cancel Request</Button>;
               if (state === "blocked_by_me" || state === "blocked_me") return <Button className="w-full mt-3" variant="danger" disabled>Unavailable</Button>;
               return <div className="grid grid-cols-2 gap-2 mt-4"><Button className="min-h-[48px]" onClick={() => viewProfileFromLeaderboard(selected)} disabled={busyAdd === selected.userId} leftIcon={<Eye className="w-4 h-4" />}>View Profile</Button><Button className="min-h-[48px]" variant="secondary" onClick={() => addFromLeaderboard(selected)} disabled={busyAdd === selected.userId} leftIcon={<UserPlus className="w-4 h-4" />}>Add Friend</Button></div>;

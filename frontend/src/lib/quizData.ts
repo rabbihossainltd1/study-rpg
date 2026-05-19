@@ -25,10 +25,10 @@ export type QuizQuestionWithTopic = QuizQuestion & {
 export const VERIFIED_CONTENT_SOURCES: VerifiedContentSource[] = [
   {
     id: "user-v142-clean-difficulty-dataset",
-    title: "Study RPG v1.4.3 cleaned question dataset",
+    title: "Study RPG v1.4.2 cleaned question dataset",
     authority: "Imported Dataset",
     url: "local-upload:new.zip",
-    note: "MCQ and written questions re-imported from the owner supplied cleaned dataset after duplicate removal, difficulty filtering, and MCQ option cleanup.",
+    note: "MCQ and written questions re-imported from the owner supplied v1.4.2 dataset after duplicate removal, difficulty filtering, and MCQ option cleanup.",
   },
   {
     id: "user-real-dataset-v133",

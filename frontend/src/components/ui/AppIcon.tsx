@@ -4,7 +4,7 @@ import {
   ClipboardCheck, CloudRain, Coffee, Coins, Crown, Dna, Flame, FlaskConical, Gem,
   Globe2, GraduationCap, Languages, Landmark, Medal, NotebookPen, Rocket, School,
   Sparkles, Star, Target, Trees, Trophy, UserRound, VolumeX, Waves, Zap, Atom,
-  Play, FileImage, Send, MessageCircle, Swords, Users, Search, MapPin, Shield, Gift,
+  Play, FileImage, Send, MessageCircle, Swords, Users, Search, MapPin, Shield,
 } from "lucide-react";
 
 const ICONS = {
@@ -51,7 +51,6 @@ const ICONS = {
   search: Search,
   map: MapPin,
   shield: Shield,
-  gift: Gift,
   clipboard: ClipboardCheck,
 } as const;
 
