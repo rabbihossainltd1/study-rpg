@@ -7,21 +7,21 @@ export type UpdateInfo = {
 };
 
 export const CURRENT_UPDATE_INFO: UpdateInfo = {
-  version: "1.4.2",
-  title: "Study RPG v1.4.2",
-  titleBn: "Study RPG v1.4.2 আপডেট",
+  version: "1.4.3",
+  title: "Study RPG v1.4.3",
+  titleBn: "Study RPG v1.4.3 আপডেট",
   notes: [
-    "Cleaned MCQ and written dataset imported with duplicate removal.",
-    "Easy, medium and hard difficulty filtering updated from the supplied dataset.",
-    "MCQ wrong options are refreshed and verified with no repeated option inside a question.",
-    "A seen message will not show the mini notification popup again after reopening the app.",
-    "Unread chats now appear bold in the chat list and return to normal after seen."
+    "Profile, public profile, profile popup and chat UI redesigned with the new Study RPG icon style.",
+    "Existing buttons, navigation, friend flow and chat logic are preserved.",
+    "Challenge action is replaced with Gift options using Coins, Gems and Gift icons.",
+    "Message notifications are hardened so new messages are less likely to be missed.",
+    "Light and dark theme support is kept for the redesigned screens."
   ],
   notesBn: [
-    "Duplicate remove করা clean MCQ ও written dataset import করা হয়েছে।",
-    "Supplied dataset অনুযায়ী Easy, Medium, Hard difficulty filtering update করা হয়েছে।",
-    "প্রতিটা MCQ-এর wrong options refresh ও verify করা হয়েছে, একই question-এর option repeat নেই।",
-    "Seen করা message app reopen করলে আবার mini popup দেখাবে না।",
-    "Unseen chat list-এ bold থাকবে, seen হলে normal হয়ে যাবে।"
+    "নতুন Study RPG icon style দিয়ে profile, public profile, profile popup ও chat UI redesign করা হয়েছে।",
+    "আগের buttons, navigation, friend flow ও chat logic একই রাখা হয়েছে।",
+    "Challenge action-এর জায়গায় Coins, Gems ও Gift icon সহ Gift options করা হয়েছে।",
+    "নতুন message notification যেন miss না হয় সেই logic harden করা হয়েছে।",
+    "Redesigned screen গুলোতে light ও dark theme support রাখা হয়েছে।"
   ]
 };

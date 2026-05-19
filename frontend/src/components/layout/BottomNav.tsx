@@ -17,14 +17,16 @@ export function BottomNav() {
   const path = usePathname() || "/dashboard";
   return (
     <nav className="bottom-nav-shell fixed bottom-0 left-0 right-0 z-40 lg:hidden border-t backdrop-blur-xl px-3 pt-2 pb-[max(10px,env(safe-area-inset-bottom))]">
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2 mx-auto max-w-[420px]">
         {ITEMS.map((item) => {
           const Icon = item.icon;
           const active = path === item.href || path.startsWith(`${item.href}/`);
           return (
-            <button key={item.href} onClick={() => navigate(item.href)} className={`rounded-2xl py-2 flex flex-col items-center gap-1 text-[11px] font-bold tap-bounce ${active ? "bg-primary text-black shadow-neon-primary" : "text-gray-500 bg-white/[0.03]"}`}>
-              <Icon className="w-5 h-5" />
-              <span>{language === "bn" ? item.bn : item.label}</span>
+            <button key={item.href} onClick={() => navigate(item.href)} className="group flex flex-col items-center gap-1 rounded-2xl bg-transparent px-1 py-1.5 text-[10px] font-bold tap-bounce">
+              <span className={`flex h-[42px] w-[42px] items-center justify-center rounded-[14px] border transition-all ${active ? "border-primary bg-primary text-black shadow-neon-primary" : "border-transparent bg-white/[0.03] text-gray-500 group-active:border-primary/20"}`}>
+                <Icon className="h-5 w-5" strokeWidth={2.3} />
+              </span>
+              <span className={active ? "text-primary" : "text-gray-500"}>{language === "bn" ? item.bn : item.label}</span>
             </button>
           );
         })}

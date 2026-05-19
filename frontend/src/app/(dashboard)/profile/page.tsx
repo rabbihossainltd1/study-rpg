@@ -276,8 +276,8 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="space-y-5 max-w-2xl mx-auto animate-card-in">
-      <div className="glass-card p-6 border relative overflow-hidden hover-lift" style={{ borderColor: `${rankColor}30` }}>
+    <div className="sr-page space-y-4 max-w-[420px] mx-auto animate-card-in">
+      <div className="sr-card p-5 border relative overflow-hidden hover-lift" style={{ borderColor: `${rankColor}30` }}>
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full opacity-10 blur-3xl pointer-events-none" style={{ background: rankColor }} />
         <div className="flex items-start gap-4 relative">
           <div className="relative flex-shrink-0">
@@ -316,7 +316,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="glass-card p-5 hover-lift">
+      <div className="sr-card p-5 hover-lift">
         <div className="flex items-center gap-2 mb-4">
           <Shield className="w-4 h-4" style={{ color: rankColor }} />
           <p className="font-bold text-white text-sm">Rank Journey</p>
@@ -352,17 +352,17 @@ export default function ProfilePage() {
 
       <div className="grid grid-cols-3 gap-2">
         {["stats", "achievements", "settings"].map((tab) => (
-          <button key={tab} onClick={() => setActiveTab(tab)} className={`px-3 py-2 rounded-xl text-sm font-medium transition-all tap-bounce ${activeTab === tab ? "bg-primary text-black font-bold" : "glass border border-white/10 text-gray-400 hover:text-white"}`}>
+          <button key={tab} onClick={() => setActiveTab(tab)} className={`sr-tab-btn px-3 py-2 text-sm transition-all tap-bounce ${activeTab === tab ? "bg-primary text-black shadow-neon-primary" : "sr-card text-[var(--app-muted)] hover:text-[var(--app-text)]"}`}>
             {tab[0].toUpperCase() + tab.slice(1)}
           </button>
         ))}
       </div>
 
       {activeTab === "stats" && (
-        <div className="glass-card p-4 border border-white/10 animate-card-in">
+        <div className="sr-card p-4 animate-card-in">
           <div className="grid grid-cols-2 gap-3 text-center">
-            <div className="rounded-2xl bg-secondary/10 border border-secondary/20 p-4 flex flex-col items-center gap-1.5"><div className="h-10 w-10 rounded-xl bg-secondary/15 border border-secondary/30 flex items-center justify-center"><Coins className="w-5 h-5 text-secondary" /></div><p className="text-2xl font-black text-secondary">{user.coins}</p><p className="text-xs text-gray-500">Coins</p></div>
-            <div className="rounded-2xl bg-purple/10 border border-purple/20 p-4 flex flex-col items-center gap-1.5"><div className="h-10 w-10 rounded-xl bg-purple/15 border border-purple/30 flex items-center justify-center"><Gem className="w-5 h-5 text-purple" /></div><p className="text-2xl font-black text-purple">{user.gems}</p><p className="text-xs text-gray-500">Gems</p></div>
+            <div className="rounded-2xl border p-4 flex flex-col items-center gap-1.5" style={{ background: "rgba(0,212,180,0.07)", borderColor: "rgba(0,212,180,0.18)" }}><div className="h-10 w-10 rounded-xl bg-secondary/15 border border-secondary/30 flex items-center justify-center"><Coins className="w-5 h-5 text-secondary" /></div><p className="text-2xl font-black text-secondary">{user.coins}</p><p className="text-xs text-gray-500">Coins</p></div>
+            <div className="rounded-2xl border p-4 flex flex-col items-center gap-1.5" style={{ background: "rgba(168,85,247,0.08)", borderColor: "rgba(168,85,247,0.18)" }}><div className="h-10 w-10 rounded-xl bg-purple/15 border border-purple/30 flex items-center justify-center"><Gem className="w-5 h-5 text-purple" /></div><p className="text-2xl font-black text-purple">{user.gems}</p><p className="text-xs text-gray-500">Gems</p></div>
           </div>
         </div>
       )}
@@ -370,7 +370,7 @@ export default function ProfilePage() {
       {activeTab === "achievements" && (
         <div className="space-y-3 animate-card-in">
           {unlockedAchievements.length === 0 ? (
-            <div className="glass-card p-8 text-center">
+            <div className="sr-card p-8 text-center">
               <Trophy className="w-10 h-10 mx-auto mb-3 text-gold" />
               <p className="text-gray-400 font-medium">No achievements yet</p>
               <p className="text-sm text-gray-600 mt-1">Complete missions and quizzes to unlock achievements.</p>
@@ -378,7 +378,7 @@ export default function ProfilePage() {
           ) : unlockedAchievements.map((a) => {
             const color = getRarityColor(a.rarity);
             return (
-              <div key={a.id} className="glass-card p-4 border flex items-center gap-3 hover-lift" style={{ borderColor: `${color}25` }}>
+              <div key={a.id} className="sr-card p-4 border flex items-center gap-3 hover-lift" style={{ borderColor: `${color}25` }}>
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style={{ background: `${color}15` }}><AppIcon name={a.icon} className="w-6 h-6" color={color} /></div>
                 <div><p className="font-bold text-white text-sm">{language === "bn" ? a.titleBn : a.title}</p><p className="text-xs text-gray-500">{a.description}</p></div>
               </div>
@@ -388,7 +388,7 @@ export default function ProfilePage() {
       )}
 
       {activeTab === "settings" && (
-        <div className="glass-card p-5 space-y-3 animate-card-in">
+        <div className="sr-card p-5 space-y-3 animate-card-in">
           {user.isGuest && (
             <div className="rounded-2xl border border-primary/20 bg-primary/5 p-3 space-y-2">
               <p className="text-sm font-bold text-white">Bind guest account with Gmail</p>
@@ -407,7 +407,7 @@ export default function ProfilePage() {
 
       {editing && (
         <div className="modal-backdrop fixed inset-0 z-50 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-fade-in overflow-hidden">
-          <div className="glass-card w-full max-w-lg p-5 border border-primary/20 animate-drawer-up">
+          <div className="sr-sheet w-full max-w-lg p-5 border border-primary/20 animate-drawer-up rounded-[24px]">
             <div className="flex items-center justify-between mb-4">
               <div><h2 className="text-lg font-black text-white">Edit Profile</h2><p className="text-xs text-gray-500">Name, photo and student info</p></div>
               <button onClick={() => setEditing(false)} className="p-2 rounded-lg hover:bg-white/10 text-gray-400"><X className="w-5 h-5" /></button>

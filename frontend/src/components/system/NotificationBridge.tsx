@@ -157,7 +157,7 @@ export function NotificationBridge() {
         }
 
         const ms = dateMs(msg.createdAt);
-        if (firstMessageSnapshot && (!ms || now - ms > 25000)) {
+        if (firstMessageSnapshot && ms && now - ms > 10 * 60 * 1000) {
           seenMessageIds.current.add(msg.id);
           continue;
         }
