@@ -1,0 +1,42 @@
+Study RPG v1.4.3 MCQ hotfix summary
+
+Matched/replaced subjects checked: 21
+MCQ before hotfix in replaced subjects: 5182
+MCQ after hotfix in replaced subjects: 4980
+i/ii/iii statement-combo MCQ converted/removed: 1
+Combo/invalid option MCQ cleaned: 217
+v1.4.2 stable fallback MCQ added for empty buckets: 538
+Duplicate questions removed during hotfix: 412
+Repeated 4-option sets fixed: 686
+Invalid/unfixable MCQ dropped: 1093
+
+Validation after hotfix:
+Remaining i/ii/iii statement-combo question text: 0
+Remaining i/ii/iii combo options: 0
+Remaining duplicate options inside same MCQ: 0
+Remaining duplicate questions inside replaced subjects: 0
+Remaining repeated 4-option sets inside replaced subjects: 0
+Difficulty buckets below app-safe minimum: 0
+
+Subject-wise counts by difficulty:
+- class8-bangla: {'easy': 50, 'medium': 50, 'hard': 24} -> {'easy': 50, 'medium': 18, 'hard': 18}
+- class8-bgs: {'easy': 50, 'medium': 50, 'hard': 24} -> {'easy': 50, 'medium': 29, 'hard': 24}
+- class8-digital: {'easy': 48, 'medium': 48, 'hard': 24} -> {'easy': 48, 'medium': 48, 'hard': 18}
+- class8-english: {'easy': 47, 'medium': 47, 'hard': 24} -> {'easy': 47, 'medium': 47, 'hard': 18}
+- class8-math: {'easy': 30, 'medium': 30, 'hard': 23} -> {'easy': 30, 'medium': 18, 'hard': 18}
+- class8-science: {'easy': 49, 'medium': 49, 'hard': 24} -> {'easy': 49, 'medium': 29, 'hard': 24}
+- hsc-bangla: {'easy': 83, 'medium': 253, 'hard': 76} -> {'easy': 83, 'medium': 238, 'hard': 76}
+- hsc-english: {'easy': 161, 'medium': 206, 'hard': 217} -> {'easy': 161, 'medium': 206, 'hard': 205}
+- hsc-ict: {'easy': 30, 'medium': 98, 'hard': 116} -> {'easy': 30, 'medium': 85, 'hard': 109}
+- ssc-accounting: {'easy': 66, 'medium': 168, 'hard': 114} -> {'easy': 66, 'medium': 168, 'hard': 114}
+- ssc-bangla: {'easy': 40, 'medium': 40, 'hard': 24} -> {'easy': 40, 'medium': 40, 'hard': 16}
+- ssc-bgs: {'easy': 60, 'medium': 72, 'hard': 40} -> {'easy': 60, 'medium': 62, 'hard': 40}
+- ssc-chemistry: {'easy': 24, 'medium': 179, 'hard': 36} -> {'easy': 24, 'medium': 179, 'hard': 36}
+- ssc-economics: {'easy': 24, 'medium': 180, 'hard': 36} -> {'easy': 24, 'medium': 180, 'hard': 36}
+- ssc-english: {'easy': 78, 'medium': 190, 'hard': 36} -> {'easy': 78, 'medium': 190, 'hard': 36}
+- ssc-finance: {'easy': 66, 'medium': 171, 'hard': 113} -> {'easy': 66, 'medium': 171, 'hard': 113}
+- ssc-higher-math: {'easy': 111, 'medium': 252, 'hard': 163} -> {'easy': 111, 'medium': 243, 'hard': 151}
+- ssc-ict: {'easy': 30, 'medium': 101, 'hard': 115} -> {'easy': 30, 'medium': 101, 'hard': 107}
+- ssc-math: {'easy': 24, 'medium': 182, 'hard': 36} -> {'easy': 24, 'medium': 182, 'hard': 36}
+- ssc-physics: {'easy': 24, 'medium': 181, 'hard': 36} -> {'easy': 24, 'medium': 181, 'hard': 36}
+- ssc-science: {'easy': 24, 'medium': 179, 'hard': 36} -> {'easy': 24, 'medium': 179, 'hard': 36}

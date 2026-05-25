@@ -255,6 +255,11 @@ export default function SubjectDetailClient({ id }: { id: string }) {
     if (completedQuizzes.has(quizDifficulty)) {
       toast("Quiz already solved. Reward not repeated.");
       setQuizActive(false);
+      setQuizDone(false);
+      setQuizIndex(0);
+      setScore(0);
+      setSelected(null);
+      setAnswered(false);
       return;
     }
 
@@ -535,7 +540,7 @@ export default function SubjectDetailClient({ id }: { id: string }) {
                   <div className="w-px bg-white/10" />
                   <div><p className="text-xl font-bold text-secondary">{Math.round((score / quizQuestions.length) * 100)}%</p><p className="text-xs text-gray-500">Accuracy</p></div>
                 </div>
-                <Button onClick={handleFinishQuiz} className="w-full" size="lg" isLoading={claimingQuizReward} disabled={claimingQuizReward || completedQuizzes.has(difficulty as QuizDifficulty)}>Claim Rewards</Button>
+                <Button onClick={handleFinishQuiz} className="w-full" size="lg" isLoading={claimingQuizReward} disabled={claimingQuizReward}>Claim Rewards</Button>
               </div>
             )}
           </div>
